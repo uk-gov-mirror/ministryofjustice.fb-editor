@@ -1,0 +1,25 @@
+version: '3.4'
+
+services:
+  editor-db:
+    image: postgres:12.4-alpine
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: editor_local
+
+  editor-app:
+    build:
+      context: .
+      args:
+        BUNDLE_ARGS: ''
+    tty: true
+    stdin_open: true
+    ports:
+      - 8081:3000
+    environment:
+      DATABASE_URL: "postgres://postgres:password@editor-db/editor_local"
+      RAILS_ENV: development
+    links:
+      - editor-db

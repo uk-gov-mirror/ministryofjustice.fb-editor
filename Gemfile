@@ -11,6 +11,7 @@ gem 'sass-rails', '>= 6'
 gem 'webpacker', '~> 4.0'
 
 group :development, :test do
+  gem 'brakeman'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
 end
