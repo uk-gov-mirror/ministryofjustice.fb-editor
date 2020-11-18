@@ -1,0 +1,67 @@
+---
+# front-end
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "fb-editor-{{ .Values.environmentName }}"
+  namespace: formbuilder-saas-{{ .Values.environmentName }}
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "fb-editor-{{ .Values.environmentName }}"
+  template:
+    metadata:
+      labels:
+        app: "fb-editor-{{ .Values.environmentName }}"
+        appGroup: "fb-editor"
+        fb-service-token-cache-access: "true"
+        tier: "frontend"
+    spec:
+      containers:
+      - name: "fb-editor-{{ .Values.environmentName }}"
+        image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-editor:{{ .Values.circleSha1 }}"
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp-files
+        securityContext:
+          runAsUser: 1001
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 3000
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+        # non-secret env vars
+        # defined in config_map.yaml
+        envFrom:
+          - configMapRef:
+              name: fb-editor-config-map
+        env:
+          - name: SENTRY_CURRENT_ENV
+            value: {{ .Values.environmentName }}
+          - name: SECRET_KEY_BASE
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: secret_key_base
+          # secrets created by terraform
+          # which may or may not depend on values
+          # canonically defined in secrets.tfvars
+          # Some assets aren't loading properly yet
+          # ...maybe an issue with how they're referenced,
+          # maybe something else - re-enabled this later
+          #
+          # Created by cloud-platforms-environments
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: rds-instance-formbuilder-editor-{{ .Values.environmentName }}
+                key: url
+      volumes:
+        - name: tmp-files
+          emptyDir: {}

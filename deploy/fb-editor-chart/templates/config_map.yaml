@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fb-editor-config-map
+  namespace: formbuilder-saas-{{ .Values.environmentName }}
+data:
+  RAILS_ENV: production

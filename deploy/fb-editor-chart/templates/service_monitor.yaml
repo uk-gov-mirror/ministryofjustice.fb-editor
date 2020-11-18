@@ -1,0 +1,29 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: "fb-editor-service-monitor-{{ .Values.environmentName }}"
+  namespace: "formbuilder-saas-{{ .Values.environmentName }}"
+spec:
+  selector:
+    matchLabels:
+      app: "fb-editor-{{ .Values.environmentName }}"
+  endpoints:
+  - port: http
+    interval: 15s
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: "allow-fb-editor-prometheus-{{ .Values.environmentName }}"
+  namespace: "formbuilder-saas-{{ .Values.environmentName }}"
+spec:
+  podSelector:
+    matchLabels:
+      app: "fb-editor-{{ .Values.environmentName }}"
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          component: monitoring
