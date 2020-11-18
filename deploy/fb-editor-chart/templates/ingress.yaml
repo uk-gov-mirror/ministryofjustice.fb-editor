@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: "fb-editor-ing-{{ .Values.environmentName }}"
+spec:
+  tls:
+  - hosts:
+    - fb-editor-{{ .Values.environmentName }}.apps.live-1.cloud-platform.service.justice.gov.uk
+  rules:
+  - host: fb-editor-{{ .Values.environmentName }}.apps.live-1.cloud-platform.service.justice.gov.uk
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: fb-editor-svc-{{ .Values.environmentName }}
+          servicePort: 80
