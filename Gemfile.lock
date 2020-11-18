@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
+  revision: 9b8c0380ad68989acadedce619e0a841e7908a2b
+  branch: main
+  specs:
+    metadata_presenter (0.1.0)
+      govspeak
+      rails (~> 6.0.3, >= 6.0.3.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -56,6 +65,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2, >= 2.2.2)
+    addressable (2.3.8)
     bindex (0.8.1)
     bootsnap (1.5.1)
       msgpack (~> 1.0)
@@ -69,8 +79,16 @@ GEM
     ffi (1.13.1)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    govspeak (3.6.2)
+      addressable (~> 2.3.8)
+      htmlentities (~> 4)
+      kramdown (~> 1.10.0)
+      nokogiri (~> 1.5)
+      sanitize (~> 2.1.0)
+    htmlentities (4.3.4)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
+    kramdown (1.10.0)
     listen (3.3.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -145,6 +163,8 @@ GEM
       rspec-mocks (~> 3.9)
       rspec-support (~> 3.9)
     rspec-support (3.10.0)
+    sanitize (2.1.1)
+      nokogiri (>= 1.4.4)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -195,6 +215,7 @@ DEPENDENCIES
   brakeman
   byebug
   listen (~> 3.2)
+  metadata_presenter!
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)
   rails (~> 6.0.3, >= 6.0.3.4)
