@@ -2,7 +2,7 @@ FROM ruby:2.7.2-alpine3.12
 
 ARG UID=1001
 
-RUN apk add build-base postgresql-contrib postgresql-dev bash libcurl
+RUN apk add git build-base postgresql-contrib postgresql-dev bash libcurl
 
 RUN addgroup -g ${UID} -S appgroup && \
   adduser -u ${UID} -S appuser -G appgroup
