@@ -2,7 +2,7 @@ FROM ruby:2.7.2-alpine3.12
 
 ARG UID=1001
 
-RUN apk add git build-base postgresql-contrib postgresql-dev bash libcurl
+RUN apk add git nodejs yarn build-base postgresql-contrib postgresql-dev bash libcurl
 
 RUN addgroup -g ${UID} -S appgroup && \
   adduser -u ${UID} -S appuser -G appgroup
@@ -21,8 +21,9 @@ COPY --chown=appuser:appgroup Gemfile Gemfile.lock .ruby-version ./
 
 RUN gem install bundler
 
+RUN bundle config set no-cache 'true'
 ARG BUNDLE_ARGS='--jobs 2 --without test development'
-RUN bundle install --no-cache ${BUNDLE_ARGS}
+RUN bundle install ${BUNDLE_ARGS}
 
 COPY --chown=appuser:appgroup . .
 
@@ -32,4 +33,7 @@ EXPOSE $APP_PORT
 USER ${UID}
 
 ARG RAILS_ENV=production
+RUN yarn install --check-files
+RUN RAILS_ENV=${RAILS_ENV} SECRET_KEY_BASE=$(bin/rake secret) bundle exec rake assets:precompile --trace
+
 CMD bundle exec rake db:migrate && bundle exec rails s -e ${RAILS_ENV} -p ${APP_PORT} --binding=0.0.0.0
