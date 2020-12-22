@@ -10,7 +10,7 @@ gem 'puma', '~> 4.1'
 gem 'rails', '~> 6.0.3', '>= 6.0.3.4'
 gem 'sass-rails', '>= 6'
 gem 'tzinfo-data'
-gem 'webpacker', '~> 4.0'
+gem 'webpacker', '~> 5.2'
 
 group :development, :test do
   gem 'brakeman'
