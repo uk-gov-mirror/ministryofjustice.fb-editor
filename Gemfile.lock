@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
-  revision: 3a337ef3be388f05dba09c86854a64e8941be5c2
+  revision: db78c010fe77098737271c3ed7108e11b9f3cd7b
   branch: main
   specs:
     metadata_presenter (0.1.0)
@@ -86,10 +86,10 @@ GEM
     ffi (1.14.2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    govuk_design_system_formbuilder (2.1.5)
-      actionview (>= 5.2)
-      activemodel (>= 5.2)
-      activesupport (>= 5.2)
+    govuk_design_system_formbuilder (2.1.6)
+      actionview (~> 6.1.0, >= 6.1)
+      activemodel (~> 6.1.0, >= 6.1)
+      activesupport (~> 6.1.0, >= 6.1)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
     json-schema (2.8.1)
