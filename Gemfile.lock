@@ -198,7 +198,7 @@ GEM
     tilt (2.0.10)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
-    tzinfo-data (1.2020.4)
+    tzinfo-data (1.2020.5)
       tzinfo (>= 1.0.0)
     web-console (4.1.0)
       actionview (>= 6.0.0)
