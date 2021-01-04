@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include Auth0Helper
+
   def service
     @service ||= MetadataPresenter::Service.new(service_metadata)
   end
