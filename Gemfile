@@ -5,6 +5,8 @@ ruby '2.7.2'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'metadata_presenter', '~> 0.1.4'
+gem 'faraday'
+gem 'faraday_middleware'
 gem 'omniauth'
 gem 'omniauth-auth0', '~> 2.4.1'
 gem 'omniauth-rails_csrf_protection', '~> 0.1'
@@ -19,11 +21,15 @@ group :development, :test do
   gem 'brakeman'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'capybara'
+  gem 'dotenv-rails', groups: [:development, :test]
   gem 'rspec-rails'
   gem 'site_prism'
+  gem 'webmock'
 end
 
 group :development do
+  gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'listen', '~> 3.4'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'

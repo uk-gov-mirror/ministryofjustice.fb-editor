@@ -4,6 +4,18 @@
       <h1 class="govuk-heading-xl" data-block-id="signup-error" data-block-property="heading">
         Forms
       </h1>
+
+      <dl class="govuk-summary-list govuk-!-margin-bottom-9">
+        <% @services.each do |service| %>
+          <div class="govuk-summary-list__row">
+            <dd class="govuk-summary-list__value">
+              <%= service.name %>
+            </dd>
+            <dd class="govuk-summary-list__actions">
+            </dd>
+          </div>
+        <% end %>
+      </dl>
     </div>
   </div>
 </div>
