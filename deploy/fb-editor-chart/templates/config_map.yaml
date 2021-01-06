@@ -8,3 +8,5 @@ data:
   RAILS_LOG_TO_STDOUT: "true"
   PLATFORM_ENV: {{ .Values.environmentName }}
   RAILS_SERVE_STATIC_FILES: "true"
+  AUTH0_DOMAIN: mojds-trial.eu.auth0.com
+  EDITOR_FULL_URL_ROOT: https://fb-editor-{{ .Values.environmentName }}.apps.live-1.cloud-platform.service.justice.gov.uk
