@@ -1,0 +1,7 @@
+  <div>
+    <% if Rails.env.development? %>
+      <%= link_to t('.sign_in'), '/auth/developer', method: :post, class: 'button button-start' %>
+    <% else %>
+      <%= link_to t('.sign_in'), '/auth/auth0', method: :post, class: 'button button-start' %>
+    <% end %>
+  </div>

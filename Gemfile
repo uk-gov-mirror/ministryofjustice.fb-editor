@@ -5,6 +5,9 @@ ruby '2.7.2'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'metadata_presenter', '~> 0.1.4'
+gem 'omniauth'
+gem 'omniauth-auth0', '~> 2.4.1'
+gem 'omniauth-rails_csrf_protection', '~> 0.1'
 gem 'pg', '>= 0.18', '< 2.0'
 gem 'puma', '~> 5.1'
 gem 'rails', '~> 6.1.0'
@@ -15,7 +18,9 @@ gem 'webpacker', '~> 5.2'
 group :development, :test do
   gem 'brakeman'
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'capybara'
   gem 'rspec-rails'
+  gem 'site_prism'
 end
 
 group :development do

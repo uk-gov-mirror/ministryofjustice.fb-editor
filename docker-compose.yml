@@ -20,6 +20,5 @@ services:
       - 8081:3000
     environment:
       DATABASE_URL: "postgres://postgres:password@editor-db/editor_local"
-      RAILS_ENV: development
     links:
       - editor-db
