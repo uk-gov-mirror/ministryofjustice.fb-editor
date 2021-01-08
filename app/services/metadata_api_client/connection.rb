@@ -20,7 +20,7 @@ module MetadataApiClient
     end
 
     def service_access_token
-      @service_access_token ||= ServiceAccessToken.new.generate
+      @service_access_token ||= Fb::Jwt::Auth::ServiceAccessToken.new.generate
     end
   end
 end
