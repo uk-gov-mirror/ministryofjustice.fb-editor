@@ -9,7 +9,8 @@ jobs:
       - image: cimg/ruby:2.7.2
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 19.03.13
       - run:
           name: security
           command: docker-compose run --rm editor-app bundle exec brakeman -q --no-pager
@@ -30,7 +31,8 @@ jobs:
           aws_secret_access_key: $AWS_BUILD_IMAGE_SECRET_ACCESS_KEY
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          version: 19.03.13
       - add_ssh_keys: &ssh_keys
           fingerprints:
             - 0f:d3:b5:c2:a1:7e:0a:a3:d3:2a:84:41:ef:cc:94:f5
