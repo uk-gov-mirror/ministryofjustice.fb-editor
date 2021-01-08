@@ -12,8 +12,13 @@ module MetadataApiClient
     end
 
     def self.all(user_id:)
-      request = connection.get("/services/users/#{user_id}").body['services']
-      Array(request).map { |service| new(service) }
+      response = connection.get("/services/users/#{user_id}").body['services']
+      Array(response).map { |service| new(service) }
+    end
+
+    def self.create(metadata)
+      response = connection.post('/services', metadata)
+      new(response.body)
     end
 
     def self.connection

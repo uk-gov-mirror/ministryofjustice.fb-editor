@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   get '/health', to: 'health#show'
 
-  root to: 'home#show'
-
   # Auth0 routes
   get "/auth/oauth2/callback" => "auth0#callback", as: 'auth0_callback'
   get "/auth/failure" => "auth0#failure"
@@ -15,7 +13,9 @@ Rails.application.routes.draw do
     post '/auth/developer/callback' => 'auth0#developer_callback'
   end
 
-  resources :services, only: :index do
+  resources :services, only: [:index, :show, :create] do
     mount MetadataPresenter::Engine => '/preview', as: :preview
   end
+
+  root to: 'home#show'
 end
