@@ -29,45 +29,15 @@ RSpec.describe ServiceCreation do
     end
 
     context 'when is valid' do
-      let(:attributes) { { name: 'Moff Gideon', current_user: double(id: '1') } }
-      let(:metadata) do
-        {
-          metadata: {
-            _id: 'service.base',
-            _type: 'service.base',
-            service_name: 'Moff Gideon',
-            created_by: '1',
-            configuration: {
-              service: {
-                _id: 'config.service',
-                _type: 'config.service'
-              },
-              meta: {
-                _id: 'config.meta',
-                _type: 'config.meta'
-              }
-            },
-            pages: [
-              {
-                _id: 'page.start',
-                _type: 'page.start',
-                body: "**This is the main content section of your start page**\r\n\r\n[Edit this page](/edit) with content for your own service.\r\n\r\n## Adding more content\r\n\r\nYou can add multiple headings, links and paragraphs - all in this one content section.\r\n\r\nUse [markdown](https://www.gov.uk/guidance/how-to-publish-on-gov-uk/markdown) to format headings, bullet lists and links.",
-                heading: 'This is your start page heading',
-                lede: 'This is your start page first paragraph. You can only have one paragraph here.',
-                steps: [],
-                url: '/'
-              }
-            ],
-            locale: 'en'
-          }
-        }
+      let(:attributes) do
+        { name: 'Moff Gideon', current_user: double(id: '1') }
       end
       let(:service) { double(id: '05e12a93-3978-4624-a875-e59893f2c262') }
 
       before do
         expect(
           MetadataApiClient::Service
-        ).to receive(:create).with(metadata).and_return(service)
+        ).to receive(:create).and_return(service)
       end
 
       it 'returns true' do
@@ -80,6 +50,21 @@ RSpec.describe ServiceCreation do
           service_creation.service_id
         ).to eq('05e12a93-3978-4624-a875-e59893f2c262')
       end
+    end
+  end
+
+  describe '#metadata' do
+    let(:attributes) do
+      { name: 'Moff Gideon', current_user: double(id: '1234') }
+    end
+
+    it 'generates the metadata for the API' do
+      expect(service_creation.metadata[:metadata]).to include(
+        {
+          'service_name' => 'Moff Gideon',
+          'created_by' => '1234'
+        }
+      )
     end
   end
 end
