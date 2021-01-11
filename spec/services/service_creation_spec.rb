@@ -10,6 +10,22 @@ RSpec.describe ServiceCreation do
           expect(service_creation.create).to be_falsey
         end
       end
+
+      context 'when name is too short' do
+        let(:attributes) { { name: 'ET' } }
+
+        it 'returns false' do
+          expect(service_creation.create).to be_falsey
+        end
+      end
+
+      context 'when name is too long' do
+        let(:attributes) { { name: 'E' * 129 } }
+
+        it 'returns false' do
+          expect(service_creation.create).to be_falsey
+        end
+      end
     end
 
     context 'when is valid' do

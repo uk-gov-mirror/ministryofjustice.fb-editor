@@ -2,6 +2,7 @@ class ServiceCreation
   include ActiveModel::Model
   attr_accessor :name, :current_user, :service_id
   validates :name, presence: true
+  validates :name, length: { minimum: 3, maximum: 128 }, allow_blank: true
 
   def create
     return false if invalid?
