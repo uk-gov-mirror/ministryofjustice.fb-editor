@@ -7,11 +7,13 @@ class NewServiceGenerator
   end
 
   def to_metadata
-    default_metadata = Rails.application.config.default_metadata['service.base']
-    default_metadata['configuration']['service'] = Rails.application.config.default_metadata['config.service']
-    default_metadata['configuration']['meta'] = Rails.application.config.default_metadata['config.meta']
-    default_metadata['service_name'] = name
-    default_metadata['created_by'] = current_user.id
-    default_metadata
+    metadata = DefaultMetadata['service.base']
+
+    metadata.tap do
+      metadata['configuration']['service'] = DefaultMetadata['config.service']
+      metadata['configuration']['meta'] = DefaultMetadata['config.meta']
+      metadata['service_name'] = name
+      metadata['created_by'] = current_user.id
+    end
   end
 end

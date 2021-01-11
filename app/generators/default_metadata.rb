@@ -1,3 +1,5 @@
 class DefaultMetadata
-  Rails.application.config.default_metadata
+  def self.[](key)
+    Rails.application.config.default_metadata[key]
+  end
 end
