@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
   end
   helper_method :service
 
+  def back_link
+  end
+  helper_method :back_link
+
   def save_user_data
     return {} if params[:answers].blank? || params[:service_id].blank?
 
