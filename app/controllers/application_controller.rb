@@ -1,9 +1,11 @@
 class ApplicationController < ActionController::Base
   include Auth0Helper
+  layout 'metadata_presenter/application'
 
   def service
     @service ||= MetadataPresenter::Service.new(service_metadata)
   end
+  helper_method :service
 
   def save_user_data
     return {} if params[:answers].blank? || params[:service_id].blank?
