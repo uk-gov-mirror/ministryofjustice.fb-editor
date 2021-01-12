@@ -27,15 +27,15 @@ RSpec.describe ServiceCreation do
         end
       end
 
-      context 'when name is invalid format' do
-        [ 'something.invalid', 'with_underscore' ].each do |invalid|
-          let(:attributes) { { name: invalid } }
+      context 'when user inputs name with trailing whitespace' do
+        let(:current_user) { double(id: '1') }
+        let(:attributes) { { name: '  Form Name  ', current_user: current_user } }
 
-          context "when format is #{invalid}" do
-            it 'returns false' do
-              expect(service_creation.create).to be_falsey
-            end
-          end
+        it 'strips whitespace' do
+          expect(NewServiceGenerator).to receive(:new)
+            .with(name: 'Form Name', current_user: current_user)
+            .and_return(double(to_metadata: 'metadata'))
+          subject.metadata
         end
       end
 
@@ -89,6 +89,18 @@ RSpec.describe ServiceCreation do
         expect(
           service_creation.service_id
         ).to eq('05e12a93-3978-4624-a875-e59893f2c262')
+      end
+    end
+
+    context 'when name is invalid format' do
+      [ 'something.invalid', 'with_underscore' ].each do |invalid|
+        let(:attributes) { { name: invalid } }
+
+        context "when format is #{invalid}" do
+          it 'returns false' do
+            expect(service_creation.create).to be_falsey
+          end
+        end
       end
     end
   end

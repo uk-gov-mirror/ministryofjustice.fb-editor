@@ -26,7 +26,7 @@ class ServiceCreation
   def metadata
     {
       metadata: NewServiceGenerator.new(
-        name: name,
+        name: name.strip,
         current_user: current_user
       ).to_metadata
     }
