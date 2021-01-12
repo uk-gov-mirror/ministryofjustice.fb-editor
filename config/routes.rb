@@ -17,5 +17,5 @@ Rails.application.routes.draw do
     mount MetadataPresenter::Engine => '/preview', as: :preview
   end
 
-  root to: 'home#show'
+  root to: 'services#index'
 end

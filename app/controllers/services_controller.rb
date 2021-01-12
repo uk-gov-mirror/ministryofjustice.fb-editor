@@ -1,5 +1,5 @@
 class ServicesController < ApplicationController
-  before_action :require_user!
+  # before_action :require_user!
 
   def index
     @service_creation = ServiceCreation.new
@@ -19,7 +19,7 @@ class ServicesController < ApplicationController
   end
 
   def services
-    @services ||= MetadataApiClient::Service.all(user_id: current_user.id)
+    @services ||= MetadataApiClient::Service.all(user_id: '1234')
   end
   helper_method :services
 
