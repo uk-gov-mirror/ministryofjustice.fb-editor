@@ -27,6 +27,18 @@ RSpec.describe ServiceCreation do
         end
       end
 
+      context 'when name is invalid format' do
+        [ 'something.invalid', 'with_underscore' ].each do |invalid|
+          let(:attributes) { { name: invalid } }
+
+          context "when format is #{invalid}" do
+            it 'returns false' do
+              expect(service_creation.create).to be_falsey
+            end
+          end
+        end
+      end
+
       context 'when API returns errors' do
         let(:attributes) do
           { name: 'Moff Gideon', current_user: double(id: '1') }
