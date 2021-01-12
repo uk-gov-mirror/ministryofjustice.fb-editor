@@ -26,13 +26,41 @@ RSpec.describe ServiceCreation do
           expect(service_creation.create).to be_falsey
         end
       end
+
+      context 'when API returns errors' do
+        let(:attributes) do
+          { name: 'Moff Gideon', current_user: double(id: '1') }
+        end
+        let(:errors) do
+          double(errors: ['Name is already been taken'], errors?: true)
+        end
+
+        before do
+          expect(
+            MetadataApiClient::Service
+          ).to receive(:create).and_return(errors)
+        end
+
+        it 'returns false' do
+          expect(service_creation.create).to be_falsey
+        end
+
+        it 'assigns error messages' do
+          service_creation.create
+          expect(
+            service_creation.errors.full_messages
+          ).to include('Name is already been taken')
+        end
+      end
     end
 
     context 'when is valid' do
       let(:attributes) do
         { name: 'Moff Gideon', current_user: double(id: '1') }
       end
-      let(:service) { double(id: '05e12a93-3978-4624-a875-e59893f2c262') }
+      let(:service) do
+        double(id: '05e12a93-3978-4624-a875-e59893f2c262', errors?: false)
+      end
 
       before do
         expect(

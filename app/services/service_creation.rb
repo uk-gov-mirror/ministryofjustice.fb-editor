@@ -9,8 +9,16 @@ class ServiceCreation
 
     service = MetadataApiClient::Service.create(metadata)
 
-    self.tap do
-      self.service_id = service.id
+    if service.errors?
+      service.errors.each do |error_message|
+        self.errors.add(:base, :invalid, message: error_message)
+      end
+
+      false
+    else
+      self.tap do
+        self.service_id = service.id
+      end
     end
   end
 
