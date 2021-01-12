@@ -1,5 +1,5 @@
 class UserSessionsController < ApplicationController
-  before_action :require_user!, except: [:signup_not_allowed, :signup_error]
+  # before_action :require_user!, except: [:signup_not_allowed, :signup_error]
 
   def destroy
     session.clear

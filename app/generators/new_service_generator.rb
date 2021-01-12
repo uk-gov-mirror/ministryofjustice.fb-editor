@@ -13,7 +13,7 @@ class NewServiceGenerator
       metadata['configuration']['service'] = DefaultMetadata['config.service']
       metadata['configuration']['meta'] = DefaultMetadata['config.meta']
       metadata['service_name'] = name
-      metadata['created_by'] = current_user.id
+      metadata['created_by'] = '1234'
     end
   end
 end

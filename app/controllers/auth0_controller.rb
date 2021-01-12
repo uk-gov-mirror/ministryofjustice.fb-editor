@@ -16,7 +16,7 @@ class Auth0Controller < ApplicationController
   def developer_callback
     fail unless Rails.env.development?
 
-    callback
+    # callback
   end
 
   def failure
