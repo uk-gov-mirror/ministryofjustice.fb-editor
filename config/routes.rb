@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     post '/auth/developer/callback' => 'auth0#developer_callback'
   end
 
-  resources :services, only: [:index, :show, :create] do
+  resources :services, only: [:index, :edit, :create] do
     mount MetadataPresenter::Engine => '/preview', as: :preview
   end
 

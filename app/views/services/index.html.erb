@@ -12,6 +12,7 @@
               <%= service.name %>
             </dd>
             <dd class="govuk-summary-list__actions">
+              <%= link_to t('.services.edit'), edit_service_path(service.id) %>
             </dd>
           </div>
         <% end %>
