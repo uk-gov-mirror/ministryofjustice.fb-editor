@@ -1,5 +1,3 @@
-require 'rails_helper'
-
 RSpec.describe MetadataApiClient::Service do
   let(:metadata_api_url) { 'http://metadata-api' }
   let(:expected_body) {
@@ -79,6 +77,22 @@ RSpec.describe MetadataApiClient::Service do
       it 'returns errors' do
         expect(described_class.create({}).errors?).to be_truthy
       end
+    end
+  end
+
+  describe '.latest_version' do
+    let(:expected_url) { "#{metadata_api_url}/services/12345/versions/latest" }
+    let(:expected_body) do
+      JSON.parse(File.read(Rails.root.join('service.json')))
+    end
+
+    before do
+      stub_request(:get, expected_url)
+        .to_return(status: 200, body: expected_body.to_json, headers: {})
+    end
+
+    it 'returns latest metadata' do
+      expect(described_class.latest_version('12345')).to eq(expected_body)
     end
   end
 end

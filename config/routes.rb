@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   end
 
   resources :services, only: [:index, :edit, :create] do
+    member do
+      resources :pages, param: :page_url, only: :edit
+    end
     mount MetadataPresenter::Engine => '/preview', as: :preview
   end
 
