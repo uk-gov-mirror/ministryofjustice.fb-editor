@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   include Auth0Helper
-  layout 'metadata_presenter/application'
 
   def service
     @service ||= MetadataPresenter::Service.new(service_metadata)
@@ -29,9 +28,7 @@ class ApplicationController < ActionController::Base
     user_data['user_data'] || {}
   end
 
-  private
-
   def service_metadata
-    JSON.parse(File.read(Rails.root.join('service.json')))
+    MetadataApiClient::Service.latest_version(params[:id])
   end
 end

@@ -1,3 +1,7 @@
 Page flow (Form pages)
 
-<%= service.name %>
+<% service.pages.each do |page| %>
+  <div>
+    <%= link_to page.url, edit_page_path(service.service_id, page.url) %>
+  </div>
+<% end %>
