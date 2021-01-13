@@ -1,13 +1,5 @@
 module MetadataApiClient
-  class Service
-    attr_accessor :id, :name, :metadata
-
-    def initialize(attributes={})
-      @id = attributes['service_id']
-      @name = attributes['service_name']
-      @metadata = attributes
-    end
-
+  class Service < Resource
     def self.all(user_id:)
       response = connection.get("/services/users/#{user_id}").body['services']
       Array(response).map { |service| new(service) }
@@ -23,23 +15,7 @@ module MetadataApiClient
       response = connection.post('/services', metadata)
       new(response.body)
     rescue Faraday::UnprocessableEntityError => exception
-      errors = JSON.parse(
-        exception.response_body, symbolize_names: true
-      )[:message]
-
-      MetadataApiClient::ErrorMessages.new(errors)
-    end
-
-    def self.connection
-      Connection.new
-    end
-
-    def ==(other_service)
-      id == other_service.id
-    end
-
-    def errors?
-      false
+      error_messages(exception)
     end
   end
 end
