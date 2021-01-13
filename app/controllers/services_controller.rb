@@ -5,14 +5,11 @@ class ServicesController < ApplicationController
     @service_creation = ServiceCreation.new
   end
 
-  def show
-  end
-
   def create
     @service_creation = ServiceCreation.new(service_creation_params)
 
     if @service_creation.create
-      redirect_to service_path(@service_creation.service_id)
+      redirect_to edit_service_path(@service_creation.service_id)
     else
       render :index
     end

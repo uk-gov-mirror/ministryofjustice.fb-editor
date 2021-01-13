@@ -1,5 +1,6 @@
 en:
   services:
+    edit: 'Edit'
     create: 'Create a new form'
   activemodel:
     models:
