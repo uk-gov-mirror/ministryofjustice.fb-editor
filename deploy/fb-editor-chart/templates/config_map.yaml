@@ -10,3 +10,5 @@ data:
   RAILS_SERVE_STATIC_FILES: "true"
   AUTH0_DOMAIN: mojds-trial.eu.auth0.com
   EDITOR_FULL_URL_ROOT: https://fb-editor-{{ .Values.environmentName }}.apps.live-1.cloud-platform.service.justice.gov.uk
+  ENCODED_PUBLIC_KEY: {{ .Values.encoded_public_key }}
+  METADATA_API_URL: http://fb-metadata-api-svc-{{ .Values.environmentName }}

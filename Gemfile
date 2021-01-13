@@ -7,7 +7,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'metadata_presenter', '~> 0.1.6'
 gem 'faraday'
 gem 'faraday_middleware'
-gem 'fb-jwt-auth', '0.4.0'
+gem 'fb-jwt-auth', '0.5.0'
 gem 'omniauth'
 gem 'omniauth-auth0', '~> 2.4.1'
 gem 'omniauth-rails_csrf_protection', '~> 0.1'

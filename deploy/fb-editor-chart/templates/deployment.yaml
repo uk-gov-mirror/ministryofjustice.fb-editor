@@ -59,6 +59,11 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: auth0_client_secret
+          - name: ENCODED_PRIVATE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: encoded_private_key
           # secrets created by terraform
           # which may or may not depend on values
           # canonically defined in secrets.tfvars
