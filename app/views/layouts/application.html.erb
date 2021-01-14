@@ -20,12 +20,11 @@
   <body class="govuk-template__body">
     <div class="govuk-width-container govuk-body-m">
       <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content" role="main">
-        <% console %>
         <% if user_signed_in? %>
           <%= link_to t('.sign_out'), user_session_path, method: :delete %>
         <% end %>
 
-        <% unless controller.controller_name == 'services' && controller.action_name == 'index' %>
+        <% unless controller.controller_name == 'services' && (controller.action_name == 'index' || controller.action_name == 'create') %>
 
           <h1><%= service.service_name %></h1>
 

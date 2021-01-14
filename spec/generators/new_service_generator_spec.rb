@@ -7,7 +7,7 @@ RSpec.describe NewServiceGenerator do
 
       it 'creates a valid service metadata' do
         service_metadata = NewServiceGenerator.new(
-          name: service_name,
+          service_name: service_name,
           current_user: current_user
         ).to_metadata
 

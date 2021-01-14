@@ -13,9 +13,15 @@ Rails.application.routes.draw do
     post '/auth/developer/callback' => 'auth0#developer_callback'
   end
 
-  resources :services, only: [:index, :edit, :create] do
+  resources :services, only: [:index, :edit, :update, :create] do
     member do
       resources :pages, param: :page_url, only: :edit
+      resources :settings, only: [:index] do
+        collection do
+          get 'form_information'
+          patch 'update_form_information'
+        end
+      end
     end
     mount MetadataPresenter::Engine => '/preview', as: :preview
   end

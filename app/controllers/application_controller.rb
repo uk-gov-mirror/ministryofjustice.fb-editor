@@ -29,6 +29,6 @@ class ApplicationController < ActionController::Base
   end
 
   def service_metadata
-    MetadataApiClient::Service.latest_version(params[:id])
+    @service_metadata ||= MetadataApiClient::Service.latest_version(params[:id])
   end
 end

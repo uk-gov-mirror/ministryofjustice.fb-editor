@@ -1,4 +1,11 @@
 en:
+  actions:
+    save: 'Save'
+  pages:
+    name: 'Pages'
+  settings:
+    name: 'Settings'
+    form_information: 'Form information'
   services:
     edit: 'Edit'
     create: 'Create a new form'
@@ -7,10 +14,14 @@ en:
       service_creation: 'Form'
     attributes:
       service_creation:
-        name: 'What is the name of this form?'
+        service_name: 'What is the name of this form?'
+      settings:
+        service_name: 'Form name'
     errors:
-      models:
-        service_creation:
-          attributes:
-            name:
-              blank: "Name can't be blank"
+      messages:
+        blank: "Your answer for ‘%{attribute}’ can not be blank."
+        too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"
+        too_long: "Your answer for ‘%{attribute}’ is too long (%{count} characters at most)"
+        invalid: "Your answer for ‘%{attribute}' contains characters that are not allowed."
+        taken: "Your answer for ‘%{attribute}' is already used by another form. Please modify it."
+

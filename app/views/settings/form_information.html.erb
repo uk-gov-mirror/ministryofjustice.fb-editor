@@ -1,1 +1,13 @@
-<h1> Hello!</h1>
+<h1><%= t('settings.form_information') %></h1>
+
+<%= form_for @settings, as: :service, url: update_form_information_settings_path(service.service_id), method: :patch do |f| %>
+  <% f.object.errors.each do |error|  %>
+    <%= error.message %>
+  <% end %>
+
+  <%= f.label :service_name %>
+  <%= f.text_field :service_name %>
+
+  <%= f.submit t('actions.save') %>
+<% end %>
+

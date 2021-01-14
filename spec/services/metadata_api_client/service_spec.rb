@@ -68,7 +68,7 @@ RSpec.describe MetadataApiClient::Service do
           .to_return(status: 422, body: expected_body.to_json, headers: {})
       end
 
-      it 'assigns a service' do
+      it 'assigns an error message' do
         expect(described_class.create({})).to eq(
           MetadataApiClient::ErrorMessages.new(['Name has already been taken'])
         )
