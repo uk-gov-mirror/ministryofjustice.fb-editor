@@ -24,6 +24,7 @@ group :development, :test do
   gem 'capybara'
   gem 'dotenv-rails', groups: [:development, :test]
   gem 'rspec-rails'
+  gem 'selenium-webdriver', '3.142.7'
   gem 'site_prism'
   gem 'webmock'
 end

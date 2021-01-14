@@ -12,10 +12,13 @@ jobs:
       - setup_remote_docker:
           version: 19.03.13
       - run:
+          name: setup
+          command: make setup
+      - run:
           name: security
           command: docker-compose run --rm editor-app bundle exec brakeman -q --no-pager
       - run:
-          name: test
+          name: unit tests
           command: docker-compose run --rm editor-app bundle exec rspec
       - slack/status: &slack_status
           fail_only: true
@@ -61,6 +64,16 @@ jobs:
           success_message: ":rocket:  Successfully deployed to Test  :guitar:"
           failure_message: ":alert:  Failed to deploy to Test  :try_not_to_cry:"
           include_job_number_field: false
+  acceptance_tests:
+    docker: *ecr_image
+    resource_class: large
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Run acceptance tests
+          command: 'make acceptance-ci -s'
+      - slack/status: *slack_status
 
 workflows:
   version: 2
@@ -74,3 +87,7 @@ workflows:
             branches:
               only:
                 - main
+                - acceptance-tests
+      - acceptance_tests:
+          requires:
+            - build_and_deploy_to_test
