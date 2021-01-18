@@ -6,13 +6,10 @@ class ServicesController < ApplicationController
   end
 
   def create
-    @service_creation = ServiceCreation.new(service_creation_params)
+  end
 
-    if @service_creation.create
-      redirect_to edit_service_path(@service_creation.service_id)
-    else
-      render :index
-    end
+  def edit
+    @page_creation = PageCreation.new
   end
 
   def services

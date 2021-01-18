@@ -17,6 +17,8 @@ en:
         service_name: 'What is the name of this form?'
       settings:
         service_name: 'Form name'
+      page_creation:
+        page_url: "The page’s relative url - it must not contain any spaces"
     errors:
       messages:
         blank: "Your answer for ‘%{attribute}’ can not be blank."
