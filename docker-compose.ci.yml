@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  editor_ci:
+    build:
+      context: .
+      dockerfile: acceptance/Dockerfile
+      args:
+        BUNDLE_ARGS: ''
+    environment:
+      CI_MODE: 'true'
