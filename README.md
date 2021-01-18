@@ -28,3 +28,35 @@ make setup
 This will spin down any past Docker containers and then spin up new ones.
 
 You should now be able to access the Editor on `localhost:3000`
+
+## Acceptance tests
+
+There are two ways to run the acceptance tests:
+
+1. Pointing to a local editor
+2. Pointing to a remote editor (a test environment for example)
+
+Basically the acceptance tests depends to have a `.env.acceptance_tests` with
+the editor url.
+
+### Pointing to a local editor
+
+There is the docker compose with all containers needed for the editor.
+In order to run the acceptance tests against a local editor all you need to run
+is:
+
+```
+  make acceptance
+```
+
+### Pointing to a remote editor
+
+The editor has a basic authentication so it needs a user and a password.
+This is already added on CircleCI but in case you want to run on your local
+machine to point to the test environment you need to run:
+
+```
+  export ACCEPTANCE_TESTS_USER='my-user'
+  export ACCEPTANCE_TESTS_PASSWORD='my-password'
+  make acceptance-ci -s
+```

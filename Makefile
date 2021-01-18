@@ -14,7 +14,6 @@ seed-public-key:
 copy-env-vars-local:
 	cp .env.acceptance_tests.local .env.acceptance_tests
 
-
 .PHONY: setup
 setup: build seed-public-key copy-env-vars-local
 
