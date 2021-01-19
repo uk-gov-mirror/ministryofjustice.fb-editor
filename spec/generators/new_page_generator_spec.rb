@@ -8,47 +8,64 @@ RSpec.describe NewPageGenerator do
     )
   end
 
-
   describe '#to_metadata' do
-    context 'valid service metadata' do
-      let(:valid) { true }
-      let(:page_type) { 'singlequestion' }
-      let(:page_url) { 'home-one' }
-      let(:component_type) { 'text' }
+    let(:valid) { true }
+    let(:page_type) { 'singlequestion' }
+    let(:page_url) { 'home-one' }
+    let(:component_type) { 'text' }
 
-      context 'when only start page exists' do
-        let(:latest_metadata) { metadata_fixture(:service) }
+    context 'when only start page exists' do
+      let(:latest_metadata) { metadata_fixture(:service) }
 
-        it 'creates a valid page metadata' do
-          expect(
-            MetadataPresenter::ValidateSchema.validate(
-              generator.page_metadata, "page.#{page_type}"
-            )
-          ).to be(valid)
-        end
-
-        it 'create valid update service metadata' do
-          expect(
-            MetadataPresenter::ValidateSchema.validate(
-              generator.to_metadata, 'service.base'
-            )
-          ).to be(valid)
-        end
-
-        it 'generates page url' do
-          expect(generator.to_metadata['pages']).to_not be_blank
-          expect(generator.to_metadata['pages'].last).to include(
-            'url' => page_url
+      it 'creates a valid page metadata' do
+        expect(
+          MetadataPresenter::ValidateSchema.validate(
+            generator.page_metadata, "page.#{page_type}"
           )
-        end
+        ).to be(valid)
+      end
 
-        it 'generates the new component metadata' do
-          generated_page = generator.to_metadata['pages'].last
-          expect(generated_page['components']).to_not be_blank
-          expect(generated_page['components'].last).to include(
-            '_type' => component_type
+      it 'create valid update service metadata' do
+        expect(
+          MetadataPresenter::ValidateSchema.validate(
+            generator.to_metadata, 'service.base'
           )
-        end
+        ).to be(valid)
+      end
+
+      it 'generates page url' do
+        expect(generator.to_metadata['pages']).to_not be_blank
+        expect(generator.to_metadata['pages'].last).to include(
+          'url' => page_url
+        )
+      end
+
+      it 'generates the new component metadata' do
+        generated_page = generator.to_metadata['pages'].last
+        expect(generated_page['components']).to_not be_blank
+        expect(generated_page['components'].last).to include(
+          '_type' => component_type
+        )
+      end
+    end
+
+    context 'when existing pages exist' do
+      let(:latest_metadata) { metadata_fixture(:version) }
+
+      it 'creates a valid page metadata' do
+        expect(
+          MetadataPresenter::ValidateSchema.validate(
+            generator.page_metadata, "page.#{page_type}"
+          )
+        ).to be(valid)
+      end
+
+      it 'generates page attributes' do
+        expect(generator.to_metadata['pages']).to_not be_blank
+        expect(generator.to_metadata['pages'].last).to include(
+          'url' => page_url,
+          'foo' => 'bar'
+        )
       end
     end
   end

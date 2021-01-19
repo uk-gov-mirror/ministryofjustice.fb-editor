@@ -2,10 +2,6 @@ class NewPageGenerator
   include ActiveModel::Model
   attr_accessor :page_type, :page_url, :component_type, :latest_metadata
 
-  # add to pages array the page object after the start page
-  # add the component into the page object
-  # add page name to steps array in page.start
-  #
   def to_metadata
     latest_metadata.tap do
       latest_metadata['pages'].push(page_metadata)
