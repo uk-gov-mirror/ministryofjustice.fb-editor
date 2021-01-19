@@ -64,7 +64,21 @@ RSpec.describe NewPageGenerator do
         expect(generator.to_metadata['pages']).to_not be_blank
         expect(generator.to_metadata['pages'].last).to include(
           'url' => page_url,
-          'foo' => 'bar'
+          '_id' => 'page.home-one',
+          '_type' => 'page.singlequestion',
+          'heading' => 'Question',
+          'lede' => 'This is the lede',
+          'body' => 'Body section',
+          'components' => [
+            {
+              '_id'    => 'page.page.home-one--text.auto_name__1',
+              '_type'  => 'text',
+              'errors' => {},
+              'hint'   => 'Component hint',
+              'label'  => 'Component label',
+              'name'   => 'auto_name__1'
+            }
+          ]
         )
       end
     end

@@ -26,6 +26,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'selenium-webdriver', '3.142.7'
   gem 'site_prism'
+  gem 'shoulda-matchers'
   gem 'webmock'
 end
 
