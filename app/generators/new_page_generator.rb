@@ -27,7 +27,7 @@ class NewPageGenerator
   def component
     NewComponentGenerator.new(
       component_type: component_type,
-      page_id: page_name
+      page_url: page_url
     ).to_metadata
   end
 end

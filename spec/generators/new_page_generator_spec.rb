@@ -71,12 +71,12 @@ RSpec.describe NewPageGenerator do
           'body' => 'Body section',
           'components' => [
             {
-              '_id'    => 'page.page.home-one--text.auto_name__1',
+              '_id'    => "#{page_url}_#{component_type}_1",
               '_type'  => 'text',
               'errors' => {},
               'hint'   => 'Component hint',
               'label'  => 'Component label',
-              'name'   => 'auto_name__1'
+              'name'   => "#{page_url}_#{component_type}_1"
             }
           ]
         )
