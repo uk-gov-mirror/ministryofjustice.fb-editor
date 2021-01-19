@@ -6,23 +6,15 @@
   </div>
 <% end %>
 
-<div class="dropdown govuk-grid-row govuk-!-margin-top-4">
-  <button class="govuk-button editor-button">+ Add page</button>
-  <div class="dropdown-content">
-    <a href="#">Single question page ></a>
-    <div class="dropdown-content-2">
-      <a href="#">Text</a>
-      <div class="dropdown-content-3">
-        <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
-          <%= f.hidden_field :page_type, value: 'singlequestion', readonly: true %>
-          <%= f.hidden_field :component_type, value: 'text', readonly: true %>
-          <%= f.label :page_url %>
-          <%= f.text_field :page_url %>
+<%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
+  <% f.object.errors.each do |error|  %>
+    <%= error.message %>
+  <% end %>
+  <%= f.hidden_field :page_type, value: 'singlequestion', readonly: true %>
+  <%= f.hidden_field :component_type, value: 'text', readonly: true %>
+  <%= f.label :page_url %>
+  <%= f.text_field :page_url %>
 
-          <%= f.submit 'Add page', class: "govuk-button editor-button-add govuk-!-margin-top-4" %>
-          <button class="govuk-button govuk-button--secondary">Cancel</button>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
+  <%= f.submit 'Add page', class: "govuk-button editor-button-add govuk-!-margin-top-4" %>
+  <button class="govuk-button govuk-button--secondary">Cancel</button>
+<% end %>

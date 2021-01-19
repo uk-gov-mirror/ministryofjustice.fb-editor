@@ -10,7 +10,9 @@ RSpec.describe PageCreation, type: :model do
     context 'page url' do
       context 'when is valid' do
         it 'have no errors' do
-          should allow_values('email-info', 'fullname', 'r2d2').for(:page_url)
+          should allow_values(
+            'email-info', 'fullname', 'r2d2'
+          ).for(:page_url)
         end
       end
 
@@ -30,6 +32,7 @@ RSpec.describe PageCreation, type: :model do
         context 'when url already exists on the same metadata' do
           it 'have errors' do
             should_not allow_values(
+              '/',
               'name',
               '/name',
               'email-address',
