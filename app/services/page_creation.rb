@@ -17,7 +17,7 @@ class PageCreation
 
     version = MetadataApiClient::Version.create(
       service_id: service_id,
-      metadata: { metadata: metadata }
+      payload: { metadata: metadata }
     )
 
     if version.errors?
