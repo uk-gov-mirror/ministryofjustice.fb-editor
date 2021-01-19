@@ -4,6 +4,56 @@ RSpec.describe PageCreation, type: :model do
   end
   let(:attributes) { { latest_metadata: metadata_fixture(:version) } }
 
+  describe '#create' do
+    let(:attributes) do
+      {
+        page_type: 'singlequestion',
+        component_type: 'text',
+        page_url: 'admiral-ackbar',
+        service_id: 'it-is-a-trap',
+        latest_metadata: metadata_fixture(:version)
+      }
+    end
+
+    context 'when is valid' do
+      let(:version) { double(errors?: false) }
+      before do
+        expect(
+          MetadataApiClient::Version
+        ).to receive(:create).and_return(version)
+      end
+
+      it 'returns true' do
+        expect(page_creation.create).to be_truthy
+      end
+    end
+
+    context 'when is invalid' do
+      context 'when attributes invalid' do
+        let(:attributes) do
+          { page_url: '/foo/bar/baz', latest_metadata: metadata_fixture(:version) }
+        end
+
+        it 'returns false' do
+          expect(page_creation.create).to be_falsey
+        end
+      end
+
+      context 'when metadata api returns invalid' do
+        let(:error_messages) { double(errors?: true, errors: ['An awful error']) }
+        before do
+          expect(
+            MetadataApiClient::Version
+          ).to receive(:create).and_return(error_messages)
+        end
+
+        it 'returns false' do
+          expect(page_creation.create).to be_falsey
+        end
+      end
+    end
+  end
+
   describe 'validations' do
     before { page_creation.valid? }
 

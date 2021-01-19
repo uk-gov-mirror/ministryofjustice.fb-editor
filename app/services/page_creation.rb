@@ -22,6 +22,7 @@ class PageCreation
 
     if version.errors?
       self.errors.add(:base, :invalid, message: version.errors)
+      false
     else
       version
     end
