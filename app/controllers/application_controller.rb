@@ -6,6 +6,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :service
 
+  def editable?
+    true
+  end
+  helper_method :editable?
+
   def back_link
   end
   helper_method :back_link

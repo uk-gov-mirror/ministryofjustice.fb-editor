@@ -1,1 +1,12 @@
 <h3>Page edit</h3>
+
+<%= form_for @page, as: :page, url: page_path(service.service_id, @page.url), method: :patch do |f| %>
+  <% @page.editable_attributes.each do |key, value| %>
+    <%= f.hidden_field key, value: value %>
+  <% end %>
+
+  <%= f.submit t('actions.save'), class: 'govuk-button editor-button' %>
+<% end %>
+
+<%= render template: @page.template %>
+

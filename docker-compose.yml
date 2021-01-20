@@ -16,6 +16,8 @@ services:
         BUNDLE_ARGS: ''
     tty: true
     stdin_open: true
+    volumes:
+      - '.:/app'
     ports:
       - 9090:3000
     environment:

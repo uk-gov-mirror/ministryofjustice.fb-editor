@@ -4,10 +4,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.2'
 
 gem 'bootsnap', '>= 1.4.2', require: false
-gem 'metadata_presenter', '~> 0.1.8'
+gem 'metadata_presenter', github: 'ministryofjustice/fb-metadata-presenter', branch: 'feature/edit-start-page' # path: '../fb-metadata-presenter' # '~> 0.1.8'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'fb-jwt-auth', '0.5.0'
+gem 'hashie'
 gem 'omniauth'
 gem 'omniauth-auth0', '~> 2.5.0'
 gem 'omniauth-rails_csrf_protection', '~> 0.1'

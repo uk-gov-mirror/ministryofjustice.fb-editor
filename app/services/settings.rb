@@ -13,11 +13,9 @@ class Settings < Editor::Service
   end
 
   def metadata
-    {
-      metadata: latest_metadata.merge(
-        service_name: service_name,
-        created_by: '1234' # current_user
-      )
-    }
+    latest_metadata.merge(
+      service_name: service_name,
+      created_by: '1234' # current_user
+    )
   end
 end
