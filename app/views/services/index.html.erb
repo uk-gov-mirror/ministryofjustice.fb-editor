@@ -7,12 +7,12 @@
 
       <ul class="fb-editor-list fb-editor-form-list">
         <% services.each do |service| %>
-          <li>
+          <li id="service-<%= service.name.parameterize %>>
             <span class="name">
               <%= service.name %>
             </span>
             <span class="actions">
-              <%= link_to t('.services.edit'), edit_service_path(service.id), class: "govuk-link" %>
+              <%= link_to t('.services.edit'), edit_service_path(service.id), class: "govuk-link edit" %>
             </span>
           </li>
         <% end %>

@@ -15,6 +15,10 @@ class ServicesController < ApplicationController
     end
   end
 
+  def edit
+    @page_creation = PageCreation.new
+  end
+
   def services
     @services ||= MetadataApiClient::Service.all(user_id: '1234')
   end

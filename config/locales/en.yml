@@ -17,7 +17,12 @@ en:
         service_name: 'What is the name of this form?'
       settings:
         service_name: 'Form name'
+      page_creation:
+        page_url: "The page’s relative url - it must not contain any spaces"
     errors:
+      models:
+        page_creation:
+          taken: "Your answer for ‘%{attribute}' is already used by another page. Please modify it."
       messages:
         blank: "Your answer for ‘%{attribute}’ can not be blank."
         too_short: "Your answer for ‘%{attribute}’ is too short (%{count} characters at least)"

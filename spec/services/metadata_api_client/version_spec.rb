@@ -22,7 +22,7 @@ RSpec.describe MetadataApiClient::Version do
       it 'returns a version' do
         expect(
           described_class.create(
-            service_id: service_id, metadata: expected_body
+            service_id: service_id, payload: expected_body
           )
         ).to eq(described_class.new(expected_body.stringify_keys))
       end
@@ -40,7 +40,7 @@ RSpec.describe MetadataApiClient::Version do
 
       it 'assigns an error message' do
         expect(
-          described_class.create(service_id: service_id, metadata: {})
+          described_class.create(service_id: service_id, payload: {})
         ).to eq(
           MetadataApiClient::ErrorMessages.new(['Name has already been taken'])
         )
@@ -48,7 +48,7 @@ RSpec.describe MetadataApiClient::Version do
 
       it 'returns errors' do
         expect(
-          described_class.create(service_id: service_id, metadata: {}).errors?
+          described_class.create(service_id: service_id, payload: {}).errors?
         ).to be_truthy
       end
     end

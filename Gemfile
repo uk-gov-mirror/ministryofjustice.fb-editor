@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.2'
 
 gem 'bootsnap', '>= 1.4.2', require: false
-gem 'metadata_presenter', '~> 0.1.7'
+gem 'metadata_presenter', '~> 0.1.8'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'fb-jwt-auth', '0.5.0'
@@ -24,7 +24,9 @@ group :development, :test do
   gem 'capybara'
   gem 'dotenv-rails', groups: [:development, :test]
   gem 'rspec-rails'
+  gem 'selenium-webdriver', '3.142.7'
   gem 'site_prism'
+  gem 'shoulda-matchers'
   gem 'webmock'
 end
 
