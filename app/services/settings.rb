@@ -4,7 +4,7 @@ class Settings < Editor::Service
 
     version = MetadataApiClient::Version.create(
       service_id: service_id,
-      metadata: metadata
+      payload: metadata
     )
 
     add_errors(version) if version.errors?

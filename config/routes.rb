@@ -15,7 +15,7 @@ Rails.application.routes.draw do
 
   resources :services, only: [:index, :edit, :update, :create] do
     member do
-      resources :pages, param: :page_url, only: :edit
+      resources :pages, param: :page_url, only: [:create, :edit]
       resources :settings, only: [:index] do
         collection do
           get 'form_information'

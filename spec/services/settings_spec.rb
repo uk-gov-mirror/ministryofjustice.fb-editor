@@ -25,7 +25,7 @@ RSpec.describe Settings do
           MetadataApiClient::Version
         ).to receive(:create).with(
           service_id: '123456',
-          metadata: {
+          payload: {
             metadata: { service_name: 'Moff Gideon', created_by: '1234' }
           }
         ).and_return(service)

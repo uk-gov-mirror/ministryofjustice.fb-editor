@@ -31,6 +31,10 @@ You should now be able to access the Editor on `localhost:3000`
 
 ## Acceptance tests
 
+You need to install the Chromium web driver:
+
+`brew install --cask chromedriver`
+
 There are two ways to run the acceptance tests:
 
 1. Pointing to a local editor

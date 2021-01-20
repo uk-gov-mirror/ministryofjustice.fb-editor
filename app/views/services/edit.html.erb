@@ -1,7 +1,20 @@
-Page flow (Form pages)
+<h3>Page flow (Form pages)</h3>
 
 <% service.pages.each do |page| %>
   <div>
     <%= link_to page.url, edit_page_path(service.service_id, page.url) %>
   </div>
+<% end %>
+
+<%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
+  <% f.object.errors.each do |error|  %>
+    <%= error.message %>
+  <% end %>
+  <%= f.hidden_field :page_type, value: 'singlequestion', readonly: true %>
+  <%= f.hidden_field :component_type, value: 'text', readonly: true %>
+  <%= f.label :page_url %>
+  <%= f.text_field :page_url %>
+
+  <%= f.submit 'Add page', class: "govuk-button editor-button-add govuk-!-margin-top-4" %>
+  <button class="govuk-button govuk-button--secondary">Cancel</button>
 <% end %>

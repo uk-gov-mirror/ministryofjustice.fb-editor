@@ -8,6 +8,14 @@ require 'rspec/rails'
 require 'capybara/rspec'
 require 'webmock/rspec'
 Bundler.require(:development, :test)
+
+Shoulda::Matchers.configure do |config|
+  config.integrate do |with|
+    with.test_framework :rspec
+    with.library :rails
+  end
+end
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -24,6 +32,7 @@ Bundler.require(:development, :test)
 # require only the support files necessary.
 #
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
+require 'metadata_presenter/test_helpers'
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
@@ -65,4 +74,5 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
   config.include AuthenticationSpecHelpers
+  config.include MetadataPresenter::TestHelpers
 end
