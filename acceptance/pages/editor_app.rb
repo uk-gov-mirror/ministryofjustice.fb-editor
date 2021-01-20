@@ -8,7 +8,7 @@ class EditorApp < SitePrism::Page
     set_url ENV['ACCEPTANCE_TESTS_EDITOR_APP']
   end
 
-  element :service_name, 'main h1'
+  element :service_name, 'main h1.service-name'
   element :name_field, :field, 'What is the name of this form?'
   element :create_service_button, :button, 'Create a new form'
 

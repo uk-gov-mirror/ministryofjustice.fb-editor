@@ -7,7 +7,7 @@ class SettingsController < ApplicationController
     @settings = Settings.new(service_params)
 
     if @settings.update
-      redirect_to settings_path(service.service_id)
+      redirect_to form_information_settings_path(service.service_id)
     else
       render :form_information
     end

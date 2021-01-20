@@ -15,8 +15,8 @@ RSpec.describe 'Settings' do
     context 'when valid' do
       let(:valid) { true }
 
-      it 'redirects to settings index' do
-        expect(response).to redirect_to(settings_path(service.service_id))
+      it 'redirects to form information index' do
+        expect(response).to redirect_to(form_information_settings_path(service.service_id))
       end
     end
 
