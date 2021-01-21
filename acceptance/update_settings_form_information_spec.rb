@@ -8,7 +8,7 @@ feature 'Update settings form information' do
 
   background do
     editor.load
-    given_I_add_a_service
+    given_I_have_a_service
     and_I_go_to_update_the_form_information_in_settings
   end
 
@@ -44,11 +44,6 @@ feature 'Update settings form information' do
     and_I_go_to_update_the_form_information_in_settings
     when_I_try_to_change_service_name_adding_an_existing_service_name
     then_I_should_see_the_unique_validation_message
-  end
-
-  def given_I_add_a_service
-    editor.name_field.set(service_name)
-    editor.create_service_button.click
   end
 
   def and_I_go_to_update_the_form_information_in_settings
