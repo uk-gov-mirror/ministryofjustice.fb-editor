@@ -47,6 +47,10 @@ RSpec.describe NewPageGenerator do
           '_type' => component_type
         )
       end
+
+      it 'adds the new page to the steps' do
+        expect(generator.to_metadata['pages'][0]['steps']).to include("page.#{page_url}")
+      end
     end
 
     context 'when existing pages exist' do

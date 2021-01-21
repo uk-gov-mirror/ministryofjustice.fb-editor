@@ -5,6 +5,7 @@ class NewPageGenerator
   def to_metadata
     latest_metadata.tap do
       latest_metadata['pages'].push(page_metadata)
+      latest_metadata['pages'][0]['steps'].push(page_name)
     end
   end
 
