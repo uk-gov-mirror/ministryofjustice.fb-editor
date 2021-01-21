@@ -23,4 +23,8 @@ class EditorApp < SitePrism::Page
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
   end
+
+  def modal_create_service_button
+    all('.ui-dialog-buttonpane button').first
+  end
 end

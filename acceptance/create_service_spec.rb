@@ -7,6 +7,7 @@ feature 'Create a service' do
 
   background do
     editor.load
+    given_I_want_to_create_a_service
   end
 
   scenario 'validates the service name' do
@@ -39,10 +40,6 @@ feature 'Create a service' do
     then_I_should_see_the_unique_validation_message
   end
 
-  def given_I_add_a_service
-    editor.name_field.set(service_name)
-  end
-
   def given_I_add_a_service_with_empty_name
     editor.name_field.set('')
   end
@@ -53,16 +50,6 @@ feature 'Create a service' do
 
   def given_I_add_a_service_with_many_characters
     editor.name_field.set('Stormtroopers' * 100)
-  end
-
-  def when_I_create_the_service
-    editor.create_service_button.click
-  end
-
-  def when_I_try_to_create_a_service_with_the_same_name
-    editor.load
-    editor.name_field.set(another_service_name)
-    editor.create_service_button.click
   end
 
   def then_I_should_see_the_new_service_name
@@ -83,7 +70,7 @@ feature 'Create a service' do
 
   def then_I_should_see_a_validation_message_for_max_length
     expect(editor.text).to include(
-      "Your answer for ‘What is the name of this form?’ is too long (128 characters at most) "
+      "Your answer for ‘What is the name of this form?’ is too long (128 characters at most)"
     )
   end
 
