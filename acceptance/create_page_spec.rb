@@ -2,7 +2,7 @@ require_relative './spec_helper'
 
 feature 'Create page' do
   let(:editor) { EditorApp.new }
-  let(:another_service_name) { generate_service_name }
+  let(:service_name) { generate_service_name }
 
   background do
     editor.load
@@ -29,7 +29,7 @@ feature 'Create page' do
   end
 
   def and_I_edit_the_service
-    editor.edit_service_link(another_service_name).click
+    editor.edit_service_link(service_name).click
   end
 
   def and_I_add_a_page_url

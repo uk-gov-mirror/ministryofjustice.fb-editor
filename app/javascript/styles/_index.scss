@@ -1,0 +1,53 @@
+
+// fb-editor buttons are blue, not green.
+.govuk-button {
+  background-color: govuk-colour("blue");
+
+  &:hover {
+    background-color: govuk-colour("dark-blue");
+  }
+}
+
+.govuk-form-group--error {
+  .govuk-input {
+    border: $govuk-border-width-form-element-error solid $govuk-error-colour;
+
+    &:focus {
+      border-color: $govuk-input-border-colour;
+    }
+  }
+}
+
+
+// FB-Editor styles
+.fb-editor-list,
+.fb-editor-list li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fb-editor-form-list {
+  margin-bottom: govuk-spacing(5);
+
+  li {
+    border-bottom: govuk-colour("mid-grey") solid 1px;
+    padding: govuk-spacing(3) 0;
+
+    &:last-child {
+      border: none;
+    }
+  }
+
+  .actions {
+    float: right;
+    text-align: right;
+    width: 25%;
+  }
+
+  .name {
+    display: inline-block;
+    font-weight: bold;
+    width: 75%;
+  }
+}
