@@ -1,4 +1,6 @@
 class PagesController < ApplicationController
+  default_form_builder GOVUKDesignSystemFormBuilder::FormBuilder
+
   def create
     @page_creation = PageCreation.new(page_creation_params)
 
@@ -9,9 +11,20 @@ class PagesController < ApplicationController
     end
   end
 
+  def edit
+    @page = service.find_page(params[:page_url])
+  end
+
   def update
-    # find correct page object
-    # update object
+    @page = service.find_page(params[:page_url])
+
+    @metadata_updater = MetadataUpdater.new(page_update_params)
+
+    if @metadata_updater.update
+      redirect_to edit_page_path(service.service_id, params[:page_url])
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   def page_creation_params
@@ -19,10 +32,32 @@ class PagesController < ApplicationController
       :page
     ).permit(
       :page_url, :page_type, :component_type
-    ).merge(latest_metadata: service_metadata, service_id: service_id)
+    ).merge(common_params)
+  end
+
+  def page_update_params
+    {
+      id: @page.id
+    }.merge(common_params).merge(page_attributes)
+  end
+
+  def page_attributes
+    params.require(:page).permit(@page.editable_attributes.keys)
+  end
+
+  def common_params
+    {
+      latest_metadata: service_metadata,
+      service_id: service_id
+    }
   end
 
   def service_id
     service.service_id
   end
+
+  def reserved_answers_path(*args)
+    ''
+  end
+  helper_method :reserved_answers_path
 end

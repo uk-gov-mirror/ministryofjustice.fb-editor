@@ -84,7 +84,7 @@ GEM
       xpath (~> 3.2)
     childprocess (3.0.0)
     coderay (1.1.3)
-    concurrent-ruby (1.1.7)
+    concurrent-ruby (1.1.8)
     crack (0.4.5)
       rexml
     crass (1.0.6)
@@ -133,7 +133,7 @@ GEM
       mini_mime (>= 0.1.1)
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
-    metadata_presenter (0.1.8)
+    metadata_presenter (0.2.0)
       govuk_design_system_formbuilder (>= 2.1.5)
       json-schema (>= 2.8.1)
       kramdown (>= 2.3.0)
@@ -262,7 +262,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
-    thor (1.0.1)
+    thor (1.1.0)
     tilt (2.0.10)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
@@ -303,8 +303,9 @@ DEPENDENCIES
   faraday
   faraday_middleware
   fb-jwt-auth (= 0.5.0)
+  hashie
   listen (~> 3.4)
-  metadata_presenter (~> 0.1.8)
+  metadata_presenter (= 0.2.0)
   omniauth
   omniauth-auth0 (~> 2.5.0)
   omniauth-rails_csrf_protection (~> 0.1)

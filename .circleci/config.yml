@@ -16,7 +16,7 @@ jobs:
           command: make setup
       - run:
           name: security
-          command: docker-compose run --rm editor-app bundle exec brakeman -q --no-pager
+          command: docker-compose run --rm editor-app bundle exec brakeman -q --no-pager -i brakeman.ignore
       - run:
           name: unit tests
           command: docker-compose run --rm editor-app bundle exec rspec
