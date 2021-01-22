@@ -1,4 +1,6 @@
 class PagesController < ApplicationController
+  default_form_builder GOVUKDesignSystemFormBuilder::FormBuilder
+
   def create
     @page_creation = PageCreation.new(page_creation_params)
 
