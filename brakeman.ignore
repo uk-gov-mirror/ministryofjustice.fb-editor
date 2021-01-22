@@ -30,26 +30,6 @@
       "user_input": "params[:page_url]",
       "confidence": "Weak",
       "note": "This is temporary until we change the find page to use an ID instead of the URL"
-    },
-    {
-      "warning_type": "Mass Assignment",
-      "warning_code": 70,
-      "fingerprint": "eedcd0dd72770a8e244ce5c4d03925e9d997b4d06c1ae3bd45f8fb55577fd4be",
-      "check_name": "MassAssignment",
-      "message": "Specify exact keys allowed for mass assignment instead of using `permit!` which allows any keys",
-      "file": "app/controllers/pages_controller.rb",
-      "line": 41,
-      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
-      "code": "params.require(:page).permit!",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "PagesController",
-        "method": "page_update_params"
-      },
-      "user_input": null,
-      "confidence": "Medium",
-      "note": "We use the schemas to protect against unwanted params"
     }
   ],
   "updated": "2021-01-22 16:38:26 +0000",
