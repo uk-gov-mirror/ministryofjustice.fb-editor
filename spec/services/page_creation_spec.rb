@@ -100,7 +100,7 @@ RSpec.describe PageCreation, type: :model do
       context 'when is valid' do
         it 'have no errors' do
           should allow_values(
-            'singlequestion', 'summary', 'confirmation'
+            'singlequestion', 'checkanswers', 'confirmation'
           ).for(:page_type)
         end
       end
