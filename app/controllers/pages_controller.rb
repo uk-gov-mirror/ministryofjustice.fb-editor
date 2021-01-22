@@ -38,7 +38,11 @@ class PagesController < ApplicationController
   def page_update_params
     {
       id: @page.id
-    }.merge(common_params).merge(params.require(:page).permit!)
+    }.merge(common_params).merge(page_attributes)
+  end
+
+  def page_attributes
+    params.require(:page).permit(@page.editable_attributes.keys)
   end
 
   def common_params
