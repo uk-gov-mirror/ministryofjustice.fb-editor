@@ -18,3 +18,15 @@
   <%= f.submit 'Add page', class: "govuk-button editor-button-add govuk-!-margin-top-4" %>
   <button class="govuk-button govuk-button--secondary">Cancel</button>
 <% end %>
+
+<%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
+  <% f.object.errors.each do |error|  %>
+    <%= error.message %>
+  <% end %>
+  <%= f.hidden_field :page_type, value: 'checkanswers', readonly: true %>
+  <%= f.label :page_url %>
+  <%= f.text_field :page_url %>
+
+  <%= f.submit 'Add page', class: "govuk-button editor-button-add govuk-!-margin-top-4" %>
+  <button class="govuk-button govuk-button--secondary">Cancel</button>
+<% end %>
