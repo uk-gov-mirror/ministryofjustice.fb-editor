@@ -1,16 +1,17 @@
-<nav class="govuk-app-navigation">
+<nav id="form-navigation" class="govuk-app-navigation" aria-label="Form navigation">
   <div class="govuk-width-container">
-  <p class="govuk-phase-banner__content">
-    <strong>FED: form name here</strong>
-  </p>
+    <h2 id="form-navigation-heading" class="govuk-app-navigation__heading govuk-heading-s">
+      <%= @settings.service_name %>
+    </h2>
 
-  <ul class="govuk-app-navigation__list">
-    <li class="govuk-app-navigation__list-item">
-      <%= link_to t('pages.name'), edit_service_path(service.service_id), class: "govuk-link govuk-link--no-visited-state govuk-app-navigation__link" %>
-    </li>
+    <ul class="govuk-app-navigation__list" aria-labelledby="app-navigation-heading">
+      <li class="govuk-app-navigation__list-item">
+        <%= link_to t('pages.name'), edit_service_path(service.service_id), class: "govuk-link govuk-link--no-visited-state govuk-app-navigation__link govuk-body" %>
+      </li>
 
-    <li class="govuk-app-navigation__list-item govuk-app-navigation__list-item--current">
-      <%= link_to t('settings.name'), settings_path(service.service_id), class: "govuk-link govuk-link--no-visited-state govuk-app-navigation__link" %>
-    </li>
-  </ul>
+      <li class="govuk-app-navigation__list-item govuk-app-navigation__list-item--current">
+        <%= link_to t('settings.name'), settings_path(service.service_id), class: "govuk-link govuk-link--no-visited-state govuk-app-navigation__link" %>
+      </li>
+    </ul>
+  </div>
 </nav>
