@@ -1,4 +1,8 @@
 en:
+  header:
+    service_name: "Form builder editor"
+    home_link_text: "Back to Home"
+    home_link_alt: "Ministry of Justice Logo - homepage"
   actions:
     save: 'Save'
   pages:

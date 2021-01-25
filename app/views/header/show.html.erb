@@ -1,11 +1,11 @@
 <header class="govuk-header govuk-header__container" role="banner" data-module="govuk-header">
   <div class="govuk-width-container">
-    <a href="/" aria-label="Back to Home" id="header-logo-link" class="page-header__logo">
-      <span class="govuk-visually-hidden">Back to Home</span>
-      <%= image_pack_tag "logo--white.svg", alt: "Ministry of Justice Logo - homepage" %>
+    <a href="/" aria-label="<%= t('header.home_link_text') %>" id="header-logo-link" class="page-header__logo">
+      <span class="govuk-visually-hidden"><%= t('header.home_link_text') %></span>
+      <%= image_pack_tag "logo--white.svg", alt: t('header.home_link_alt') %>
     </a>
     <a href="/" class="govuk-header__link govuk-header__link--service-name">
-      Forms
+      <%= t('header.service_name') %>
     </a>
   </div>
 </header>
