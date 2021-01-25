@@ -5,23 +5,23 @@ class PagesController < ApplicationController
     @page_creation = PageCreation.new(page_creation_params)
 
     if @page_creation.create
-      redirect_to edit_page_path(service_id, @page_creation.page_url)
+      redirect_to edit_page_path(service_id, @page_creation.page_uuid)
     else
       render template: 'services/edit', status: :unprocessable_entity
     end
   end
 
   def edit
-    @page = service.find_page(params[:page_url])
+    @page = service.find_page_by_uuid(params[:page_uuid])
   end
 
   def update
-    @page = service.find_page(params[:page_url])
+    @page = service.find_page_by_uuid(params[:page_uuid])
 
     @metadata_updater = MetadataUpdater.new(page_update_params)
 
     if @metadata_updater.update
-      redirect_to edit_page_path(service.service_id, params[:page_url])
+      redirect_to edit_page_path(service.service_id, params[:page_uuid])
     else
       render :edit, status: :unprocessable_entity
     end
@@ -55,9 +55,4 @@ class PagesController < ApplicationController
   def service_id
     service.service_id
   end
-
-  def reserved_answers_path(*args)
-    ''
-  end
-  helper_method :reserved_answers_path
 end

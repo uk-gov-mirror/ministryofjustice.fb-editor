@@ -14,6 +14,10 @@ RSpec.describe NewPageGenerator do
     let(:page_url) { 'home-one' }
     let(:component_type) { 'text' }
 
+    before do
+      allow(SecureRandom). to receive(:uuid).and_return('mandalorian-123')
+    end
+
     context 'when only start page exists' do
       let(:latest_metadata) { metadata_fixture(:service) }
 
@@ -33,10 +37,11 @@ RSpec.describe NewPageGenerator do
         ).to be(valid)
       end
 
-      it 'generates page url' do
+      it 'generates page attributes' do
         expect(generator.to_metadata['pages']).to_not be_blank
         expect(generator.to_metadata['pages'].last).to include(
-          'url' => page_url
+          'url' => page_url,
+          '_uuid' => 'mandalorian-123'
         )
       end
 

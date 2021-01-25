@@ -3,13 +3,13 @@
     {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
-      "fingerprint": "2f864ceae7a4e0836c8f9bd0b5268eee42c215e6dc6b4dafd75677c74af01dd1",
+      "fingerprint": "e7a712bc09393b5494d0566c761eebfff983b805e29c590f886babe58a5370f9",
       "check_name": "Render",
       "message": "Render path contains parameter value",
       "file": "app/views/pages/edit.html.erb",
       "line": 11,
       "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
-      "code": "render(template => service.find_page(params[:page_url]).template, {})",
+      "code": "render(template => service.find_page_by_uuid(params[:page_uuid]).template, {})",
       "render_path": [
         {
           "type": "controller",
@@ -27,11 +27,11 @@
         "type": "template",
         "template": "pages/edit"
       },
-      "user_input": "params[:page_url]",
+      "user_input": "params[:page_uuid]",
       "confidence": "Weak",
-      "note": "This is temporary until we change the find page to use an ID instead of the URL"
+      "note": "The template is chosen after finding the correct page using the UUID, so this is fine"
     }
   ],
-  "updated": "2021-01-22 16:38:26 +0000",
+  "updated": "2021-01-25 17:11:13 +0000",
   "brakeman_version": "4.10.1"
 }
