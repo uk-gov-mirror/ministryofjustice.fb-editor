@@ -18,6 +18,9 @@
 
   <body class="govuk-template__body">
     <%= render template: 'header/show' %>
+    <% unless controller.controller_name == 'services' && (controller.action_name == 'index' || controller.action_name == 'create') %>
+      <%= render partial: 'partials/form-navigation' %>
+    <% end %>
 
     <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-width-container govuk-body-m" id="main-content" role="main">
       <% if user_signed_in? %>
@@ -25,10 +28,7 @@
       <% end %>
 
       <% unless controller.controller_name == 'services' && (controller.action_name == 'index' || controller.action_name == 'create') %>
-
         <h1 class="service-name"><%= service.service_name %></h1>
-
-        <%= render template: 'page_menu/show' %>
       <% end %>
 
       <%= yield %>

@@ -1,0 +1,16 @@
+<nav class="govuk-app-navigation">
+  <div class="govuk-width-container">
+  <p class="govuk-phase-banner__content">
+    <strong>FED: form name here</strong>
+  </p>
+
+  <ul class="govuk-app-navigation__list">
+    <li class="govuk-app-navigation__list-item">
+      <%= link_to t('pages.name'), edit_service_path(service.service_id), class: "govuk-link govuk-link--no-visited-state govuk-app-navigation__link" %>
+    </li>
+
+    <li class="govuk-app-navigation__list-item govuk-app-navigation__list-item--current">
+      <%= link_to t('settings.name'), settings_path(service.service_id), class: "govuk-link govuk-link--no-visited-state govuk-app-navigation__link" %>
+    </li>
+  </ul>
+</nav>
