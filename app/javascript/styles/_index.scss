@@ -52,6 +52,13 @@
   }
 }
 
+#header-logo-link {
+  display: inline-block;
+  margin-right: govuk-spacing(2);
+  position: relative;
+  top: -2px;
+  vertical-align: middle;
+}
 
 /* govuk-app-navigation does not appear to exist
  * but these styles are taken from the GovUK
