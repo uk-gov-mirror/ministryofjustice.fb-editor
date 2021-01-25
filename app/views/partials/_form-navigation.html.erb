@@ -6,11 +6,11 @@
 
     <ul class="govuk-app-navigation__list" aria-labelledby="app-navigation-heading">
       <li class="govuk-app-navigation__list-item">
-        <%= link_to t('pages.name'), edit_service_path(service.service_id), class: "govuk-link govuk-link--no-visited-state govuk-app-navigation__link govuk-body" %>
+        <%= link_to t('pages.name'), edit_service_path(service.service_id) %>
       </li>
 
-      <li class="govuk-app-navigation__list-item govuk-app-navigation__list-item--current">
-        <%= link_to t('settings.name'), settings_path(service.service_id), class: "govuk-link govuk-link--no-visited-state govuk-app-navigation__link" %>
+      <li class="govuk-app-navigation__list-item <%= @settings.nil? ? '' : 'govuk-app-navigation__list-item--current' %>">
+        <%= link_to t('settings.name'), settings_path(service.service_id) %>
       </li>
     </ul>
   </div>
