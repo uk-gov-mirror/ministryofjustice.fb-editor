@@ -1,17 +1,22 @@
 <nav id="form-navigation" class="govuk-app-navigation" aria-label="Form navigation">
   <div class="govuk-width-container">
     <h2 id="form-navigation-heading" class="govuk-app-navigation__heading govuk-heading-s">
-      <%= @settings.service_name %>
+      <%# Note to Backend: Workaround hack that requires attention!                       %>
+      <%# This value is not always present when the navigation is required,               %>
+      <%# and appears to only be set (sometimes) within the SettingsController.           %>
+      <%# Have noticed it failing on ServicesController#edit and SettingsController#index %>
+      <%= @settings && @settings.service_name %>
     </h2>
 
     <ul class="govuk-app-navigation__list" aria-labelledby="app-navigation-heading">
-      <li class="govuk-app-navigation__list-item">
+      <li class="govuk-app-navigation__list-item <%= current == 'pages' ? 'govuk-app-navigation__list-item--current' : '' %>">
         <%= link_to t('pages.name'), edit_service_path(service.service_id) %>
       </li>
 
-      <li class="govuk-app-navigation__list-item <%= @settings.nil? ? '' : 'govuk-app-navigation__list-item--current' %>">
+      <li class="govuk-app-navigation__list-item <%= current == 'settings' ? 'govuk-app-navigation__list-item--current' : '' %>">
         <%= link_to t('settings.name'), settings_path(service.service_id) %>
       </li>
     </ul>
   </div>
 </nav>
+ 

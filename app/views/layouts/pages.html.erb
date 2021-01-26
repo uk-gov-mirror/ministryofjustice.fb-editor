@@ -11,11 +11,14 @@
 
   <body class="govuk-template__body govuk-body">
     <%= render partial: 'partials/header' %>
+    <%= render partial: 'partials/form-navigation', locals: { current: 'pages' } %>
 
     <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-width-container govuk-body-m" id="main-content" role="main">
       <% if user_signed_in? %>
         <%= link_to t('.sign_out'), user_session_path, method: :delete %>
       <% end %>
+
+      <h1 class="service-name"><%= service.service_name %></h1>
 
       <%= yield %>
     </main>

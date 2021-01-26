@@ -1,4 +1,6 @@
 class SettingsController < ApplicationController
+  layout 'settings'
+
   def form_information
     @settings = Settings.new(service_name: service.service_name)
   end
