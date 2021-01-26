@@ -4,6 +4,28 @@ RSpec.describe PageCreation, type: :model do
   end
   let(:attributes) { { latest_metadata: metadata_fixture(:version) } }
 
+  describe '#page_uuid' do
+    context 'when version' do
+      let(:attributes) do
+        { version: double(metadata: service_metadata) }
+      end
+
+      it 'returns the last page uuid' do
+        expect(
+          page_creation.page_uuid
+        ).to eq('b238a22f-c180-48d0-a7d9-8aad2036f1f2')
+      end
+    end
+
+    context 'when version is blank' do
+      it 'returns nil' do
+        expect(
+          page_creation.page_uuid
+        ).to be_nil
+      end
+    end
+  end
+
   describe '#create' do
     let(:attributes) do
       {
@@ -25,6 +47,11 @@ RSpec.describe PageCreation, type: :model do
 
       it 'returns true' do
         expect(page_creation.create).to be_truthy
+      end
+
+      it 'sets the version' do
+        page_creation.create
+        expect(page_creation.version).to eq(version)
       end
     end
 
