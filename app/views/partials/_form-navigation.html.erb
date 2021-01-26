@@ -1,15 +1,15 @@
-<nav id="form-navigation" class="govuk-app-navigation" aria-label="Form navigation">
+<nav id="form-navigation" class="govuk-navigation govuk-navigation-app" aria-label="Form navigation">
   <div class="govuk-width-container">
-    <h2 id="form-navigation-heading" class="govuk-app-navigation__heading govuk-heading-s">
+    <h2 id="form-navigation-heading" class="heading govuk-heading-s">
       <%= service.service_name %>
     </h2>
 
-    <ul class="govuk-app-navigation__list" aria-labelledby="app-navigation-heading">
-      <li class="govuk-app-navigation__list-item <%= current == 'pages' ? 'govuk-app-navigation__list-item--current' : '' %>">
+    <ul aria-labelledby="app-navigation-heading">
+      <li class="<%= current == 'pages' ? 'current' : '' %>">
         <%= link_to t('pages.name'), edit_service_path(service.service_id) %>
       </li>
 
-      <li class="govuk-app-navigation__list-item <%= current == 'settings' ? 'govuk-app-navigation__list-item--current' : '' %>">
+      <li class="<%= current == 'settings' ? 'current' : '' %>">
         <%= link_to t('settings.name'), settings_path(service.service_id) %>
       </li>
     </ul>
