@@ -1,11 +1,7 @@
 <nav id="form-navigation" class="govuk-app-navigation" aria-label="Form navigation">
   <div class="govuk-width-container">
     <h2 id="form-navigation-heading" class="govuk-app-navigation__heading govuk-heading-s">
-      <%# Note to Backend: Workaround hack that requires attention!                       %>
-      <%# This value is not always present when the navigation is required,               %>
-      <%# and appears to only be set (sometimes) within the SettingsController.           %>
-      <%# Have noticed it failing on ServicesController#edit and SettingsController#index %>
-      <%= @settings && @settings.service_name %>
+      <%= service.service_name %>
     </h2>
 
     <ul class="govuk-app-navigation__list" aria-labelledby="app-navigation-heading">
