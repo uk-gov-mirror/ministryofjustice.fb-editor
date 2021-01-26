@@ -14,6 +14,7 @@ class NewPageGenerator
 
     metadata.tap do
       metadata['_id'] = page_name
+      metadata['_uuid'] = SecureRandom.uuid
       metadata['url'] = page_url
       metadata['components'].push(component)
     end

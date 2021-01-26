@@ -2,7 +2,7 @@
 
 <% service.pages.each do |page| %>
   <div>
-    <%= link_to page.url, edit_page_path(service.service_id, page.url) %>
+    <%= link_to page.url, edit_page_path(service.service_id, page.uuid) %>
   </div>
 <% end %>
 
