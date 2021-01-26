@@ -157,7 +157,7 @@ RSpec.describe PageCreation, type: :model do
       end
 
       context 'when is blank' do
-        it 'is valid' do
+        it 'have no errors' do
           should allow_values('').for(:component_type)
         end
       end

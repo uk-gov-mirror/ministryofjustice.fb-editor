@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
-  revision: 230bbc8c6650bfebf96b4015f4c5f5634f0565e0
-  branch: add-check-answers-page
+  revision: 305b26846bf169001e2eb6a8c02203151a9b2daf
+  branch: feature/add-check-answers-page
   specs:
-    metadata_presenter (0.1.8)
+    metadata_presenter (0.3.0)
       govuk_design_system_formbuilder (>= 2.1.5)
       json-schema (>= 2.8.1)
       kramdown (>= 2.3.0)
