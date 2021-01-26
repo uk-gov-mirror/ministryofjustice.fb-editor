@@ -10,6 +10,8 @@ en:
   settings:
     name: 'Settings'
     form_information: 'Form information'
+    form_information_label: 'Form name'
+    form_information_help: 'The visible name of your form'
   services:
     edit: 'Edit'
     create: 'Create a new form'
