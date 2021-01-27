@@ -1,5 +1,6 @@
 class ServicesController < ApplicationController
   # before_action :require_user!
+  layout 'form', only: :edit
 
   def index
     @service_creation = ServiceCreation.new

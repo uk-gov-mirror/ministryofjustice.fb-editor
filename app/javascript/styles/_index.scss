@@ -1,22 +1,23 @@
+/* Note: 
+ * These style rely on some sass code from the govuk design files
+ **/
 
-// fb-editor buttons are blue, not green.
-.govuk-button {
-  background-color: govuk-colour("blue");
 
-  &:hover {
-    background-color: govuk-colour("dark-blue");
+@mixin responsive_width($width: full, $at: tablet) {
+  @if $at != desktop {
+    width: 100%;
+  }
+
+  @include govuk-media-query($from: $at) {
+    width: govuk-grid-width($width);
   }
 }
 
-.govuk-form-group--error {
-  .govuk-input {
-    border: $govuk-border-width-form-element-error solid $govuk-error-colour;
 
-    &:focus {
-      border-color: $govuk-input-border-colour;
-    }
-  }
+.width-responsive-two-thirds {
+  @include responsive_width("two-thirds");
 }
+
 
 
 // FB-Editor styles
@@ -51,3 +52,103 @@
     width: 75%;
   }
 }
+
+#header-logo-link {
+  display: inline-block;
+  margin-right: govuk-spacing(2);
+  position: relative;
+  top: -2px;
+  vertical-align: middle;
+}
+
+
+
+/* govuk-button style is green but we want
+ * green blue buttons on fb-editor.
+ **/
+.govuk-button {
+  background-color: govuk-colour("blue");
+
+  &:hover {
+    background-color: govuk-colour("dark-blue");
+  }
+}
+
+.govuk-form-group--error {
+  .govuk-input {
+    border: $govuk-border-width-form-element-error solid $govuk-error-colour;
+
+    &:focus {
+      border-color: $govuk-input-border-colour;
+    }
+  }
+}
+
+
+/* govuk-navigation does not appear to exist
+ * so adding something simple here.
+ **/
+.govuk-navigation {
+  li, ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+
+/* govuk-app-navigation does not appear to exist
+ * but these styles are influenced by the GovUK
+ * design system site.
+ * These styles add to .govuk-navigation (above)
+ **/
+.govuk-navigation-app {
+  background-color: govuk-colour("light-grey");
+  border-bottom: govuk-colour("mid-grey") solid 1px;
+  box-sizing: border-box;
+  line-height: 1.25em;
+  overflow: hidden;
+  padding-top: govuk-spacing(2);
+  -webkit-box-sizing: border-box;
+
+
+  .heading {
+    float: left;
+    margin: 0;
+    padding-top: govuk-spacing(2);
+  }
+
+  li {
+    @include govuk-font($size: 19);
+    color: $govuk-link-colour;
+    display: inline-block;
+    font-weight: 700;
+    margin-left: govuk-spacing(5);
+    padding: govuk-spacing(2);
+    padding-bottom: calc(#{govuk-spacing(2)} - 4px); // Calc to compensate for border
+    text-align: right;
+
+    a, a:hover {
+      color: inherit;
+      font: inherit;
+      text-decoration: none;
+    }
+
+    &:hover {
+      color: govuk-colour("light-blue");
+    }
+
+    &.current {
+      border-bottom:  govuk-colour("blue") solid 4px;
+
+      &:hover {
+        border-color: govuk-colour("light-blue");
+      }
+    }
+  }
+
+  ul {
+    float: right;
+  }
+}
+

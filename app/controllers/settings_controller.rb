@@ -1,4 +1,4 @@
-class SettingsController < ApplicationController
+class SettingsController < FormController
   def form_information
     @settings = Settings.new(service_name: service.service_name)
   end

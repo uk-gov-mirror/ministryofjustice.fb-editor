@@ -1,4 +1,4 @@
-class PagesController < ApplicationController
+class PagesController < FormController
   default_form_builder GOVUKDesignSystemFormBuilder::FormBuilder
 
   def create

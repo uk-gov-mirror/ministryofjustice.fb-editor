@@ -1,2 +1,8 @@
-<%= link_to t('settings.form_information'),
-  form_information_settings_path(service.service_id) %>
+<nav class="govuk-navigation" aria-label="Settings navigation">
+  <h2 id="settings-navigation-heading" class="govuk-heading-xl"><%= t('settings.name') %></h2>
+  <ul aria-labelledby="settings-navigation-heading">
+    <li>
+      <%= link_to t('settings.form_information'), form_information_settings_path(service.service_id), class: 'govuk-link' %>
+    </li>
+  </ul>
+</nav>

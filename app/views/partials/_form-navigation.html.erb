@@ -1,0 +1,17 @@
+<nav id="form-navigation" class="govuk-navigation govuk-navigation-app" aria-label="Form navigation">
+  <div class="govuk-width-container">
+    <h2 id="form-navigation-heading" class="service-name heading govuk-heading-s">
+      <%= service.service_name %>
+    </h2>
+
+    <ul aria-labelledby="app-navigation-heading">
+      <li class="<%= controller_name.in?(['pages', 'services']) ? 'current' : '' %>">
+        <%= link_to t('pages.name'), edit_service_path(service.service_id) %>
+      </li>
+
+      <li class="<%= controller_name == 'settings' ? 'current' : '' %>">
+        <%= link_to t('settings.name'), settings_path(service.service_id) %>
+      </li>
+    </ul>
+  </div>
+</nav>
