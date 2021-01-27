@@ -18,10 +18,7 @@
         <%= link_to t('.sign_out'), user_session_path, method: :delete %>
       <% end %>
 
-      <h1 class="service-name"><%= service.service_name %></h1>
-
       <%= yield %>
     </main>
-
   </body>
 </html>

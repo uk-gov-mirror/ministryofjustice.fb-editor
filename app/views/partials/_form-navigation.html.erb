@@ -5,14 +5,13 @@
     </h2>
 
     <ul aria-labelledby="app-navigation-heading">
-      <li class="<%= current == 'pages' ? 'current' : '' %>">
+      <li class="<%= controller_name.in?(['pages', 'services']) ? 'current' : '' %>">
         <%= link_to t('pages.name'), edit_service_path(service.service_id) %>
       </li>
 
-      <li class="<%= current == 'settings' ? 'current' : '' %>">
+      <li class="<%= controller_name == 'settings' ? 'current' : '' %>">
         <%= link_to t('settings.name'), settings_path(service.service_id) %>
       </li>
     </ul>
   </div>
 </nav>
- 
