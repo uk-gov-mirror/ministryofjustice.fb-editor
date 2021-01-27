@@ -5,6 +5,8 @@ en:
     home_link_alt: "Ministry of Justice Logo - homepage"
   actions:
     save: 'Save'
+    publish_to_test: 'Publish to Test'
+    publish_to_live: 'Publish to Live'
   pages:
     form: 'Form pages'
     name: 'Pages'
@@ -13,6 +15,15 @@ en:
     form_information: 'Form information'
     form_information_label: 'Form name'
     form_information_help: 'The visible name of your form'
+  publish:
+    name: 'Publish'
+    heading: 'Editor'
+    sub_heading: 'The Editor is where you are making changes. Only you and MOJ staff with the right permissions can access your form.'
+    version: 'Version: %{time}'
+    test: 'Test'
+    test_sub_heading: 'Test is where others can view your form and can also be used to ensure everything works before you launch your form publicly.'
+    live: 'Live'
+    live_sub_heading: 'Live is where your form is hosted publicly when your service is running.'
   services:
     edit: 'Edit'
     create: 'Create a new form'
@@ -36,4 +47,6 @@ en:
         too_long: "Your answer for ‘%{attribute}’ is too long (%{count} characters at most)"
         invalid: "Your answer for ‘%{attribute}' contains characters that are not allowed."
         taken: "Your answer for ‘%{attribute}' is already used by another form. Please modify it."
-
+  time:
+    formats:
+      simple: '%d/%m/%Y %H:%M:%S'
