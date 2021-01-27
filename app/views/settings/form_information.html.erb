@@ -1,13 +1,13 @@
 <h1 class="govuk-heading-xl"><%= t('settings.form_information') %></h1>
 
 <%= form_for @settings, as: :service, url: update_form_information_settings_path(service.service_id), method: :patch do |f| %>
-  <% f.object.errors.each do |error|  %>
-    <%= error.message %>
-  <% end %>
-  <div class="govuk-form-group">
+  <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
     <%= f.label :service_name, class: "govuk-label" do %>
       <%= t('settings.form_information_label') %>
       <span class="govuk-hint"><%= t('settings.form_information_help') %></span>
+    <% end %>
+    <% f.object.errors.each do |error|  %>
+      <span class="govuk-error-message"><%= error.message %></span>
     <% end %>
     <%= f.text_field :service_name, class: "govuk-input width-responsive-two-thirds" %>
   </div>
