@@ -17,6 +17,14 @@ feature 'Create page' do
     then_I_should_see_the_new_page_url
   end
 
+  scenario 'creating a check answers page' do
+    given_I_add_a_check_answers_page
+    and_I_add_a_check_answers_page_url
+    when_I_add_check_answers_page
+    and_I_comeback_to_edit_the_service
+    then_I_should_see_the_new_check_answers_page_url
+  end
+
   scenario 'attempt to add a page with an existing url' do
     given_I_add_a_single_question_page_with_text
     and_I_add_an_existing_page_url
@@ -28,20 +36,27 @@ feature 'Create page' do
   def given_I_add_a_single_question_page_with_text
   end
 
+  def given_I_add_a_check_answers_page
+  end
+
   def and_I_edit_the_service
     editor.edit_service_link(service_name).click
   end
 
   def and_I_add_a_page_url
-    editor.page_url_field.set('phasma')
+    within find('#singlequestion') do
+      editor.page_url_field.set('phasma')
+    end
   end
 
   def and_I_add_an_existing_page_url
-    editor.page_url_field.set('/')
+    within find('#singlequestion') do
+      editor.page_url_field.set('/')
+    end
   end
 
   def when_I_add_the_page
-    editor.add_page_button.click
+    editor.add_single_page_button.click
   end
 
   def and_I_comeback_to_edit_the_service
@@ -57,5 +72,19 @@ feature 'Create page' do
     expect(editor.text).to include(
       "Your answer for ‘The page’s relative url - it must not contain any spaces' is already used by another page. Please modify it."
     )
+  end
+
+  def and_I_add_a_check_answers_page_url
+    within find('#checkanswers') do
+      editor.page_url_field.set('aquifolium')
+    end
+  end
+
+  def when_I_add_check_answers_page
+    editor.add_check_answers_page_button.click
+  end
+
+  def then_I_should_see_the_new_check_answers_page_url
+    expect(editor.text).to include('aquifolium')
   end
 end

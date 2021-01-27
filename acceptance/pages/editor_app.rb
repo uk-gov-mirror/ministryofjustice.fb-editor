@@ -18,7 +18,8 @@ class EditorApp < SitePrism::Page
   element :save_button, :button, 'Save'
 
   element :page_url_field, :field, 'The page’s relative url - it must not contain any spaces'
-  element :add_page_button, :button, 'Add page'
+  element :add_single_page_button, :button, 'Add Single Question page'
+  element :add_check_answers_page_button, :button, 'Add Check Answers page'
 
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")

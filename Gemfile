@@ -5,14 +5,14 @@ ruby '2.7.2'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 
-# Metadata presenter - if you need to be on development you can uncomment one of
-# these lines:
- gem 'metadata_presenter',
-     github: 'ministryofjustice/fb-metadata-presenter',
-     branch: 'feature/add-check-answers-page'
-#gem 'metadata_presenter', path: '../fb-metadata-presenter'
+# Metadata presenter - if you need to be on development you can uncomment
+# one of these lines:
+# gem 'metadata_presenter',
+#     github: 'ministryofjustice/fb-metadata-presenter',
+#     branch: 'some-branch'
+# gem 'metadata_presenter', path: '../fb-metadata-presenter'
 #
-#gem 'metadata_presenter', '0.3.0'
+gem 'metadata_presenter', '0.3.0'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'fb-jwt-auth', '0.5.0'
