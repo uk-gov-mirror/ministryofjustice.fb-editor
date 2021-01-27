@@ -1,4 +1,3 @@
-# coding: utf-8
 class EditorApp < SitePrism::Page
   if ENV['ACCEPTANCE_TESTS_USER'] && ENV['ACCEPTANCE_TESTS_PASSWORD']
     set_url ENV['ACCEPTANCE_TESTS_EDITOR_APP'] % {
@@ -9,8 +8,7 @@ class EditorApp < SitePrism::Page
     set_url ENV['ACCEPTANCE_TESTS_EDITOR_APP']
   end
 
-  element :service_name, 'main h1.service-name'
-  element :service_name_navigation_heading, '#form-navigation-heading'
+  element :service_name, '#form-navigation-heading'
   element :name_field, :field, 'What is the name of this form?'
   element :create_service_button, :button, 'Create a new form'
 

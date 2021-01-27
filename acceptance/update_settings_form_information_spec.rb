@@ -1,4 +1,3 @@
-# coding: utf-8
 require_relative './spec_helper'
 
 feature 'Update settings form information' do
@@ -85,7 +84,7 @@ feature 'Update settings form information' do
   end
 
   def then_I_should_see_the_new_service_name
-    expect(editor.service_name_navigation_heading.text).to eq(updated_service_name)
+    expect(editor.service_name.text).to eq(updated_service_name)
   end
 
   def then_I_should_see_a_validation_message_for_required
