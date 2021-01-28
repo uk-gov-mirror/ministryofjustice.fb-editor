@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
   resources :services, only: [:index, :edit, :update, :create] do
     member do
+      resources :publish, only: [:index, :create]
       resources :pages, param: :page_uuid, only: [:create, :edit, :update]
       resources :settings, only: [:index] do
         collection do

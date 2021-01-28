@@ -12,6 +12,10 @@
       <li class="<%= controller_name == 'settings' ? 'current' : '' %>">
         <%= link_to t('settings.name'), settings_path(service.service_id) %>
       </li>
+
+      <li class="<%= controller_name == 'publish' ? 'current' : '' %>">
+        <%= link_to t('publish.name'), publish_index_path(service.service_id) %>
+      </li>
     </ul>
   </div>
 </nav>
