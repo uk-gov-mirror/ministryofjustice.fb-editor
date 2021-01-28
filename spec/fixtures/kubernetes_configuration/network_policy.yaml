@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-acceptance-tests-date
+  namespace: formbuilder-services-test-dev
+spec:
+  podSelector:
+    matchLabels:
+      app: acceptance-tests-date
+  policyTypes:
+  - Ingress
+    ports:
+    - protocol: TCP
+      port: 3000

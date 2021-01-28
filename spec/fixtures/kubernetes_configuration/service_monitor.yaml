@@ -1,0 +1,29 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: formbuilder-form-acceptance-tests-date-service-monitor-test-dev
+  namespace: formbuilder-services-test-dev
+spec:
+  selector:
+    matchLabels:
+      run: acceptance-tests-date
+  endpoints:
+  - port: http
+    interval: 15s
+---
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: formbuilder-form-acceptance-tests-date-service-monitor-ingress-test-dev
+  namespace: formbuilder-services-test-dev
+spec:
+  podSelector:
+    matchLabels:
+      run: acceptance-tests-date
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          component: monitoring

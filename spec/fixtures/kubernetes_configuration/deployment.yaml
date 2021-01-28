@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: acceptance-tests-date
+  namespace: formbuilder-services-test-dev
+  labels:
+    run: acceptance-tests-date
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: acceptance-tests-date
+  template:
+    metadata:
+      labels:
+        run: acceptance-tests-date
+    spec:
+      containers:
+      - name: acceptance-tests-date
+        securityContext:
+          runAsUser: 1001
+        envFrom:
+        - configMapRef:
+            name: fb-acceptance-tests-date-config-map
+        env:
+          - name: USER_DATASTORE_URL
+            value: http://fb-user-datastore-api-svc-test-dev.formbuilder-platform-test-dev/
+          - name: SERVICE_SLUG
+            value: acceptance-tests-date
+          - name: PLATFORM_ENV
+            value: test
+          - name: DEPLOYMENT_ENV
+            value: dev
+        image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-test
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        resources:
+           limits:
+            cpu: 150m
+            memory: 300Mi
+           requests:
+            cpu: 10m
+            memory: 128Mi
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
