@@ -27,6 +27,7 @@ en:
   services:
     edit: 'Edit'
     create: 'Create a new form'
+    cancel: 'Cancel'
   activemodel:
     models:
       service_creation: 'Form'
