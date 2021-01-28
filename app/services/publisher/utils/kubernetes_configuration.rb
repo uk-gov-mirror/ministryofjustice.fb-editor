@@ -3,18 +3,6 @@ class Publisher
     class KubernetesConfiguration
       attr_reader :service_provisioner
 
-      # Dir.mktmpdir using the service id
-      # generate:
-      # deployment.yaml,
-      # service.yaml,
-      # network_policy.yaml,
-      # ingress.yaml,
-      # config_map.yaml,
-      # service_monitor.yaml
-      def initialize(service_provisioner)
-        @service_provisioner = service_provisioner
-      end
-
       TEMPLATES = %w(
         service
         service_monitor
@@ -22,6 +10,11 @@ class Publisher
         deployment
         config_map
       )
+
+      def initialize(service_provisioner)
+        @service_provisioner = service_provisioner
+      end
+
       def generate(destination:)
         TEMPLATES.each do |template|
           template_content = File.open(
@@ -35,6 +28,7 @@ class Publisher
           ).read
           erb = ERB.new(template_content)
           content = erb.result(service_provisioner.get_binding)
+
           write_config_file(
             file: File.expand_path(File.join(destination, "#{template}.yaml")),
             content: content
