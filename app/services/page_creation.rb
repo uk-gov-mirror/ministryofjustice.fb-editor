@@ -6,7 +6,7 @@ class PageCreation
                 :latest_metadata,
                 :service_id,
                 :version
-  validates :page_url, :page_type, :component_type, presence: true
+  validates :page_url, :page_type, presence: true
   validates :page_url, format: { with: /\A[\sa-zA-Z0-9-]*\z/ }
 
   validates :page_type, metadata_presence: { metadata_key: :page }

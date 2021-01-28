@@ -16,7 +16,9 @@ class NewPageGenerator
       metadata['_id'] = page_name
       metadata['_uuid'] = SecureRandom.uuid
       metadata['url'] = page_url
-      metadata['components'].push(component)
+      if component_type.present?
+        metadata['components'].push(component)
+      end
     end
   end
 

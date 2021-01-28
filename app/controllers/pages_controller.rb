@@ -55,4 +55,14 @@ class PagesController < FormController
   def service_id
     service.service_id
   end
+
+  def change_answer_path(url:)
+    ''
+  end
+  helper_method :change_answer_path
+
+  def reserved_submissions_path
+    ''
+  end
+  helper_method :reserved_submissions_path
 end

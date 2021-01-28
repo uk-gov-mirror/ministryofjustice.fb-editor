@@ -37,3 +37,6 @@ yarn-debug.log*
 
 .env
 .env.acceptance_tests
+
+# Visual Studio Code #
+**/.vscode/
