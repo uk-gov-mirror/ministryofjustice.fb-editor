@@ -1,12 +1,16 @@
 <h1><%= t('pages.form') %><h3>
 
 <% service.pages.each do |page| %>
-  <div>
+  <div class="form-step">
+    <%= image_pack_tag('page_placeholder.png', class: 'form-thumbnail') %>
     <%= link_to page.url, edit_page_path(service.service_id, page.uuid) %>
   </div>
 <% end %>
 
-<div>
+<div class="component-dialog-form"
+     id="new-page-create-dialog"
+     data-activator-text="<%= t('pages.create') %>"
+     data-cancel-text="<%= t('pages.cancel') %>">
   <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
     <%= f.hidden_field :page_type, value: 'singlequestion', readonly: true %>
     <%= f.hidden_field :component_type, value: 'text', readonly: true %>
@@ -20,6 +24,26 @@
     </div>
     <%= f.submit 'Add page', class: "govuk-button" %>
   <% end %>
+</div>
+
+<ul class="component-activated-menu govuk-navigation"
+    data-activator-text="Add page text">
+  <li>
+    <a href="#add-page" data-type="text">Single question page</a>
+    <ul>
+      <li><a href="#add-page" data-type="text">Text</a></li>
+      <li><a href="#add-page" data-type="text">Textarea</a></li>
+      <li><a href="#add-page" data-type="text">Number</a></li>
+      <li><a href="#add-page" data-type="text">Date</a></li>
+      <li><a href="#add-page" data-type="text">Radio buttons</a></li>
+      <li><a href="#add-page" data-type="text">Checkboxes</a></li>
+    </ul>
+  </li>
+  <li><a href="#add-page" data-type="text">Multiple question page</a></li>
+  <li><a href="#add-page" data-type="text">Check answers page</a></li>
+  <li><a href="#add-page" data-type="text">Confirmation page</a></li>
+  <li><a href="#add-page" data-type="text">Content page</a></li>
+</ul>
 
   <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
     <%= f.hidden_field :page_type, value: 'checkanswers', readonly: true %>
@@ -46,4 +70,4 @@
     </div>
     <%= f.submit 'Add Confirmation page', class: "govuk-button" %>
   <% end %>
-</div>
+
