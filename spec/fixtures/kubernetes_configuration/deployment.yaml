@@ -31,6 +31,8 @@ spec:
             value: test
           - name: DEPLOYMENT_ENV
             value: dev
+          - name: SERVICE_METADATA
+            value: '{"service_name":"acceptance-tests-date"}'
         image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-test
         imagePullPolicy: Always
         ports:

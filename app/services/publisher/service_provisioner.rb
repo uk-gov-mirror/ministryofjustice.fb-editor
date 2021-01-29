@@ -21,6 +21,10 @@ class Publisher
       service.service_name.parameterize
     end
 
+    def service_metadata
+      service.to_h.to_json
+    end
+
     def namespace
       Rails.application.config.platform_environments[:common][:namespace] % {
         platform_environment: platform_environment,

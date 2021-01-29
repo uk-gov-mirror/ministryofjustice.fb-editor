@@ -25,8 +25,10 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
   end
 
   before do
-    allow(service_provisioner).to receive(:service_slug).and_return(
-      'acceptance-tests-date'
+    allow(service_provisioner).to receive(:service).and_return(
+      MetadataPresenter::Service.new(
+        'service_name' => 'acceptance-tests-date'
+      )
     )
   end
 
