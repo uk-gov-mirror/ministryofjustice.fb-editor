@@ -15,3 +15,5 @@ Rails.application.config.platform_environments =
       container_port: 3000
     }
   })
+
+Rails.application.config.deployment_environments = %w(dev production)

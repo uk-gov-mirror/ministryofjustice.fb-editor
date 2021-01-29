@@ -1,11 +1,17 @@
 class Publisher
   class ServiceProvisioner
     include ActiveModel::Model
-    attr_accessor :service_id, :platform_environment, :deployment_environment
+    attr_accessor :service_id,
+                  :platform_environment,
+                  :deployment_environment,
+                  :service_configuration
     validates :service_id,
               :platform_environment,
               :deployment_environment,
+              :service_configuration,
               presence: true
+
+    validates :service_configuration, private_public_key: true
 
     def get_binding
       binding

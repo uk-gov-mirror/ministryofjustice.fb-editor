@@ -206,5 +206,19 @@ RSpec.describe Publisher::ServiceProvisioner do
         should_not allow_values(nil, '').for(:deployment_environment)
       end
     end
+
+    context 'blank private public key' do
+      it 'does not allow' do
+        should_not allow_values([]).for(:service_configuration)
+      end
+    end
+
+    context 'does not include private public key' do
+      it 'does not allow' do
+        should_not allow_values(
+          [double(name: 'something-else')]
+        ).for(:service_configuration)
+      end
+    end
   end
 end
