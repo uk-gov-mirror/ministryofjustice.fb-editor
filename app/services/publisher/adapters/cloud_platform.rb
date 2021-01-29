@@ -22,6 +22,13 @@ class Publisher
       # --token=$KUBECTL_BEARER_TOKEN
       #
       def publishing
+        files = Dir[Rails.root.join('tmp', 'publisher', service_id, '*')]
+        puts "Generated files: #{files}"
+        Rails.logger.info("Generated files: #{files}")
+        dir = Rails.root.join('tmp', 'publisher', service_id).to_s
+        command = "kubectl apply -f #{dir} --namespace=#{service_provisioner.namespace} --token=$EDITOR_SERVICE_ACCOUNT_TOKEN"
+        puts command
+        Rails.logger.info(command)
       end
 
       # restart the server
