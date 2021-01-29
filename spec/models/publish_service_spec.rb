@@ -14,7 +14,13 @@ RSpec.describe PublishService, type: :model do
 
     context 'status' do
       it 'allow queued and completed' do
-        should allow_values('queued').for(:status)
+        should allow_values(
+          'queued',
+          'pre_publishing',
+          'publishing',
+          'post_publishing',
+          'completed'
+        ).for(:status)
       end
 
       it 'do not allow enything else' do

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: <%= service_slug %>
+  namespace: <%= namespace %>
+  labels:
+    run: <%= service_slug %>
+spec:
+  replicas: <%= replicas %>
+  selector:
+    matchLabels:
+      run: <%= service_slug %>
+  template:
+    metadata:
+      labels:
+        run: <%= service_slug %>
+    spec:
+      containers:
+      - name: <%= service_slug %>
+        securityContext:
+          runAsUser: 1001
+        envFrom:
+        - configMapRef:
+            name: <%= config_map_name %>
+        env:
+          - name: USER_DATASTORE_URL
+            value: <%= user_datastore_url %>
+          - name: SERVICE_SLUG
+            value: <%= service_slug %>
+          - name: PLATFORM_ENV
+            value: <%= platform_environment %>
+          - name: DEPLOYMENT_ENV
+            value: <%= deployment_environment %>
+        image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-test
+        imagePullPolicy: Always
+        ports:
+        - containerPort: <%= container_port %>
+        resources:
+           limits:
+            cpu: <%= resource_limits_cpu %>
+            memory: <%= resource_limits_memory %>
+           requests:
+            cpu: <%= resource_requests_cpu %>
+            memory: <%= resource_requests_memory %>
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: <%= container_port %>
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
