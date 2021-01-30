@@ -4,6 +4,10 @@ ARG UID=1001
 
 RUN apk add git nodejs yarn build-base postgresql-contrib postgresql-dev bash libcurl
 
+ARG KUBE_VERSION="1.17.3"
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v$KUBE_VERSION/bin/linux/amd64/kubectl
+RUN chmod u+x kubectl && mv kubectl /bin/kubectl
+
 RUN addgroup -g ${UID} -S appgroup && \
   adduser -u ${UID} -S appuser -G appgroup
 
