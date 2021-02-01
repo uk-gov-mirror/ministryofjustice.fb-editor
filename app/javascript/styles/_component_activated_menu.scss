@@ -15,15 +15,8 @@
 
 .component-activated-menu {
   a {
-    color: govuk-colour("blue");
-    display: block;
-    padding: govuk-spacing(1);
-    text-decoration: none;
-
-    &:hover {
-      background-color: govuk-colour("blue");
-      color: govuk-colour("white");
-    }
+    @include button_type_link;
+    border: none;
   }
 
   &, ul {

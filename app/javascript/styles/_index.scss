@@ -13,6 +13,21 @@
   }
 }
 
+@mixin button_type_link {
+  @include govuk-font($size: 19);
+  background-color: govuk-colour("white");
+  border: govuk-colour("blue") solid 2px;
+  color: govuk-colour("blue");
+  display: block;
+  padding: govuk-spacing(1);
+  text-decoration: none;
+
+  &:hover {
+    background-color: govuk-colour("blue");
+    color: govuk-colour("white");
+  }
+}
+
 
 .width-responsive-two-thirds {
   @include responsive_width("two-thirds");
@@ -53,20 +68,45 @@
   }
 }
 
-.form-step {
-  img {
-    border: govuk-colour("blue") solid 2px;
-    display: block;
-    width: 200px;
-  }
-}
-
 #header-logo-link {
   display: inline-block;
   margin-right: govuk-spacing(2);
   position: relative;
   top: -2px;
   vertical-align: middle;
+}
+
+
+/* Navigation: Pages
+ * URLs: /services/.../edit
+ **/
+.form-overview {
+  display: inline-block;
+  padding-right: 200px;
+  position: relative;
+
+  .ActivatedMenu_Activator {
+    // This element is injected by JS
+    @include button_type_link;
+    padding-left: govuk-spacing(2);
+    padding-right: govuk-spacing(2);
+    position: absolute;
+    right: 0;
+    top: 50px;
+
+    &:before {
+      content: "+";
+      margin-right: 2px;
+    }
+  }
+}
+
+.form-step {
+  img {
+    border: govuk-colour("blue") solid 2px;
+    display: block;
+    width: 200px;
+  }
 }
 
 

@@ -32,6 +32,10 @@ class ActivatedMenu {
       console.log("Menu select");
     });
 
+    if(config.activator_classname) {
+      this.activator.addClass(config.activator_classname);
+    }
+
     this.activator.text(config.activator_text);
     this.activator.on("click.ActivatedMenu", () => {
       if(this.state.open) {
