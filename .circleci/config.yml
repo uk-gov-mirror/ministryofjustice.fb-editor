@@ -13,13 +13,13 @@ jobs:
           version: 19.03.13
       - run:
           name: setup
-          command: make setup
+          command: docker-compose -f docker-compose.unit-tests.ci.yml up -d --build editor-app-tests-ci
       - run:
           name: security
-          command: docker-compose run --rm editor-app bundle exec brakeman -q --no-pager -i brakeman.ignore
+          command: docker-compose -f docker-compose.unit-tests.ci.yml run --rm editor-app-tests-ci bundle exec brakeman -q --no-pager -i brakeman.ignore
       - run:
           name: unit tests
-          command: docker-compose run --rm editor-app bundle exec rspec
+          command: docker-compose -f docker-compose.unit-tests.ci.yml run --rm editor-app-tests-ci bundle exec rspec
       - slack/status: &slack_status
           fail_only: true
           only_for_branches: main

@@ -43,6 +43,8 @@ There are two ways to run the acceptance tests:
 Basically the acceptance tests depends to have a `.env.acceptance_tests` with
 the editor url.
 
+These use a acceptance tests specific Dockerfile found in the `acceptance` directory instead of the root level Dockerfile.
+
 ### Pointing to a local editor
 
 There is the docker compose with all containers needed for the editor.
@@ -64,3 +66,19 @@ machine to point to the test environment you need to run:
   export ACCEPTANCE_TESTS_PASSWORD='my-password'
   make acceptance-ci -s
 ```
+
+### Docker Compose
+
+There are three docker compose files.
+
+#### docker-compose.yml
+
+This spins up all the required apps necessary including the service token cache and a redis container.
+
+#### docker-compose.unit-tests.yml
+
+This is for the unit tests. It only spins up the database and the editor app.
+
+#### docker-compose.ci.yml
+
+This makes use of the Dockerfile in the `acceptance` directory and is used only in the deployment pipeline.
