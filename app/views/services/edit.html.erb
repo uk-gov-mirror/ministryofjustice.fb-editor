@@ -28,11 +28,12 @@
   <% end %>
 </div>
 
-<ul class="component-activated-menu govuk-navigation"
+<%# TODO: Backend to replace this with dynamic data-driven output %>
+<ul class="govuk-navigation component-activated-menu"
     data-activator-text="Add page text">
   <li>
     <a href="#add-page" data-type="text">Single question page</a>
-    <ul>
+    <ul class="govuk-navigation">
       <li><a href="#add-page" data-type="text">Text</a></li>
       <li><a href="#add-page" data-type="text">Textarea</a></li>
       <li><a href="#add-page" data-type="text">Number</a></li>
@@ -42,34 +43,42 @@
     </ul>
   </li>
   <li><a href="#add-page" data-type="text">Multiple question page</a></li>
-  <li><a href="#add-page" data-type="text">Check answers page</a></li>
+  <li>
+    <a href="#add-page" data-type="text">Check answers page</a>
+    <ul class="govuk-navigation">
+      <li><a href="#add-page" data-type="text">Text</a></li>
+      <li><a href="#add-page" data-type="text">Textarea</a></li>
+      <li><a href="#add-page" data-type="text">Number</a></li>
+    </ul>
+  </li>
   <li><a href="#add-page" data-type="text">Confirmation page</a></li>
   <li><a href="#add-page" data-type="text">Content page</a></li>
 </ul>
 
-  <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
-    <%= f.hidden_field :page_type, value: 'checkanswers', readonly: true %>
-    <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
-      <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
-      <% f.object.errors.each do |error|  %>
-        <%= error.message %>
-        <span class="govuk-error-message"><%= error.message %></span>
-      <% end %>
-      <%= f.text_field :page_url, class: "govuk-input"  %>
-    </div>
-    <%= f.submit 'Add Check Answers page', class: "govuk-button" %>
-  <% end %>
 
-  <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
-    <%= f.hidden_field :page_type, value: 'confirmation', readonly: true %>
-    <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
-      <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
-      <% f.object.errors.each do |error|  %>
-        <%= error.message %>
-        <span class="govuk-error-message"><%= error.message %></span>
-      <% end %>
-      <%= f.text_field :page_url, class: "govuk-input"  %>
-    </div>
-    <%= f.submit 'Add Confirmation page', class: "govuk-button" %>
-  <% end %>
+<%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
+  <%= f.hidden_field :page_type, value: 'checkanswers', readonly: true %>
+  <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
+    <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
+    <% f.object.errors.each do |error|  %>
+      <%= error.message %>
+      <span class="govuk-error-message"><%= error.message %></span>
+    <% end %>
+    <%= f.text_field :page_url, class: "govuk-input"  %>
+  </div>
+  <%= f.submit 'Add Check Answers page', class: "govuk-button" %>
+<% end %>
+
+<%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
+  <%= f.hidden_field :page_type, value: 'confirmation', readonly: true %>
+  <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
+    <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
+    <% f.object.errors.each do |error|  %>
+      <%= error.message %>
+      <span class="govuk-error-message"><%= error.message %></span>
+    <% end %>
+    <%= f.text_field :page_url, class: "govuk-input"  %>
+  </div>
+  <%= f.submit 'Add Confirmation page', class: "govuk-button" %>
+<% end %>
 

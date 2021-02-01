@@ -2,7 +2,71 @@
 //
 $(document).ready(function() {
   applyFormDialogs();
+  applyMenus();
 });
+
+function applyMenus() {
+  var $menu = $(".component-activated-menu");
+
+  new ActivatedMenu($menu, {
+    activator_text: $menu.data("activator-text"),
+    menu: {
+      position: { at: "right+2 top-2" }
+    }
+  });
+}
+
+class ActivatedMenu {
+  constructor($menu, config) {
+    this.activator = $("<button class=\"ActivatedMenu_Activator\"></button>");
+    this.container = $("<div class=\"ActivatedMenu_Container\"></div>");
+    this.menu = $menu;
+    this.state = {
+      open: false
+    }
+
+    this.menu.before(this.container);
+    this.menu.menu(config.menu); // Bit confusing but is how jQueryUI adds effect to eleemnt.
+
+    this.menu.on("menuselect", function() {
+      console.log("Menu select");
+    });
+
+    this.activator.text(config.activator_text);
+    this.activator.on("click.ActivatedMenu", () => {
+      if(this.state.open) {
+        this.close();
+      }
+      else {
+        this.open();
+      }
+    });
+
+    this.container.append(this.menu);
+    this.container.before(this.activator);
+
+    this.close();
+  }
+
+  // Method
+  open() {
+    console.log("ActivateMenu.open");
+    this.container.show();
+    this.state.open = true;
+  }
+
+  // Method
+  close() {
+    console.log("ActivateMenu.close");
+    this.container.hide();
+    this.state.open = false;
+  }
+
+  // Method
+  action() {
+    console.log("ActivateMenu.action");
+  }
+}
 
 
 // Finds forms structured to become dialog effects and

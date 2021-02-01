@@ -1,0 +1,34 @@
+/**
+ * Custom component: Activated Menu
+ * Written By: steven.burnell@digital.justice.gov.uk
+ * Documentation:
+ *     - activated_menu.js (fb-editor file).
+ *     - https://api.jqueryui.com/menu
+ *
+ * ----------------------------------------------------
+ *
+ * fb-editor specific CSS for styling custom component.
+ * This component wraps the third-party jQueryUI menu.
+ *
+ **/
+
+
+.component-activated-menu {
+  a {
+    color: govuk-colour("blue");
+    display: block;
+    padding: govuk-spacing(1);
+    text-decoration: none;
+
+    &:hover {
+      background-color: govuk-colour("blue");
+      color: govuk-colour("white");
+    }
+  }
+
+  &, ul {
+    border: govuk-colour("blue") solid 2px;
+    position: absolute;
+    width: 200px;
+  }
+}
