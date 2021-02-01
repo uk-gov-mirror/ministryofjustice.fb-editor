@@ -80,8 +80,8 @@ spec:
           - name: EDITOR_SERVICE_ACCOUNT_TOKEN
             valueFrom:
               secretKeyRef:
-                name: fb-editor-secrets-{{ .Values.environmentName }}
-                key: editor_service_account_token
+                name: {{ .Values.editor_service_account_token }}
+                key: token
       volumes:
         - name: tmp-files
           emptyDir: {}
