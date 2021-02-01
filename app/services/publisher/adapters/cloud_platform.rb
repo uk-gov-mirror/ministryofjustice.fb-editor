@@ -63,7 +63,7 @@ class Publisher
             template: {
               metadata: {
                 annotations: {
-                  updated_at: Time.now.to_i
+                  updated_at: "#{Time.now.to_i}"
                 }
               }
             }
