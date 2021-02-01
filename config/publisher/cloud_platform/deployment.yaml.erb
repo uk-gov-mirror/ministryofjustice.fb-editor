@@ -35,7 +35,7 @@ spec:
             value: <%= secret_key_base %>
           - name: SERVICE_METADATA
             value: '<%= service_metadata %>'
-        image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-test
+        image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-<%= platform_environment %>
         imagePullPolicy: Always
         ports:
         - containerPort: <%= container_port %>
