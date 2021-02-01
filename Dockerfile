@@ -11,6 +11,8 @@ RUN chmod u+x kubectl && mv kubectl /bin/kubectl
 RUN addgroup -g ${UID} -S appgroup && \
   adduser -u ${UID} -S appuser -G appgroup
 
+RUN chown appuser:appgroup /bin/kubectl
+
 WORKDIR /app
 
 RUN chown appuser:appgroup /app
