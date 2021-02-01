@@ -23,6 +23,8 @@ spec:
         - configMapRef:
             name: <%= config_map_name %>
         env:
+          - name: RAILS_ENV
+            value: 'production'
           - name: USER_DATASTORE_URL
             value: <%= user_datastore_url %>
           - name: SERVICE_SLUG

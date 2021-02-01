@@ -23,6 +23,8 @@ spec:
         - configMapRef:
             name: fb-acceptance-tests-date-config-map
         env:
+          - name: RAILS_ENV
+            value: 'production'
           - name: USER_DATASTORE_URL
             value: http://fb-user-datastore-api-svc-test-dev.formbuilder-platform-test-dev/
           - name: SERVICE_SLUG
