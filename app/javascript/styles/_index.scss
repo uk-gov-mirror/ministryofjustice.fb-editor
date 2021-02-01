@@ -53,6 +53,14 @@
   }
 }
 
+.form-step {
+  img {
+    border: govuk-colour("blue") solid 2px;
+    display: block;
+    width: 200px;
+  }
+}
+
 #header-logo-link {
   display: inline-block;
   margin-right: govuk-spacing(2);
@@ -151,4 +159,3 @@
     float: right;
   }
 }
-

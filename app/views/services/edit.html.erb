@@ -1,11 +1,13 @@
 <h1><%= t('pages.form') %></h1>
 
-<% service.pages.each do |page| %>
-  <div class="form-step">
-    <%= image_pack_tag('page_placeholder.png', class: 'form-thumbnail') %>
-    <%= link_to page.url, edit_page_path(service.service_id, page.uuid) %>
-  </div>
-<% end %>
+<div class="form-overview">
+  <% service.pages.each do |page| %>
+    <div class="form-step">
+      <%= image_pack_tag('page_placeholder.png', class: 'form-thumbnail') %>
+      <%= link_to page.url, edit_page_path(service.service_id, page.uuid) %>
+    </div>
+  <% end %>
+</div>
 
 <div class="component-dialog-form"
      id="new-page-create-dialog"
