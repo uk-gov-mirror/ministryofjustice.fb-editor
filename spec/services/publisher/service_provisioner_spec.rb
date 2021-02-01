@@ -188,6 +188,17 @@ RSpec.describe Publisher::ServiceProvisioner do
     end
   end
 
+  describe '#secret_key_base' do
+    let(:secret_key_base) do
+      '95ccf88919d3a4feff3faa1a3f8fa1b195b82b6abac544ba248eaa93aee18e12fec54847793d60ed7e7413794466e2322bf3157170dc9eca7fd56b9689199d04'
+    end
+
+    it 'returns a hex 64 bytes' do
+      expect(SecureRandom).to receive(:hex).with(64).and_return(secret_key_base)
+      expect(service_provisioner.secret_key_base).to eq(secret_key_base)
+    end
+  end
+
   describe '#valid?' do
     context 'blank services' do
       it 'does not allow blank services' do

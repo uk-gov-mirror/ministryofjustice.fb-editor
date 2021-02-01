@@ -31,6 +31,8 @@ spec:
             value: <%= platform_environment %>
           - name: DEPLOYMENT_ENV
             value: <%= deployment_environment %>
+          - name: SECRET_KEY_BASE
+            value: <%= secret_key_base %>
           - name: SERVICE_METADATA
             value: '<%= service_metadata %>'
         image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-test

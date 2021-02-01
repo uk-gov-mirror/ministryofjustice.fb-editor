@@ -1,3 +1,5 @@
+require 'securerandom'
+
 class Publisher
   class ServiceProvisioner
     include ActiveModel::Model
@@ -45,6 +47,10 @@ class Publisher
 
     def container_port
       Rails.application.config.platform_environments[:common][:container_port]
+    end
+
+    def secret_key_base
+      SecureRandom.hex(64)
     end
 
     def config_map_name
