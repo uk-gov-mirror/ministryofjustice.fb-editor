@@ -27,7 +27,7 @@ class Publisher
 
       def post_publishing
         Utils::KubeControl.execute(
-          "patch deployment #{service_slug} -p #{timestamp}",
+          "patch deployment #{service_slug} -p '#{timestamp}'",
           namespace: namespace
         )
         Utils::KubeControl.execute(

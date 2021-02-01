@@ -94,7 +94,7 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
       expect(
         ::Publisher::Utils::KubeControl
       ).to receive(:execute).with(
-        %{patch deployment obi-wan -p {\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"updated_at\":#{Time.now.to_i}}}}}}},
+        %{patch deployment obi-wan -p '{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"updated_at\":#{Time.now.to_i}}}}}}'},
         namespace: 'formbuilder-services-test-dev')
       expect(
         ::Publisher::Utils::KubeControl
