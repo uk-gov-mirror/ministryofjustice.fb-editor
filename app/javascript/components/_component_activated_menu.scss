@@ -1,0 +1,28 @@
+/**
+ * Activated Menu Component
+ * ----------------------------------------------------
+ * Description:
+ * Enhances jQueryUI Menu component by adding a controlling activator.
+ *
+ * Documentation:
+ *
+ *     - jQueryUI
+ *       https://api.jqueryui.com/menu
+ *
+ *     - TODO:
+ *       (steven.burnell@digital.justice.gov.uk to add).
+ *
+ **/
+
+.component-activated-menu {
+  a {
+    @include button_type_link;
+    border: none;
+  }
+
+  &, ul {
+    border: govuk-colour("blue") solid 2px;
+    position: absolute;
+    width: 200px;
+  }
+}

@@ -10,6 +10,7 @@ require("jquery")
 require("jquery-ui")
 
 // Entry points for fb-editor javascript
+require("../components/component_activated_menu")
 require("../services/index")
 
 // Entry points for fb-editor stylesheets
