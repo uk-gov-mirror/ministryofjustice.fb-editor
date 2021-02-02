@@ -7,7 +7,6 @@ class Publisher
           command,
           "--namespace=#{namespace}",
           '--token=$EDITOR_SERVICE_ACCOUNT_TOKEN'
-          # --context=?
         )
       end
 
