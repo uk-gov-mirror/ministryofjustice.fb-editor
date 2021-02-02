@@ -4,9 +4,11 @@
   <% service.pages.each do |page| %>
     <div class="form-step">
       <%= image_pack_tag('page_placeholder.png', class: 'form-thumbnail') %>
-      <button><span class="govuk-visually-hidden">Actions</span></button>
+      <!--button><span class="govuk-visually-hidden">Actions</span></button-->
+      <%# TODO: Backend to add dynamic data-driven values to this output %>
       <ul class="govuk-navigation component-activated-menu"
-          data-activator-text="<%= t('pages.create') %>">
+          data-activator-text="<%= t('pages.actions') %>"
+          data-activator-classname="form-step_button">
         <li><a href="#edit-page" data-type="text">Edit page</a></li>
         <li><a href="#preview-page" data-type="text">Preview page</a></li>
         <li><a href="#add-page-here" data-type="text">Add page here</a></li>
@@ -37,10 +39,10 @@
   <% end %>
 </div>
 
-
 <%# TODO: Backend to replace this with dynamic data-driven output %>
 <ul class="govuk-navigation component-activated-menu"
-    data-activator-text="<%= t('pages.create') %>">
+    data-activator-text="<%= t('pages.create') %>"
+    data-activator-classname="form-overview_button">
   <li>
     <a href="#add-page" data-type="text">Single question page</a>
     <ul class="govuk-navigation">

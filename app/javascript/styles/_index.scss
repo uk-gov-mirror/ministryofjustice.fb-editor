@@ -85,53 +85,25 @@
   display: inline-block;
   padding-right: 200px;
   position: relative;
+}
 
-  .ActivatedMenu_Activator {
-    // This element is injected by JS
-    @include button_type_link;
-    padding-left: govuk-spacing(2);
-    padding-right: govuk-spacing(2);
-    position: absolute;
-    right: 0;
-    top: 50px;
+.form-overview_button {
+  // This element is injected by JS
+  @include button_type_link;
+  padding-left: govuk-spacing(2);
+  padding-right: govuk-spacing(2);
+  position: absolute;
+  right: 0;
+  top: 50px;
 
-    &:before {
-      content: "+";
-      margin-right: 2px;
-    }
+  &:before {
+    content: "+";
+    margin-right: 2px;
   }
 }
 
 .form-step {
   position: relative;
-
-  button {
-    @include button_type_link;
-    border: govuk-colour("blue") solid 2px;
-    border-radius: 25px;
-    bottom: calc(25px + #{govuk-spacing(2)});
-    height: 35px;
-    padding: 0;
-    position: absolute;
-    right: govuk-spacing(2);
-    visibility: hidden;
-    text-align: center;
-    width: 35px;
-
-    &:hover {
-      background-color: govuk-colour("white");
-      color: govuk-colour("blue");
-    }
-  }
-
-  button:after {
-    content: "...";
-    display: inline-block;
-    font-weight: bold;
-    letter-spacing: 2px;
-    position: relative;
-    top: -2px;
-  }
 
   img {
     border: govuk-colour("blue") solid 2px;
@@ -146,6 +118,35 @@
   }
 }
 
+.form-step_button {
+  @include button_type_link;
+  border: govuk-colour("blue") solid 2px;
+  border-radius: 25px;
+  bottom: calc(25px + #{govuk-spacing(2)});
+  height: 35px;
+  padding: 0;
+  position: absolute;
+  right: govuk-spacing(2);
+  text-indent: -1000px;
+  visibility: hidden;
+  width: 35px;
+
+  &:hover {
+    background-color: govuk-colour("white");
+    color: govuk-colour("blue");
+  }
+
+  &:after {
+    content: "...";
+    display: block;
+    font-weight: bold;
+    letter-spacing: 2px;
+    left: 0;
+    position: relative;
+    text-indent: 0;
+    top: -27px;
+  }
+}
 
 
 /* govuk-button style is green but we want

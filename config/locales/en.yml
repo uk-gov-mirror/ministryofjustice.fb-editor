@@ -12,6 +12,7 @@ en:
     name: 'Pages'
     create: 'Add page'
     cancel: 'Cancel'
+    actions: 'Actions'
   settings:
     name: 'Settings'
     form_information: 'Form information'

@@ -13,6 +13,7 @@ function applyMenus() {
   $(".component-activated-menu").each(function(i, el) {
     var $menu = $(el);
     new ActivatedMenu($menu, {
+      activator_classname: $menu.data("activator-classname"),
       activator_text: $menu.data("activator-text"),
       menu: {
         position: { at: "right+2 top-2" }
