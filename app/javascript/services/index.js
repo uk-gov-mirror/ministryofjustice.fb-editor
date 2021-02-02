@@ -15,13 +15,16 @@ $(document).ready(function() {
 function applyMenus() {
   $(".component-activated-menu").each(function(i, el) {
     var $menu = $(el);
-    new ActivatedMenu($menu, {
+    var menu =  new ActivatedMenu($menu, {
       activator_classname: $menu.data("activator-classname"),
       activator_text: $menu.data("activator-text"),
+      position: { my: "top left", at: "left bottom" }, // Position menu in relation to activator.
       menu: {
-        position: { at: "right+2 top-2" }
+        position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
       }
     });
+
+    $(document.body).append(menu.container);
   });
 }
 
