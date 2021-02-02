@@ -1,8 +1,9 @@
 class Publisher
   module Adapters
     class CloudPlatform
+      class ConfigFilesNotFound < StandardError; end
       attr_reader :service_provisioner
-      delegate :service_id, to: :service_provisioner
+      delegate :service_id, :namespace, :service_slug, to: :service_provisioner
 
       def initialize(service_provisioner)
         @service_provisioner = service_provisioner
@@ -11,45 +12,49 @@ class Publisher
       def pre_publishing
         ::Publisher::Utils::KubernetesConfiguration.new(
           service_provisioner
-        ).generate(destination: config_dir)
+        ).generate(destination: create_config_dir)
       end
 
-      # provision pods (kubectl apply) in namespace formbuilder-services-test-dev
-      #
-      # kubectl apply -f ./dir
-      # --context=#{@environment.kubectl_context}
-      # --namespace=#{@environment.namespace}
-      # --token=$KUBECTL_BEARER_TOKEN
-      #
       def publishing
+        if config_dir? && config_files?
+          Utils::KubeControl.execute(
+            "apply -f #{config_dir}", namespace: namespace
+          )
+        else
+          raise ConfigFilesNotFound.new("Config files not found in #{config_dir}")
+        end
       end
 
-      # restart the server
-      #
-      # kubectl patch deployment service_slug
-      # -p timestamp
-      # --context=#{@environment.kubectl_context}
-      # --namespace=#{@environment.namespace}
-      # --token=$KUBECTL_BEARER_TOKEN
-      #
-      # Run rollout status?
-      # kubectl rollout status deployment service_slug
-      # --context=#{@environment.kubectl_context}
-      # --namespace=#{@environment.namespace}
-      # --token=$KUBECTL_BEARER_TOKEN
-      #
       def post_publishing
+        Utils::KubeControl.execute(
+          "rollout restart deployment #{service_slug}",
+          namespace: namespace
+        )
+        Utils::KubeControl.execute(
+          "rollout status deployment #{service_slug}",
+          namespace: namespace
+        )
       end
 
-      ## send slack notification
-      ##
       def completed
       end
 
       private
 
+      def create_config_dir
+        FileUtils.mkdir_p(config_dir)
+      end
+
       def config_dir
-        FileUtils.mkdir_p(Rails.root.join('tmp', 'publisher', service_id))
+        Rails.root.join('tmp', 'publisher', service_id)
+      end
+
+      def config_dir?
+        File.exist?(config_dir)
+      end
+
+      def config_files?
+        Dir["#{config_dir}/*"].any?
       end
     end
   end

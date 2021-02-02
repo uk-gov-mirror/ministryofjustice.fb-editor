@@ -6,13 +6,32 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
     ::Publisher::ServiceProvisioner.new(
       service_id: '0da69306-cafd-4d32-bbee-fff98cac74ce',
       platform_environment: 'test',
-      deployment_environment: 'dev'
+      deployment_environment: 'dev',
+      service_configuration: [
+        double(name: 'ENCODED_PRIVATE_KEY', value: encoded_private_key),
+        double(name: 'ENCODED_PUBLIC_KEY', value: encoded_public_key),
+      ]
+    )
+  end
+  let(:encoded_private_key) do
+    Base64.strict_encode64(
+      File.read(Rails.root.join('spec', 'fixtures', 'private_key'))
+    )
+  end
+  let(:encoded_public_key) do
+    Base64.strict_encode64(
+      File.read(Rails.root.join('spec', 'fixtures', 'public_key'))
     )
   end
 
   before do
-    allow(service_provisioner).to receive(:service_slug).and_return(
-      'acceptance-tests-date'
+    allow(service_provisioner).to receive(:service).and_return(
+      MetadataPresenter::Service.new(
+        'service_name' => 'acceptance-tests-date'
+      )
+    )
+    allow(service_provisioner).to receive(:secret_key_base).and_return(
+      'fdfdd491d611aa1abef54cbf24a709a1bb31ff881a487f8c58c69399202b08f77019920f481e17b40dd7452361055534b9f91f172719ed98a088498242f96f59'
     )
   end
 

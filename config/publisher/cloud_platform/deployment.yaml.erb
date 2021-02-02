@@ -23,6 +23,8 @@ spec:
         - configMapRef:
             name: <%= config_map_name %>
         env:
+          - name: RAILS_ENV
+            value: 'production'
           - name: USER_DATASTORE_URL
             value: <%= user_datastore_url %>
           - name: SERVICE_SLUG
@@ -31,7 +33,11 @@ spec:
             value: <%= platform_environment %>
           - name: DEPLOYMENT_ENV
             value: <%= deployment_environment %>
-        image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-test
+          - name: SECRET_KEY_BASE
+            value: <%= secret_key_base %>
+          - name: SERVICE_METADATA
+            value: '<%= service_metadata %>'
+        image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-<%= platform_environment %>
         imagePullPolicy: Always
         ports:
         - containerPort: <%= container_port %>

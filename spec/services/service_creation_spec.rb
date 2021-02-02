@@ -73,11 +73,12 @@ RSpec.describe ServiceCreation do
       let(:service) do
         double(id: '05e12a93-3978-4624-a875-e59893f2c262', errors?: false)
       end
-
       before do
         expect(
           MetadataApiClient::Service
         ).to receive(:create).and_return(service)
+
+        expect_any_instance_of(DefaultConfiguration).to receive(:create)
       end
 
       it 'returns true' do

@@ -77,6 +77,11 @@ spec:
               secretKeyRef:
                 name: rds-instance-formbuilder-editor-{{ .Values.environmentName }}
                 key: url
+          - name: EDITOR_SERVICE_ACCOUNT_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.editor_service_account_token }}
+                key: token
       volumes:
         - name: tmp-files
           emptyDir: {}

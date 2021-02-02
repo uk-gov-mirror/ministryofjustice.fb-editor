@@ -2,10 +2,16 @@ FROM ruby:2.7.2-alpine3.12
 
 ARG UID=1001
 
-RUN apk add git nodejs yarn build-base postgresql-contrib postgresql-dev bash libcurl
+RUN apk add git nodejs yarn build-base postgresql-contrib postgresql-dev bash libcurl curl
+
+ARG KUBE_VERSION="1.17.3"
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/v$KUBE_VERSION/bin/linux/amd64/kubectl
+RUN chmod u+x kubectl && mv kubectl /bin/kubectl
 
 RUN addgroup -g ${UID} -S appgroup && \
   adduser -u ${UID} -S appuser -G appgroup
+
+RUN chown appuser:appgroup /bin/kubectl
 
 WORKDIR /app
 

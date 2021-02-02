@@ -1,11 +1,23 @@
+require 'securerandom'
+
 class Publisher
   class ServiceProvisioner
     include ActiveModel::Model
-    attr_accessor :service_id, :platform_environment, :deployment_environment
+    attr_accessor :service_id,
+                  :platform_environment,
+                  :deployment_environment,
+                  :service_configuration
     validates :service_id,
               :platform_environment,
               :deployment_environment,
+              :service_configuration,
               presence: true
+
+    validates :service_configuration, private_public_key: true
+
+    def service_metadata
+      service.to_json
+    end
 
     def get_binding
       binding
@@ -35,6 +47,10 @@ class Publisher
 
     def container_port
       Rails.application.config.platform_environments[:common][:container_port]
+    end
+
+    def secret_key_base
+      SecureRandom.hex(64)
     end
 
     def config_map_name

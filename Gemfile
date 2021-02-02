@@ -10,9 +10,9 @@ gem 'bootsnap', '>= 1.4.2', require: false
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
 #     branch: 'some-branch'
-# gem 'metadata_presenter', path: '../fb-metadata-presenter'
+#gem 'metadata_presenter', path: '../fb-metadata-presenter'
 #
-gem 'metadata_presenter', '0.3.1'
+gem 'metadata_presenter', '0.4.0'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'fb-jwt-auth', '0.5.0'

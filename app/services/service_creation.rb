@@ -9,6 +9,8 @@ class ServiceCreation < Editor::Service
       false
     else
       assign_service_attributes(service)
+      DefaultConfiguration.new(self).create
+      true
     end
   end
 
@@ -27,3 +29,4 @@ class ServiceCreation < Editor::Service
     }
   end
 end
+
