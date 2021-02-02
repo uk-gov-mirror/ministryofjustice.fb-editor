@@ -15,16 +15,16 @@ class Publisher
 
     validates :service_configuration, private_public_key: true
 
+    def service_metadata
+      service.to_json
+    end
+
     def get_binding
       binding
     end
 
     def service_slug
       service.service_name.parameterize
-    end
-
-    def service_metadata
-      service.to_h.to_json
     end
 
     def namespace
