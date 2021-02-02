@@ -27,7 +27,7 @@ class Publisher
 
       def post_publishing
         Utils::KubeControl.execute(
-          "patch deployment #{service_slug} -p '#{timestamp}'",
+          "rollout restart deployment #{service_slug}",
           namespace: namespace
         )
         Utils::KubeControl.execute(
@@ -55,20 +55,6 @@ class Publisher
 
       def config_files?
         Dir["#{config_dir}/*"].any?
-      end
-
-      def timestamp
-        {
-          spec: {
-            template: {
-              metadata: {
-                annotations: {
-                  updated_at: "#{Time.now.to_i}"
-                }
-              }
-            }
-          }
-        }.to_json
       end
     end
   end

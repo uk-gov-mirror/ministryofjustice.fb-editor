@@ -82,19 +82,11 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
   end
 
   describe '#post_publishing' do
-    before do
-      Timecop.freeze(Time.local(2021, 2, 1, 12, 12, 12, 0))
-    end
-
-    after do
-      Timecop.return
-    end
-
-    it 'patches deployment and rollout status' do
+    it 'restart deployment and rollout status' do
       expect(
         ::Publisher::Utils::KubeControl
       ).to receive(:execute).with(
-        %{patch deployment obi-wan -p '{\"spec\":{\"template\":{\"metadata\":{\"annotations\":{\"updated_at\":"#{Time.now.to_i}"}}}}}'},
+        'rollout restart deployment obi-wan',
         namespace: 'formbuilder-services-test-dev')
       expect(
         ::Publisher::Utils::KubeControl
