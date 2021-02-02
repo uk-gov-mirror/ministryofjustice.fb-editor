@@ -4,6 +4,15 @@
   <% service.pages.each do |page| %>
     <div class="form-step">
       <%= image_pack_tag('page_placeholder.png', class: 'form-thumbnail') %>
+      <button><span class="govuk-visually-hidden">Actions</span></button>
+      <ul class="govuk-navigation component-activated-menu"
+          data-activator-text="<%= t('pages.create') %>">
+        <li><a href="#edit-page" data-type="text">Edit page</a></li>
+        <li><a href="#preview-page" data-type="text">Preview page</a></li>
+        <li><a href="#add-page-here" data-type="text">Add page here</a></li>
+        <li><a href="#delete-page" data-type="text">Delete page...</a></li>
+      </ul>
+
       <%= link_to page.url, edit_page_path(service.service_id, page.uuid) %>
     </div>
   <% end %>

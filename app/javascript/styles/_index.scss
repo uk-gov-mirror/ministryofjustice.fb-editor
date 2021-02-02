@@ -18,6 +18,7 @@
   background-color: govuk-colour("white");
   border: govuk-colour("blue") solid 2px;
   color: govuk-colour("blue");
+  cursor: pointer;
   display: block;
   padding: govuk-spacing(1);
   text-decoration: none;
@@ -102,10 +103,46 @@
 }
 
 .form-step {
+  position: relative;
+
+  button {
+    @include button_type_link;
+    border: govuk-colour("blue") solid 2px;
+    border-radius: 25px;
+    bottom: calc(25px + #{govuk-spacing(2)});
+    height: 35px;
+    padding: 0;
+    position: absolute;
+    right: govuk-spacing(2);
+    visibility: hidden;
+    text-align: center;
+    width: 35px;
+
+    &:hover {
+      background-color: govuk-colour("white");
+      color: govuk-colour("blue");
+    }
+  }
+
+  button:after {
+    content: "...";
+    display: inline-block;
+    font-weight: bold;
+    letter-spacing: 2px;
+    position: relative;
+    top: -2px;
+  }
+
   img {
     border: govuk-colour("blue") solid 2px;
     display: block;
     width: 200px;
+  }
+
+  &:hover {
+    button {
+      visibility: visible;
+    }
   }
 }
 
