@@ -13,4 +13,9 @@ class PublishController < FormController
     @publish_service.save!
     PublishServiceJob.perform_later(publish_service_id: @publish_service.id)
   end
+
+  def presenter
+    PublishServicePresenter.new(view_context)
+  end
+  helper_method :presenter
 end

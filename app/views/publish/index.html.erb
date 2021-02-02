@@ -8,6 +8,10 @@
 
 <h2><%= t('publish.test') %></h2>
 
+<span>
+  <%= PublishServicePresenter.hostname_for(deployment_environment: 'dev', view: self) %>
+</span>
+
 <p><%= t('publish.test_sub_heading') %></p>
 
 <%= form_for(@publish_service, url: publish_index_path(service.service_id)) do |f| %>
@@ -17,6 +21,10 @@
 <% end %>
 
 <h2><%= t('publish.live') %></h2>
+
+<span>
+  <%= PublishServicePresenter.hostname_for(deployment_environment: 'production', view: self) %>
+</span>
 
 <p><%= t('publish.live_sub_heading') %></p>
 

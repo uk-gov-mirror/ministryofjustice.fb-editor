@@ -3,6 +3,8 @@ require 'securerandom'
 class Publisher
   class ServiceProvisioner
     include ActiveModel::Model
+    include ::Publisher::Utils::Hostname
+
     attr_accessor :service_id,
                   :platform_environment,
                   :deployment_environment,
@@ -24,7 +26,7 @@ class Publisher
     end
 
     def service_slug
-      service.service_name.parameterize
+      service.service_slug
     end
 
     def namespace
@@ -32,17 +34,6 @@ class Publisher
         platform_environment: platform_environment,
         deployment_environment: deployment_environment
       }
-    end
-
-    def hostname
-      root_url = Rails.application.config
-        .platform_environments[platform_environment][:url_root]
-
-      if deployment_environment == 'production'
-        [service_slug, '.', root_url].join
-      else
-        [service_slug, '.', 'dev', '.', root_url].join
-      end
     end
 
     def container_port
