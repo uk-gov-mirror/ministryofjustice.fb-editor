@@ -5,16 +5,46 @@ $(document).ready(function() {
   applyMenus();
 });
 
-function applyMenus() {
-  var $menu = $(".component-activated-menu");
 
-  new ActivatedMenu($menu, {
-    activator_text: $menu.data("activator-text"),
-    menu: {
-      position: { at: "right+2 top-2" }
-    }
+// Finds navigation elements structured to become Activated Menu
+// effects and wraps them with the required functionality.
+//
+function applyMenus() {
+  $(".component-activated-menu").each(function(i, el) {
+    var $menu = $(el);
+    new ActivatedMenu($menu, {
+      activator_text: $menu.data("activator-text"),
+      menu: {
+        position: { at: "right+2 top-2" }
+      }
+    });
   });
 }
+
+
+// Finds forms structured to become dialog effects and
+// wraps them with the required functionality.
+//
+function applyFormDialogs() {
+	$(".component-dialog-form").each(function(i, el) {
+    var $dialog = $(el);
+    var $form = $dialog.find("form");
+
+    // Design requires an activator be added dynamically.
+    // Create and place it before enhancing the dialog
+    // because that functionality will move and hide the
+    // dialog element.
+    $dialog.before(createDialogActivator($dialog, $dialog.data("activator-text")));
+
+    // Enhance target element with desired functionality.
+    createFormDialog($dialog, {
+      form: $form,
+      cancel_text: $dialog.data("cancel-text"),
+      submit_text: $form.find(":submit").val()
+    });
+  });
+}
+
 
 class ActivatedMenu {
   constructor($menu, config) {
@@ -70,30 +100,6 @@ class ActivatedMenu {
   action() {
     console.log("ActivateMenu.action");
   }
-}
-
-
-// Finds forms structured to become dialog effects and
-// wraps them with the required functionality.
-//
-function applyFormDialogs() {
-	$(".component-dialog-form").each(function(i, el) {
-    var $dialog = $(el);
-    var $form = $dialog.find("form");
-
-    // Design requires an activator be added dynamically.
-    // Create and place it before enhancing the dialog
-    // because that functionality will move and hide the
-    // dialog element.
-    $dialog.before(createDialogActivator($dialog, $dialog.data("activator-text")));
-
-    // Enhance target element with desired functionality.
-    createFormDialog($dialog, {
-      form: $form,
-      cancel_text: $dialog.data("cancel-text"),
-      submit_text: $form.find(":submit").val()
-    });
-  });
 }
 
 
