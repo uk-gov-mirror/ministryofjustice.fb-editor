@@ -12,7 +12,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 #     branch: 'some-branch'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
 #
-gem 'metadata_presenter', '0.3.1'
+gem 'metadata_presenter', '0.3.2'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'fb-jwt-auth', '0.5.0'
