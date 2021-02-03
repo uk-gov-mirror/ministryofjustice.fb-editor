@@ -156,7 +156,7 @@ function createFormDialog($dialog, config) {
   var buttons = {}
 
   buttons[config.submit_text] = function() {
-    config.$form.submit();
+    config.form.submit();
     $(this).dialog( "close" );
   }
 
