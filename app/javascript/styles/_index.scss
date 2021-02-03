@@ -82,8 +82,7 @@
  * URLs: /services/.../edit
  **/
 .form-overview {
-  display: inline-block;
-  padding-right: 200px;
+  display: inline-flex;
   position: relative;
 
   .govuk-button {
@@ -97,7 +96,7 @@
   padding-left: govuk-spacing(2);
   padding-right: govuk-spacing(2);
   position: absolute;
-  right: 0;
+  right: -100px;
   top: 50px;
 
   &:before {
@@ -107,6 +106,9 @@
 }
 
 .form-step {
+  display: inline-block;
+  padding-right: 100px;
+  overflow: hidden;
   position: relative;
 
   img {
@@ -128,9 +130,9 @@
   border-radius: 25px;
   bottom: calc(25px + #{govuk-spacing(2)});
   height: 35px;
+  left: 158px;
   padding: 0;
   position: absolute;
-  right: govuk-spacing(2);
   text-indent: -1000px;
   visibility: hidden;
   width: 35px;
