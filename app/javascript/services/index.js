@@ -29,7 +29,6 @@ function bindDocumentEventsForPagesSection() {
 
 // Controls what happens when user selects a page type.
 function addPageTypeMenuSelection(event, data) {
-  console.group("addPageTypeMenuSelection()");
 
   // 1). Set page_type & component_type in hidden form.
   var $pageTypeInput = $("#page_page_type");
@@ -51,9 +50,7 @@ function addPageTypeMenuSelection(event, data) {
   }
 
   // 3). Activate Component Dialog Form for URL input.
-  // TODO: ...
-
-  console.groupEnd();
+  $("#new-page-create-dialog").dialog("open");
 }
 
 
@@ -142,7 +139,7 @@ function applyFormDialogs() {
 }
 
 
-// Creates a buttons and links with the passed dialog element.
+// Creates a button and links with the passed dialog element.
 // @$dialog (jQuery object) Target dialog element enhanced with dialog funcitonality.
 // @text    (String) Text that will show on the button.
 function createDialogActivator($dialog, text) {
