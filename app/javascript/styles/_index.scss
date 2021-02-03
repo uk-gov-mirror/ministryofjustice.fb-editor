@@ -85,6 +85,10 @@
   display: inline-block;
   padding-right: 200px;
   position: relative;
+
+  .govuk-button {
+    display: none; // JS injected element, not required.
+  }
 }
 
 .form-overview_button {
