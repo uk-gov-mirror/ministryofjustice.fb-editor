@@ -96,8 +96,8 @@
   padding-left: govuk-spacing(2);
   padding-right: govuk-spacing(2);
   position: absolute;
-  right: -100px;
-  top: 50px;
+  right: -113px;
+  top: calc(50% - 30px);
 
   &:before {
     content: "+";
@@ -115,6 +115,26 @@
     border: govuk-colour("blue") solid 2px;
     display: block;
     width: 200px;
+  }
+
+  &:after {
+    border-top: govuk-colour("black") solid 2px;
+    content: "";
+    position: absolute;
+    right: 5px;
+    top: calc(45% - 1px);
+    width: 93px;
+  }
+
+  &:before {
+    border: govuk-colour("black") solid 5px;
+    border-top-color: govuk-colour("white");
+    border-left-color: govuk-colour("white");
+    content: "";
+    position: absolute;
+    right: 4px;
+    transform: rotate(-45deg);
+    top: calc(45% - 5px);
   }
 
   &:hover {
