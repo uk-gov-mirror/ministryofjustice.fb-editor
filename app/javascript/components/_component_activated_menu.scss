@@ -19,14 +19,20 @@
 }
 
 .component-activated-menu {
-  a {
+  a, span {
     @include button_type_link;
     border: none;
+    display: block;
   }
 
   &, ul {
     border: govuk-colour("blue") solid 2px;
     position: absolute;
     width: 200px;
+  }
+
+  .ui-menu-icon {
+    /* jQueryUI Menu is adding unwanted icon markup when <a> tags are replaced with <span> tags */
+    display: none;
   }
 }

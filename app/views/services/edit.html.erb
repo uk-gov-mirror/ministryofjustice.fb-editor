@@ -40,6 +40,7 @@
   <% end %>
 </div>
 
+
 <%# TODO: Backend to replace this with dynamic data-driven output %>
 <ul class="govuk-navigation component-activated-menu"
     data-activated-menu-container-id="ActivatedMenu_AddPage"
@@ -47,27 +48,45 @@
     data-activator-text="<%= t('pages.create') %>"
     data-document-event="AddPageTypeMenuSelection">
   <li>
-    <a href="#add-page" data-type="text">Single question page</a>
+    <span>Single question page</span>
     <ul class="govuk-navigation">
-      <li><a href="#add-page" data-type="text">Text</a></li>
-      <li><a href="#add-page" data-type="text">Textarea</a></li>
-      <li><a href="#add-page" data-type="text">Number</a></li>
-      <li><a href="#add-page" data-type="text">Date</a></li>
-      <li><a href="#add-page" data-type="text">Radio buttons</a></li>
-      <li><a href="#add-page" data-type="text">Checkboxes</a></li>
+      <li><a href="#add-page"
+             data-page-type="singlequestion"
+             data-component-type="text">Text</a></li>
+      <li><a href="#add-page"
+             data-page-type="singlequestion"
+             data-component-type="textarea">Textarea</a></li>
+      <li><a href="#add-page"
+             data-page-type="singlequestion"
+             data-component-type="number">Number</a></li>
+      <li><a href="#add-page"
+             data-page-type="singlequestion"
+             data-component-type="date">Date</a></li>
+      <li><a href="#add-page"
+             data-page-type="singlequestion"
+             data-component-type="radio">Radio buttons</a></li>
+      <li><a href="#add-page"
+             data-page-type="singlequestion"
+             data-component-type="checkbox">Checkboxes</a></li>
     </ul>
   </li>
-  <li><a href="#add-page" data-type="text">Multiple question page</a></li>
   <li>
-    <a href="#add-page" data-type="text">Check answers page</a>
+    <span>Multiple question page</span>
     <ul class="govuk-navigation">
-      <li><a href="#add-page" data-type="text">Text</a></li>
-      <li><a href="#add-page" data-type="text">Textarea</a></li>
-      <li><a href="#add-page" data-type="text">Number</a></li>
+      <li><a href="#add-page"
+             data-page-type="multiplequestion"
+             data-component-type="text">Text</a></li>
+      <li><a href="#add-page"
+             data-page-type="multiplequestion"
+             data-component-type="textarea">Textarea</a></li>
+      <li><a href="#add-page"
+             data-page-type="multiplequestion"
+             data-component-type="number">Number</a></li>
     </ul>
   </li>
-  <li><a href="#add-page" data-type="text">Confirmation page</a></li>
-  <li><a href="#add-page" data-type="text">Content page</a></li>
+  <li><a href="#add-page" data-page-type="checkanswers">Check answers page</a></li>
+  <li><a href="#add-page" data-page-type="confirmation">Confirmation page</a></li>
+  <li><a href="#add-page" data-page-type="content">Content page</a></li>
 </ul>
 
 

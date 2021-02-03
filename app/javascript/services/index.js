@@ -22,7 +22,34 @@ function bindDocumentEventsForPagesSection() {
     let $document = $(document);
 
     $document.on("FormStepContextMenuSelection", formStepContextMenuSelection);
+    $document.on("AddPageTypeMenuSelection", addPageTypeMenuSelection);
   }
+}
+
+
+// Controls what happens when user selects a page type.
+function addPageTypeMenuSelection(event, data) {
+  console.group("addPageTypeMenuSelection()");
+
+  // 1). Set page_type & component_type in hidden form.
+  var $pageTypeInput = $("#page_page_type");
+  var $componentTypeInput = $("#page_component_type");
+  var $activator = data.activator.find("> a");
+
+  // First reset to empty.
+  $pageTypeInput.val("");
+  $componentTypeInput.val("");
+
+  // Then add any found values.
+  if($activator.length) {
+    $pageTypeInput.val($activator.data("page-type"));
+    $componentTypeInput.val($activator.data("component-type"));
+  }
+
+  // 2). Activate Component Dialog Form for URL input.
+  // TODO: ...
+
+  console.groupEnd();
 }
 
 
