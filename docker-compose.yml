@@ -12,6 +12,7 @@ services:
   editor-app:
     build:
       context: .
+      dockerfile: ./docker/web/Dockerfile
       args:
         BUNDLE_ARGS: ''
     tty: true
