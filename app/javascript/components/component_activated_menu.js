@@ -18,10 +18,16 @@ class ActivatedMenu {
   constructor($menu, config) {
     this.activator = $("<button class=\"ActivatedMenu_Activator\"></button>");
     this.container = $("<div class=\"ActivatedMenu_Container\"></div>");
-    this.config = config;
+    this.config = config || {};
     this.menu = $menu;
     this.state = {
-      open: false
+      open: false,
+      position: null // Default is empty - update this dynamically
+      // e.g. position = {
+      //        my: "left top",
+      //        at: "right bottom"
+      //        of: this.activator
+      //      }
     }
 
     this.menu.before(this.container);
@@ -73,13 +79,12 @@ class ActivatedMenu {
  * Uses the jQueryUI position() utility function to set the values.
  **/
 function setMenuOpenPosition() {
-  if(this.config && this.config.position) {
-    this.container.position({
-      my: this.config.position.my,
-      at: this.config.position.at,
-      of: this.activator
-    })
-  }
+  var position = (this.state.position || this.config.position || {});
+  this.container.position({
+    my: (position.my || "left top"),
+    at: (position.at || "right bottom"),
+    of: (position.of || this.activator)
+  });
 }
 
 /* Removes any position values that have occurred as a result of
@@ -101,6 +106,7 @@ function clearMenuOpenPosition() {
   node.style.top = "";
   node.style.bottom = "";
   node.style.position = "";
+  this.state.position = null; // Reset because this one is set on-the-fly
 }
 
 
@@ -113,10 +119,16 @@ function bindEventHandlers() {
   var component = this;
 
   this.activator.on("click.ActivatedMenu", () => {
+    component.state.activator = event.currentTarget;
     component.toggle();
   });
 
-  this.container.on("ActivatedMenuToggle", function() {
+  this.container.on("ActivatedMenuToggle", () => {
+    component.state.position = {
+      at: "right top",
+      of: event.target
+    }
+
     component.toggle();
   });
 
