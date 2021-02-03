@@ -27,27 +27,18 @@ class ActivatedMenu {
     this.menu.before(this.container);
     this.menu.menu(config.menu); // Bit confusing but is how jQueryUI adds effect to eleemnt.
 
-    this.menu.on("menuselect", function() {
-      console.log("Menu select");
-    });
-
+    this.activator.text(config.activator_text);
     if(config.activator_classname) {
       this.activator.addClass(config.activator_classname);
     }
 
-    this.activator.text(config.activator_text);
-    this.activator.on("click.ActivatedMenu", () => {
-      if(this.state.open) {
-        this.close();
-      }
-      else {
-        this.open();
-
-      }
-    });
-
+    if(config.container_id) {
+      this.container.attr("id", config.container_id);
+    }
     this.container.append(this.menu);
     this.container.before(this.activator);
+
+    bindEventHandlers.call(this);
 
     this.close();
   }
@@ -66,9 +57,14 @@ class ActivatedMenu {
     this.state.open = false;
   }
 
-  // Method
-  action() {
-    console.log("ActivateMenu.action");
+  // Toggles the open/close functionality
+  toggle() {
+    if(this.state.open) {
+      this.close();
+    }
+    else {
+      this.open();
+    }
   }
 }
 
@@ -78,7 +74,6 @@ class ActivatedMenu {
  **/
 function setMenuOpenPosition() {
   if(this.config && this.config.position) {
-    console.log("Position the menu in relation to the activator");
     this.container.position({
       my: this.config.position.my,
       at: this.config.position.at,
@@ -107,6 +102,38 @@ function clearMenuOpenPosition() {
   node.style.bottom = "";
   node.style.position = "";
 }
+
+
+/* Set event handlers on elements:
+ *   - Menu selection
+ *   - Injected Activator
+ *   - Wrapping container
+ **/
+function bindEventHandlers() {
+  var component = this;
+
+  this.activator.on("click.ActivatedMenu", () => {
+    component.toggle();
+  });
+
+  this.container.on("ActivatedMenuToggle", function() {
+    component.toggle();
+  });
+
+  // Add a trigger for any listening document event
+  // to activate on menu item selection.
+  if(this.config.selection_event) {
+    let selection_event = this.config.selection_event;
+    this.menu.on("menuselect", function(event, ui) {
+      event.preventDefault();
+      $(document).trigger(selection_event, {
+        activator: ui.item,
+        menu: event.currentTarget
+      });
+    });
+  }
+}
+
 
 // Make available for importing.
 export { ActivatedMenu };

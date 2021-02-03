@@ -6,7 +6,63 @@ import { ActivatedMenu } from '../components/component_activated_menu';
 $(document).ready(function() {
   applyFormDialogs();
   applyMenus();
+  bindDocumentEventsForPagesSection();
 });
+
+
+// Bind document event listeners for the 'Pages' section of
+// form builder. This will only do something if the main
+// ".form-overview" container is found. It is used to control
+// functionality not specific to a single component or where
+// a component can be activated by more than one element (so
+// prevents complicated multiple element binding/handling.
+//
+function bindDocumentEventsForPagesSection() {
+  if($(".form-overview").length) {
+    let $document = $(document);
+
+    $document.on("FormStepContextMenuSelection", formStepContextMenuSelection);
+  }
+}
+
+
+// Handle item selections on the form step context
+// menu elements.
+// TODO: What are other actions?
+function formStepContextMenuSelection(event, data) {
+  var $link = data.activator.find("a");
+  var fragId = findFragmentIdentifier($link.attr("href"))
+  switch(fragId) {
+    case "edit-page": console.log("edit page");
+         break;
+
+    case "preview-page": console.log("preview page");
+         break;
+
+    case "add-page-here":
+         console.log("add page");
+         $("#ActivatedMenu_AddPage").trigger("ActivatedMenuToggle");
+         break;
+
+    case "delete-page": console.log("delete page");
+         break;
+
+    default: console.log(data.activator.href);
+  }
+}
+
+
+// Utility funciton
+// Return the fragment identifier value from a URL.
+// Intended for use on an href value rather than document
+// location, which can use location.hash.
+// e.g. pass in
+// "http://foo.com#something" or
+// "http://foo.com#something?else=here"
+// and get "something" in either case.
+function findFragmentIdentifier(url) {
+  return url.replace(/^.*#(.*?)(?:(\?).*)?$/, "$1");
+}
 
 
 // Finds navigation elements structured to become Activated Menu
@@ -17,7 +73,9 @@ function applyMenus() {
     var $menu = $(el);
     var menu =  new ActivatedMenu($menu, {
       activator_classname: $menu.data("activator-classname"),
+      container_id: $menu.data("activated-menu-container-id"),
       activator_text: $menu.data("activator-text"),
+      selection_event: $menu.data("document-event"),
       position: { my: "top left", at: "left bottom" }, // Position menu in relation to activator.
       menu: {
         position: { at: "right+2 top-2" } // Position second-level menu in relation to first.

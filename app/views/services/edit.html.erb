@@ -4,15 +4,16 @@
   <% service.pages.each do |page| %>
     <div class="form-step">
       <%= image_pack_tag('page_placeholder.png', class: 'form-thumbnail') %>
-      <!--button><span class="govuk-visually-hidden">Actions</span></button-->
-      <%# TODO: Backend to add dynamic data-driven values to this output %>
+
+      <%# TODO: Backend to add dynamic data-driven values to this standard output %>
       <ul class="govuk-navigation component-activated-menu"
           data-activator-text="<%= t('pages.actions') %>"
-          data-activator-classname="form-step_button">
-        <li><a href="#edit-page" data-type="text">Edit page</a></li>
-        <li><a href="#preview-page" data-type="text">Preview page</a></li>
-        <li><a href="#add-page-here" data-type="text">Add page here</a></li>
-        <li><a href="#delete-page" data-type="text">Delete page...</a></li>
+          data-activator-classname="form-step_button"
+          data-document-event="FormStepContextMenuSelection">
+        <li><a href="#edit-page">Edit page</a></li>
+        <li><a href="#preview-page">Preview page</a></li>
+        <li><a href="#add-page-here">Add page here</a></li>
+        <li><a href="#delete-page">Delete page...</a></li>
       </ul>
 
       <%= link_to page.url, edit_page_path(service.service_id, page.uuid) %>
@@ -41,8 +42,10 @@
 
 <%# TODO: Backend to replace this with dynamic data-driven output %>
 <ul class="govuk-navigation component-activated-menu"
+    data-activated-menu-container-id="ActivatedMenu_AddPage"
+    data-activator-classname="form-overview_button"
     data-activator-text="<%= t('pages.create') %>"
-    data-activator-classname="form-overview_button">
+    data-document-event="AddPageTypeMenuSelection">
   <li>
     <a href="#add-page" data-type="text">Single question page</a>
     <ul class="govuk-navigation">
