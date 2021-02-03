@@ -44,9 +44,13 @@ function addPageTypeMenuSelection(event, data) {
   if($activator.length) {
     $pageTypeInput.val($activator.data("page-type"));
     $componentTypeInput.val($activator.data("component-type"));
+
+    // If we're here, it's because the user has made a selection,
+    // so we should go ahead and close the open menu
+    data.component.close();
   }
 
-  // 2). Activate Component Dialog Form for URL input.
+  // 3). Activate Component Dialog Form for URL input.
   // TODO: ...
 
   console.groupEnd();

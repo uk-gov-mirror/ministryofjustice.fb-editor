@@ -135,12 +135,14 @@ function bindEventHandlers() {
   // Add a trigger for any listening document event
   // to activate on menu item selection.
   if(this.config.selection_event) {
-    let selection_event = this.config.selection_event;
-    this.menu.on("menuselect", function(event, ui) {
+    let component = this;
+    let selection_event = component.config.selection_event;
+    component.menu.on("menuselect", function(event, ui) {
       event.preventDefault();
       $(document).trigger(selection_event, {
         activator: ui.item,
-        menu: event.currentTarget
+        menu: event.currentTarget,
+        component: component
       });
     });
   }
