@@ -5,6 +5,7 @@ ruby '2.7.2'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'delayed_job_active_record'
+gem 'daemons'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
