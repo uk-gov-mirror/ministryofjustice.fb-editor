@@ -12,7 +12,7 @@ FactoryBot.define do
 
     trait :username do
       name { 'USERNAME' }
-      value { 'eC13aW5nCg==' }
+      value { 'eC13aW5n' }
     end
 
     trait :password do

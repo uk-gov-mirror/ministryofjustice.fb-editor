@@ -11,10 +11,11 @@
 
  <div class="govuk-form-group">
    <%= f.label :username %>
-   <%= f.text_field :username %>
+
+   <%= f.text_field :username, value: f.object.service_configuration(name: :username, deployment_environment: deployment_environment)  %>
  </div>
 
  <div class="govuk-form-group">
    <%= f.label :password %>
-   <%= f.text_field :password %>
+   <%= f.password_field :password, value: f.object.service_configuration(name: :password, deployment_environment: deployment_environment) %>
  </div>

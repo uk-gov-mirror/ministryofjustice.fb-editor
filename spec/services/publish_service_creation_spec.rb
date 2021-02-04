@@ -4,6 +4,36 @@ RSpec.describe PublishServiceCreation, type: :model do
   end
   let(:service_id) { service.service_id }
 
+  describe '#service_configuration' do
+    let(:attributes) { {} }
+
+    context 'when configuration exists' do
+      let!(:username_config) do
+        create(:service_configuration, :dev, :username, service_id: service_id)
+      end
+
+      it 'returns the value decoded' do
+        expect(
+          publish_service_creation.service_configuration(
+            name: :username,
+            deployment_environment: 'dev'
+          )
+        ).to eq('x-wing')
+      end
+    end
+
+    context 'when configuration does not exist' do
+      it 'returns nil' do
+        expect(
+          publish_service_creation.service_configuration(
+            name: :username,
+            deployment_environment: 'dev'
+          )
+        ).to be_nil
+      end
+    end
+  end
+
   describe '#save' do
     context 'when invalid' do
       context 'when require authentication' do

@@ -37,6 +37,18 @@ class PublishServiceCreation
     true
   end
 
+  def service_configuration(name:, deployment_environment:)
+    configuration = ServiceConfiguration.find_by(
+      service_id: service_id,
+      deployment_environment: deployment_environment,
+      name: name.to_s.upcase
+    )
+
+    Base64.decode64(configuration.value) if configuration.present?
+  end
+
+  private
+
   def create_publish_service
     publish_service.save!
     @publish_service_id = publish_service.id
@@ -59,8 +71,6 @@ class PublishServiceCreation
       status: :queued
     )
   end
-
-  private
 
   def create_or_update_configuration(name:, value:)
     service_configuration = ServiceConfiguration.find_or_initialize_by(

@@ -1,6 +1,6 @@
 class PublishController < FormController
   def index
-    @publish_service_creation = PublishServiceCreation.new
+    @publish_service_creation = PublishServiceCreation.new(service_id: service.service_id)
   end
 
   def create
