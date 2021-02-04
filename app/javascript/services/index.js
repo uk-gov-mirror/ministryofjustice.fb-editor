@@ -33,6 +33,7 @@ function bindDocumentEventsForPagesSection() {
 // 2). Set new page_type & component_type in hidden form.
 // 3). Close the open menu
 // 4). Open the form URL input dialog.
+//
 function addPageTypeMenuSelection(event, data) {
   var $pageTypeInput = $("#page_page_type");
   var $componentTypeInput = $("#page_component_type");
@@ -56,6 +57,7 @@ function addPageTypeMenuSelection(event, data) {
 // Handle item selections on the form step context
 // menu elements.
 // TODO: What are other actions?
+//
 function formStepContextMenuSelection(event, data) {
   var $link = data.activator.find("a");
   var fragId = findFragmentIdentifier($link.attr("href"))
@@ -67,8 +69,10 @@ function formStepContextMenuSelection(event, data) {
          break;
 
     case "add-page-here":
-         console.log("add page");
-         $("#ActivatedMenu_AddPage").trigger("ActivatedMenuToggle");
+         $("#ActivatedMenu_AddPage").trigger("ActivatedMenuOpen", {
+           at: "right top",
+           of: $link
+         });
          break;
 
     case "delete-page": console.log("delete page");
@@ -87,6 +91,7 @@ function formStepContextMenuSelection(event, data) {
 // "http://foo.com#something" or
 // "http://foo.com#something?else=here"
 // and get "something" in either case.
+//
 function findFragmentIdentifier(url) {
   return url.replace(/^.*#(.*?)(?:(\?).*)?$/, "$1");
 }
@@ -141,6 +146,7 @@ function applyFormDialogs() {
 // Creates a button and links with the passed dialog element.
 // @$dialog (jQuery object) Target dialog element enhanced with dialog funcitonality.
 // @text    (String) Text that will show on the button.
+//
 function createDialogActivator($dialog, text) {
   return $("<button class=\"govuk-button\">\</button>").on( "click", function() {
              $dialog.dialog( "open" );

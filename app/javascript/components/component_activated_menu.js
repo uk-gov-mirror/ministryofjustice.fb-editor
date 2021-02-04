@@ -45,22 +45,34 @@ class ActivatedMenu {
     this.container.before(this.activator);
 
     bindEventHandlers.call(this);
+    setMenuOpenPosition.call(this);
 
     this.close();
   }
 
   // Method
   open() {
-    setMenuOpenPosition.call(this);
     this.container.show();
     this.state.open = true;
   }
 
+  // Expected to be used by other elements/script calling the component.
+  // Whatever calls it, is expected to pass component.state.position
+  // requirements with the call.
+  openRemote(position) {
+    setMenuOpenPosition.call(this, position);
+    this.open();
+  }
+
   // Method
   close() {
-    clearMenuOpenPosition.call(this);
     this.container.hide();
     this.state.open = false;
+
+    // Clear any externally set component.state.position
+    // and make sure it's reset to original.
+    clearMenuOpenPosition.call(this);
+    setMenuOpenPosition.call(this)
   }
 
   // Toggles the open/close functionality
@@ -78,12 +90,12 @@ class ActivatedMenu {
  * a setting in passed configuration (this.config.position).
  * Uses the jQueryUI position() utility function to set the values.
  **/
-function setMenuOpenPosition() {
-  var position = (this.state.position || this.config.position || {});
+function setMenuOpenPosition(position) {
+  var pos = (position || this.config.position || {});
   this.container.position({
-    my: (position.my || "left top"),
-    at: (position.at || "right bottom"),
-    of: (position.of || this.activator)
+    my: (pos.my || "left top"),
+    at: (pos.at || "right bottom"),
+    of: (pos.of || this.activator)
   });
 }
 
@@ -118,19 +130,27 @@ function clearMenuOpenPosition() {
 function bindEventHandlers() {
   var component = this;
 
-  this.activator.on("click.ActivatedMenu", () => {
+  // Main (generated) activator uses this event to
+  // open the menu.
+  this.activator.on("click.ActivatedMenu", (event) => {
     component.state.activator = event.currentTarget;
-    component.toggle();
+    component.open();
   });
 
-  this.container.on("ActivatedMenuToggle", () => {
-    component.state.position = {
-      at: "right top",
-      of: event.target
+  // Open the menu by triggering this event from something else.
+  // Probably need to pass in the positioning object
+  // (see setMenuOpenPosition() function for details)
+  this.container.on("ActivatedMenuOpen", (event, position) => {
+    component.openRemote(position);
+  });
+
+  /* TODO: Need something like this for ESC key closing.
+  this.container.on("keydown", (e) => {
+    if(e.which == 27) {
+      component.close();
     }
-
-    component.toggle();
   });
+  */
 
   // Add a trigger for any listening document event
   // to activate on menu item selection.
@@ -151,3 +171,4 @@ function bindEventHandlers() {
 
 // Make available for importing.
 export { ActivatedMenu };
+
