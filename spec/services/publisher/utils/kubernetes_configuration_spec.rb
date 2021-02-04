@@ -8,22 +8,28 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
       platform_environment: 'test',
       deployment_environment: 'dev',
       service_configuration: [
-        build(:service_configuration, name: 'ENCODED_PRIVATE_KEY', value: encoded_private_key),
-        build(:service_configuration, name: 'ENCODED_PUBLIC_KEY', value: encoded_public_key),
-        build(:service_configuration, name: 'BASIC_AUTH_USER', value: 'ZHJvaWQ='),
-        build(:service_configuration, name: 'BASIC_AUTH_PASS', value: 'cjJkMg=='),
+        build(:service_configuration, name: 'ENCODED_PRIVATE_KEY', value: private_key),
+        build(:service_configuration, name: 'ENCODED_PUBLIC_KEY', value: public_key),
+        build(:service_configuration, name: 'BASIC_AUTH_USER', value: basic_auth_user),
+        build(:service_configuration, name: 'BASIC_AUTH_PASS', value: basic_auth_pass),
       ]
     )
   end
-  let(:encoded_private_key) do
-    Base64.strict_encode64(
+  let(:private_key) do
+    EncryptionService.new.encrypt(
       File.read(Rails.root.join('spec', 'fixtures', 'private_key'))
     )
   end
-  let(:encoded_public_key) do
-    Base64.strict_encode64(
+  let(:public_key) do
+    EncryptionService.new.encrypt(
       File.read(Rails.root.join('spec', 'fixtures', 'public_key'))
     )
+  end
+  let(:basic_auth_user) do
+    EncryptionService.new.encrypt('droid')
+  end
+  let(:basic_auth_pass) do
+    EncryptionService.new.encrypt('r2d2')
   end
 
   before do

@@ -9,7 +9,7 @@ RSpec.describe PublishServiceCreation, type: :model do
 
     context 'when configuration exists' do
       let!(:username_config) do
-        create(:service_configuration, :dev, :username, service_id: service_id)
+        create(:service_configuration, :dev, :username, value: 'x-wing', service_id: service_id)
       end
 
       it 'returns the value decoded' do
@@ -141,10 +141,10 @@ RSpec.describe PublishServiceCreation, type: :model do
     context 'when require authentication' do
       context 'when existing username and password' do
         let!(:username_config) do
-          create(:service_configuration, :dev, :username, service_id: service_id)
+          create(:service_configuration, :dev, :username, value: 'executor', service_id: service_id)
         end
         let!(:password_config) do
-          create(:service_configuration, :dev, :password, service_id: service_id)
+          create(:service_configuration, :dev, :password, value: 'vader-ship', service_id: service_id)
         end
         let(:attributes) do
           {
@@ -161,11 +161,11 @@ RSpec.describe PublishServiceCreation, type: :model do
         end
 
         it 'updates username in base64' do
-          expect(username_config.reload.value).to eq(Base64.strict_encode64('executor'))
+          expect(username_config.reload.decrypt_value).to eq('executor')
         end
 
         it 'updates password in base64' do
-          expect(password_config.reload.value).to eq(Base64.strict_encode64('vader-ship'))
+          expect(password_config.reload.decrypt_value).to eq('vader-ship')
         end
       end
 
@@ -197,12 +197,12 @@ RSpec.describe PublishServiceCreation, type: :model do
 
         it 'creates username in base64' do
           expect(username_config).to be_present
-          expect(username_config.value).to eq(Base64.strict_encode64('executor'))
+          expect(username_config.decrypt_value).to eq('executor')
         end
 
         it 'creates password in base64' do
           expect(password_config).to be_present
-          expect(password_config.reload.value).to eq(Base64.strict_encode64('vader-ship'))
+          expect(password_config.reload.decrypt_value).to eq('vader-ship')
         end
       end
     end
