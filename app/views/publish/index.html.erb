@@ -15,22 +15,7 @@
 <p><%= t('publish.test_sub_heading') %></p>
 
 <%= form_for(@publish_service_creation, url: publish_index_path(service.service_id)) do |f| %>
-  <%= f.hidden_field :deployment_environment, value: 'dev' %>
-
-  <div class="govuk-form-group">
-    <%= f.check_box :require_authentication %>
-    <%= f.label :require_authentication %>
-  </div>
-
-  <div class="govuk-form-group">
-    <%= f.label :username %>
-    <%= f.text_field :username %>
-  </div>
-
-  <div class="govuk-form-group">
-    <%= f.label :password %>
-    <%= f.text_field :password %>
-  </div>
+  <%= render 'form', f: f, deployment_environment: 'dev' %>
 
   <%= f.submit t('actions.publish_to_test'), class: 'govuk-button editor-button' %>
 <% end %>
@@ -44,7 +29,7 @@
 <p><%= t('publish.live_sub_heading') %></p>
 
 <%= form_for(@publish_service_creation, url: publish_index_path(service.service_id)) do |f| %>
-  <%= f.hidden_field :deployment_environment, value: 'production' %>
+  <%= render 'form', f: f, deployment_environment: 'production' %>
 
   <%= f.submit t('actions.publish_to_live'), class: 'govuk-button editor-button' %>
 <% end %>

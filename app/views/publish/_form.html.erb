@@ -1,0 +1,20 @@
+ <%= f.hidden_field :deployment_environment, value: deployment_environment %>
+
+ <% f.object.errors.each do |error|  %>
+   <span class="govuk-error-message"><%= error.message %></span>
+ <% end %>
+
+ <div class="govuk-form-group">
+   <%= f.check_box :require_authentication %>
+   <%= f.label :require_authentication %>
+ </div>
+
+ <div class="govuk-form-group">
+   <%= f.label :username %>
+   <%= f.text_field :username %>
+ </div>
+
+ <div class="govuk-form-group">
+   <%= f.label :password %>
+   <%= f.text_field :password %>
+ </div>

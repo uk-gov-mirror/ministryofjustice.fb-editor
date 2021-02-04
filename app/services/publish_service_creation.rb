@@ -1,5 +1,9 @@
 class PublishServiceCreation
   include ActiveModel::Model
+  REQUIRE_AUTHENTICATION = '1'.freeze
+  USERNAME = 'USERNAME'.freeze
+  PASSWORD = 'PASSWORD'.freeze
+
   attr_accessor :service_id,
                 :deployment_environment,
                 :require_authentication,
@@ -29,8 +33,13 @@ class PublishServiceCreation
   end
 
   def create_service_configurations
-    create_or_update_configuration(name: 'USERNAME', value: username)
-    create_or_update_configuration(name: 'PASSWORD', value: password)
+    create_or_update_configuration(name: USERNAME, value: username)
+    create_or_update_configuration(name: PASSWORD, value: password)
+  end
+
+  def delete_service_configurations
+    delete_service_configuration(name: USERNAME)
+    delete_service_configuration(name: PASSWORD)
   end
 
   def publish_service
@@ -53,7 +62,15 @@ class PublishServiceCreation
     service_configuration.save!
   end
 
+  def delete_service_configuration(name:)
+    ServiceConfiguration.destroy_by(
+      service_id: service_id,
+      deployment_environment: deployment_environment,
+      name: name
+    )
+  end
+
   def require_authentication?
-    require_authentication == '1'
+    require_authentication == REQUIRE_AUTHENTICATION
   end
 end
