@@ -12,4 +12,7 @@ class PublishService < ApplicationRecord
     in: Rails.application.config.deployment_environments
   }
   validates :status, inclusion: { in: STATUS }
+
+  scope :completed, -> { where(status: 'completed') }
+  scope :desc, -> { order(created_at: :desc) }
 end

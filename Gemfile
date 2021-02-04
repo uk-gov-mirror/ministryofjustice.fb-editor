@@ -4,6 +4,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.2'
 
 gem 'bootsnap', '>= 1.4.2', require: false
+gem 'delayed_job_active_record'
+gem 'daemons'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
@@ -12,7 +14,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 #     branch: 'some-branch'
 #gem 'metadata_presenter', path: '../fb-metadata-presenter'
 #
-gem 'metadata_presenter', '0.4.0'
+gem 'metadata_presenter', '0.5.0'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'fb-jwt-auth', '0.5.0'
@@ -32,6 +34,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'capybara'
   gem 'dotenv-rails', groups: [:development, :test]
+  gem 'factory_bot_rails'
   gem 'rspec-rails'
   gem 'selenium-webdriver', '3.142.7'
   gem 'site_prism'
