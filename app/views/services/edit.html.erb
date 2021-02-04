@@ -23,72 +23,73 @@
       <%= link_to page.url, edit_page_path(service.service_id, page.uuid) %>
     </div>
   <% end %>
+
+  <%# TODO: Backend to replace this with dynamic data-driven output %>
+  <ul class="component-activated-menu govuk-navigation"
+      data-activated-menu-container-id="ActivatedMenu_AddPage"
+      data-activator-classname="form-overview_button"
+      data-activator-text="<%= t('pages.create') %>"
+      data-document-event="AddPageTypeMenuSelection">
+    <li>
+      <span>Single question page</span>
+      <ul class="govuk-navigation">
+        <li><a href="#add-page"
+               data-page-type="singlequestion"
+               data-component-type="text">Text</a></li>
+        <li><a href="#add-page"
+               data-page-type="singlequestion"
+               data-component-type="textarea">Textarea</a></li>
+        <li><a href="#add-page"
+               data-page-type="singlequestion"
+               data-component-type="number">Number</a></li>
+        <li><a href="#add-page"
+               data-page-type="singlequestion"
+               data-component-type="date">Date</a></li>
+        <li><a href="#add-page"
+               data-page-type="singlequestion"
+               data-component-type="radio">Radio buttons</a></li>
+        <li><a href="#add-page"
+               data-page-type="singlequestion"
+               data-component-type="checkbox">Checkboxes</a></li>
+      </ul>
+    </li>
+    <li>
+      <span>Multiple question page</span>
+      <ul class="govuk-navigation">
+        <li><a href="#add-page"
+               data-page-type="multiplequestion"
+               data-component-type="text">Text</a></li>
+        <li><a href="#add-page"
+               data-page-type="multiplequestion"
+               data-component-type="textarea">Textarea</a></li>
+        <li><a href="#add-page"
+               data-page-type="multiplequestion"
+               data-component-type="number">Number</a></li>
+      </ul>
+    </li>
+    <li><a href="#add-page" data-page-type="checkanswers">Check answers page</a></li>
+    <li><a href="#add-page" data-page-type="confirmation">Confirmation page</a></li>
+    <li><a href="#add-page" data-page-type="content">Content page</a></li>
+  </ul>
+
+
+  <div class="component-dialog-form"
+       id="new-page-create-dialog"
+       data-activator-text="<%= t('pages.create') %>"
+       data-cancel-text="<%= t('pages.cancel') %>">
+    <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
+      <%= f.hidden_field :page_type, value: 'singlequestion', readonly: true %>
+      <%= f.hidden_field :component_type, value: 'text', readonly: true %>
+      <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
+        <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
+        <% f.object.errors.each do |error|  %>
+          <%= error.message %>
+          <span class="govuk-error-message"><%= error.message %></span>
+        <% end %>
+        <%= f.text_field :page_url, class: "govuk-input"  %>
+      </div>
+      <%= f.submit 'Add page', class: "govuk-button" %>
+    <% end %>
+  </div>
+
 </div>
-
-<div class="component-dialog-form"
-     id="new-page-create-dialog"
-     data-activator-text="<%= t('pages.create') %>"
-     data-cancel-text="<%= t('pages.cancel') %>">
-  <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
-    <%= f.hidden_field :page_type, value: 'singlequestion', readonly: true %>
-    <%= f.hidden_field :component_type, value: 'text', readonly: true %>
-    <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
-      <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
-      <% f.object.errors.each do |error|  %>
-        <%= error.message %>
-        <span class="govuk-error-message"><%= error.message %></span>
-      <% end %>
-      <%= f.text_field :page_url, class: "govuk-input"  %>
-    </div>
-    <%= f.submit 'Add page', class: "govuk-button" %>
-  <% end %>
-</div>
-
-
-<%# TODO: Backend to replace this with dynamic data-driven output %>
-<ul class="component-activated-menu govuk-navigation"
-    data-activated-menu-container-id="ActivatedMenu_AddPage"
-    data-activator-classname="form-overview_button"
-    data-activator-text="<%= t('pages.create') %>"
-    data-document-event="AddPageTypeMenuSelection">
-  <li>
-    <span>Single question page</span>
-    <ul class="govuk-navigation">
-      <li><a href="#add-page"
-             data-page-type="singlequestion"
-             data-component-type="text">Text</a></li>
-      <li><a href="#add-page"
-             data-page-type="singlequestion"
-             data-component-type="textarea">Textarea</a></li>
-      <li><a href="#add-page"
-             data-page-type="singlequestion"
-             data-component-type="number">Number</a></li>
-      <li><a href="#add-page"
-             data-page-type="singlequestion"
-             data-component-type="date">Date</a></li>
-      <li><a href="#add-page"
-             data-page-type="singlequestion"
-             data-component-type="radio">Radio buttons</a></li>
-      <li><a href="#add-page"
-             data-page-type="singlequestion"
-             data-component-type="checkbox">Checkboxes</a></li>
-    </ul>
-  </li>
-  <li>
-    <span>Multiple question page</span>
-    <ul class="govuk-navigation">
-      <li><a href="#add-page"
-             data-page-type="multiplequestion"
-             data-component-type="text">Text</a></li>
-      <li><a href="#add-page"
-             data-page-type="multiplequestion"
-             data-component-type="textarea">Textarea</a></li>
-      <li><a href="#add-page"
-             data-page-type="multiplequestion"
-             data-component-type="number">Number</a></li>
-    </ul>
-  </li>
-  <li><a href="#add-page" data-page-type="checkanswers">Check answers page</a></li>
-  <li><a href="#add-page" data-page-type="confirmation">Confirmation page</a></li>
-  <li><a href="#add-page" data-page-type="content">Content page</a></li>
-</ul>
