@@ -153,7 +153,7 @@ RSpec.describe PublishServiceCreation, type: :model do
             require_authentication: '0'
           }
         end
-        before { publish_service_creation.save }
+        before { 2.times { publish_service_creation.save } }
 
         it 'deletes username service configuration' do
           expect(ServiceConfiguration.exists?(username_config.id)).to be_falsey

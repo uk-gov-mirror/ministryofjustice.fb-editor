@@ -15,14 +15,24 @@ class PublishServiceCreation
   validates :username,
             :password,
             presence: true,
-            length: { minimum: 6, maximum: 50 },
             if: :require_authentication?
+  validates :username, :password,
+            length: { minimum: 6, maximum: 50 },
+            if: :require_authentication?,
+            allow_blank: true
 
   def save
     return false if invalid?
-    # wrap in a transaction
-    create_publish_service
-    create_service_configurations
+
+    ActiveRecord::Base.transaction do
+      create_publish_service
+
+      if require_authentication?
+        create_service_configurations
+      else
+        delete_service_configurations
+      end
+    end
 
     true
   end
