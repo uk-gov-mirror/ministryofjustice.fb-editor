@@ -144,6 +144,23 @@ function bindEventHandlers() {
     component.openRemote(position);
   });
 
+  this.menu.on("mouseout", (event) => {
+    // event.currentTarget will be the menu (UL) element.
+    // check if relatedTarget is not a child element.
+    component.state.close = true;
+    if(!$.contains(event.currentTarget, event.relatedTarget)) {
+      setTimeout(function(e) {
+        if(component.state.close) {
+          component.close();
+        }
+      }, 500);
+    }
+  });
+
+  this.menu.on("mouseover", (event) => {
+    component.state.close = false;
+  });
+
   /* TODO: Need something like this for ESC key closing.
   this.container.on("keydown", (e) => {
     if(e.which == 27) {
