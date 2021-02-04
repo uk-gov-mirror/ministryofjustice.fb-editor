@@ -34,6 +34,49 @@ RSpec.describe PublishServiceCreation, type: :model do
     end
   end
 
+  describe '#check_require_authentication?' do
+    let(:attributes) { {} }
+
+    context 'when configuration exists' do
+      let!(:username_config) do
+        create(:service_configuration, :dev, :username, service_id: service_id)
+      end
+
+      it 'returns true' do
+        expect(
+          publish_service_creation.check_require_authentication?(
+            deployment_environment: 'dev'
+          )
+        ).to be_truthy
+      end
+    end
+
+    context 'when configuration does not exist' do
+      context 'when there is a publish service' do
+        let!(:publish_service) do
+          create(:publish_service, :dev, :completed, service_id: service_id)
+        end
+
+        it 'returns false' do
+          expect(
+            publish_service_creation.check_require_authentication?(
+              deployment_environment: 'dev'
+            )
+          ).to be_falsey
+        end
+      end
+
+      context 'when no publish service exists' do
+        it 'returns true' do
+          expect(
+            publish_service_creation.check_require_authentication?(
+              deployment_environment: 'dev'
+            )
+          ).to be_truthy
+        end
+      end
+    end
+  end
   describe '#save' do
     context 'when invalid' do
       context 'when require authentication' do

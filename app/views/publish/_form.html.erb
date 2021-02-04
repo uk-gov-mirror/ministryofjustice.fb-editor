@@ -5,7 +5,7 @@
  <% end %>
 
  <div class="govuk-form-group">
-   <%= f.check_box :require_authentication %>
+   <%= f.check_box :require_authentication, checked: f.object.check_require_authentication?(deployment_environment: deployment_environment) %>
    <%= f.label :require_authentication %>
  </div>
 
