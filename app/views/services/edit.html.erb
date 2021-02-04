@@ -6,39 +6,44 @@
   </div>
 <% end %>
 
-<%= form_for(@page_creation, html: { id: 'singlequestion' }, as: :page, url: pages_path) do |f| %>
-  <% f.object.errors.each do |error|  %>
-    <%= error.message %>
+<div>
+  <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
+    <%= f.hidden_field :page_type, value: 'singlequestion', readonly: true %>
+    <%= f.hidden_field :component_type, value: 'text', readonly: true %>
+    <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
+      <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
+      <% f.object.errors.each do |error|  %>
+        <%= error.message %>
+        <span class="govuk-error-message"><%= error.message %></span>
+      <% end %>
+      <%= f.text_field :page_url, class: "govuk-input"  %>
+    </div>
+    <%= f.submit 'Add page', class: "govuk-button" %>
   <% end %>
-  <%= f.hidden_field :page_type, value: 'singlequestion', readonly: true %>
-  <%= f.hidden_field :component_type, value: 'text', readonly: true %>
-  <%= f.label :page_url %>
-  <%= f.text_field :page_url %>
 
-  <%= f.submit 'Add Single Question page', class: "govuk-button editor-button-add govuk-!-margin-top-4" %>
-  <button class="govuk-button govuk-button--secondary">Cancel</button>
-<% end %>
-
-<%= form_for(@page_creation, html: { id: 'checkanswers' }, as: :page, url: pages_path) do |f| %>
-  <% f.object.errors.each do |error|  %>
-    <%= error.message %>
+  <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
+    <%= f.hidden_field :page_type, value: 'checkanswers', readonly: true %>
+    <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
+      <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
+      <% f.object.errors.each do |error|  %>
+        <%= error.message %>
+        <span class="govuk-error-message"><%= error.message %></span>
+      <% end %>
+      <%= f.text_field :page_url, class: "govuk-input"  %>
+    </div>
+    <%= f.submit 'Add Check Answers page', class: "govuk-button" %>
   <% end %>
-  <%= f.hidden_field :page_type, value: 'checkanswers', readonly: true %>
-  <%= f.label :page_url %>
-  <%= f.text_field :page_url%>
 
-  <%= f.submit 'Add Check Answers page', class: "govuk-button editor-button-add govuk-!-margin-top-4" %>
-  <button class="govuk-button govuk-button--secondary">Cancel</button>
-<% end %>
-
-<%= form_for(@page_creation, html: { id: 'confirmation' }, as: :page, url: pages_path) do |f| %>
-  <% f.object.errors.each do |error|  %>
-    <%= error.message %>
+  <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
+    <%= f.hidden_field :page_type, value: 'confirmation', readonly: true %>
+    <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
+      <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
+      <% f.object.errors.each do |error|  %>
+        <%= error.message %>
+        <span class="govuk-error-message"><%= error.message %></span>
+      <% end %>
+      <%= f.text_field :page_url, class: "govuk-input"  %>
+    </div>
+    <%= f.submit 'Add Confirmation page', class: "govuk-button" %>
   <% end %>
-  <%= f.hidden_field :page_type, value: 'confirmation', readonly: true %>
-  <%= f.label :page_url %>
-  <%= f.text_field :page_url%>
-
-  <%= f.submit 'Add Confirmation page', class: "govuk-button editor-button-add govuk-!-margin-top-4" %>
-  <button class="govuk-button govuk-button--secondary">Cancel</button>
-<% end %>
+</div>
