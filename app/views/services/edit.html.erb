@@ -78,8 +78,8 @@
        data-activator-text="<%= t('pages.create') %>"
        data-cancel-text="<%= t('pages.cancel') %>">
     <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
-      <%= f.hidden_field :page_type, value: 'singlequestion', readonly: true %>
-      <%= f.hidden_field :component_type, value: 'text', readonly: true %>
+      <%= f.hidden_field :page_type, value: 'singlequestion' %>
+      <%= f.hidden_field :component_type, value: 'text' %>
       <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
         <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
         <% f.object.errors.each do |error|  %>

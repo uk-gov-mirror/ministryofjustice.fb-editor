@@ -1,3 +1,4 @@
+# coding: utf-8
 class EditorApp < SitePrism::Page
   if ENV['ACCEPTANCE_TESTS_USER'] && ENV['ACCEPTANCE_TESTS_PASSWORD']
     set_url ENV['ACCEPTANCE_TESTS_EDITOR_APP'] % {
@@ -18,8 +19,8 @@ class EditorApp < SitePrism::Page
   element :save_button, :button, 'Save'
 
   element :page_url_field, :field, 'The page’s relative url - it must not contain any spaces'
-  element :add_single_page_button, :button, 'Add Single Question page'
-  element :add_check_answers_page_button, :button, 'Add Check Answers page'
+  element :new_page_form, '#new_page'
+  element :new_page_submit, '#new_page input[type="submit"]'
 
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
@@ -28,4 +29,15 @@ class EditorApp < SitePrism::Page
   def modal_create_service_button
     all('.ui-dialog-buttonpane button').first
   end
+
+  # Getting Selenium::WebDriver::Error::ElementNotInteractableError
+  # when using something like find_field('page_component_type', type: :hidden)
+  def set_page_type_field(value)
+    page.execute_script("document.getElementById('page_page_type').value = '#{value}'")
+  end
+
+  def set_component_type_field(value)
+    page.execute_script("document.getElementById('page_component_type').value = '#{value}'")
+  end
+
 end
