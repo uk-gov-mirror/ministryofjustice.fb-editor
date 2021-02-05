@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_03_163550) do
+ActiveRecord::Schema.define(version: 2021_02_04_154652) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -48,6 +48,9 @@ ActiveRecord::Schema.define(version: 2021_02_03_163550) do
     t.string "status", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["service_id", "deployment_environment"], name: "index_publish_services_on_service_id_and_deployment_environment"
+    t.index ["service_id", "status", "deployment_environment"], name: "index_publish_services_on_service_status_deployment"
+    t.index ["service_id"], name: "index_publish_services_on_service_id"
   end
 
   create_table "service_configurations", force: :cascade do |t|
@@ -57,6 +60,7 @@ ActiveRecord::Schema.define(version: 2021_02_03_163550) do
     t.uuid "service_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["service_id", "deployment_environment", "name"], name: "index_service_configurations_on_service_deployment_name"
     t.index ["service_id", "deployment_environment"], name: "index_service_configurations_on_service_id_and_deployment_env"
     t.index ["service_id"], name: "index_service_configurations_on_service_id"
   end

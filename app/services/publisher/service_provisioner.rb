@@ -48,6 +48,10 @@ class Publisher
       "fb-#{service_slug}-config-map"
     end
 
+    def secret_name
+      "fb-#{service_slug}-secrets"
+    end
+
     def service_monitor_name
       "formbuilder-form-#{service_slug}-service-monitor-#{platform_environment}-#{deployment_environment}"
     end
@@ -85,6 +89,14 @@ class Publisher
 
     def resource_requests_memory
       '128Mi'
+    end
+
+    def config_map
+      service_configuration.reject(&:secrets?)
+    end
+
+    def secrets
+      service_configuration.select(&:secrets?)
     end
 
     private

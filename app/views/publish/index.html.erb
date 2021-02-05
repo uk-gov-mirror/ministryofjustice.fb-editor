@@ -14,8 +14,8 @@
 
 <p><%= t('publish.test_sub_heading') %></p>
 
-<%= form_for(@publish_service, url: publish_index_path(service.service_id)) do |f| %>
-  <%= f.hidden_field :deployment_environment, value: 'dev' %>
+<%= form_for(@publish_service_creation_dev, url: publish_index_path(service.service_id)) do |f| %>
+  <%= render 'form', f: f, deployment_environment: 'dev' %>
 
   <%= f.submit t('actions.publish_to_test'), class: 'govuk-button editor-button' %>
 <% end %>
@@ -28,8 +28,8 @@
 
 <p><%= t('publish.live_sub_heading') %></p>
 
-<%= form_for(@publish_service, url: publish_index_path(service.service_id)) do |f| %>
-  <%= f.hidden_field :deployment_environment, value: 'production' %>
+<%= form_for(@publish_service_creation_production, url: publish_index_path(service.service_id)) do |f| %>
+  <%= render 'form', f: f, deployment_environment: 'production' %>
 
   <%= f.submit t('actions.publish_to_live'), class: 'govuk-button editor-button' %>
 <% end %>

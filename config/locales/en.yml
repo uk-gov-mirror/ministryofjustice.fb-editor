@@ -41,6 +41,10 @@ en:
         service_name: 'Form name'
       page_creation:
         page_url: "The page’s relative url - it must not contain any spaces"
+      publish_service_creation:
+        require_authentication: 'Require username & password for access'
+        username: 'Username'
+        password: 'Password'
     errors:
       models:
         page_creation:

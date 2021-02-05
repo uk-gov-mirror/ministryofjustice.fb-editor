@@ -9,6 +9,7 @@ class Publisher
         ingress
         deployment
         config_map
+        secrets
       )
 
       def initialize(service_provisioner)

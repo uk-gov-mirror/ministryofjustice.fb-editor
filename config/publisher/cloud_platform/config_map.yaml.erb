@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: <%= config_map_name %>
   namespace: <%= namespace %>
-data: <% service_configuration.each do |configuration|  %>
+data: <% config_map.each do |configuration|  %>
   <%= configuration.name %>: "<%= configuration.value %>"
 <% end %>
