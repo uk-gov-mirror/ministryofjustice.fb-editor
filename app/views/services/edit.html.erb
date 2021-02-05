@@ -20,7 +20,7 @@
         <li><a href="#delete-page">Delete page...</a></li>
       </ul>
 
-      <%= link_to page.url, edit_page_path(service.service_id, page.uuid) %>
+      <%= link_to page.url, edit_page_path(service.service_id, page.uuid), class: 'govuk-link' %>
     </div>
   <% end %>
 
