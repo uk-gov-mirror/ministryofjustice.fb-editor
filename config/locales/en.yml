@@ -10,6 +10,9 @@ en:
   pages:
     form: 'Form pages'
     name: 'Pages'
+    create: 'Add page'
+    cancel: 'Cancel'
+    actions: 'Actions'
   settings:
     name: 'Settings'
     form_information: 'Form information'
@@ -27,6 +30,7 @@ en:
   services:
     edit: 'Edit'
     create: 'Create a new form'
+    cancel: 'Cancel'
   activemodel:
     models:
       service_creation: 'Form'

@@ -1,3 +1,4 @@
+# coding: utf-8
 require_relative './spec_helper'
 
 feature 'Create page' do
@@ -20,7 +21,7 @@ feature 'Create page' do
   scenario 'creating a check answers page' do
     given_I_add_a_check_answers_page
     and_I_add_a_check_answers_page_url
-    when_I_add_check_answers_page
+    when_I_add_the_page
     and_I_comeback_to_edit_the_service
     then_I_should_see_the_new_check_answers_page_url
   end
@@ -44,19 +45,19 @@ feature 'Create page' do
   end
 
   def and_I_add_a_page_url
-    within find('#singlequestion') do
+    within find('#new_page') do
       editor.page_url_field.set('phasma')
     end
   end
 
   def and_I_add_an_existing_page_url
-    within find('#singlequestion') do
+    within find('#new_page') do
       editor.page_url_field.set('/')
     end
   end
 
   def when_I_add_the_page
-    editor.add_single_page_button.click
+    editor.new_page_submit.click
   end
 
   def and_I_comeback_to_edit_the_service
@@ -75,13 +76,11 @@ feature 'Create page' do
   end
 
   def and_I_add_a_check_answers_page_url
-    within find('#checkanswers') do
+    editor.set_page_type_field('checkanswers')
+    editor.set_component_type_field('')
+    within editor.new_page_form do
       editor.page_url_field.set('aquifolium')
     end
-  end
-
-  def when_I_add_check_answers_page
-    editor.add_check_answers_page_button.click
   end
 
   def then_I_should_see_the_new_check_answers_page_url

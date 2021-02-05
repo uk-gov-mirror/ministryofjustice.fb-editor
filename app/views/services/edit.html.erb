@@ -1,44 +1,95 @@
-<h1><%= t('pages.form') %><h3>
+<h1><%= t('pages.form') %></h1>
 
-<% service.pages.each do |page| %>
-  <div>
-    <%= link_to page.url, edit_page_path(service.service_id, page.uuid) %>
+<div class="form-overview">
+  <% service.pages.each do |page| %>
+    <div class="form-step">
+      <%= image_pack_tag('page_placeholder.png', class: 'form-thumbnail') %>
+
+      <%# TODO: Backend to add dynamic data-driven values to this standard output %>
+      <%# Note: This would probably be more efficient if outside the loop so that %>
+      <%# we only generated one, with events and blah attached. However, since I  %>
+      <%# am currently unaware of exactly how we're going to use this element, it %>
+      <%# is in this one-for-each-step form, for now.                             %>
+      <ul class="govuk-navigation component-activated-menu"
+          data-activator-text="<%= t('pages.actions') %>"
+          data-activator-classname="form-step_button"
+          data-document-event="FormStepContextMenuSelection">
+        <li><a href="#edit-page">Edit page</a></li>
+        <li><a href="#preview-page">Preview page</a></li>
+        <li><a href="#add-page-here">Add page here</a></li>
+        <li><a href="#delete-page">Delete page...</a></li>
+      </ul>
+
+      <%= link_to page.url, edit_page_path(service.service_id, page.uuid), class: 'govuk-link' %>
+    </div>
+  <% end %>
+
+  <%# TODO: Backend to replace this with dynamic data-driven output %>
+  <ul class="component-activated-menu govuk-navigation"
+      data-activated-menu-container-id="ActivatedMenu_AddPage"
+      data-activator-classname="form-overview_button"
+      data-activator-text="<%= t('pages.create') %>"
+      data-document-event="AddPageTypeMenuSelection">
+    <li>
+      <span>Single question page</span>
+      <ul class="govuk-navigation">
+        <li><a href="#add-page"
+               data-page-type="singlequestion"
+               data-component-type="text">Text</a></li>
+        <li><a href="#add-page"
+               data-page-type="singlequestion"
+               data-component-type="textarea">Textarea</a></li>
+        <li><a href="#add-page"
+               data-page-type="singlequestion"
+               data-component-type="number">Number</a></li>
+        <li><a href="#add-page"
+               data-page-type="singlequestion"
+               data-component-type="date">Date</a></li>
+        <li><a href="#add-page"
+               data-page-type="singlequestion"
+               data-component-type="radio">Radio buttons</a></li>
+        <li><a href="#add-page"
+               data-page-type="singlequestion"
+               data-component-type="checkbox">Checkboxes</a></li>
+      </ul>
+    </li>
+    <li>
+      <span>Multiple question page</span>
+      <ul class="govuk-navigation">
+        <li><a href="#add-page"
+               data-page-type="multiplequestion"
+               data-component-type="text">Text</a></li>
+        <li><a href="#add-page"
+               data-page-type="multiplequestion"
+               data-component-type="textarea">Textarea</a></li>
+        <li><a href="#add-page"
+               data-page-type="multiplequestion"
+               data-component-type="number">Number</a></li>
+      </ul>
+    </li>
+    <li><a href="#add-page" data-page-type="checkanswers">Check answers page</a></li>
+    <li><a href="#add-page" data-page-type="confirmation">Confirmation page</a></li>
+    <li><a href="#add-page" data-page-type="content">Content page</a></li>
+  </ul>
+
+
+  <div class="component-dialog-form"
+       id="new-page-create-dialog"
+       data-activator-text="<%= t('pages.create') %>"
+       data-cancel-text="<%= t('pages.cancel') %>">
+    <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
+      <%= f.hidden_field :page_type, value: 'singlequestion' %>
+      <%= f.hidden_field :component_type, value: 'text' %>
+      <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
+        <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
+        <% f.object.errors.each do |error|  %>
+          <%= error.message %>
+          <span class="govuk-error-message"><%= error.message %></span>
+        <% end %>
+        <%= f.text_field :page_url, class: "govuk-input"  %>
+      </div>
+      <%= f.submit 'Add page', class: "govuk-button" %>
+    <% end %>
   </div>
-<% end %>
 
-<%= form_for(@page_creation, html: { id: 'singlequestion' }, as: :page, url: pages_path) do |f| %>
-  <% f.object.errors.each do |error|  %>
-    <%= error.message %>
-  <% end %>
-  <%= f.hidden_field :page_type, value: 'singlequestion', readonly: true %>
-  <%= f.hidden_field :component_type, value: 'text', readonly: true %>
-  <%= f.label :page_url %>
-  <%= f.text_field :page_url %>
-
-  <%= f.submit 'Add Single Question page', class: "govuk-button editor-button-add govuk-!-margin-top-4" %>
-  <button class="govuk-button govuk-button--secondary">Cancel</button>
-<% end %>
-
-<%= form_for(@page_creation, html: { id: 'checkanswers' }, as: :page, url: pages_path) do |f| %>
-  <% f.object.errors.each do |error|  %>
-    <%= error.message %>
-  <% end %>
-  <%= f.hidden_field :page_type, value: 'checkanswers', readonly: true %>
-  <%= f.label :page_url %>
-  <%= f.text_field :page_url%>
-
-  <%= f.submit 'Add Check Answers page', class: "govuk-button editor-button-add govuk-!-margin-top-4" %>
-  <button class="govuk-button govuk-button--secondary">Cancel</button>
-<% end %>
-
-<%= form_for(@page_creation, html: { id: 'confirmation' }, as: :page, url: pages_path) do |f| %>
-  <% f.object.errors.each do |error|  %>
-    <%= error.message %>
-  <% end %>
-  <%= f.hidden_field :page_type, value: 'confirmation', readonly: true %>
-  <%= f.label :page_url %>
-  <%= f.text_field :page_url%>
-
-  <%= f.submit 'Add Confirmation page', class: "govuk-button editor-button-add govuk-!-margin-top-4" %>
-  <button class="govuk-button govuk-button--secondary">Cancel</button>
-<% end %>
+</div>

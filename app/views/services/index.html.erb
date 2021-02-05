@@ -12,13 +12,16 @@
               <%= service.name %>
             </span>
             <span class="actions">
-              <%= link_to t('.services.edit'), edit_service_path(service.id), class: "govuk-link edit" %>
+              <%= link_to t('services.edit'), edit_service_path(service.id), class: "govuk-link edit" %>
             </span>
           </li>
         <% end %>
       </ul>
 
-      <div class="component-dialog" id="new-service-create-dialog">
+      <div class="component-dialog-form"
+           id="new-service-create-dialog"
+           data-activator-text="<%= t('services.create') %>"
+           data-cancel-text="<%= t('services.cancel') %>">
         <%= form_for(@service_creation, url: services_path) do |f| %>
           <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
             <%= f.label :service_name, class: "govuk-label govuk-label--m" %>

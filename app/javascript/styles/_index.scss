@@ -13,6 +13,22 @@
   }
 }
 
+@mixin button_type_link {
+  @include govuk-font($size: 19);
+  background-color: govuk-colour("white");
+  border: govuk-colour("blue") solid 2px;
+  color: govuk-colour("blue");
+  cursor: pointer;
+  display: block;
+  padding: govuk-spacing(1);
+  text-decoration: none;
+
+  &:hover {
+    background-color: govuk-colour("blue");
+    color: govuk-colour("white");
+  }
+}
+
 
 .width-responsive-two-thirds {
   @include responsive_width("two-thirds");
@@ -62,6 +78,102 @@
 }
 
 
+/* Navigation: Pages
+ * URLs: /services/.../edit
+ **/
+.form-overview {
+  display: inline-flex;
+  position: relative;
+
+  .govuk-button {
+    display: none; // JS injected element, not required.
+  }
+}
+
+.form-overview_button {
+  // This element is injected by JS
+  @include button_type_link;
+  padding-left: govuk-spacing(2);
+  padding-right: govuk-spacing(2);
+  position: absolute;
+  right: -113px;
+  top: calc(50% - 30px);
+
+  &:before {
+    content: "+";
+    margin-right: 2px;
+  }
+}
+
+.form-step {
+  display: inline-block;
+  padding-right: 100px;
+  overflow: hidden;
+  position: relative;
+
+  img {
+    border: govuk-colour("blue") solid 2px;
+    display: block;
+    width: 200px;
+  }
+
+  &:after {
+    border-top: govuk-colour("black") solid 2px;
+    content: "";
+    position: absolute;
+    right: 5px;
+    top: calc(45% - 1px);
+    width: 93px;
+  }
+
+  &:before {
+    border: govuk-colour("black") solid 5px;
+    border-top-color: govuk-colour("white");
+    border-left-color: govuk-colour("white");
+    content: "";
+    position: absolute;
+    right: 4px;
+    transform: rotate(-45deg);
+    top: calc(45% - 5px);
+  }
+
+  &:hover {
+    button {
+      visibility: visible;
+    }
+  }
+}
+
+.form-step_button {
+  @include button_type_link;
+  border: govuk-colour("blue") solid 2px;
+  border-radius: 25px;
+  bottom: calc(25px + #{govuk-spacing(2)});
+  height: 35px;
+  left: 158px;
+  padding: 0;
+  position: absolute;
+  text-indent: -1000px;
+  visibility: hidden;
+  width: 35px;
+
+  &:hover {
+    background-color: govuk-colour("white");
+    color: govuk-colour("blue");
+  }
+
+  &:after {
+    content: "...";
+    display: block;
+    font-weight: bold;
+    letter-spacing: 2px;
+    left: 0;
+    position: relative;
+    text-indent: 0;
+    top: -27px;
+  }
+}
+
 
 /* govuk-button style is green but we want
  * green blue buttons on fb-editor.
@@ -89,7 +201,7 @@
  * so adding something simple here.
  **/
 .govuk-navigation {
-  li, ul {
+  &, li {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -151,4 +263,3 @@
     float: right;
   }
 }
-
