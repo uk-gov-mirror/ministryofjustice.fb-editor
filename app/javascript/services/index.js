@@ -69,7 +69,8 @@ function formStepContextMenuSelection(event, data) {
          break;
 
     case "add-page-here":
-         $("#ActivatedMenu_AddPage").trigger("ActivatedMenuOpen", {
+         $("#ActivatedMenu_AddPage").trigger("component.open", {
+           my: "left top",
            at: "right top",
            of: $link
          });
@@ -108,7 +109,6 @@ function applyMenus() {
       container_id: $menu.data("activated-menu-container-id"),
       activator_text: $menu.data("activator-text"),
       selection_event: $menu.data("document-event"),
-      position: { my: "top left", at: "left bottom" }, // Position menu in relation to activator.
       menu: {
         position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
       }

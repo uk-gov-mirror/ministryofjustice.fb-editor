@@ -14,20 +14,29 @@
  *
  **/
 
+
 class ActivatedMenu {
   constructor($menu, config) {
     this.activator = $("<button class=\"ActivatedMenu_Activator\"></button>");
     this.container = $("<div class=\"ActivatedMenu_Container\"></div>");
     this.config = config || {};
     this.menu = $menu;
+
+    this.position = {
+      // Default position settings (can be set on instantiation or overide
+      // on-the-fly by passing to component.open() function. Passing in a
+      // position object will set the temporary value this.state.position.
+      my: "left top",
+      at: "left bottom",
+      of: this.activator
+    };
+
     this.state = {
       open: false,
-      position: null // Default is empty - update this dynamically
-      // e.g. position = {
-      //        my: "left top",
-      //        at: "right bottom"
-      //        of: this.activator
-      //      }
+      position: null // Default is empty - update this dynamically by passing
+                     // to component.open() - will be reset on component.close()
+                     // See config.position (above) and jQueryUI documentation
+                     // for what value(s) are required.
     }
 
     this.menu.before(this.container);
@@ -44,24 +53,19 @@ class ActivatedMenu {
     this.container.append(this.menu);
     this.container.before(this.activator);
 
+
     bindEventHandlers.call(this);
     setMenuOpenPosition.call(this);
 
     this.close();
   }
 
-  // Method
-  open() {
+  // Opens the menu.
+  // @position (Object) Optional (jQuery position) object.
+  open(position) {
+    setMenuOpenPosition.call(this, position);
     this.container.show();
     this.state.open = true;
-  }
-
-  // Expected to be used by other elements/script calling the component.
-  // Whatever calls it, is expected to pass component.state.position
-  // requirements with the call.
-  openRemote(position) {
-    setMenuOpenPosition.call(this, position);
-    this.open();
   }
 
   // Method
@@ -69,20 +73,9 @@ class ActivatedMenu {
     this.container.hide();
     this.state.open = false;
 
-    // Clear any externally set component.state.position
-    // and make sure it's reset to original.
-    clearMenuOpenPosition.call(this);
-    setMenuOpenPosition.call(this)
-  }
-
-  // Toggles the open/close functionality
-  toggle() {
-    if(this.state.open) {
-      this.close();
-    }
-    else {
-      this.open();
-    }
+    // Reset any externally/temporary setting of
+    // component.state.position back to default.
+    resetMenuOpenPosition.call(this);
   }
 }
 
@@ -91,11 +84,11 @@ class ActivatedMenu {
  * Uses the jQueryUI position() utility function to set the values.
  **/
 function setMenuOpenPosition(position) {
-  var pos = (position || this.config.position || {});
+  var pos = position || {};
   this.container.position({
-    my: (pos.my || "left top"),
-    at: (pos.at || "right bottom"),
-    of: (pos.of || this.activator)
+    my: (pos.my || this.position.my),
+    at: (pos.at || this.position.at),
+    of: (pos.of || this.position.of)
   });
 }
 
@@ -111,7 +104,7 @@ function setMenuOpenPosition(position) {
  * activators (used for position reference) need to be dynamically
  * moved for any enhance or future design improvements. 
  **/
-function clearMenuOpenPosition() {
+function resetMenuOpenPosition() {
   var node = this.container.get(0);
   node.style.left = "";
   node.style.right = "";
@@ -135,13 +128,6 @@ function bindEventHandlers() {
   this.activator.on("click.ActivatedMenu", (event) => {
     component.state.activator = event.currentTarget;
     component.open();
-  });
-
-  // Open the menu by triggering this event from something else.
-  // Probably need to pass in the positioning object
-  // (see setMenuOpenPosition() function for details)
-  this.container.on("ActivatedMenuOpen", (event, position) => {
-    component.openRemote(position);
   });
 
   this.menu.on("mouseout", (event) => {
@@ -183,6 +169,19 @@ function bindEventHandlers() {
       });
     });
   }
+
+  // Allow component public functions to be triggered
+  // from the jQuery object without jumping through all
+  // the hoops of creating/using a jQuery widget.
+  // e.g. use  $("blah").trigger("component.open")
+
+  this.container.on("component.open", (event, position) => {
+    component.open(position);
+  });
+
+  this.container.on("component.close", (event, position) => {
+    component.open(position);
+  });
 }
 
 
