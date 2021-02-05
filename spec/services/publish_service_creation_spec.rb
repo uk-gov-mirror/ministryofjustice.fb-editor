@@ -15,7 +15,7 @@ RSpec.describe PublishServiceCreation, type: :model do
       it 'returns the value decoded' do
         expect(
           publish_service_creation.service_configuration(
-            name: :username,
+            name: ServiceConfiguration::BASIC_AUTH_USER,
             deployment_environment: 'dev'
           )
         ).to eq('x-wing')
@@ -182,14 +182,14 @@ RSpec.describe PublishServiceCreation, type: :model do
           ServiceConfiguration.where(
             service_id: service_id,
             deployment_environment: attributes.fetch(:deployment_environment),
-            name: 'USERNAME'
+            name: 'BASIC_AUTH_USER'
           ).first
         end
         let(:password_config) do
           ServiceConfiguration.where(
             service_id: service_id,
             deployment_environment: attributes.fetch(:deployment_environment),
-            name: 'PASSWORD'
+            name: 'BASIC_AUTH_PASS'
           ).first
         end
 

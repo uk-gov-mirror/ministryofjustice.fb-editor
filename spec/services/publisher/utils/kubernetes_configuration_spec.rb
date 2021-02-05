@@ -8,10 +8,10 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
       platform_environment: 'test',
       deployment_environment: 'dev',
       service_configuration: [
-        double(name: 'ENCODED_PRIVATE_KEY', value: encoded_private_key),
-        double(name: 'ENCODED_PUBLIC_KEY', value: encoded_public_key),
-        double(name: 'BASIC_AUTH_USER', value: 'ZHJvaWQ='),
-        double(name: 'BASIC_AUTH_PASS', value: 'cjJkMg=='),
+        build(:service_configuration, name: 'ENCODED_PRIVATE_KEY', value: encoded_private_key),
+        build(:service_configuration, name: 'ENCODED_PUBLIC_KEY', value: encoded_public_key),
+        build(:service_configuration, name: 'BASIC_AUTH_USER', value: 'ZHJvaWQ='),
+        build(:service_configuration, name: 'BASIC_AUTH_PASS', value: 'cjJkMg=='),
       ]
     )
   end

@@ -11,12 +11,12 @@ FactoryBot.define do
     end
 
     trait :username do
-      name { 'USERNAME' }
+      name { ServiceConfiguration::BASIC_AUTH_USER }
       value { 'eC13aW5n' }
     end
 
     trait :password do
-      name { 'PASSWORD' }
+      name { ServiceConfiguration::BASIC_AUTH_PASS }
       value { 'dGllLWZpZ2h0ZXIK' }
     end
   end

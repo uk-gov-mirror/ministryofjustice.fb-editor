@@ -4,7 +4,6 @@ class Publisher
   class ServiceProvisioner
     include ActiveModel::Model
     include ::Publisher::Utils::Hostname
-    SECRETS = %w(BASIC_AUTH_USER BASIC_AUTH_PASS ENCODED_PRIVATE_KEY)
 
     attr_accessor :service_id,
                   :platform_environment,
@@ -93,15 +92,11 @@ class Publisher
     end
 
     def config_map
-      service_configuration.reject do |configuration|
-        configuration.name.in?(SECRETS)
-      end
+      service_configuration.reject(&:secrets?)
     end
 
     def secrets
-      service_configuration.select do |configuration|
-        configuration.name.in?(SECRETS)
-      end
+      service_configuration.select(&:secrets?)
     end
 
     private
