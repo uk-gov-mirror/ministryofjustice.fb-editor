@@ -47,7 +47,7 @@ class PublishServiceCreation
     Base64.decode64(configuration.value) if configuration.present?
   end
 
-  def check_require_authentication?(deployment_environment:)
+  def existing_authentication?(deployment_environment:)
     PublishService.completed.where(
       service_id: service_id,
       deployment_environment: deployment_environment
