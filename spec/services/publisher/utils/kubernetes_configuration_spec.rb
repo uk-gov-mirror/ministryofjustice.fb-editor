@@ -10,6 +10,8 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
       service_configuration: [
         double(name: 'ENCODED_PRIVATE_KEY', value: encoded_private_key),
         double(name: 'ENCODED_PUBLIC_KEY', value: encoded_public_key),
+        double(name: 'BASIC_AUTH_USER', value: 'ZHJvaWQ='),
+        double(name: 'BASIC_AUTH_PASS', value: 'cjJkMg=='),
       ]
     )
   end
@@ -143,6 +145,25 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
         expect('config_map.yaml').to be_generated_in(
           tmp_dir
         ).with_content(config_map_yaml)
+      end
+    end
+
+    context 'secrets.yaml' do
+      let(:secrets_yaml) do
+        YAML.load_file(
+          Rails.root.join(
+            'spec',
+            'fixtures',
+            'kubernetes_configuration',
+            'secrets.yaml'
+          )
+        )
+      end
+
+      it 'generates the secrets.yaml' do
+        expect('secrets.yaml').to be_generated_in(
+            tmp_dir
+          ).with_content(secrets_yaml)
       end
     end
   end

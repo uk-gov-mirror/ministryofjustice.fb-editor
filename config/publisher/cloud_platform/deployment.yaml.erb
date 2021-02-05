@@ -37,6 +37,13 @@ spec:
             value: <%= secret_key_base %>
           - name: SERVICE_METADATA
             value: '<%= service_metadata %>'
+        <% secrets.each do |secret|  %>
+          - name: <%= secret.name %>
+            valueFrom:
+              secretKeyRef:
+                name: <%= secret_name %>
+                key: <%= secret.name.downcase %>
+        <% end %>
         image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-<%= platform_environment %>
         imagePullPolicy: Always
         ports:

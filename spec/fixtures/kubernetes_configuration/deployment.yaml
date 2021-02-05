@@ -37,6 +37,21 @@ spec:
             value: 'fdfdd491d611aa1abef54cbf24a709a1bb31ff881a487f8c58c69399202b08f77019920f481e17b40dd7452361055534b9f91f172719ed98a088498242f96f59'
           - name: SERVICE_METADATA
             value: '{"service_name":"acceptance-tests-date"}'
+          - name: ENCODED_PRIVATE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fb-acceptance-tests-date-secrets
+                key: encoded_private_key
+          - name: BASIC_AUTH_USER
+            valueFrom:
+              secretKeyRef:
+                name: fb-acceptance-tests-date-secrets
+                key: basic_auth_user
+          - name: BASIC_AUTH_PASS
+            valueFrom:
+              secretKeyRef:
+                name: fb-acceptance-tests-date-secrets
+                key: basic_auth_pass
         image: 754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-runner:latest-test
         imagePullPolicy: Always
         ports:

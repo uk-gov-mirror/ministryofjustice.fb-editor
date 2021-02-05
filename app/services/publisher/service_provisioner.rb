@@ -4,6 +4,7 @@ class Publisher
   class ServiceProvisioner
     include ActiveModel::Model
     include ::Publisher::Utils::Hostname
+    SECRETS = %w(BASIC_AUTH_USER BASIC_AUTH_PASS ENCODED_PRIVATE_KEY)
 
     attr_accessor :service_id,
                   :platform_environment,
@@ -48,6 +49,10 @@ class Publisher
       "fb-#{service_slug}-config-map"
     end
 
+    def secret_name
+      "fb-#{service_slug}-secrets"
+    end
+
     def service_monitor_name
       "formbuilder-form-#{service_slug}-service-monitor-#{platform_environment}-#{deployment_environment}"
     end
@@ -85,6 +90,18 @@ class Publisher
 
     def resource_requests_memory
       '128Mi'
+    end
+
+    def config_map
+      service_configuration.reject do |configuration|
+        configuration.name.in?(SECRETS)
+      end
+    end
+
+    def secrets
+      service_configuration.select do |configuration|
+        configuration.name.in?(SECRETS)
+      end
     end
 
     private
