@@ -20,13 +20,13 @@ class DefaultConfiguration
 
       create_configuration(
         name: 'ENCODED_PRIVATE_KEY',
-        value: Base64.strict_encode64(key.private_key),
+        value: key.private_key,
         deployment_environment: deployment_environment
       )
 
       create_configuration(
         name: 'ENCODED_PUBLIC_KEY',
-        value: Base64.strict_encode64(key.public_key),
+        value: key.public_key,
         deployment_environment: deployment_environment
       )
     end

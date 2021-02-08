@@ -42,7 +42,7 @@ class PublishServiceCreation
       name: name.to_s.upcase
     )
 
-    Base64.decode64(configuration.value) if configuration.present?
+    configuration.decrypt_value if configuration.present?
   end
 
   def existing_authentication?(deployment_environment:)
@@ -90,7 +90,7 @@ class PublishServiceCreation
       deployment_environment: deployment_environment,
       name: name
     )
-    service_configuration.value = Base64.strict_encode64(value)
+    service_configuration.value = value
     service_configuration.save!
   end
 
@@ -100,6 +100,16 @@ class PublishServiceCreation
       deployment_environment: deployment_environment,
       name: name
     )
+  end
+
+  def create_or_update_configuration(name:, value:)
+    service_configuration = ServiceConfiguration.find_or_initialize_by(
+      service_id: service_id,
+      deployment_environment: deployment_environment,
+      name: name
+    )
+    service_configuration.value = value
+    service_configuration.save!
   end
 
   def require_authentication?

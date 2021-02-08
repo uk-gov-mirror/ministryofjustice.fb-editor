@@ -60,4 +60,34 @@ RSpec.describe ServiceConfiguration, type: :model do
       end
     end
   end
+
+  context 'encrypting and decrypting values' do
+    let(:service_configuration) do
+      create(:service_configuration, :dev, :username, value: 'r2d2')
+    end
+
+    describe '#before_save' do
+      context 'encrypting value' do
+        it 'saves a encrypted value' do
+          expect(service_configuration.value).not_to eq('r2d2')
+        end
+      end
+    end
+
+    describe '#decrypt_value' do
+      context 'decrypting value' do
+        it 'decrypts a value from the db' do
+          expect(service_configuration.decrypt_value).to eq('r2d2')
+        end
+      end
+    end
+
+    describe '#encode64' do
+      context 'base64 encoded value' do
+        it 'base64 encodes the value' do
+          expect(service_configuration.encode64).to eq(Base64.strict_encode64('r2d2'))
+        end
+      end
+    end
+  end
 end

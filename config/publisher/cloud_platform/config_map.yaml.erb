@@ -4,5 +4,9 @@ metadata:
   name: <%= config_map_name %>
   namespace: <%= namespace %>
 data: <% config_map.each do |configuration|  %>
-  <%= configuration.name %>: "<%= configuration.value %>"
+  <% if configuration.name == 'ENCODED_PUBLIC_KEY' %>
+    <%= configuration.name %>: "<%= configuration.encode64 %>"
+  <% else %>
+    <%= configuration.name %>: "<%= configuration.decrypt_value %>"
+  <% end %>
 <% end %>

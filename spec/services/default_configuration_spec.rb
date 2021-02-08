@@ -6,19 +6,14 @@ RSpec.describe DefaultConfiguration do
     before { default_configuration.create }
 
     context 'generates private/public keys' do
-      let(:decode) do
-        lambda do |value|
-          Base64.decode64(value)
-        end
-      end
       let(:created_configuration) do
         ServiceConfiguration.where(service_id: service.service_id)
       end
       let(:private_keys) do
-        created_configuration.where(name: 'ENCODED_PRIVATE_KEY').pluck(:value).map(&decode)
+        created_configuration.where(name: 'ENCODED_PRIVATE_KEY').map(&:decrypt_value)
       end
       let(:public_keys) do
-        created_configuration.where(name: 'ENCODED_PUBLIC_KEY').pluck(:value).map(&decode)
+        created_configuration.where(name: 'ENCODED_PUBLIC_KEY').map(&:decrypt_value)
       end
       let(:service_configuration) do
         created_configuration.map do |service_configuration|
