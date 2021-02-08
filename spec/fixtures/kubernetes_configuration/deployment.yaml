@@ -25,6 +25,10 @@ spec:
         env:
           - name: RAILS_ENV
             value: 'production'
+          - name: RAILS_SERVE_STATIC_FILES
+            value: 'true'
+          - name: RAILS_LOG_TO_STDOUT
+            value: 'true'
           - name: USER_DATASTORE_URL
             value: http://fb-user-datastore-api-svc-test-dev.formbuilder-platform-test-dev/
           - name: SERVICE_SLUG
