@@ -9,11 +9,12 @@ require("channels")
 require("jquery")
 require("jquery-ui")
 
-// Entry points for fb-editor javascript
-require("../components/component_activated_menu")
-require("../services/index")
+// Required scripts for fb-editor javascript
+require("../scripts/component_activated_menu")
+require("../scripts/editable_content")
+require("../scripts/index")
 
-// Entry points for fb-editor stylesheets
+// Entry point for fb-editor stylesheets
 import "../styles/application.scss"
 
 

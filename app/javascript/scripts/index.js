@@ -1,4 +1,4 @@
-import { ActivatedMenu } from '../components/component_activated_menu';
+import { ActivatedMenu } from './component_activated_menu';
 
 
 // Always runs when document ready.
