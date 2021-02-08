@@ -64,6 +64,16 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: encoded_private_key
+          - name: ENCRYPTION_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: encryption_key
+          - name: ENCRYPTION_SALT
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: encryption_salt
           # secrets created by terraform
           # which may or may not depend on values
           # canonically defined in secrets.tfvars
