@@ -16,7 +16,7 @@ RSpec.describe NewComponentGenerator do
         it 'creates valid text field component metadata' do
           expect(
             MetadataPresenter::ValidateSchema.validate(
-              generator.to_metadata, component_type
+              generator.to_metadata, "component.#{component_type}"
             )
           ).to be(valid)
         end
