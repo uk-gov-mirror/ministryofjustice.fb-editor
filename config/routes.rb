@@ -23,8 +23,9 @@ Rails.application.routes.draw do
           patch 'update_form_information'
         end
       end
+
+      mount MetadataPresenter::Engine => '/preview', as: :preview
     end
-    mount MetadataPresenter::Engine => '/preview', as: :preview
   end
 
   root to: 'services#index'
