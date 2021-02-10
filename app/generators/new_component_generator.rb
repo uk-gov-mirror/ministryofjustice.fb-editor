@@ -1,4 +1,5 @@
 class NewComponentGenerator
+  DEFAULT_VALIDATION = { 'required' => true }.freeze
   attr_reader :component_type, :page_url, :components
 
   def initialize(component_type:, page_url:, components: [])
@@ -13,6 +14,12 @@ class NewComponentGenerator
     metadata.tap do
       metadata['_id'] = component_id
       metadata['name'] = component_id
+
+      if metadata['validation'].present?
+        metadata['validation'].merge!(DEFAULT_VALIDATION)
+      else
+        metadata['validation'] = DEFAULT_VALIDATION
+      end
     end
   end
 

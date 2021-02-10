@@ -1,29 +1,54 @@
 RSpec.describe NewComponentGenerator do
   subject(:generator) do
-    described_class.new(component_type: component_type, page_url: page_url, components: components)
+    described_class.new(
+      component_type: component_type,
+      page_url: page_url,
+      components: components
+    )
   end
 
   describe '#to_metadata' do
     context 'valid component metadata' do
-
       let(:valid) { true }
 
-      context 'text component' do
-        let(:component_type) { 'text' }
-        let(:page_url) { 'some-page' }
-        let(:components) { [] }
+      %w(text textarea number).each do |component|
+        context "when component '#{component}'" do
+          let(:component_type) { component }
+          let(:page_url) { 'some-page' }
+          let(:components) { [] }
 
-        it 'creates valid text field component metadata' do
-          expect(
-            MetadataPresenter::ValidateSchema.validate(
-              generator.to_metadata, "component.#{component_type}"
-            )
-          ).to be(valid)
-        end
+          it 'creates valid text field component metadata' do
+            expect(
+              MetadataPresenter::ValidateSchema.validate(
+                generator.to_metadata, "component.#{component_type}"
+              )
+            ).to be(valid)
+          end
 
-        it 'generates the component id' do
-          expect(generator.to_metadata['_id']).to eq('some-page_text_1')
+          it 'generates the component id' do
+            expect(
+              generator.to_metadata['_id']
+            ).to eq("some-page_#{component}_1")
+          end
+
+          it 'generates required validation as default' do
+            expect(
+              generator.to_metadata['validation']
+            ).to include('required' => true)
+          end
         end
+      end
+    end
+
+    context "when component has other default validation" do
+      let(:component_type) { 'number' }
+      let(:page_url) { 'some-page' }
+      let(:components) { [] }
+
+      it 'generates number validation as default' do
+        expect(
+          generator.to_metadata['validation']
+        ).to include('number' => true)
       end
     end
 
