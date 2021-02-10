@@ -1,3 +1,14 @@
+GIT
+  remote: https://github.com/ministryofjustice/fb-metadata-presenter.git
+  revision: 35b42b658bdeba0198739481ee545caf17c5f6ef
+  branch: component/number
+  specs:
+    metadata_presenter (0.8.2)
+      govuk_design_system_formbuilder (>= 2.1.5)
+      json-schema (>= 2.8.1)
+      kramdown (>= 2.3.0)
+      rails (>= 6.0.3.4, < 6.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -144,11 +155,6 @@ GEM
       mini_mime (>= 0.1.1)
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
-    metadata_presenter (0.8.0)
-      govuk_design_system_formbuilder (>= 2.1.5)
-      json-schema (>= 2.8.1)
-      kramdown (>= 2.3.0)
-      rails (>= 6.0.3.4, < 6.2.0)
     method_source (1.0.0)
     mimemagic (0.3.5)
     mini_mime (1.0.2)
@@ -319,7 +325,7 @@ DEPENDENCIES
   fb-jwt-auth (= 0.5.0)
   hashie
   listen (~> 3.4)
-  metadata_presenter (= 0.8.0)
+  metadata_presenter!
   omniauth
   omniauth-auth0 (~> 2.5.0)
   omniauth-rails_csrf_protection (~> 0.1)
