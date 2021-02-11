@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   helper_method :service
 
   def editable?
-    true
+    !request.script_name.include?('preview')
   end
   helper_method :editable?
 
