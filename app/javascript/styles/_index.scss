@@ -112,9 +112,13 @@
   position: relative;
 
   img {
-    border: govuk-colour("blue") solid 2px;
+    border:  $govuk-link-colour solid 2px;
     display: block;
     width: 200px;
+
+    &:hover {
+      border-color: $govuk-link-hover-colour;
+    }
   }
 
   &:after {
