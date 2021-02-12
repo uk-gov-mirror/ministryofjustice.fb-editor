@@ -157,11 +157,6 @@
   visibility: hidden;
   width: 35px;
 
-  &:hover {
-    background-color: govuk-colour("white");
-    color: govuk-colour("blue");
-  }
-
   &:after {
     content: "...";
     display: block;
