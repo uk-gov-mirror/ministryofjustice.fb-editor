@@ -23,6 +23,10 @@
     @include button_type_link;
     border: none;
     display: block;
+
+    &.destructive:hover {
+      background-color: $govuk-error-colour;
+    }
   }
 
   &, ul {
