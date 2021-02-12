@@ -93,8 +93,7 @@
 .form-overview_button {
   // This element is injected by JS
   @include button_type_link;
-  padding-left: govuk-spacing(2);
-  padding-right: govuk-spacing(2);
+  padding: 9px;
   position: absolute;
   right: -113px;
   top: calc(50% - 30px);
