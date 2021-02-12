@@ -219,13 +219,23 @@
   line-height: 1.25em;
   overflow: hidden;
   padding-top: govuk-spacing(2);
+  vertical-align: bottom;
   -webkit-box-sizing: border-box;
 
-
   .heading {
+    display: table-cell;
     float: left;
     margin: 0;
+    max-width: 600px;
     padding-top: govuk-spacing(2);
+
+    @include govuk-media-query($from: tablet) {
+      width: auto;
+    }
+
+    @include govuk-media-query($from: desktop) {
+      width: 57%;
+    }
   }
 
   li {
@@ -255,9 +265,24 @@
         border-color: govuk-colour("light-blue");
       }
     }
+
+    &:first-child {
+      margin-left: 0;
+    }
   }
 
   ul {
+    display: table-cell;
     float: right;
+    text-align: right;
+    vertical-align: bottom;
+
+    @include govuk-media-query($from: tablet) {
+      width: auto;
+    }
+
+    @include govuk-media-query($from: desktop) {
+      width: 43%;
+    }
   }
 }
