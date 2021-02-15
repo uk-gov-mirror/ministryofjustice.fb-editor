@@ -13,8 +13,10 @@ $(document).ready(function() {
 
 function bindEditableContentHandlers($area) {
   var $editContentForm = $("#editContentForm");
+  var $saveButton = $editContentForm.find(":submit");
   var editableContent = [];
   if($editContentForm.length) {
+    $saveButton.attr("disabled", true); // disable until needed.
     $(".fb-editable").each(function(i, node) {
       var $node = $(node);
       editableContent.push(editableComponent($node, {
@@ -22,7 +24,9 @@ function bindEditableContentHandlers($area) {
         form: $editContentForm,
         id: $node.data("fb-content-id"),
         onSaveRequired: function() {
-          console.log("Save required");
+          // Code detected something changed to
+          // make the submit button available.
+          $saveButton.attr("disabled", false);
         },
         type: $node.data("fb-content-type")
       }));
