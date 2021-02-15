@@ -11,7 +11,7 @@ RSpec.describe NewComponentGenerator do
     context 'valid component metadata' do
       let(:valid) { true }
 
-      %w(text textarea number).each do |component|
+      %w(text textarea number radios).each do |component|
         context "when component '#{component}'" do
           let(:component_type) { component }
           let(:page_url) { 'some-page' }

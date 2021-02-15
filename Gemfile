@@ -9,9 +9,9 @@ gem 'daemons'
 
 # Metadata presenter - if you need to be on development you can uncomment
 # one of these lines:
-# gem 'metadata_presenter',
-#     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'component/number'
+#gem 'metadata_presenter',
+#    github: 'ministryofjustice/fb-metadata-presenter',
+#    branch: 'radio-buttons-default-items'
 #gem 'metadata_presenter', path: '../fb-metadata-presenter'
 #
 gem 'metadata_presenter', '0.12.1'
