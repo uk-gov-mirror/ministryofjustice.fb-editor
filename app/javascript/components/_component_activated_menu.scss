@@ -23,12 +23,33 @@
     @include button_type_link;
     border: none;
     display: block;
+    padding: 10px;
+
+    &.destructive:hover {
+      background-color: $govuk-error-colour;
+    }
+  }
+
+  span {
+    padding-right: 30px;
+    position: relative;
+
+    &:after {
+      content: ">";
+      font-family: monospace;
+      font-size: 22px;
+      height: 100%;
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      vertical-align: middle;
+    }
   }
 
   &, ul {
     border: govuk-colour("blue") solid 2px;
     position: absolute;
-    width: 200px;
+    width: 250px;
   }
 
   .ui-menu-icon {

@@ -17,7 +17,7 @@
         <li><a href="#edit-page">Edit page</a></li>
         <li><a href="#preview-page">Preview page</a></li>
         <li><a href="#add-page-here">Add page here</a></li>
-        <li><a href="#delete-page">Delete page...</a></li>
+        <li><a href="#delete-page" class="destructive">Delete page...</a></li>
       </ul>
 
       <%= link_to page.url, edit_page_path(service.service_id, page.uuid), class: 'govuk-link' %>
@@ -83,7 +83,6 @@
       <div class="govuk-form-group <%= !f.object.errors.empty? ? 'govuk-form-group--error' :'' %>">
         <%= f.label :page_url, class: "govuk-label govuk-label--m" %>
         <% f.object.errors.each do |error|  %>
-          <%= error.message %>
           <span class="govuk-error-message"><%= error.message %></span>
         <% end %>
         <%= f.text_field :page_url, class: "govuk-input"  %>

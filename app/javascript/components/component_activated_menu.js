@@ -139,7 +139,7 @@ function bindEventHandlers() {
         if(component.state.close) {
           component.close();
         }
-      }, 500);
+      }, 250);
     }
   });
 
