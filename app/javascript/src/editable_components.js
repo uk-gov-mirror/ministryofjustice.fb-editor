@@ -26,8 +26,14 @@ var turndownService = new TurndownService();
  * @$node  (jQuery object) jQuery wrapped HTML node.
  * @config (Object) Configurable options, e.g.
  *                  {
- *                    classname: 'usedOnBackgroundInput',
- *                    value: 'content to populate background input'
+ *                    form: $formNodeToAddHiddenInputsForSaveSubmit,
+ *                    id: 'identifierStringForUseInHiddenFormInputName',
+ *                    onSaveRequired: function() {
+ *                      // Pass function to do something. Triggered if
+ *                      // the code believes something has changed on
+ *                      // an internal 'update' call.
+ *                    },
+ *                    type: 'editableContentType'
  *                  }
  **/
 class EditableBase {
@@ -61,8 +67,7 @@ class EditableBase {
  * @$node  (jQuery object) jQuery wrapped HTML node.
  * @config (Object) Configurable options, e.g.
  *                  {
- *                    classname: 'usedOnBackgroundInput',
- *                    value: 'content to populate background input'
+ *                    editClassname: 'usedOnElementToShowEditing'
  *                  }
  **/
 class EditableElement extends EditableBase {
@@ -80,7 +85,11 @@ class EditableElement extends EditableBase {
   }
 
   update() {
-    this.content = this.$node.text();
+    var text = this.$node.text();
+    if(this.content != text) {
+      this.content = text;
+      triggerSaveRequired(this._config.onSaveRequired);
+    }
     this.$node.removeClass(this._config.editClassname);
   }
 }
@@ -93,11 +102,7 @@ class EditableElement extends EditableBase {
  * (controlled by focus and blur events).
  *
  * @$node  (jQuery object) jQuery wrapped HTML node.
- * @config (Object) Configurable options, e.g.
- *                  {
- *                    classname: 'usedOnBackgroundInput',
- *                    value: 'content to populate background input'
- *                  }
+ * @config (Object) Configurable options.
  **/
 class EditableContent extends EditableBase {
   constructor($node, config) {
@@ -136,7 +141,11 @@ class EditableContent extends EditableBase {
   }
 
   update() {
-    this.content = this.input.$node.val();
+    var value = this.input.$node.val();
+    if(this.content != value) {
+      this.content = value;
+      triggerSaveRequired(this._config.onSaveRequired);
+    }
     this.input.$node.hide();
     this.$node.show();
   }
@@ -225,6 +234,15 @@ class BackgroundInputElement {
   }
 }
 
+
+/* Fires a passed function intended to run on code detection of
+ * content required to be saved (updated and different).
+ **/
+function triggerSaveRequired(action) {
+  if(typeof(action) === 'function' || action instanceof Function) {
+    action();
+  }
+}
 
 /* Function used to update (or create if does not exist) a hidden
  * form input field that will be part of the submitted data

@@ -21,6 +21,9 @@ function bindEditableContentHandlers($area) {
         editClassname: "active",
         form: $editContentForm,
         id: $node.data("fb-content-id"),
+        onSaveRequired: function() {
+          console.log("Save required");
+        },
         type: $node.data("fb-content-type")
       }));
     });
