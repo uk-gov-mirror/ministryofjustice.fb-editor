@@ -1,5 +1,3 @@
-import DOMPurify from 'dompurify';
-
 /**
  * Editable Components
  * ----------------------------------------------------
@@ -15,7 +13,10 @@ import DOMPurify from 'dompurify';
  *
  **/
 
-
+import DOMPurify from 'dompurify';
+import marked from 'marked';
+import TurndownService from 'turndown';
+var turndownService = new TurndownService();
 
 /* Editable Element:
  * Used for creating simple content control objects on HTML
@@ -86,7 +87,7 @@ class EditableElement extends EditableBase {
 
 
 /* Editable Content:
- * Used for creating complex content control objects on HTML areas such as a <DIV>, 
+ * Used for creating complex content control objects on HTML areas such as a <DIV>,
  * or <article>. The content will, when in edit mode, expect Markdown input which
  * will be translated into HTML, for view to user, when switched out of edit mode
  * (controlled by focus and blur events).
@@ -254,43 +255,17 @@ function cleanHtml(html) {
   return html;
 }
 
-// TODO: Convert HTML to Markdown by tapping into a plugin or service.
-// Added basic (non-complete) effort for development testing here.
+/* Convert HTML to Markdown by tapping into third-party code.
+ **/
 function convertToMarkdown(html) {
-  var text = cleanHtml(html);
-
-  // Remove all closing brackets.
-  text = text.replace(/(<p>|<ul>|<\/ul>|<\/li>|<\/h2>|<\/h3>|<\/h4>)/mig, "");
-
-  // Apply some markdown formats.
-  text = text.replace(/\s*<\/p>\s*/mig, " \n");
-  text = text.replace(/<br>|<br \/>/mig, "  \n");
-  text = text.replace(/<li>/mig, "- ");
-  text = text.replace(/<h2>/mig, "## ");
-  text = text.replace(/<h3>/mig, "### ");
-  text = text.replace(/<h4>/mig, "#### ");
-  text = text.replace(/<strong><em>(.*)?<\/em><\/strong>/mig, "***$1***");
-  return text;
+  return  turndownService.turndown(cleanHtml(html));
 }
 
 
-// TODO: Convert Markdown to HTML by tapping into a plugin or service.
-// Added basic (non-complete) effort for development testing here.
+/* Convert Markdown to HTML by tapping into a third-party code.
+ **/
 function convertToHtml(markdown) {
-  var text = markdown.trim();
-  text = text.replace(/\*\*\*(.*)?\*\*\*/mig, "<strong><em>$1</em></strong>");
-  text = text.replace(/\*\*(.*)?\*\*/mig, "<strong>$1</strong>");
-
-  text = text.replace(/#### (.*)$/mig, "<h4>$1</h4>\n");
-  text = text.replace(/### (.*)$/mig, "<h3>$1</h3>\n");
-  text = text.replace(/## (.*)$/mig, "<h2>$1</h2>\n");
-
-  text = text.replace(/- (.*)$/mig, "<li>$1</li>\n");
-  text = text.replace(/(<li>(.*)<\/li>)/smig, "<ul>\n$1\n</ul>\n");
-  text = text.replace(/[ ]{2,}\n/mig, "<br>");
-  text = text.replace(/^([^\n<].*?)$/smig, "<p>$1</p>");
-
-  return text;
+  return marked(markdown);
 }
 
 
