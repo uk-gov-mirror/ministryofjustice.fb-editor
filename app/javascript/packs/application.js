@@ -11,7 +11,7 @@ require("jquery-ui")
 
 // Required scripts for fb-editor javascript
 require("../scripts/component_activated_menu")
-require("../scripts/editable_content")
+require("../scripts/editable_components")
 require("../scripts/index")
 
 // Entry point for fb-editor stylesheets

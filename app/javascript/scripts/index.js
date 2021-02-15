@@ -1,4 +1,5 @@
 import { ActivatedMenu } from './component_activated_menu';
+import { editableComponent } from './editable_components';
 
 
 // Always runs when document ready.
@@ -7,8 +8,32 @@ $(document).ready(function() {
   applyFormDialogs();
   applyMenus();
   bindDocumentEventsForPagesSection();
+  bindEditableContentHandlers();
 });
 
+function bindEditableContentHandlers($area) {
+  var $editContentForm = $("#editContentForm");
+  var editableContent = [];
+  if($editContentForm.length) {
+    $(".fb-editable").each(function(i, node) {
+      var $node = $(node);
+      editableContent.push(editableComponent($node, {
+        editClassname: "active",
+        form: $editContentForm,
+        id: $node.data("fb-content-id"),
+        type: $node.data("fb-content-type")
+      }));
+    });
+
+    $editContentForm.on("submit", (e) => {
+      for(var i=0; i<editableContent.length; ++i) {
+        editableContent[i].save();
+      }
+      // Preventing only during development.
+      e.preventDefault();
+    });
+  }
+}
 
 // Bind document event listeners for the 'Pages' section of
 // form builder. This will only do something if the main
