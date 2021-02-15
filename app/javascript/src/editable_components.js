@@ -1,3 +1,5 @@
+import DOMPurify from 'dompurify';
+
 /**
  * Editable Components
  * ----------------------------------------------------
@@ -241,15 +243,21 @@ function updateHiddenInputOnForm($form, id, content) {
 }
 
 
+/* Clean up HTML by stripping attributes and unwanted trailing spaces.
+ **/
+function cleanHtml(html) {
+  html = html.trim();
+  html = html.replace(/(<\w[\w\d]+)\s*[\w\d\s=\"-]*?(>)/mig, "$1$2");
+  html = html.replace(/(?:\n\s*)/mig, "\n");
+  html = html.replace(/[ ]{2,}/mig, " ");
+  html = DOMPurify.sanitize(html, { USE_PROFILES: { html: true }});
+  return html;
+}
+
 // TODO: Convert HTML to Markdown by tapping into a plugin or service.
 // Added basic (non-complete) effort for development testing here.
 function convertToMarkdown(html) {
-  var text = html.trim();
-
-  // Clean up HTML by stripping attributes and unwanted trailing spaces.
-  text = text.replace(/(<\w[\w\d]+)\s*[\w\d\s=\"-]*?(>)/mig, "$1$2");
-  text = text.replace(/(?:\n\s*)/mig, "\n");
-  text = text.replace(/\s{2,}/mig, " ");
+  var text = cleanHtml(html);
 
   // Remove all closing brackets.
   text = text.replace(/(<p>|<ul>|<\/ul>|<\/li>|<\/h2>|<\/h3>|<\/h4>)/mig, "");
