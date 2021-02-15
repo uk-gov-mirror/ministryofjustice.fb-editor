@@ -1,5 +1,6 @@
 class PagesController < FormController
   default_form_builder GOVUKDesignSystemFormBuilder::FormBuilder
+  before_action :assign_required_objects, only: [:edit, :update]
 
   def create
     @page_creation = PageCreation.new(page_creation_params)
@@ -11,13 +12,7 @@ class PagesController < FormController
     end
   end
 
-  def edit
-    @page = service.find_page_by_uuid(params[:page_uuid])
-  end
-
   def update
-    @page = service.find_page_by_uuid(params[:page_uuid])
-
     @metadata_updater = MetadataUpdater.new(page_update_params)
 
     if @metadata_updater.update
@@ -65,4 +60,13 @@ class PagesController < FormController
     ''
   end
   helper_method :reserved_submissions_path
+
+  private
+
+  # The metadata presenter gem requires this objects to render a page
+  #
+  def assign_required_objects
+    @page = service.find_page_by_uuid(params[:page_uuid])
+    @page_answers = MetadataPresenter::PageAnswers.new(@page, {})
+  end
 end
