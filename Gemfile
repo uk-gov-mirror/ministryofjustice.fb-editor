@@ -14,7 +14,7 @@ gem 'daemons'
 #     branch: 'component/number'
 #gem 'metadata_presenter', path: '../fb-metadata-presenter'
 #
-gem 'metadata_presenter', '0.8.2'
+gem 'metadata_presenter', '0.12.0'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'fb-jwt-auth', '0.5.0'
