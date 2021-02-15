@@ -3,7 +3,7 @@
     {
       "warning_type": "Dynamic Render Path",
       "warning_code": 15,
-      "fingerprint": "e7a712bc09393b5494d0566c761eebfff983b805e29c590f886babe58a5370f9",
+      "fingerprint": "2f7dda0f37fc0343dc737277d31c3c3ce95d50274b8bf339f3bcdbd9235e7896",
       "check_name": "Render",
       "message": "Render path contains parameter value",
       "file": "app/views/pages/edit.html.erb",
@@ -14,8 +14,8 @@
         {
           "type": "controller",
           "class": "PagesController",
-          "method": "edit",
-          "line": 16,
+          "method": "update",
+          "line": 21,
           "file": "app/controllers/pages_controller.rb",
           "rendered": {
             "name": "pages/edit",
@@ -29,9 +29,9 @@
       },
       "user_input": "params[:page_uuid]",
       "confidence": "Weak",
-      "note": "The template is chosen after finding the correct page using the UUID, so this is fine"
+      "note": ""
     }
   ],
-  "updated": "2021-01-25 17:11:13 +0000",
-  "brakeman_version": "4.10.1"
+  "updated": "2021-02-15 09:49:44 -0300",
+  "brakeman_version": "5.0.0"
 }
