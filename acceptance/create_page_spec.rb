@@ -57,7 +57,7 @@ feature 'Create page' do
   end
 
   def when_I_add_the_page
-    editor.new_page_submit.click
+    editor.submit_new_page
   end
 
   def and_I_comeback_to_edit_the_service
