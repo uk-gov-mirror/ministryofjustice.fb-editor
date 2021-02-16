@@ -36,8 +36,6 @@ function bindEditableContentHandlers($area) {
       for(var i=0; i<editableContent.length; ++i) {
         editableContent[i].save();
       }
-      // Preventing only during development.
-      e.preventDefault();
     });
   }
 }
