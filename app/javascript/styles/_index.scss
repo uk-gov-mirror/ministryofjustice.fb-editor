@@ -196,10 +196,12 @@
 /* govuk-button style is green but we want
  * green blue buttons on fb-editor.
  **/
-.govuk-button {
+.fb-govuk-button {
   background-color: govuk-colour("blue");
 
-  &:hover {
+  &:hover,
+  &[disabled='disabled'],
+  &[disabled='disabled']:hover {
     background-color: govuk-colour("dark-blue");
   }
 }
