@@ -8,7 +8,7 @@ en:
     publish_to_test: 'Publish to Test'
     publish_to_live: 'Publish to Live'
     edit_page: 'Edit Page'
-    preview_page: 'Preview Page'
+    preview_page: 'Preview page'
     preview_form: 'Preview form'
   pages:
     form: 'Form pages'
@@ -32,6 +32,7 @@ en:
     live_sub_heading: 'Live is where your form is hosted publicly when your service is running.'
   services:
     edit: 'Edit'
+    preview: 'Preview'
     create: 'Create a new form'
     cancel: 'Cancel'
   activemodel:
