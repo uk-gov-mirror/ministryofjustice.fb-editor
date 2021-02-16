@@ -46,13 +46,13 @@ feature 'Create page' do
 
   def and_I_add_a_page_url
     within editor.new_page_form do
-      editor.page_url_field.set('phasma')
+      editor.set_invisible_field_by_id('page_page_url', 'phasma')
     end
   end
 
   def and_I_add_an_existing_page_url
     within editor.new_page_form do
-      editor.page_url_field.set('/')
+      editor.set_invisible_field_by_id('page_page_url', '/')
     end
   end
 
@@ -79,7 +79,7 @@ feature 'Create page' do
     editor.set_page_type_field('checkanswers')
     editor.set_component_type_field('')
     within editor.new_page_form do
-      editor.page_url_field.set('aquifolium')
+      editor.set_invisible_field_by_id('page_page_url', 'aquifolium')
     end
   end
 

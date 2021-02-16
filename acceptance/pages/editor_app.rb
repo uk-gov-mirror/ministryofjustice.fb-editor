@@ -40,4 +40,8 @@ class EditorApp < SitePrism::Page
     page.execute_script("document.getElementById('page_component_type').value = '#{value}'")
   end
 
+  def set_invisible_field_by_id(id, value)
+    page.execute_script("document.getElementById('#{id}').value = '#{value}'")
+  end
+
 end
