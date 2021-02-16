@@ -10,17 +10,28 @@ RSpec.describe PagesController do
     end
 
     context 'when components are present' do
-      let(:component_params) do
+      let(:component_params_one) do
         {
           'items' => [
-            { 'value' => 'Option 1' },
-            { 'value' => 'Option 2' }
+            { 'value' => 'Yes' },
+            { 'value' => 'No' }
+          ]
+        }
+      end
+      let(:component_params_two) do
+        {
+          'items' => [
+            { 'value' => 'Star Wars' },
+            { 'value' => 'Star Trek' }
           ]
         }
       end
       let(:params) do
         {
-          components: { '0' => JSON.dump(component_params) }
+          components: {
+            '0' => JSON.dump(component_params_one),
+            '1' => JSON.dump(component_params_two)
+          }
         }
       end
 
@@ -28,7 +39,7 @@ RSpec.describe PagesController do
         expect(controller.page_update_params).to eq({
           'id' => page.id,
           'latest_metadata' => service_metadata,
-          'components' => [component_params],
+          'components' => [component_params_one, component_params_two],
           'service_id' => service.service_id
         })
       end
