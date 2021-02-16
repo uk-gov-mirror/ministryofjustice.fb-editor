@@ -16,9 +16,9 @@ class ApplicationController < ActionController::Base
   helper_method :back_link
 
   def save_user_data
-    return {} if params[:answers].blank? || params[:service_id].blank?
+    return {} if params[:answers].blank? || params[:id].blank?
 
-    service_id = params[:service_id]
+    service_id = params[:id]
     session[service_id] ||= {}
     session[service_id]['user_data'] ||= {}
 
@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
   end
 
   def load_user_data
-    user_data = session[params[:service_id]] || {}
+    user_data = session[params[:id]] || {}
 
     user_data['user_data'] || {}
   end

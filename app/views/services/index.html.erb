@@ -13,6 +13,7 @@
             </span>
             <span class="actions">
               <%= link_to t('services.edit'), edit_service_path(service.id), class: "govuk-link edit" %>
+              <%= link_to t('services.preview'), preview_service_path(service.id), class: "govuk-link", target: '_blank' %>
             </span>
           </li>
         <% end %>

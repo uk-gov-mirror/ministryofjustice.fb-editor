@@ -22,4 +22,38 @@ RSpec.describe ApplicationController do
       end
     end
   end
+
+  describe '#save_user_data' do
+    context 'when saving user data to the session' do
+      let(:params) do
+        {
+          answers: { 'frodo' => 'samwise' },
+          id: '123456'
+        }
+      end
+
+      before do
+        allow(controller).to receive(:params).and_return(params)
+        controller.save_user_data
+      end
+
+      it 'saves it with the service id' do
+        expect(controller.session.to_h).to eq(
+          {
+            "123456" => {
+              "user_data" => {
+                "frodo" => "samwise"
+              }
+            }
+          }
+        )
+      end
+
+      it 'retrieves user data using the service id' do
+        expect(controller.load_user_data.to_h).to eq(
+          { "frodo" => "samwise" }
+        )
+      end
+    end
+  end
 end
