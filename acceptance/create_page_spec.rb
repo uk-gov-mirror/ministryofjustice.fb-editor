@@ -45,13 +45,13 @@ feature 'Create page' do
   end
 
   def and_I_add_a_page_url
-    within find('#new_page') do
+    within editor.new_page_form do
       editor.page_url_field.set('phasma')
     end
   end
 
   def and_I_add_an_existing_page_url
-    within find('#new_page') do
+    within editor.new_page_form do
       editor.page_url_field.set('/')
     end
   end

@@ -18,8 +18,8 @@ class EditorApp < SitePrism::Page
   element :form_name_field, :field, 'Form name'
   element :save_button, :button, 'Save'
 
-  element :page_url_field, :field, 'The page’s relative url - it must not contain any spaces'
-  element :new_page_form, '#new_page'
+  element :page_url_field, :field, 'The page’s relative url - it must not contain any spaces', visible: false
+  element :new_page_form, '#new_page', visible: false
   element :new_page_submit, '#new_page input[type="submit"]'
 
   def edit_service_link(service_name)
