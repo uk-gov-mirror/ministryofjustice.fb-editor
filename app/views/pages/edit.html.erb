@@ -2,11 +2,16 @@
 
 <%= form_for @page, as: :page, url: page_path(service.service_id, @page.uuid), method: :patch do |f| %>
   <% @page.editable_attributes.each do |key, value| %>
-    <%= f.hidden_field key, value: value %>
+    <% if key == :components %>
+      <% value.each_with_index do |hash, index| %>
+        <%= f.hidden_field "components[#{index}]", value: hash.to_json %>
+      <% end %>
+    <% else %>
+      <%= f.hidden_field key, value: value %>
+    <% end %>
   <% end %>
 
   <%= f.submit t('actions.save'), class: 'govuk-button editor-button' %>
 <% end %>
 
 <%= render template: @page.template %>
-

@@ -31,13 +31,23 @@ class PagesController < FormController
   end
 
   def page_update_params
-    {
+    update_params = ActiveSupport::HashWithIndifferentAccess.new({
       id: @page.id
-    }.merge(common_params).merge(page_attributes)
+    }.merge(common_params).merge(page_attributes))
+
+    if update_params[:components]
+      update_params[:components] = update_params[:components].each.map do |_,value|
+        JSON.parse(value)
+      end
+    end
+
+    update_params
   end
 
   def page_attributes
-    params.require(:page).permit(@page.editable_attributes.keys)
+    params.require(:page).permit(
+      @page.editable_attributes.keys.push({ components: {}})
+    )
   end
 
   def common_params
