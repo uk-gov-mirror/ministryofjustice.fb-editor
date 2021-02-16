@@ -161,12 +161,17 @@ function bindEventHandlers() {
     let component = this;
     let selection_event = component.config.selection_event;
     component.menu.on("menuselect", function(event, ui) {
-      event.preventDefault();
       $(document).trigger(selection_event, {
         activator: ui.item,
         menu: event.currentTarget,
         component: component
       });
+
+      // If link and link only has fragment identifier as href value,
+      // prevent default assuming code will handle the action.
+      if(event.currentTarget.nodeName.toUpperCase() == "A" && event.currentTarget.match(/^#[\w\d-]*$/)) {
+        event.preventDefault();
+      }
     });
   }
 

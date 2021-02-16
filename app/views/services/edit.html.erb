@@ -18,15 +18,15 @@
           data-activator-text="<%= t('pages.actions') %>"
           data-activator-classname="form-step_button"
           data-document-event="FormStepContextMenuSelection">
-          <li>
-            <%= link_to t('actions.edit_page'),
-              edit_page_path(service.service_id, page.id) %>
-          </li>
-          <li>
-            <%= link_to t('actions.preview_page'),
-              File.join(preview_service_path(service.service_id), page.url),
-              target: '_blank' %>
-          </li>
+        <li>
+          <%= link_to t('actions.edit_page'),
+          edit_page_path(service.service_id, page.id) %>
+        </li>
+        <li>
+          <%= link_to t('actions.preview_page'),
+          File.join(preview_service_path(service.service_id), page.url),
+          target: '_blank' %>
+        </li>
         <li><a href="#add-page-here">Add page here</a></li>
         <li><a href="#delete-page" class="destructive">Delete page...</a></li>
       </ul>
