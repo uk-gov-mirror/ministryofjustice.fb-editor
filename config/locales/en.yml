@@ -7,6 +7,9 @@ en:
     save: 'Save'
     publish_to_test: 'Publish to Test'
     publish_to_live: 'Publish to Live'
+    edit_page: 'Edit Page'
+    preview_page: 'Preview Page'
+    preview_form: 'Preview form'
   pages:
     form: 'Form pages'
     name: 'Pages'
