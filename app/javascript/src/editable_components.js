@@ -51,7 +51,7 @@ class EditableBase {
   }
 
   update() {
-		console.log("update");
+	console.log("update");
   }
 
   save() {
