@@ -29,6 +29,12 @@
   }
 }
 
+@mixin focus {
+  background-color: $govuk-focus-colour;
+  color: $govuk-focus-text-colour;
+  outline: $govuk-focus-width solid $govuk-focus-colour;
+}
+
 
 .width-responsive-two-thirds {
   @include responsive_width("two-thirds");
@@ -245,46 +251,55 @@
   -webkit-box-sizing: border-box;
 
   .heading {
-    display: table-cell;
-    float: left;
+    display: inline-block;
     margin: 0;
     max-width: 600px;
-    padding-top: govuk-spacing(2);
+    padding: govuk-spacing(2) 0;
 
     @include govuk-media-query($from: tablet) {
       width: auto;
     }
 
     @include govuk-media-query($from: desktop) {
-      width: 57%;
+      width: 56%;
     }
   }
 
-  li {
-    @include govuk-font($size: 19);
-    color: $govuk-link-colour;
-    display: inline-block;
-    font-weight: 700;
-    margin-left: govuk-spacing(5);
-    padding: govuk-spacing(2);
-    padding-bottom: calc(#{govuk-spacing(2)} - 4px); // Calc to compensate for border
-    text-align: right;
-
-    a, a:hover {
-      color: inherit;
+  a {
+    &,
+    &:hover {
+      @include govuk-font($size: 19);
+      color: $govuk-link-colour;
+      display: block;
       font: inherit;
+      padding: govuk-spacing(2);
+      padding-bottom: calc(#{govuk-spacing(2)} - 4px); // Calc to compensate for border
       text-decoration: none;
+    }
+
+    &:focus {
+      @include govuk-focused-text;
+      outline-offset: 0;
     }
 
     &:hover {
       color: govuk-colour("light-blue");
     }
+  }
+
+  li {
+    display: inline-block;
+    font-weight: 700;
+    margin-left: govuk-spacing(5);
+    text-align: right;
 
     &.current {
-      border-bottom:  govuk-colour("blue") solid 4px;
+      a {
+        border-bottom:  govuk-colour("blue") solid 4px;
 
-      &:hover {
-        border-color: govuk-colour("light-blue");
+        &:focus {
+          border-color: $govuk-text-colour;
+        }
       }
     }
 
@@ -294,8 +309,7 @@
   }
 
   ul {
-    display: table-cell;
-    float: right;
+    display: inline-block;
     text-align: right;
     vertical-align: bottom;
 
