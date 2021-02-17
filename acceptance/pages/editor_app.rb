@@ -40,7 +40,6 @@ class EditorApp < SitePrism::Page
   end
 
   def submit_new_page
-    #find('#new_page input[type="submit"]', visible: false)
     page.execute_script("document.querySelector(\"#new_page input[type='submit']\").click")
   end
 
