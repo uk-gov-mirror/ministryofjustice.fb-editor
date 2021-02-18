@@ -6,14 +6,13 @@
 require("@rails/ujs").start()
 require("@rails/activestorage").start()
 require("channels")
+
+// Scripts called by javascript_pack_tag
 require("jquery")
 require("jquery-ui")
+require("../src/index")
 
-// Entry points for fb-editor javascript
-require("../components/component_activated_menu")
-require("../services/index")
-
-// Entry points for fb-editor stylesheets
+// Entry point for fb-editor stylesheets
 import "../styles/application.scss"
 
 

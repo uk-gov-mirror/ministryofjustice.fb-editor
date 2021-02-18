@@ -45,19 +45,19 @@ feature 'Create page' do
   end
 
   def and_I_add_a_page_url
-    within find('#new_page') do
-      editor.page_url_field.set('phasma')
+    within editor.new_page_form do
+      editor.set_invisible_field_by_id('page_page_url', 'phasma')
     end
   end
 
   def and_I_add_an_existing_page_url
-    within find('#new_page') do
-      editor.page_url_field.set('/')
+    within editor.new_page_form do
+      editor.set_invisible_field_by_id('page_page_url', '/')
     end
   end
 
   def when_I_add_the_page
-    editor.new_page_submit.click
+    editor.submit_new_page
   end
 
   def and_I_comeback_to_edit_the_service
@@ -79,7 +79,7 @@ feature 'Create page' do
     editor.set_page_type_field('checkanswers')
     editor.set_component_type_field('')
     within editor.new_page_form do
-      editor.page_url_field.set('aquifolium')
+      editor.set_invisible_field_by_id('page_page_url', 'aquifolium')
     end
   end
 

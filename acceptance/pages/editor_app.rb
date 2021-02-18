@@ -18,9 +18,8 @@ class EditorApp < SitePrism::Page
   element :form_name_field, :field, 'Form name'
   element :save_button, :button, 'Save'
 
-  element :page_url_field, :field, 'The page’s relative url - it must not contain any spaces'
-  element :new_page_form, '#new_page'
-  element :new_page_submit, '#new_page input[type="submit"]'
+  element :page_url_field, :field, 'The page’s relative url - it must not contain any spaces', visible: false
+  element :new_page_form, '#new_page', visible: false
 
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
@@ -38,6 +37,14 @@ class EditorApp < SitePrism::Page
 
   def set_component_type_field(value)
     page.execute_script("document.getElementById('page_component_type').value = '#{value}'")
+  end
+
+  def submit_new_page
+    page.execute_script("document.querySelector(\"#new_page input[type='submit']\").click")
+  end
+
+  def set_invisible_field_by_id(id, value)
+    page.execute_script("document.getElementById('#{id}').value = '#{value}'")
   end
 
 end
