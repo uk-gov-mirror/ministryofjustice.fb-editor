@@ -35,7 +35,6 @@
   outline: $govuk-focus-width solid $govuk-focus-colour;
 }
 
-
 .width-responsive-two-thirds {
   @include responsive_width("two-thirds");
 }
@@ -65,6 +64,12 @@
 
 
 // FB-Editor styles
+.fb-editable {
+  // Trying to compensate for inherit GovUK maring-top settings
+  // (or lack of them) on <p> tags and things that should be in them.
+  margin-bottom: 1.2em;
+}
+
 .fb-editor-list,
 .fb-editor-list li {
   list-style: none;
