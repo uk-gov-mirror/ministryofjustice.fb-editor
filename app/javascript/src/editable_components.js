@@ -16,48 +16,9 @@
 import DOMPurify from 'dompurify';
 import marked from 'marked';
 import TurndownService from 'turndown';
+
 var turndownService = new TurndownService();
 
-/* Editable Element:
- * Used for creating simple content control objects on HTML
- * elements such as <H1>, <P>, <LABEL>, <LI>, etc.
- * Switched into edit mode on focus and out again on blur.
- *
- * @$node  (jQuery object) jQuery wrapped HTML node.
- * @config (Object) Configurable options, e.g.
- *                  {
- *                    form: $formNodeToAddHiddenInputsForSaveSubmit,
- *                    id: 'identifierStringForUseInHiddenFormInputName',
- *                    onSaveRequired: function() {
- *                      // Pass function to do something. Triggered if
- *                      // the code believes something has changed on
- *                      // an internal 'update' call.
- *                    },
- *                    type: 'editableContentType'
- *                  }
- **/
-class EditableBase {
-  constructor($node, config) {
-    this._config = config || {};
-    this.$node = $node;
-    this.type = $node.data(config.type);
-
-    $node.on("click.editablecomponent", this.edit.bind(this));
-    $node.on("blur.editablecomponent", this.update.bind(this));
-  }
-
-  edit() {
-    console.log("edit");
-  }
-
-  update() {
-	console.log("update");
-  }
-
-  save() {
-    updateHiddenInputOnForm(this._config.form, this._config.id, this.content.trim());
-  }
-}
 
 /* Editable Element:
  * Used for creating simple content control objects on HTML
@@ -68,15 +29,38 @@ class EditableBase {
  * @config (Object) Configurable options, e.g.
  *                  {
  *                    editClassname: 'usedOnElementToShowEditing'
+ *                    form: $formNodeToAddHiddenInputsForSaveSubmit,
+ *                    id: 'identifierStringForUseInHiddenFormInputName',
+ *                    onSaveRequired: function() {
+ *                      // Pass function to do something. Triggered if
+ *                      // the code believes something has changed on
+ *                      // an internal 'update' call.
+ *                    },
+ *                    type: 'editableContentType'
  *                  }
  **/
-class EditableElement extends EditableBase {
+class EditableElement {
   constructor($node, config) {
-    super($node, config);
+    this._config = config || {};
+    this._content = $node.text();
+    this.type = $node.data(config.type);
+    this.$node = $node;
 
-    this.content = $node.text();
+    $node.on("click.editablecomponent", this.edit.bind(this));
+    $node.on("blur.editablecomponent", this.update.bind(this));
     $node.attr("contentEditable", true);
     $node.addClass("EditableElement");
+  }
+
+  get content() {
+    return this.$node.html().replace(/<br>/mig, "\n");
+  }
+
+  set content(content) {
+    if(this._content != content) {
+      this._content = content;
+      triggerSaveRequired(this._config.onSaveRequired);
+    }
   }
 
   edit() {
@@ -85,12 +69,12 @@ class EditableElement extends EditableBase {
   }
 
   update() {
-    var text = this.$node.text();
-    if(this.content != text) {
-      this.content = text;
-      triggerSaveRequired(this._config.onSaveRequired);
-    }
+    this.content = this.content; // confusing ES6 syntax makes sense if you look closely
     this.$node.removeClass(this._config.editClassname);
+  }
+
+  save() {
+    updateHiddenInputOnForm(this._config.form, this._config.id, this.content);
   }
 }
 
@@ -104,133 +88,43 @@ class EditableElement extends EditableBase {
  * @$node  (jQuery object) jQuery wrapped HTML node.
  * @config (Object) Configurable options.
  **/
-class EditableContent extends EditableBase {
+class EditableContent extends EditableElement {
   constructor($node, config) {
     super($node, config);
+    this._content = $node.html();
+    this._editing = false;
 
-    var _instance = this;
-    this.html = $node.html();
-    this.markdown = convertToMarkdown(this.html);
-    this.input = new BackgroundInputElement(this, "<textarea></textarea>", {
-      classname: "textarea",
-      value: this.markdown
-    });
-
+    // Correct the class:
+    $node.removeClass("EditableElement");
     $node.addClass("EditableContent");
-
-    // Counter inherited actions:
-    $node.off("blur.editablecomponent");
   }
 
   get content() {
-    return this.markdown;
+    return convertToMarkdown(this.$node.html());
   }
 
   set content(markdown) {
-    this.html = convertToHtml(markdown);
-    this.markdown = markdown;
-    this.$node.html(this.html);
-    this.input.$node.hide();
-  }
-
-  edit() {
-    this.$node.hide();
-    this.input.$node.val(this.content);
-    this.input.$node.show();
-    this.input.$node.focus();
-  }
-
-  update() {
-    var value = this.input.$node.val();
-    if(this.content != value) {
-      this.content = value;
+    var html = convertToHtml(markdown);
+    if(this._content != html) {
+      this._content = html;
       triggerSaveRequired(this._config.onSaveRequired);
     }
-    this.input.$node.hide();
-    this.$node.show();
-  }
-}
-
-
-/* TODO: Editabl Attribute:
- * Used for editing attribute values on HTML elements.
- * E.g. (and written for) allowing edit placeholder  text for an
- * input element.
- *
- * Note: Not tested at time of development but, in theory, this
- * could be used for editing the src attribute value of an <IMG>
- * tag, or it's alt value. Future use could also be to edit the
- * value attribute of an input[type=submit] button, and possibly
- * more uses yet to be discovered.
- **/
-class EditableAttribute extends EditableBase {
-  constructor($node, config) {
-    // Does nothing for now.
-    // Will handle placeholder text changes, for example.
-
-    // Counter inherited actions:
-    $node.off("click.editablecomponent"); // Prevents editing.
-    $node.off("blur.editablecomponent");
-    $node.addClass("EditableAttribute");
-  }
-
-  get content() {
-    return this._content;
-  }
-
-  set content(blah) {
   }
 
   edit() {
-    console.group("Update Attribute");
-    console.groupEnd();
+    if(!this._editing) {
+      super.edit();
+      this._editing = true;
+    }
   }
 
   update() {
-    console.group("Update Attribute");
-    console.groupEnd();
-  }
-}
-
-
-/* Background Input Element:
- * Allows an input element element (e.g. <INPUT> or <TEXTAREA>) to
- * be created for input of user edited content. This can be handy
- * when there is a need to translate the user content from one form
- * to another, such as in the Content objects where user will input
- * markdown text into a <TEXTAREA>, which gets translated into HTML
- * and shown within a standard <DIV> wrapped area. The input is
- * created from a passed HTML string.
- *
- * @component (Editable content instance) e.g. see Content class, above.
- * @html      (String) This is passed to jQuery function to create an element.
- *                     e.g. "<input />" or "<textarea></textarea>"
- * @config    (Object) Allows multiple extra values to be passed.
- *                     e.g. {
- *                            classname: 'someHtmlClassIfRequired',
- *                            value: 'Stored text content to initialise the input',
- *                          }
- *
- **/
-class BackgroundInputElement {
-  constructor(component, html, config) {
-    var config = config || {};
-    var $input = $(html);
-
-    $input.hide();
-    $input.addClass("BackgroundInputElement");
-    $input.val(config.value);
-
-    if(config.classname) {
-      $input.addClass(config.classname);
+    if(this._editing) {
+      this.content = this.$node.html();
+      this.$node.html(this._content);
+      this.$node.removeClass(this._config.editClassname);
+      this._editing = false;
     }
-
-    $input.on("blur.editablecomponent", function() {
-      component.update();
-    });
-
-    component.$node.before($input);
-    this.$node = $input;
   }
 }
 
@@ -243,6 +137,7 @@ function triggerSaveRequired(action) {
     action();
   }
 }
+
 
 /* Function used to update (or create if does not exist) a hidden
  * form input field that will be part of the submitted data
@@ -276,14 +171,14 @@ function cleanHtml(html) {
 /* Convert HTML to Markdown by tapping into third-party code.
  **/
 function convertToMarkdown(html) {
-  return  turndownService.turndown(cleanHtml(html));
+  return turndownService.turndown(cleanHtml(html));
 }
 
 
 /* Convert Markdown to HTML by tapping into a third-party code.
  **/
 function convertToHtml(markdown) {
-  return marked(markdown);
+  return marked.parseInline(markdown);
 }
 
 
