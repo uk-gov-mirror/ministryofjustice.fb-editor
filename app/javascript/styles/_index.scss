@@ -43,6 +43,7 @@
 // Editable components
 .EditableContent,
 .EditableElement {
+  &:focus,
   &.active {
     outline: $govuk-focus-width solid $govuk-focus-colour;
   }
