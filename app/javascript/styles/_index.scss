@@ -40,6 +40,26 @@
 }
 
 
+// General rules
+h1 {
+  margin-top: 0;
+}
+
+#editContentForm {
+  position: absolute;
+  right: 0;
+  top: 3px;
+
+  @include govuk-media-query($until: tablet) {
+    position: static;
+  }
+}
+
+#main-content {
+  position: relative;
+}
+
+
 // Editable components
 .EditableContent,
 .EditableElement {
