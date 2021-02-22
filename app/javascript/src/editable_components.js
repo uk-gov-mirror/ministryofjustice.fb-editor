@@ -251,10 +251,16 @@ function convertToMarkdown(html) {
 
 /* Convert Markdown to HTML by tapping into a third-party code.
  * Includes some manual conversion of characters to keep toggling correct.
+ * Note: Stripping the <br> tags is because we put them in for visual formatting.
+ * Stripping out the extra spaces because the browser added them and we don't want.
+ * Seems like the browser (contentEditable functionality) is adding <div> tags to
+ * format new lines, so we're fixing that with line-breaks and stripping excess.
  **/
 function convertToHtml(markdown) {
   markdown = markdown.replace(/\*\s+/mig, "* ");
   markdown = markdown.replace(/<br>/mig, "\n");
+  markdown = markdown.replace(/<\/div><div>/mig, "\n");
+  markdown = markdown.replace(/<[\/]?div>/mig, "");
   return marked(markdown);
 }
 
