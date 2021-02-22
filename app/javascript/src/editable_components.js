@@ -43,7 +43,7 @@ class EditableElement {
   constructor($node, config) {
     this._config = config || {};
     this._content = $node.text();
-    this.type = $node.data(config.type);
+    this.type = config.type;
     this.$node = $node;
 
     $node.on("click.editablecomponent", this.edit.bind(this));
