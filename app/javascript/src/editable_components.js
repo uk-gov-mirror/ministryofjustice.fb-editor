@@ -46,8 +46,12 @@ class EditableElement {
     this.type = config.type;
     this.$node = $node;
 
-    $node.on("click.editablecomponent", this.edit.bind(this));
     $node.on("blur.editablecomponent", this.update.bind(this));
+    $node.on("click.editablecomponent focus.editablecomponent", (e) => {
+      e.preventDefault();
+      this.edit();
+    });
+
     $node.attr("contentEditable", true);
     $node.addClass("EditableElement");
   }
