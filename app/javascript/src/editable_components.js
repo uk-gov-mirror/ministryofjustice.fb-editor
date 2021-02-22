@@ -66,7 +66,7 @@ class EditableElement extends EditableBase {
     super($node, config);
 
     $node.on("blur.editablecomponent", this.update.bind(this));
-    $node.on("click.editablecomponent focus.editablecomponent", this.edit.bind(this) );
+    $node.on("focus.editablecomponent", this.edit.bind(this) );
 
     $node.attr("contentEditable", true);
     $node.addClass("EditableElement");
@@ -84,7 +84,6 @@ class EditableElement extends EditableBase {
   }
 
   edit() {
-    this.$node.focus();
     this.$node.addClass(this._config.editClassname);
   }
 
