@@ -75,6 +75,17 @@ class Publisher
       }
     end
 
+    def submitter_url
+      Rails.application.config.platform_environments[:common][:submitter_url] % {
+        platform_environment: platform_environment,
+        deployment_environment: deployment_environment
+      }
+    end
+
+    def submission_encryption_key
+      ENV['SUBMISSION_ENCRYPTION_KEY']
+    end
+
     def resource_limits_cpu
       '150m'
     end
@@ -92,7 +103,7 @@ class Publisher
     end
 
     def config_map
-      service_configuration.reject(&:secrets?)
+      service_configuration.reject(&:secrets?).reject(&:do_not_send_submission?)
     end
 
     def secrets

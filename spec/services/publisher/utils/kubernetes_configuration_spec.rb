@@ -41,6 +41,10 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
     allow(service_provisioner).to receive(:secret_key_base).and_return(
       'fdfdd491d611aa1abef54cbf24a709a1bb31ff881a487f8c58c69399202b08f77019920f481e17b40dd7452361055534b9f91f172719ed98a088498242f96f59'
     )
+    allow(ENV).to receive(:[])
+    allow(ENV).to receive(:[])
+      .with('SUBMISSION_ENCRYPTION_KEY')
+      .and_return('65a27a35-c475-48b9-9a20-30142f14')
   end
 
   describe '#generate' do

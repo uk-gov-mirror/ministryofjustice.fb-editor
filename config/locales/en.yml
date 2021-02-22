@@ -1,4 +1,10 @@
 en:
+  default_values:
+    service_email_output: ''
+    service_email_subject: 'Submission from %{service_name}'
+    service_email_body: 'Please find attached a submission sent from %{service_name}'
+    service_email_pdf_heading: 'Submission for %{service_name}'
+    service_email_pdf_subheading: ''
   header:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
@@ -32,6 +38,13 @@ en:
     form_information: 'Form information'
     form_information_label: 'Form name'
     form_information_help: 'The visible name of your form'
+    submission:
+      name: 'Submission settings'
+      sub_heading: 'Controls what will happen to the entered data when the form is submitted. This will take only effect when the form is filled while on Test or Live, not in the Editor preview.'
+      email:
+        label: 'Send by email'
+        help: 'Sends the form data via email'
+        configure_pdf_label: PDF attachment
   publish:
     name: 'Publish'
     heading: 'Editor'
@@ -54,6 +67,18 @@ en:
         service_name: 'What is the name of this form?'
       settings:
         service_name: 'Form name'
+      email_settings:
+        send_by_email_dev: Send by email on Test
+        send_by_email_production: Send by email on Live
+        service_email_output: Send email to
+        service_email_subject: Email subject
+        service_email_body: Email text
+        service_email_pdf_heading: Heading
+        service_email_pdf_subheading: Subheading
+        email_fieldset: Email
+        pdf_fieldset: PDF attachment
+        service_email_body_hint: The email text that will be sent
+        pdf_hint: All answers will be written in a pdf attached to the email
       page_creation:
         page_url: "The page’s relative url - it must not contain any spaces"
       publish_service_creation:

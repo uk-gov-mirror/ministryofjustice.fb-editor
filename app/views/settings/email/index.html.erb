@@ -1,0 +1,62 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-xl"><%= t('settings.submission.email.label') %></h1>
+    <p><%= t('settings.submission.email.help') %></p>
+
+    <%= form_for @email_settings_dev,
+      url: settings_email_index_path(service.service_id),
+      html: { id: 'email-submission-dev' } do |f| %>
+      <div class="govuk-form-group">
+          <fieldset class="govuk-fieldset">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+              <h1 class="govuk-fieldset__heading">Test</h1>
+              </legend>
+            <div class="govuk-hint">Where others can view your form and you can ensure everything works before you launch.</div>
+            <div class="govuk-checkboxes">
+              <div class="govuk-checkboxes__item">
+                <%= f.check_box :send_by_email, class: 'govuk-checkboxes__input',
+                  checked: f.object.send_by_email_checked? %>
+                <%= f.label :send_by_email,
+                  f.object.class.human_attribute_name(:send_by_email_dev),
+                  class: 'govuk-label govuk-checkboxes__label' %>
+              </div>
+            </div>
+          </fieldset>
+      </div>
+
+      <%= render 'form', f: f, deployment_environment: 'dev' %>
+
+      <button type="submit" class="govuk-button" data-module="govuk-button">
+        Save
+      </button>
+    <% end %>
+
+    <%= form_for @email_settings_production,
+      url: settings_email_index_path(service.service_id),
+      html: { id: 'email-submission-production' } do |f| %>
+      <div class="govuk-form-group">
+        <fieldset class="govuk-fieldset">
+            <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            <h1 class="govuk-fieldset__heading">Live</h1>
+            </legend>
+          <div class="govuk-hint">Where your form is hosted publicly when your service is running.</div>
+          <div class="govuk-checkboxes">
+            <div class="govuk-checkboxes__item">
+              <%= f.check_box :send_by_email, class: 'govuk-checkboxes__input',
+                checked: f.object.send_by_email_checked? %>
+              <%= f.label :send_by_email,
+                f.object.class.human_attribute_name(:send_by_email_production),
+                class: 'govuk-label govuk-checkboxes__label' %>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <%= render 'form', f: f, deployment_environment: 'production' %>
+
+      <button type="submit" class="govuk-button" data-module="govuk-button">
+        Save
+      </button>
+    <% end %>
+  </div>
+</div>
