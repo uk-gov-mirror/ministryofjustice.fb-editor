@@ -110,7 +110,7 @@ class EditableElement extends EditableBase {
 class EditableContent extends EditableElement {
   constructor($node, config) {
     super($node, config);
-    this._content = $node.html();
+    this._markdown = convertToMarkdown(this.$node.html());
     this._editing = false;
 
     // Correct the class:
@@ -119,28 +119,31 @@ class EditableContent extends EditableElement {
   }
 
   get content() {
-    return convertToMarkdown(this.$node.html());
+    return this._markdown;
   }
 
   set content(markdown) {
-    var html = convertToHtml(markdown);
-    if(this._content != html) {
-      this._content = html;
+    if(this._markdown != markdown) {
+      this._markdown = markdown;
       triggerSaveRequired(this._config.onSaveRequired);
     }
   }
 
   edit() {
     if(!this._editing) {
-      super.edit();
+      let markdown = convertToMarkdown(this.$node.html());
+      markdown = markdown.replace(/\n/mig, "<br>");
+      this.$node.html(markdown);
       this._editing = true;
+      super.edit();
     }
   }
 
   update() {
     if(this._editing) {
-      this.content = this.$node.html();
-      this.$node.html(this._content);
+      let markdown = this.$node.html();
+      this.content = markdown.replace(/<br>/mig, "\n");;
+      this.$node.html(convertToHtml(markdown));
       this.$node.removeClass(this._config.editClassname);
       this._editing = false;
     }
@@ -233,28 +236,26 @@ function updateHiddenInputOnForm($form, id, content) {
 }
 
 
-/* Clean up HTML by stripping attributes and unwanted trailing spaces.
+/* Convert HTML to Markdown by tapping into third-party code.
+ * Includes clean up of HTML by stripping attributes and unwanted trailing spaces.
  **/
-function cleanHtml(html) {
+function convertToMarkdown(html) {
   html = html.trim();
   html = html.replace(/(<\w[\w\d]+)\s*[\w\d\s=\"-]*?(>)/mig, "$1$2");
   html = html.replace(/(?:\n\s*)/mig, "\n");
   html = html.replace(/[ ]{2,}/mig, " ");
   html = DOMPurify.sanitize(html, { USE_PROFILES: { html: true }});
-  return html;
-}
-
-/* Convert HTML to Markdown by tapping into third-party code.
- **/
-function convertToMarkdown(html) {
-  return turndownService.turndown(cleanHtml(html));
+  return turndownService.turndown(html);
 }
 
 
 /* Convert Markdown to HTML by tapping into a third-party code.
+ * Includes some manual conversion of characters to keep toggling correct.
  **/
 function convertToHtml(markdown) {
-  return marked.parseInline(markdown);
+  markdown = markdown.replace(/\*\s+/mig, "* ");
+  markdown = markdown.replace(/<br>/mig, "\n");
+  return marked(markdown);
 }
 
 
