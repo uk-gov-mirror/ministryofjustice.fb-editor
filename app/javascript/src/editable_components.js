@@ -20,6 +20,32 @@ import TurndownService from 'turndown';
 var turndownService = new TurndownService();
 
 
+/* Editable Base:
+ * Shared code across the editable component types.
+ *
+ * @$node  (jQuery object) jQuery wrapped HTML node.
+ * @config (Object) Configurable options, e.g.
+ *                  {
+ *                    editClassname: 'usedOnElementToShowEditing'
+ *                    form: $formNodeToAddHiddenInputsForSaveSubmit,
+ *                    id: 'identifierStringForUseInHiddenFormInputName',
+ *                    type: 'editableContentType'
+ *                  }
+ **/
+class EditableBase {
+  constructor($node, config) {
+    this._config = config || {};
+    this._content = $node.text();
+    this.type = config.type;
+    this.$node = $node;
+
+    $node.on("click.editablecomponent focus.editablecomponent", (e) => {
+      e.preventDefault();
+    });
+  }
+}
+
+
 /* Editable Element:
  * Used for creating simple content control objects on HTML
  * elements such as <H1>, <P>, <LABEL>, <LI>, etc.
@@ -28,36 +54,26 @@ var turndownService = new TurndownService();
  * @$node  (jQuery object) jQuery wrapped HTML node.
  * @config (Object) Configurable options, e.g.
  *                  {
- *                    editClassname: 'usedOnElementToShowEditing'
- *                    form: $formNodeToAddHiddenInputsForSaveSubmit,
- *                    id: 'identifierStringForUseInHiddenFormInputName',
  *                    onSaveRequired: function() {
  *                      // Pass function to do something. Triggered if
  *                      // the code believes something has changed on
  *                      // an internal 'update' call.
- *                    },
- *                    type: 'editableContentType'
+ *                    }
  *                  }
  **/
-class EditableElement {
+class EditableElement extends EditableBase {
   constructor($node, config) {
-    this._config = config || {};
-    this._content = $node.text();
-    this.type = config.type;
-    this.$node = $node;
+    super($node, config);
 
     $node.on("blur.editablecomponent", this.update.bind(this));
-    $node.on("click.editablecomponent focus.editablecomponent", (e) => {
-      e.preventDefault();
-      this.edit();
-    });
+    $node.on("click.editablecomponent focus.editablecomponent", this.edit.bind(this) );
 
     $node.attr("contentEditable", true);
     $node.addClass("EditableElement");
   }
 
   get content() {
-    return this.$node.html().replace(/<br>/mig, "\n");
+    return this.$node.text().replace(/<br>/mig, "\n");
   }
 
   set content(content) {
@@ -143,6 +159,63 @@ function triggerSaveRequired(action) {
 }
 
 
+/* Editable Text Field Component:
+ * Structured editable component comprising of one or more elements.
+ * Produces a JSON string as content from internal data object.
+ *
+ * @$node  (jQuery object) jQuery wrapped HTML node.
+ * @config (Object) Configurable options.
+ *
+ *
+ * Expected backend structure  (passed as JSON)
+ * --------------------------------------------
+ *  _id: single-question_text_1
+ *  hint: Component hint
+ *  name: single-question_text_1
+ *  _type: text
+ *  label: Component label
+ *  errors: {}
+ *  validation:
+ *    required: true
+ *
+ * Expected (minimum) frontend struture
+ * ------------------------------------
+ * <div class="fb-editable" data-fb-content-id="foo" data-fb-content-type="text" data-fb-conent-data=" ...JSON... ">
+ *   <label>Component label</label>
+ *   <span>Component hint</span>
+ *   <input name="answers[single-question_text_1]" type="text">
+ * </div>
+ **/
+class EditableTextFieldComponent extends EditableBase {
+  constructor($node, config) {
+    super($node, config);
+    this.data = config.data;
+    var elements = {
+      label: new EditableElement($node.find("label"), config),
+      hint: new EditableElement($node.find("span"), config)
+      // TODO: Potential future addition...
+      // Maybe make this EditableAttribute instance when class is
+      // ready so we can edit attribute values, such as placeholder.
+      //input: new EditableAttribute($node.find("input"), config)
+    };
+
+    this._elements = elements;
+    $node.find("input").attr("disabled", true); // Prevent input on editor.
+    $node.addClass("EditableTextFieldComponent");
+  }
+
+  get content() {
+    return JSON.stringify(this.data);
+  }
+
+  save() {
+    this.data.label = this._elements.label.content;
+    this.data.hint = this._elements.hint.content;
+    EditableElement.prototype.save.call(this);
+  }
+}
+
+
 /* Function used to update (or create if does not exist) a hidden
  * form input field that will be part of the submitted data
  * capture form (new content sent to server).
@@ -201,10 +274,9 @@ function editableComponent($node, config) {
     case "content":
       klass = EditableContent;
       break;
-    default: 
-      // Assume we're handling attributes.
-      config.attributes = config.type.replace(/^.*?\[?([\w,\s]+)\]?$/, "$1");
-      klass = EditableAttribute;
+    case "text":
+      klass = EditableTextFieldComponent;
+      break;
   }
   return new klass($node, config);
 }
