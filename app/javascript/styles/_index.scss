@@ -35,34 +35,48 @@
   outline: $govuk-focus-width solid $govuk-focus-colour;
 }
 
-
 .width-responsive-two-thirds {
   @include responsive_width("two-thirds");
 }
 
 
+// General rules
+h1 {
+  margin-top: 0;
+}
+
+#editContentForm {
+  position: absolute;
+  right: 0;
+  top: 3px;
+
+  @include govuk-media-query($until: tablet) {
+    position: static;
+  }
+}
+
+#main-content {
+  position: relative;
+}
+
+
 // Editable components
+.EditableContent,
 .EditableElement {
+  &:focus,
   &.active {
     outline: $govuk-focus-width solid $govuk-focus-colour;
   }
 }
 
-.BackgroundInputElement {
-  width: 100%;
-
-  &:focus {
-    outline: $govuk-focus-width solid $govuk-focus-colour;
-  }
-
-  &.textarea {
-    height: 300px;
-    width: 100%;
-  }
-}
-
 
 // FB-Editor styles
+.fb-editable {
+  // Trying to compensate for inherit GovUK maring-top settings
+  // (or lack of them) on <p> tags and things that should be in them.
+  margin-bottom: 1.2em;
+}
+
 .fb-editor-list,
 .fb-editor-list li {
   list-style: none;
@@ -253,16 +267,14 @@
   .heading {
     display: inline-block;
     margin: 0;
-    max-width: 600px;
+    width: 55%;
     padding: govuk-spacing(2) 0;
 
-    @include govuk-media-query($from: tablet) {
+    @media (max-width: 750px) {
+      min-width: 55%;
       width: auto;
     }
 
-    @include govuk-media-query($from: desktop) {
-      width: 56%;
-    }
   }
 
   a {
@@ -318,7 +330,7 @@
     }
 
     @include govuk-media-query($from: desktop) {
-      width: 43%;
+      width: 44%;
     }
   }
 }

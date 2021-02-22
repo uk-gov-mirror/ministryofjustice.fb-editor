@@ -1,5 +1,3 @@
-<h3>Page edit</h3>
-
 <%= form_for @page, as: :page, url: page_path(service.service_id, @page.uuid), html: { id: "editContentForm" }, method: :patch do |f| %>
   <% @page.editable_attributes.each do |key, value| %>
     <% if key == :components %>
