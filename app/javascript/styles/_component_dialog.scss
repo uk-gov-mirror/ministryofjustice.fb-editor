@@ -23,8 +23,8 @@
   z-index: 2;
 
   input[type=submit] {
+    left: -10000px;
     position: absolute;
-    top: -1000px
   }
 }
 
