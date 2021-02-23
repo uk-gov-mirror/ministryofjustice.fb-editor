@@ -67,6 +67,8 @@ class EditableElement extends EditableBase {
 
     $node.on("blur.editablecomponent", this.update.bind(this));
     $node.on("focus.editablecomponent", this.edit.bind(this) );
+    $node.on("paste", e => pasteAsPlainText(e) );
+    $node.on("keydown", e => preventBrowserElements(e) );
 
     $node.attr("contentEditable", true);
     $node.addClass("EditableElement");
@@ -142,7 +144,7 @@ class EditableContent extends EditableElement {
   update() {
     if(this._editing) {
       let markdown = this.$node.html();
-      this.content = markdown.replace(/<br>/mig, "\n");;
+      this.content = sanitiseMarkdown(markdown);
       this.$node.html(convertToHtml(markdown));
       this.$node.removeClass(this._config.editClassname);
       this._editing = false;
@@ -250,18 +252,65 @@ function convertToMarkdown(html) {
 
 
 /* Convert Markdown to HTML by tapping into a third-party code.
- * Includes some manual conversion of characters to keep toggling correct.
- * Note: Stripping the <br> tags is because we put them in for visual formatting.
+ **/
+function convertToHtml(markdown) {
+  return marked(sanitiseMarkdown(markdown));
+}
+
+/* Manual conversion of characters to keep values as required.
+ * Stripping the <br> tags is because we put them in for visual formatting only.
  * Stripping out the extra spaces because the browser added them and we don't want.
  * Seems like the browser (contentEditable functionality) is adding <div> tags to
  * format new lines, so we're fixing that with line-breaks and stripping excess.
  **/
-function convertToHtml(markdown) {
+function sanitiseMarkdown(markdown) {
   markdown = markdown.replace(/\*\s+/mig, "* ");
   markdown = markdown.replace(/<br>/mig, "\n");
   markdown = markdown.replace(/<\/div><div>/mig, "\n");
   markdown = markdown.replace(/<[\/]?div>/mig, "");
-  return marked(markdown);
+  return markdown;
+}
+
+
+/* Browser contentEditable mode means some pain in trying to prevent
+ * HTML being inserted (rich text attempts by browser). We're only
+ * editing as plain text and markdown for all elements so try to
+ * prevent unwanted entry with this function.
+ **/
+function preventBrowserElements(event) {
+  // Prevent ENTER adding <div><br></div> nonsense.
+  if(event.which == 13) {
+    event.preventDefault();
+    document.execCommand("insertText", false, "\n");
+  }
+  // console.log("html:\n", $node.html());
+}
+
+
+/* Function prevents rich text being pasted on paste event.
+ * Used in the editing markdown area so we do not get crossed
+ * formats.
+ *
+ * Use like: $('something').on('paste', e => pasteAsPlainText(e) )}
+ **/
+function pasteAsPlainText(event) {
+  event.preventDefault();
+  var content = "";
+  if (event.clipboardData || event.originalEvent.clipboardData) {
+    content = (event.originalEvent || event).clipboardData.getData('text/plain');
+  }
+  else {
+    if (window.clipboardData) {
+      content = window.clipboardData.getData('Text');
+    }
+  }
+
+  if (document.queryCommandSupported("insertText")) {
+    document.execCommand("insertText", false, content);
+  }
+  else {
+    document.execCommand("paste", false, content);
+  }
 }
 
 
