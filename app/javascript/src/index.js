@@ -21,6 +21,7 @@ function bindEditableContentHandlers($area) {
       var $node = $(node);
       editableContent.push(editableComponent($node, {
         editClassname: "active",
+        data: $node.data("fb-content-data"),
         form: $editContentForm,
         id: $node.data("fb-content-id"),
         onSaveRequired: function() {
