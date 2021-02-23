@@ -157,6 +157,7 @@ function applyFormDialogs() {
 	$(".component-dialog-form").each(function(i, el) {
     var $dialog = $(el);
     var $form = $dialog.find("form");
+    var $submit = $form.find(":submit");
 
     // Design requires an activator be added dynamically.
     // Create and place it before enhancing the dialog
@@ -168,8 +169,11 @@ function applyFormDialogs() {
     createFormDialog($dialog, {
       form: $form,
       cancel_text: $dialog.data("cancel-text"),
-      submit_text: $form.find(":submit").val()
+      submit_text: $submit.val()
     });
+
+    // Disable button as we're replacing it.
+    $submit.attr("disabled", true);
   });
 }
 
