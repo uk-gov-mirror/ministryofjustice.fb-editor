@@ -20,6 +20,32 @@ import TurndownService from 'turndown';
 var turndownService = new TurndownService();
 
 
+/* Editable Base:
+ * Shared code across the editable component types.
+ *
+ * @$node  (jQuery object) jQuery wrapped HTML node.
+ * @config (Object) Configurable options, e.g.
+ *                  {
+ *                    editClassname: 'usedOnElementToShowEditing'
+ *                    form: $formNodeToAddHiddenInputsForSaveSubmit,
+ *                    id: 'identifierStringForUseInHiddenFormInputName',
+ *                    type: 'editableContentType'
+ *                  }
+ **/
+class EditableBase {
+  constructor($node, config) {
+    this._config = config || {};
+    this._content = $node.text();
+    this.type = config.type;
+    this.$node = $node;
+
+    $node.on("click.editablecomponent focus.editablecomponent", (e) => {
+      e.preventDefault();
+    });
+  }
+}
+
+
 /* Editable Element:
  * Used for creating simple content control objects on HTML
  * elements such as <H1>, <P>, <LABEL>, <LI>, etc.
@@ -28,32 +54,26 @@ var turndownService = new TurndownService();
  * @$node  (jQuery object) jQuery wrapped HTML node.
  * @config (Object) Configurable options, e.g.
  *                  {
- *                    editClassname: 'usedOnElementToShowEditing'
- *                    form: $formNodeToAddHiddenInputsForSaveSubmit,
- *                    id: 'identifierStringForUseInHiddenFormInputName',
  *                    onSaveRequired: function() {
  *                      // Pass function to do something. Triggered if
  *                      // the code believes something has changed on
  *                      // an internal 'update' call.
- *                    },
- *                    type: 'editableContentType'
+ *                    }
  *                  }
  **/
-class EditableElement {
+class EditableElement extends EditableBase {
   constructor($node, config) {
-    this._config = config || {};
-    this._content = $node.text();
-    this.type = $node.data(config.type);
-    this.$node = $node;
+    super($node, config);
 
-    $node.on("click.editablecomponent", this.edit.bind(this));
     $node.on("blur.editablecomponent", this.update.bind(this));
+    $node.on("focus.editablecomponent", this.edit.bind(this) );
+
     $node.attr("contentEditable", true);
     $node.addClass("EditableElement");
   }
 
   get content() {
-    return this.$node.html().replace(/<br>/mig, "\n");
+    return this.$node.text().replace(/<br>/mig, "\n");
   }
 
   set content(content) {
@@ -64,7 +84,6 @@ class EditableElement {
   }
 
   edit() {
-    this.$node.focus();
     this.$node.addClass(this._config.editClassname);
   }
 
@@ -91,7 +110,7 @@ class EditableElement {
 class EditableContent extends EditableElement {
   constructor($node, config) {
     super($node, config);
-    this._content = $node.html();
+    this._markdown = convertToMarkdown(this.$node.html());
     this._editing = false;
 
     // Correct the class:
@@ -100,28 +119,31 @@ class EditableContent extends EditableElement {
   }
 
   get content() {
-    return convertToMarkdown(this.$node.html());
+    return this._markdown;
   }
 
   set content(markdown) {
-    var html = convertToHtml(markdown);
-    if(this._content != html) {
-      this._content = html;
+    if(this._markdown != markdown) {
+      this._markdown = markdown;
       triggerSaveRequired(this._config.onSaveRequired);
     }
   }
 
   edit() {
     if(!this._editing) {
-      super.edit();
+      let markdown = convertToMarkdown(this.$node.html());
+      markdown = markdown.replace(/\n/mig, "<br>");
+      this.$node.html(markdown);
       this._editing = true;
+      super.edit();
     }
   }
 
   update() {
     if(this._editing) {
-      this.content = this.$node.html();
-      this.$node.html(this._content);
+      let markdown = this.$node.html();
+      this.content = markdown.replace(/<br>/mig, "\n");;
+      this.$node.html(convertToHtml(markdown));
       this.$node.removeClass(this._config.editClassname);
       this._editing = false;
     }
@@ -135,6 +157,63 @@ class EditableContent extends EditableElement {
 function triggerSaveRequired(action) {
   if(typeof(action) === 'function' || action instanceof Function) {
     action();
+  }
+}
+
+
+/* Editable Text Field Component:
+ * Structured editable component comprising of one or more elements.
+ * Produces a JSON string as content from internal data object.
+ *
+ * @$node  (jQuery object) jQuery wrapped HTML node.
+ * @config (Object) Configurable options.
+ *
+ *
+ * Expected backend structure  (passed as JSON)
+ * --------------------------------------------
+ *  _id: single-question_text_1
+ *  hint: Component hint
+ *  name: single-question_text_1
+ *  _type: text
+ *  label: Component label
+ *  errors: {}
+ *  validation:
+ *    required: true
+ *
+ * Expected (minimum) frontend struture
+ * ------------------------------------
+ * <div class="fb-editable" data-fb-content-id="foo" data-fb-content-type="text" data-fb-conent-data=" ...JSON... ">
+ *   <label>Component label</label>
+ *   <span>Component hint</span>
+ *   <input name="answers[single-question_text_1]" type="text">
+ * </div>
+ **/
+class EditableTextFieldComponent extends EditableBase {
+  constructor($node, config) {
+    super($node, config);
+    this.data = config.data;
+    var elements = {
+      label: new EditableElement($node.find("label"), config),
+      hint: new EditableElement($node.find("span"), config)
+      // TODO: Potential future addition...
+      // Maybe make this EditableAttribute instance when class is
+      // ready so we can edit attribute values, such as placeholder.
+      //input: new EditableAttribute($node.find("input"), config)
+    };
+
+    this._elements = elements;
+    $node.find("input").attr("disabled", true); // Prevent input on editor.
+    $node.addClass("EditableTextFieldComponent");
+  }
+
+  get content() {
+    return JSON.stringify(this.data);
+  }
+
+  save() {
+    this.data.label = this._elements.label.content;
+    this.data.hint = this._elements.hint.content;
+    EditableElement.prototype.save.call(this);
   }
 }
 
@@ -157,28 +236,32 @@ function updateHiddenInputOnForm($form, id, content) {
 }
 
 
-/* Clean up HTML by stripping attributes and unwanted trailing spaces.
+/* Convert HTML to Markdown by tapping into third-party code.
+ * Includes clean up of HTML by stripping attributes and unwanted trailing spaces.
  **/
-function cleanHtml(html) {
+function convertToMarkdown(html) {
   html = html.trim();
   html = html.replace(/(<\w[\w\d]+)\s*[\w\d\s=\"-]*?(>)/mig, "$1$2");
   html = html.replace(/(?:\n\s*)/mig, "\n");
   html = html.replace(/[ ]{2,}/mig, " ");
   html = DOMPurify.sanitize(html, { USE_PROFILES: { html: true }});
-  return html;
-}
-
-/* Convert HTML to Markdown by tapping into third-party code.
- **/
-function convertToMarkdown(html) {
-  return turndownService.turndown(cleanHtml(html));
+  return turndownService.turndown(html);
 }
 
 
 /* Convert Markdown to HTML by tapping into a third-party code.
+ * Includes some manual conversion of characters to keep toggling correct.
+ * Note: Stripping the <br> tags is because we put them in for visual formatting.
+ * Stripping out the extra spaces because the browser added them and we don't want.
+ * Seems like the browser (contentEditable functionality) is adding <div> tags to
+ * format new lines, so we're fixing that with line-breaks and stripping excess.
  **/
 function convertToHtml(markdown) {
-  return marked.parseInline(markdown);
+  markdown = markdown.replace(/\*\s+/mig, "* ");
+  markdown = markdown.replace(/<br>/mig, "\n");
+  markdown = markdown.replace(/<\/div><div>/mig, "\n");
+  markdown = markdown.replace(/<[\/]?div>/mig, "");
+  return marked(markdown);
 }
 
 
@@ -197,10 +280,9 @@ function editableComponent($node, config) {
     case "content":
       klass = EditableContent;
       break;
-    default: 
-      // Assume we're handling attributes.
-      config.attributes = config.type.replace(/^.*?\[?([\w,\s]+)\]?$/, "$1");
-      klass = EditableAttribute;
+    case "text":
+      klass = EditableTextFieldComponent;
+      break;
   }
   return new klass($node, config);
 }

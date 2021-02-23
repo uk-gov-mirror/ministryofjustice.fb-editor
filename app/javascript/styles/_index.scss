@@ -69,6 +69,12 @@ h1 {
   }
 }
 
+.EditableTextFieldComponent {
+  :disabled {
+    background-color: govuk-colour("white");
+  }
+}
+
 
 // FB-Editor styles
 .fb-editable {
