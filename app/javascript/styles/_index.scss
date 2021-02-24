@@ -93,9 +93,15 @@
   border-top: govuk-colour("mid-grey") solid 1px;
   margin-bottom: govuk-spacing(5);
 
+  a {
+    margin-left: 1ex;
+  }
+
   li {
     border-bottom: govuk-colour("mid-grey") solid 1px;
+    display: table;
     padding: govuk-spacing(3) 0;
+    width: 100%;
 
     &:last-child {
       border: none;
@@ -103,13 +109,14 @@
   }
 
   .actions {
-    float: right;
+    display: table-cell;
     text-align: right;
+    vertical-align: middle;
     width: 25%;
   }
 
   .name {
-    display: inline-block;
+    display: table-cell;
     width: 75%;
   }
 }
