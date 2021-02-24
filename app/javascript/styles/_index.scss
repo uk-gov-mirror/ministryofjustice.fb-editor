@@ -40,11 +40,8 @@
 }
 
 
-// General rules
-h1 {
-  margin-top: 0;
-}
-
+/* General rules
+ * ------------- */
 #editContentForm {
   position: absolute;
   right: 0;
@@ -60,7 +57,8 @@ h1 {
 }
 
 
-// Editable components
+/* Editable components
+ * ------------------- */
 .EditableContent,
 .EditableElement {
   &:focus,
@@ -76,7 +74,8 @@ h1 {
 }
 
 
-// FB-Editor styles
+/* FB-Editor styles
+ * ---------------- */
 .fb-editable {
   // Trying to compensate for inherit GovUK maring-top settings
   // (or lack of them) on <p> tags and things that should be in them.
@@ -126,7 +125,7 @@ h1 {
 
 /* Navigation: Pages
  * URLs: /services/.../edit
- **/
+ * ------------------------ */
 .form-overview {
   display: inline-flex;
   position: relative;
@@ -221,7 +220,7 @@ h1 {
 
 /* govuk-button style is green but we want
  * green blue buttons on fb-editor.
- **/
+ * --------------------------------------- */
 .fb-govuk-button {
   background-color: govuk-colour("blue");
 
@@ -245,7 +244,7 @@ h1 {
 
 /* govuk-navigation does not appear to exist
  * so adding something simple here.
- **/
+ * ----------------------------------------- */
 .govuk-navigation {
   &, li {
     list-style: none;
@@ -259,14 +258,13 @@ h1 {
  * but these styles are influenced by the GovUK
  * design system site.
  * These styles add to .govuk-navigation (above)
- **/
+ * --------------------------------------------- */
 .govuk-navigation-app {
   background-color: govuk-colour("light-grey");
   border-bottom: govuk-colour("mid-grey") solid 1px;
   box-sizing: border-box;
   line-height: 1.25em;
   overflow: hidden;
-  padding-top: govuk-spacing(2);
   vertical-align: bottom;
   -webkit-box-sizing: border-box;
 
@@ -339,4 +337,13 @@ h1 {
       width: 44%;
     }
   }
+}
+
+
+/* Override GovUK styles
+ * --------------------- */
+.govuk-header {
+  // Try to get consistency between with/without page navigation bars
+  // and even update space above/below main headings.
+  margin-bottom: 0;
 }
