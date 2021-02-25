@@ -163,13 +163,15 @@ function applyFormDialogs() {
 
     new ActivatedDialog($dialog, {
       autoOpen: $errors.length ? true: false,
-      form: $form,
       cancelText: $dialog.data("cancel-text"),
-      submitText: $submit.val(),
+      okText: $submit.val(),
       activatorText: $dialog.data("activator-text"),
       classes: {
         "ui-button": "govuk-button",
         "ui-activator": "govuk-button"
+      },
+      onOk: () => {
+        $form.submit();
       },
       onClose: () => {
         $errors.removeClass("govuk-form-group--error");

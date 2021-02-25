@@ -16,8 +16,12 @@
 
 
 /* See jQueryUI Dialog for config options (all are passed straight in).
+ *
  * Extra config options specific to this enhancement
- * config.classes["ui-activator"] will put the value in activator classes value.
+ * config.classes["ui-activator"]  will put the value in activator classes value.
+ * config.onOk takes a function to run when 'Ok' button is activated.
+ * config.onCancel takes a function to run when 'Cancel' button is activated.
+ * config.onClose takes a function to run after dialog is closed.
  **/
 class ActivatedDialog {
   constructor($dialog, config) {
@@ -28,12 +32,12 @@ class ActivatedDialog {
     this.$node = $dialog;
     this.activator = createDialogActivator($dialog, conf.activatorText, classes["ui-activator"]);
 
-    buttons[conf.submitText] = () => {
-      conf.form.submit();
-      this.close();
+    buttons[conf.okText] = () => {
+      executeFunction(this._config.onOk);
     }
 
     buttons[conf.cancelText] = () => {
+      executeFunction(this._config.onCancel);
       this.close();
     }
 
@@ -53,11 +57,18 @@ class ActivatedDialog {
   }
 
   close() {
-    var action = this._config.onClose;
     this.$node.dialog("close");
-    if(action && (typeof(action) === 'function' || action instanceof Function)) {
-      action();
-    }
+    executeFunction(this._config.onClose);
+  }
+}
+
+
+/* Checks if is a function and, if so, runs it.
+ * func (Function) Required function to execute.
+ **/
+function executeFunction(func) {
+  if(func && (typeof(func) === 'function' || func instanceof Function)) {
+    func();
   }
 }
 
