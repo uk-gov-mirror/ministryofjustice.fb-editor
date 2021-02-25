@@ -8,41 +8,54 @@
 
 .ui-button {
   @extend .govuk-button;
-  margin-right: govuk-spacing(5);
+  @include govuk-responsive-margin(7, "right");
+
+  margin-bottom: 0;
+
+  @include govuk-media-query($until: tablet) {
+    margin-bottom: govuk-spacing(5);
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
 }
 
 .ui-dialog {
+  @include govuk-responsive-padding(7);
   background-color: govuk-colour("white");
-  border-radius: 5px;
+  border-radius: 15px;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-  min-width: 40%;
-  padding-top: govuk-spacing(5);
+  box-sizing: border-box;
+  max-width: 730px;
   position: absolute;
+  width: calc(100% - #{ govuk-spacing(7) * 2 }) !important; // Important only to override widgets inline styles
   z-index: 2;
 
   input[type=submit] {
+    left: -10000px;
     position: absolute;
-    top: -1000px
   }
-}
 
-.ui-dialog-buttonpane {
-  border-top:  govuk-colour("mid-grey") solid 1px;
-  padding: govuk-spacing(5) govuk-spacing(5) 0 govuk-spacing(5);
+  form {
+    @include govuk-responsive-margin(7, "bottom");
+  }
+
+  @include govuk-media-query($until: tablet) {
+  }
 }
 
 .ui-dialog-buttonset > :last-child {
   @extend .govuk-button--secondary;
 }
 
-.ui-dialog-content {
-  padding: 0 govuk-spacing(5);
+.ui-dialog-title {
+  display: none;
 }
 
 .ui-dialog-titlebar {
-  padding: 0 govuk-spacing(5);
   text-align: right;
 }
 
@@ -51,15 +64,19 @@
   background-image: url("../images/close_icon_u73.svg");
   background-position: center;
   background-repeat: no-repeat;
+  background-size: 16px;
   box-shadow: none;
   border: none;
   display: inline-block;
-  height: 20px;
+  height: 44px;
   margin: 0 0 5px 0;
   overflow: hidden;
   padding: 0;
+  position: absolute;
+  right: 0;
   text-indent: -1000px;
-  width: 20px;
+  top: 0;
+  width: 44px;
 
   &:hover {
     background-color: transparent;
@@ -79,10 +96,3 @@
   z-index: 1;
 }
 
-
-/* Responsive adjustments */
-@media (max-width: 1100px) {
-  .ui-dialog {
-    min-width: 90%;
-  }
-}
