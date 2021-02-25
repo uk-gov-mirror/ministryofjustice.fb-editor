@@ -48,7 +48,8 @@ class ActivatedDialog {
       closeOnEscape: true,
       height: "auto",
       modal: true,
-      resizable: false
+      resizable: false,
+      close: this._config.onClose
     });
   }
 
@@ -58,7 +59,6 @@ class ActivatedDialog {
 
   close() {
     this.$node.dialog("close");
-    executeFunction(this._config.onClose);
   }
 }
 
