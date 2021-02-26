@@ -34,6 +34,12 @@ function bindEditableContentHandlers($area) {
       }));
     });
 
+    // Set focus on first editable component for design requirement.
+    if(editableContent.length > 0) {
+      editableContent[0].focus();
+    }
+
+    // Add handler to activate save functionality from the independent 'save' button.
     $editContentForm.on("submit", (e) => {
       for(var i=0; i<editableContent.length; ++i) {
         editableContent[i].save();

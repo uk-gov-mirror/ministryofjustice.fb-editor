@@ -101,6 +101,10 @@ class EditableElement extends EditableBase {
     this.content = this.content; // confusing ES6 syntax makes sense if you look closely
     this.$node.removeClass(this._config.editClassname);
   }
+
+  focus() {
+    this.$node.focus();
+  }
 }
 
 
@@ -206,6 +210,16 @@ class EditableComponentBase extends EditableBase {
     // this.data.something = this._elements.something.content;
     this.content = this._elements;
     EditableBase.prototype.save.call(this);
+  }
+
+  // Focus on first editable element.
+  focus() {
+    for(var i in this._elements) {
+      if(this._elements.hasOwnProperty(i)) {
+        this._elements[i].focus();
+        break;
+      }
+    }
   }
 }
 
