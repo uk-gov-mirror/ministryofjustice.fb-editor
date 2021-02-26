@@ -76,7 +76,8 @@
   }
 }
 
-.EditableTextFieldComponent {
+.EditableTextFieldComponent,
+.EditableTextareaFieldComponent {
   :disabled {
     background-color: govuk-colour("white");
   }

@@ -43,6 +43,14 @@ class EditableBase {
       e.preventDefault();
     });
   }
+
+  get content() {
+    return this._content;
+  }
+
+  save() {
+    updateHiddenInputOnForm(this._config.form, this._config.id, this.content);
+  }
 }
 
 
@@ -92,10 +100,6 @@ class EditableElement extends EditableBase {
   update() {
     this.content = this.content; // confusing ES6 syntax makes sense if you look closely
     this.$node.removeClass(this._config.editClassname);
-  }
-
-  save() {
-    updateHiddenInputOnForm(this._config.form, this._config.id, this.content);
   }
 }
 
@@ -163,6 +167,49 @@ function triggerSaveRequired(action) {
 }
 
 
+/* Editable Component Base:
+ * Share code across the editable component types.
+ * Those types are comprised of one or more elements and
+ * produce a JSON string as content from internal data object.
+ *
+ * @$node  (jQuery object) jQuery wrapped HTML node.
+ * @config (Object) Configurable options.
+ * @elements (Object) Collection of EditableElement instances found in the component.
+ *
+ **/
+class EditableComponentBase extends EditableBase {
+  constructor($node, config, elements) {
+    super($node, config);
+    this.data = config.data;
+
+    // e.g. elements = {
+    //        something: new EditableElement($node.find("something"), config)
+    //        and any others...
+    //      }
+
+    this._elements = elements;
+    $node.find("input:not(:hidden), textarea").attr("disabled", true); // Prevent input in editor mode.
+  }
+
+  get content() {
+    return JSON.stringify(this.data);
+  }
+
+  set content(elements) {
+    // Expect this function to be overridden for each different type inheriting it.
+    // e.g.
+    // this.data.something = elements.something.content
+  }
+
+  save() {
+    // e.g.
+    // this.data.something = this._elements.something.content;
+    this.content = this._elements;
+    EditableBase.prototype.save.call(this);
+  }
+}
+
+
 /* Editable Text Field Component:
  * Structured editable component comprising of one or more elements.
  * Produces a JSON string as content from internal data object.
@@ -190,32 +237,76 @@ function triggerSaveRequired(action) {
  *   <input name="answers[single-question_text_1]" type="text">
  * </div>
  **/
-class EditableTextFieldComponent extends EditableBase {
+class EditableTextFieldComponent extends EditableComponentBase {
   constructor($node, config) {
-    super($node, config);
-    this.data = config.data;
-    var elements = {
+    super($node, config, {
       label: new EditableElement($node.find("label"), config),
       hint: new EditableElement($node.find("span"), config)
       // TODO: Potential future addition...
       // Maybe make this EditableAttribute instance when class is
       // ready so we can edit attribute values, such as placeholder.
       //input: new EditableAttribute($node.find("input"), config)
-    };
-
-    this._elements = elements;
-    $node.find("input").attr("disabled", true); // Prevent input on editor.
+    });
     $node.addClass("EditableTextFieldComponent");
   }
 
+  // If we override the set content, we obliterate relationship with the inherited get content.
+  // This will retain the inherit functionality by explicitly calling it.
   get content() {
-    return JSON.stringify(this.data);
+    return super.content;
   }
 
-  save() {
-    this.data.label = this._elements.label.content;
-    this.data.hint = this._elements.hint.content;
-    EditableElement.prototype.save.call(this);
+  set content(elements) {
+    this.data.label = elements.label.content;
+    this.data.hint = elements.hint.content;
+  }
+}
+
+
+/* Editable Textarea Field Component:
+ * Structured editable component comprising of one or more elements.
+ * Produces a JSON string as content from internal data object.
+ *
+ * @$node  (jQuery object) jQuery wrapped HTML node.
+ * @config (Object) Configurable options.
+ *
+ *
+ * Expected backend structure  (passed as JSON)
+ * --------------------------------------------
+ *  _id: single-question_textarea_1
+ *  hint: Component hint
+ *  name: single-question_textarea_1
+ *  _type: text
+ *  label: Component label
+ *  errors: {}
+ *  validation:
+ *    required: true
+ *
+ * Expected (minimum) frontend struture
+ * ------------------------------------
+ * <div class="fb-editable" data-fb-content-id="foo" data-fb-content-type="text" data-fb-conent-data=" ...JSON... ">
+ *   <label>Component label</label>
+ *   <span>Component hint</span>
+ *   <textarea name="answers[single-question_textarea_1]"></textarea>
+ * </div>
+ **/
+class EditableTextareaFieldComponent extends EditableComponentBase {
+  constructor($node, config) {
+    super($node, config, {
+      label: new EditableElement($node.find("label"), config),
+      hint: new EditableElement($node.find("span"), config)
+    });
+    $node.addClass("EditableTextareaFieldComponent");
+  }
+
+  // See comment on EditableTextFieldComponent if you're unsure why this is here.
+  get content() {
+    return super.content;
+  }
+
+  set content(elements) {
+    this.data.label = elements.label.content;
+    this.data.hint = elements.hint.content;
   }
 }
 
@@ -283,7 +374,6 @@ function preventBrowserElements(event) {
     event.preventDefault();
     document.execCommand("insertText", false, "\n");
   }
-  // console.log("html:\n", $node.html());
 }
 
 
@@ -331,6 +421,9 @@ function editableComponent($node, config) {
       break;
     case "text":
       klass = EditableTextFieldComponent;
+      break;
+    case "textarea":
+      klass = EditableTextareaFieldComponent;
       break;
   }
   return new klass($node, config);
