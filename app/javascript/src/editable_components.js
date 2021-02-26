@@ -75,15 +75,15 @@ class EditableElement extends EditableBase {
 
     $node.on("blur.editablecomponent", this.update.bind(this));
     $node.on("focus.editablecomponent", this.edit.bind(this) );
-    $node.on("paste", e => pasteAsPlainText(e) );
-    $node.on("keydown", e => preventBrowserElements(e) );
+    $node.on("paste.editablecomponent", e => pasteAsPlainText(e) );
+    $node.on("keydown.editablecomponent", e => singleLineInputRestrictions(e) );
 
     $node.attr("contentEditable", true);
     $node.addClass("EditableElement");
   }
 
   get content() {
-    return this.$node.text().replace(/<br>/mig, "\n");
+    return this.$node.text();
   }
 
   set content(content) {
@@ -122,6 +122,10 @@ class EditableContent extends EditableElement {
     super($node, config);
     this._markdown = convertToMarkdown(this.$node.html());
     this._editing = false;
+
+    // Adjust event for multiple line input.
+    $node.off("keydown.editablecomponent");
+    $node.on("keydown.editablecomponent", e => multipleLineInputRestrictions(e) );
 
     // Correct the class:
     $node.removeClass("EditableElement");
@@ -377,12 +381,14 @@ function sanitiseMarkdown(markdown) {
 }
 
 
-/* Browser contentEditable mode means some pain in trying to prevent
+/* Multiple Line Input Restrictions
+ * Browser contentEditable mode means some pain in trying to prevent
  * HTML being inserted (rich text attempts by browser). We're only
  * editing as plain text and markdown for all elements so try to
  * prevent unwanted entry with this function.
  **/
-function preventBrowserElements(event) {
+function multipleLineInputRestrictions(event) {
+
   // Prevent ENTER adding <div><br></div> nonsense.
   if(event.which == 13) {
     event.preventDefault();
@@ -390,6 +396,20 @@ function preventBrowserElements(event) {
   }
 }
 
+
+/* Single Line Input Restrictions
+ *Browser contentEditable mode means some pain in trying to prevent
+ * HTML being inserted (rich text attempts by browser). We're only
+ * editing as plain text and markdown for all elements so try to
+ * prevent unwanted entry with this function.
+ **/
+function singleLineInputRestrictions(event) {
+
+  // Prevent ENTER adding <div><br></div> nonsense.
+  if(event.which == 13) {
+    event.preventDefault();
+  }
+}
 
 /* Function prevents rich text being pasted on paste event.
  * Used in the editing markdown area so we do not get crossed
