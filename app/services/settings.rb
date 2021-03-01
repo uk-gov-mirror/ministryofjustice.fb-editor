@@ -1,4 +1,6 @@
 class Settings < Editor::Service
+  attr_accessor :current_user
+
   def update
     return false if invalid? || latest_metadata.blank?
 
@@ -15,7 +17,7 @@ class Settings < Editor::Service
   def metadata
     latest_metadata.merge(
       service_name: service_name,
-      created_by: '1234' # current_user
+      created_by: current_user.id
     )
   end
 end

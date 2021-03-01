@@ -1,5 +1,11 @@
 class HomeController < ApplicationController
   def show
-    @sign_in_url = '/services'
+    redirect_to services_path if user_signed_in?
+
+    if Rails.env.development?
+      @sign_in_url = '/auth/developer'
+    else
+      @sign_in_url = '/auth/auth0'
+    end
   end
 end
