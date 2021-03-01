@@ -15,7 +15,7 @@ class NewServiceGenerator
       metadata['pages'].push(DefaultMetadata['page.start'])
       metadata['pages'][0]['_uuid'] = SecureRandom.uuid
       metadata['service_name'] = service_name
-      metadata['created_by'] = '1234'
+      metadata['created_by'] = current_user.id
     end
   end
 end

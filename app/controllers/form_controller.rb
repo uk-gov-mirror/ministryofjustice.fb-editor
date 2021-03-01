@@ -1,3 +1,3 @@
-class FormController < ApplicationController
+class FormController < PermissionsController
   layout 'form'
 end
