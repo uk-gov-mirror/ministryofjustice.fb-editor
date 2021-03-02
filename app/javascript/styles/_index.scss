@@ -364,3 +364,12 @@
   // and even update space above/below main headings.
   margin-bottom: 0;
 }
+
+.govuk-panel--confirmation {
+  // Design has informed should not be full width
+  width: govuk-grid-width("two-thirds");
+
+  @include govuk-media-query($until: tablet) {
+    width: 100%;
+  }
+}
