@@ -9,10 +9,11 @@ en:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
     home_link_alt: "Ministry of Justice Logo - homepage"
+    sign_out:
   partials:
     header:
       forms: Forms
-      sign_out: Sign out
+      sign_out: Sign out %{user_name}
   home:
     show:
       title: MoJ Forms

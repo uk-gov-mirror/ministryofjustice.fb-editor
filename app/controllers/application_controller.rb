@@ -36,4 +36,13 @@ class ApplicationController < ActionController::Base
   def service_metadata
     @service_metadata ||= MetadataApiClient::Service.latest_version(params[:id])
   end
+
+  def user_name
+    if current_user
+      current_user.name.split(' ').tap do |full_name|
+        return "#{full_name.first[0]}. #{full_name.last}"
+      end
+    end
+  end
+  helper_method :user_name
 end
