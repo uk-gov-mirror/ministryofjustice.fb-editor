@@ -3,6 +3,10 @@ en:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
     home_link_alt: "Ministry of Justice Logo - homepage"
+  partials:
+    header:
+      forms: Forms
+      sign_out: Sign out
   home:
     show:
       title: MoJ Forms

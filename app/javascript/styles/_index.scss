@@ -1,4 +1,4 @@
-/* Note: 
+/* Note:
  * These style rely on some sass code from the govuk design files
  **/
 
@@ -356,6 +356,33 @@
   }
 }
 
+// For when a user is signed in
+.govuk-navigation-header {
+  float: right;
+  color:  govuk-colour("white");
+
+  a {
+    &:link {
+      text-decoration: none;
+    }
+
+    &,
+    &:hover {
+      color:  govuk-colour("white");
+      font: inherit;
+      text-decoration: underline;
+    }
+
+    &:hover {
+      color:  govuk-colour("white");
+    }
+  }
+
+  li {
+    display: inline;
+    margin-left: govuk-spacing(2);
+  }
+}
 
 /* Override GovUK styles
  * --------------------- */

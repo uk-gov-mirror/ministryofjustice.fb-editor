@@ -14,9 +14,6 @@
     <%= render partial: 'partials/form-navigation' %>
 
     <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing govuk-width-container govuk-body-m" id="main-content" role="main">
-      <% if user_signed_in? %>
-        <%= link_to t('.sign_out'), user_session_path, method: :delete %>
-      <% end %>
 
       <%= yield %>
     </main>

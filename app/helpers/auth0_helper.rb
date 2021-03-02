@@ -15,7 +15,8 @@ module Auth0Helper
   # Is the user signed in?
   # @return [Boolean]
   def user_signed_in?
-    session.try(:[],:user_id).present?
+    request.path != '/'
+    # session.try(:[],:user_id).present?
   end
 
   def identify_user(user_id = session[:user_id])
