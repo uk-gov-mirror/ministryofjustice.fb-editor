@@ -56,4 +56,32 @@ RSpec.describe ApplicationController do
       end
     end
   end
+
+  describe '#user_name' do
+    context 'with a current user' do
+      context 'two names' do
+        before do
+          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(
+            double(name: 'Peggy Carter')
+          )
+        end
+
+        it 'should show the correctly formatted user name' do
+          expect(controller.user_name).to eq('P. Carter')
+        end
+      end
+
+      context 'more than two names' do
+        before do
+          allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(
+            double(name: 'Sponge Bob Square Pants')
+          )
+        end
+
+        it 'should show the correctly formatted user name' do
+          expect(controller.user_name).to eq('S. Pants')
+        end
+      end
+    end
+  end
 end
