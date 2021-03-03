@@ -196,7 +196,7 @@ class EditableComponentBase extends EditableBase {
     //      }
 
     this._elements = elements;
-    $node.find("input:not(:hidden), textarea").attr("disabled", true); // Prevent input in editor mode.
+    $node.find(config.selectorDisabled).attr("disabled", true); // Prevent input in editor mode.
   }
 
   get content() {
@@ -258,8 +258,8 @@ class EditableComponentBase extends EditableBase {
 class EditableTextFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, config, {
-      label: new EditableElement($node.find("label"), config),
-      hint: new EditableElement($node.find("span"), config)
+      label: new EditableElement($node.find(config.selectorQuestion), config),
+      hint: new EditableElement($node.find(config.selectorHint), config)
       // TODO: Potential future addition...
       // Maybe make this EditableAttribute instance when class is
       // ready so we can edit attribute values, such as placeholder.
@@ -311,8 +311,8 @@ class EditableTextFieldComponent extends EditableComponentBase {
 class EditableTextareaFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, config, {
-      label: new EditableElement($node.find("label"), config),
-      hint: new EditableElement($node.find("span"), config)
+      label: new EditableElement($node.find(config.selectorQuestion), config),
+      hint: new EditableElement($node.find(config.selectorHint), config)
     });
     $node.addClass("EditableTextareaFieldComponent");
   }
