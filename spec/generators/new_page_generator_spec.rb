@@ -83,8 +83,8 @@ RSpec.describe NewPageGenerator do
               '_id'    => "#{page_url}_#{component_type}_1",
               '_type'  => 'text',
               'errors' => {},
-              'hint'   => 'Component hint',
-              'label'  => 'Component label',
+              'hint'   => 'Hint (optional)',
+              'label'  => 'Question',
               'name'   => "#{page_url}_#{component_type}_1",
               'validation' => {
                 'required' => true
