@@ -8,7 +8,7 @@ metadata:
 spec:
   tls:
   - hosts:
-    {{ .Values.editor_host }}
+    - {{ .Values.editor_host }}
   rules:
   - host: {{ .Values.editor_host }}
     http:
