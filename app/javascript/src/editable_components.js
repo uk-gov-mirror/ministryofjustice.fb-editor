@@ -16,6 +16,7 @@
 import DOMPurify from 'dompurify';
 import marked from 'marked';
 import TurndownService from 'turndown';
+import { mergeObjects } from './utilities';
 
 var turndownService = new TurndownService();
 
@@ -165,16 +166,6 @@ class EditableContent extends EditableElement {
 }
 
 
-/* Fires a passed function intended to run on code detection of
- * content required to be saved (updated and different).
- **/
-function triggerSaveRequired(action) {
-  if(typeof(action) === 'function' || action instanceof Function) {
-    action();
-  }
-}
-
-
 /* Editable Component Base:
  * Share code across the editable component types.
  * Those types are comprised of one or more elements and
@@ -195,7 +186,11 @@ class EditableComponentBase extends EditableBase {
     //        and any others...
     //      }
 
-    this._elements = elements;
+    this._elements = mergeObjects({
+      label: new EditableElement($node.find(config.selectorQuestion), config),
+      hint: new EditableElement($node.find(config.selectorHint), config)
+    }, (arguments.length > 2 && elements || {}));
+
     $node.find(config.selectorDisabled).attr("disabled", true); // Prevent input in editor mode.
   }
 
@@ -258,13 +253,12 @@ class EditableComponentBase extends EditableBase {
 class EditableTextFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, config, {
-      label: new EditableElement($node.find(config.selectorQuestion), config),
-      hint: new EditableElement($node.find(config.selectorHint), config)
       // TODO: Potential future addition...
       // Maybe make this EditableAttribute instance when class is
       // ready so we can edit attribute values, such as placeholder.
       //input: new EditableAttribute($node.find("input"), config)
     });
+
     $node.addClass("EditableTextFieldComponent");
   }
 
@@ -310,10 +304,7 @@ class EditableTextFieldComponent extends EditableComponentBase {
  **/
 class EditableTextareaFieldComponent extends EditableComponentBase {
   constructor($node, config) {
-    super($node, config, {
-      label: new EditableElement($node.find(config.selectorQuestion), config),
-      hint: new EditableElement($node.find(config.selectorHint), config)
-    });
+    super($node, config);
     $node.addClass("EditableTextareaFieldComponent");
   }
 
@@ -325,6 +316,16 @@ class EditableTextareaFieldComponent extends EditableComponentBase {
   set content(elements) {
     this.data.label = elements.label.content;
     this.data.hint = elements.hint.content;
+  }
+}
+
+
+/* Fires a passed function intended to run on code detection of
+ * content required to be saved (updated and different).
+ **/
+function triggerSaveRequired(action) {
+  if(typeof(action) === 'function' || action instanceof Function) {
+    action();
   }
 }
 
