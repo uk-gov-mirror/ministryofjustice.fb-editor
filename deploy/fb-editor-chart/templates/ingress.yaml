@@ -9,6 +9,7 @@ spec:
   tls:
   - hosts:
     - fb-editor-{{ .Values.environmentName }}.apps.live-1.cloud-platform.service.justice.gov.uk
+    secretName: editor-tls-certificate
   rules:
   - host: fb-editor-{{ .Values.environmentName }}.apps.live-1.cloud-platform.service.justice.gov.uk
     http:
