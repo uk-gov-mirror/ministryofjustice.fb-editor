@@ -253,13 +253,11 @@ class EditableComponentBase extends EditableBase {
  **/
 class EditableTextFieldComponent extends EditableComponentBase {
   constructor($node, config) {
-    super($node, config, {
-      // TODO: Potential future addition...
-      // Maybe make this EditableAttribute instance when class is
-      // ready so we can edit attribute values, such as placeholder.
-      //input: new EditableAttribute($node.find("input"), config)
-    });
-
+    // TODO: Potential future addition...
+    //       Maybe make this EditableAttribute instance when class is
+    //       ready so we can edit attribute values, such as placeholder.
+    //  {input: new EditableAttribute($node.find("input"), config)}
+    super($node, config);
     $node.addClass("EditableTextFieldComponent");
   }
 }
