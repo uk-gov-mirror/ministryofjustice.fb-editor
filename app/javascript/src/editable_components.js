@@ -185,11 +185,10 @@ class EditableComponentBase extends EditableBase {
     //        something: new EditableElement($node.find("something"), config)
     //        and any others...
     //      }
-
-    this._elements = mergeObjects({
+    this._elements = arguments.length > 2 && elements || {
       label: new EditableElement($node.find(config.selectorQuestion), config),
       hint: new EditableElement($node.find(config.selectorHint), config)
-    }, (arguments.length > 2 && elements || {}));
+    };
 
     $node.find(config.selectorDisabled).attr("disabled", true); // Prevent input in editor mode.
   }
@@ -202,6 +201,8 @@ class EditableComponentBase extends EditableBase {
     // Expect this function to be overridden for each different type inheriting it.
     // e.g.
     // this.data.something = elements.something.content
+    this.data.label = elements.label.content;
+    this.data.hint = elements.hint.content;
   }
 
   save() {
@@ -261,17 +262,6 @@ class EditableTextFieldComponent extends EditableComponentBase {
 
     $node.addClass("EditableTextFieldComponent");
   }
-
-  // If we override the set content, we obliterate relationship with the inherited get content.
-  // This will retain the inherit functionality by explicitly calling it.
-  get content() {
-    return super.content;
-  }
-
-  set content(elements) {
-    this.data.label = elements.label.content;
-    this.data.hint = elements.hint.content;
-  }
 }
 
 
@@ -307,15 +297,136 @@ class EditableTextareaFieldComponent extends EditableComponentBase {
     super($node, config);
     $node.addClass("EditableTextareaFieldComponent");
   }
+}
 
-  // See comment on EditableTextFieldComponent if you're unsure why this is here.
+
+/* Editable Radio Buttons Field Component:
+ * Structured editable component comprising of one or more elements.
+ * Produces a JSON string as content from internal data object.
+ *
+ * @$node  (jQuery object) jQuery wrapped HTML node.
+ * @config (Object) Configurable options.
+ *
+ *
+ * Expected backend structure  (passed as JSON)
+ * --------------------------------------------
+ *  _id: radio_radios_1,
+ *  hint: Hint text,
+ *  name: radio_radios_1,
+ *  _type : radios,
+ *  items: [
+ *    {
+ *      _id: component_radio_1,
+ *      hint: Hint text,
+ *      _type: radio,
+ *      label: Option,
+ *      value: value-1
+ *    },{
+ *     _id: component_radio_2,
+ *      hint: Hint text,
+ *      _type: radio,
+ *      label: Option,
+ *      value: value-2
+ *    }
+ *  ],
+ *  errors: {},
+ *  legend: Question,
+ *  validation: {
+ *    required: true
+ *  }
+ *
+ *
+ * Expected (minimum) frontend struture
+ * ------------------------------------
+ * <div class="fb-editable" data-fb-content-id="foo" data-fb-content-type="radios" data-fb-conent-data=" ...JSON... ">
+ *   <fieldset>
+ *     <legend>Question</legend>
+ *
+ *     <input name="answers[single-question_textarea_1]" type="radio" />
+ *     <label>Component label</label>
+ *     <span>Component hint</span>
+ *
+ *     <input name="answers[single-question_textarea_1]" type="radio" />
+ *     <label>Component label</label>
+ *     <span>Component hint</span>
+ *
+ * </div>
+ **/
+class EditableRadiosFieldComponent extends EditableComponentBase {
+  constructor($node, config) {
+    super($node, config, {
+      // Be better for consistency if this was 'label' and not 'legend',
+      // but working with the JSON recognised by/sent from the  server.
+      label: new EditableElement($node.find(config.selectorRadioQuestion), config),
+      hint: new EditableElement($node.find(config.selectorRadioHint), config)
+    });
+    this.options = EditableRadiosFieldComponent.createEditableOptions($node, config);
+    $node.addClass("EditableRadiosFieldComponent");
+  }
+
+  // If we override the set content, we obliterate relationship with the inherited get content.
+  // This will retain the inherit functionality by explicitly calling it.
   get content() {
     return super.content;
   }
 
   set content(elements) {
-    this.data.label = elements.label.content;
+    this.data.legend = elements.label.content;
     this.data.hint = elements.hint.content;
+
+    // Set data from options.
+    this.data.items = [];
+    for(var i=0; i< this.options.length; ++i) {
+      this.data.items.push(this.options[i].data);
+    }
+  }
+
+  save() {
+    // Trigger the save action on options before calling it's own.
+    for(var i=0; i<this.options.length; ++i) {
+      this.options[i].save();
+    }
+    super.save();
+  }
+
+  updateItemComponents() {
+    this.options = EditableRadiosFieldComponent.createEditableOptions(this.$node, this._config);
+  }
+}
+
+// Private function to find radio options and enhance with editable functionality.
+EditableRadiosFieldComponent.createEditableOptions = function($node, config) {
+  var options = [];
+  $node.find(config.selectorRadioOption).each(function(i) {
+    var itemConfig = mergeObjects({}, config);
+    itemConfig.data = config.data.items[i];
+    options.push(new EditableItemComponent($(this), itemConfig));
+  });
+  return options;
+}
+
+
+/* Editable Collection:
+ * Used for things like Radio Options that have a label and hint element but
+ * are owned by a parent Editable Component, so does not need to save their
+ * own content by writing a hidden element (like other types). Not considered
+ * a standalone 'type' to be used in the editableComponent() initialisation
+ * function.
+ *
+ * Save function will produce a JSON string as content from internal data object
+ * but do nothing else with it. A parent component will read and use the
+ * generated 'saved' content.
+ *
+ **/
+class EditableItemComponent extends EditableComponentBase {
+  constructor($node, config) {
+    super($node, config);
+    $node.addClass("EditableItemComponent");
+  }
+
+  save() {
+    // Doesn't need super because we're not writing to hidden input.
+    this.content = this._elements;
   }
 }
 
@@ -459,6 +570,9 @@ function editableComponent($node, config) {
       break;
     case "textarea":
       klass = EditableTextareaFieldComponent;
+      break;
+    case "radios":
+      klass = EditableRadiosFieldComponent;
       break;
   }
   return new klass($node, config);

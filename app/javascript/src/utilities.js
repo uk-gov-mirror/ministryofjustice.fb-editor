@@ -17,7 +17,7 @@
 
 // Single level object merging.
 // Merges object b into object a.
-// Return modified object a.
+// Returns the changed object a.
 // Does not merge nested level objects.
 // Duplicate properties overwrite existing.
 function mergeObjects(a, b) {
