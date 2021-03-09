@@ -9,6 +9,7 @@ spec:
   tls:
   - hosts:
     - {{ .Values.editor_host }}
+    secretName: editor-tls-certificate
   rules:
   - host: {{ .Values.editor_host }}
     http:
