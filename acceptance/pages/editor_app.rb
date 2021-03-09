@@ -1,4 +1,17 @@
-# coding: utf-8
+class EmailSubmissionSection < SitePrism::Section
+  element :send_by_email_on_test, :checkbox, 'Send by email on Test', visible: false
+  element :send_by_email_on_live, :checkbox, 'Send by email on Live', visible: false
+  element :configure_link_on_test, '#configure-dev'
+  element :configure_link_on_live, '#configure-production'
+  element :send_email_to_field, :field, 'Send email to'
+  element :email_subject_field, :field, 'Email subject'
+  element :email_body_field, :field, 'Email text'
+  element :email_pdf_heading_field, :field, 'Heading'
+  element :email_pdf_subheading_field, :field, 'Subheading'
+  element :save_button, :button, 'Save'
+  elements :error_messages, '.govuk-error-message'
+end
+
 class EditorApp < SitePrism::Page
   if ENV['ACCEPTANCE_TESTS_USER'] && ENV['ACCEPTANCE_TESTS_PASSWORD']
     set_url ENV['ACCEPTANCE_TESTS_EDITOR_APP'] % {
@@ -23,6 +36,9 @@ class EditorApp < SitePrism::Page
 
   element :page_url_field, :field, 'The page’s relative url - it must not contain any spaces', visible: false
   element :new_page_form, '#new_page', visible: false
+
+  section :email_submission_test, EmailSubmissionSection, '#email-submission-dev'
+  section :email_submission_live, EmailSubmissionSection, '#email-submission-production'
 
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
