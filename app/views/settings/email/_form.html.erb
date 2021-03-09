@@ -1,0 +1,59 @@
+<%= f.hidden_field :deployment_environment, value: deployment_environment %>
+
+<details class="govuk-details" data-module="govuk-details">
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text" id="configure-<%= deployment_environment %>">Configure</span>
+  </summary>
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h2 class="govuk-fieldset__heading">
+        <%= f.object.class.human_attribute_name :email_fieldset %>
+      </h2>
+    </legend>
+
+    <div class="govuk-form-group <%= !f.object.errors[:service_email_output].empty? ? 'govuk-form-group--error' : '' %> ">
+      <% f.object.errors[:service_email_output].each do |message| %>
+        <span class="govuk-error-message"><%= message %></span>
+      <% end %>
+      <%= f.label :service_email_output, class: "govuk-label" %>
+      <%= f.text_field :service_email_output, class: "govuk-input width-responsive-two-thirds" %>
+    </div>
+
+    <div class="govuk-form-group">
+      <%= f.label :service_email_subject, class: "govuk-label" %>
+      <%= f.text_field :service_email_subject, class: "govuk-input width-responsive-two-thirds" %>
+    </div>
+
+    <div class="govuk-form-group">
+      <%= f.label :service_email_body, class: "govuk-label" do %>
+        <%= f.object.class.human_attribute_name :service_email_body %>
+        <span class="govuk-hint"><%= f.object.class.human_attribute_name :service_email_body_hint %></span>
+    <% end %>
+      <%= f.text_area :service_email_body, class: "govuk-textarea width-responsive-two-thirds", rows: '5' %>
+    </div>
+  </fieldset>
+
+  <fieldset class="govuk-fieldset">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h2 class="govuk-fieldset__heading">
+        <%= f.object.class.human_attribute_name :pdf_fieldset %>
+      </h2>
+    </legend>
+
+    <a href="#" class="govuk-link">See sample PDF</a>
+
+    <div class="govuk-hint">
+      <%= f.object.class.human_attribute_name :pdf_hint %>
+    </div>
+
+    <div class="govuk-form-group">
+      <%= f.label :service_email_pdf_heading, class: "govuk-label" %>
+      <%= f.text_field :service_email_pdf_heading, class: "govuk-input width-responsive-two-thirds", rows: '5' %>
+    </div>
+
+    <div class="govuk-form-group">
+      <%= f.label :service_email_pdf_subheading, class: "govuk-label" %>
+      <%= f.text_field :service_email_pdf_subheading, class: "govuk-input width-responsive-two-thirds" %>
+    </div>
+  </fieldset>
+</details>

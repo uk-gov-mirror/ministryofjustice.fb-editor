@@ -31,6 +31,10 @@ spec:
             value: 'true'
           - name: USER_DATASTORE_URL
             value: http://fb-user-datastore-api-svc-test-dev.formbuilder-platform-test-dev/
+          - name: SUBMITTER_URL
+            value: http://fb-submitter-api-svc-test-dev.formbuilder-platform-test-dev/
+          - name: SUBMISSION_ENCRYPTION_KEY
+            value: 65a27a35-c475-48b9-9a20-30142f14
           - name: SERVICE_SLUG
             value: acceptance-tests-date
           - name: PLATFORM_ENV

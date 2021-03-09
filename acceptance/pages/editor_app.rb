@@ -18,6 +18,9 @@ class EditorApp < SitePrism::Page
   element :form_name_field, :field, 'Form name'
   element :save_button, :button, 'Save'
 
+  element :submission_settings_link, :link, 'Submission settings'
+  element :send_by_email_link, :link, 'Send by email'
+
   element :page_url_field, :field, 'The page’s relative url - it must not contain any spaces', visible: false
   element :new_page_form, '#new_page', visible: false
 

@@ -3,12 +3,12 @@ RSpec.describe 'Settings' do
     MetadataPresenter::Service.new(service_id: SecureRandom.uuid)
   end
 
-  describe 'PATCH /services/:id/settings/update_form_information' do
+  describe 'POST /services/:id/settings/form_information' do
     before do
       expect_any_instance_of(ApplicationController).to receive(:service).at_least(:once).and_return(service)
       expect_any_instance_of(Settings).to receive(:update).and_return(valid)
 
-      patch "/services/#{service.service_id}/settings/update_form_information",
+      post "/services/#{service.service_id}/settings/form_information",
             params: { service: { service_name: 'R2-D2' } }
     end
 
@@ -16,7 +16,7 @@ RSpec.describe 'Settings' do
       let(:valid) { true }
 
       it 'redirects to form information index' do
-        expect(response).to redirect_to(form_information_settings_path(service.service_id))
+        expect(response).to redirect_to(settings_form_information_index_path(service.service_id))
       end
     end
 

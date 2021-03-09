@@ -2,7 +2,10 @@
   <h2 id="settings-navigation-heading" class="govuk-heading-xl"><%= t('settings.name') %></h2>
   <ul aria-labelledby="settings-navigation-heading">
     <li>
-      <%= link_to t('settings.form_information'), form_information_settings_path(service.service_id), class: 'govuk-link' %>
+      <%= link_to t('settings.form_information'), settings_form_information_index_path(service.service_id), class: 'govuk-link' %>
+    </li>
+    <li>
+      <%= link_to t('settings.submission.name'), settings_submission_index_path(service.service_id), class: 'govuk-link' %>
     </li>
   </ul>
 </nav>
