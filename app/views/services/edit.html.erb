@@ -7,7 +7,11 @@
 <div class="form-overview">
   <% service.pages.each do |page| %>
     <div class="form-step">
-      <%= image_pack_tag('page_placeholder.png', class: 'form-thumbnail') %>
+
+      <%= image_pack_tag("thumbnails/thumbs_header.png", class: 'form-thumbnail') %>
+      <span class="text"><%= page.heading %></span>
+      <%  image_type = page.components.nil? ? page._type.gsub("page.", "") : page.components[0]._type %>
+      <%= image_pack_tag("thumbnails/thumbs_#{image_type}.jpg", class: 'form-thumbnail') %>
 
       <%# TODO: Backend to add dynamic data-driven values to this standard output %>
       <%# Note: This would probably be more efficient if outside the loop so that %>
