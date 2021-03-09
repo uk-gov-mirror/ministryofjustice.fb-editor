@@ -25,6 +25,12 @@ function bindEditableContentHandlers($area) {
         data: $node.data("fb-content-data"),
         form: $editContentForm,
         id: $node.data("fb-content-id"),
+        selectorDisabled: "input:not(:hidden), textarea",
+        selectorQuestion: "label",
+        selectorHint: "span",
+        selectorRadioQuestion: ".govuk-heading-xl",
+        selectorRadioHint: "fieldset > .govuk-hint",
+        selectorRadioOption: ".govuk-radios__item",
         onSaveRequired: function() {
           // Code detected something changed to
           // make the submit button available.
