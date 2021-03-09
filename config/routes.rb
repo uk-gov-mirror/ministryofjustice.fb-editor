@@ -17,10 +17,15 @@ Rails.application.routes.draw do
     member do
       resources :publish, only: [:index, :create]
       resources :pages, param: :page_uuid, only: [:create, :edit, :update]
-      resources :settings, only: [:index] do
-        collection do
-          get 'form_information'
-          patch 'update_form_information'
+
+      resources :settings, only: [:index]
+      namespace :settings do
+        resources :form_information, only: [:index, :create]
+
+        resources :submission, only: [:index] do
+          collection do
+            resources :email, only: [:index, :create]
+          end
         end
       end
 

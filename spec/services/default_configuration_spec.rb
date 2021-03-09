@@ -25,7 +25,7 @@ RSpec.describe DefaultConfiguration do
       end
 
       it 'generates 2 keys per deployment environment' do
-        expect(service_configuration).to eq(
+        expect(service_configuration).to match_array(
           [
             {
               name: 'ENCODED_PRIVATE_KEY',

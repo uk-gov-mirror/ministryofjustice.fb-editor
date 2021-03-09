@@ -61,6 +61,91 @@ RSpec.describe ServiceConfiguration, type: :model do
     end
   end
 
+  describe '#do_not_send_submission?' do
+    subject(:service_configuration) do
+      described_class.new(name: 'SERVICE_EMAIL_OUTPUT')
+    end
+
+    context 'when submission setting exists' do
+      let!(:submission_setting) do
+        create(
+          :submission_setting,
+          :dev,
+          service_id: service.service_id,
+          send_email: send_email
+        )
+      end
+
+      context 'when send email flag is true' do
+        let(:send_email) { true }
+
+        %w(
+          SERVICE_EMAIL_OUTPUT
+          SERVICE_EMAIL_SUBJECT
+          SERVICE_EMAIL_BODY
+          SERVICE_EMAIL_PDF_HEADING
+          SERVICE_EMAIL_PDF_SUBHEADING
+        ).each do |configuration|
+          context "when configuration is #{configuration}" do
+            let(:service_configuration) do
+              described_class.new(
+                name: configuration,
+                service_id: service.service_id,
+                deployment_environment: 'dev'
+              )
+            end
+
+            it 'returns false' do
+              expect(service_configuration.do_not_send_submission?).to be_falsey
+            end
+          end
+        end
+
+        %w(OTHER_ENV_VARS ENCODED_PRIVATE_KEY).each do |configuration|
+          context "when configuration is #{configuration}" do
+            let(:service_configuration) do
+              described_class.new(
+                name: configuration,
+                service_id: service.service_id,
+                deployment_environment: 'dev'
+              )
+            end
+
+            it 'returns false' do
+              expect(service_configuration.do_not_send_submission?).to be_falsey
+            end
+          end
+        end
+      end
+
+      context 'when send email flag is false' do
+        let(:send_email) { false }
+
+        %w(OTHER_ENV_VARS ENCODED_PRIVATE_KEY).each do |configuration|
+          context "when configuration is #{configuration}" do
+            let(:service_configuration) do
+              described_class.new(
+                name: configuration,
+                service_id: service.service_id,
+                deployment_environment: 'dev'
+              )
+            end
+
+            it 'returns false' do
+              expect(service_configuration.do_not_send_submission?).to be_falsey
+            end
+          end
+        end
+      end
+    end
+
+    context 'when submission setting does not exist' do
+      it 'returns true' do
+        expect(service_configuration.do_not_send_submission?).to be_truthy
+      end
+    end
+  end
+
   context 'encrypting and decrypting values' do
     let(:service_configuration) do
       create(:service_configuration, :dev, :username, value: 'r2d2')
