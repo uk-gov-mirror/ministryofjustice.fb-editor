@@ -3,6 +3,17 @@ en:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
     home_link_alt: "Ministry of Justice Logo - homepage"
+  partials:
+    header:
+      forms: Forms
+      sign_out: Sign out
+  home:
+    show:
+      title: MoJ Forms
+      lede: Prototype, test and publish online forms quickly and easily
+      body: 'To find out more about MoJ Forms, please email us at <a href="mailto:moj-forms@digital.justice.gov.uk">moj-forms@digital.justice.gov.uk</a>, or you can also <a href="%{formbuilder_slack}">ask us a question on Slack</a>.'
+      callout: You will need a @digital.justice.gov.uk or @justice.gov.uk email address to use MoJ Forms.
+      sign_in: Sign in
   actions:
     save: 'Save'
     publish_to_test: 'Publish to Test'

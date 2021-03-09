@@ -1,7 +1,31 @@
-  <div>
-    <% if Rails.env.development? %>
-      <%= link_to t('.sign_in'), '/auth/developer', method: :post, class: 'button button-start' %>
-    <% else %>
-      <%= link_to t('.sign_in'), '/auth/auth0', method: :post, class: 'button button-start' %>
-    <% end %>
+<div class="fb-main-grid-wrapper" data-block-id="home" data-block-type="page" data-block-pagetype="home">
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-panel__title govuk-heading-xl" data-block-id="title" data-block-property="heading">
+        <%= t('.title') %>
+      </h1>
+
+    <div class="govuk-panel__body">
+      <p><%= t('.lede')%></p>
+    </div>
+
+      <div>
+        <p><%= t('.body', formbuilder_slack: "#{ENV['SLACK_CHANNEL']}").html_safe %></p>
+      </div>
+
+      <div class="govuk-inset-text">
+        <p><%= t('.callout') %></p>
+      </div>
+
+      <%= form_tag(@sign_in_url, method: :get) do %>
+        <button class='editor-button govuk-button fb-govuk-button  govuk-!-margin-top-2'>
+          <%= t('.sign_in') %>
+          <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
+          </svg>
+        </button>
+      <% end %>
+    </div>
   </div>
+</div>
