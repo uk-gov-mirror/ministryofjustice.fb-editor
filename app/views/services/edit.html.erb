@@ -8,11 +8,11 @@
   <% service.pages.each do |page| %>
     <div class="form-step">
 
-      <div class="form-step_thumbnail">
-        <%= image_pack_tag("thumbnails/thumbs_header.png", class: 'form-thumbnail') %>
+      <%  thumbnail_type = page.components.nil? ? page._type.gsub("page.", "") : page.components[0]._type %>
+      <div class="form-step_thumbnail <%= thumbnail_type %>">
+        <%= image_pack_tag("thumbnails/thumbs_header.png", class: 'header') %>
         <span class="text"><%= page.heading %></span>
-        <%  image_type = page.components.nil? ? page._type.gsub("page.", "") : page.components[0]._type %>
-        <%= image_pack_tag("thumbnails/thumbs_#{image_type}.jpg", class: 'form-thumbnail') %>
+        <%= image_pack_tag("thumbnails/thumbs_#{thumbnail_type}.jpg", class: 'body') %>
       </div>
 
       <%# TODO: Backend to add dynamic data-driven values to this standard output %>
