@@ -71,14 +71,14 @@ class PagesController < FormController
   end
   helper_method :reserved_submissions_path
 
-  def page_answers_presenters
+  def pages_presenters
     MetadataPresenter::PageAnswersPresenter.map(
       view: view_context,
       pages: service.pages,
       answers: {}
     )
   end
-  helper_method :page_answers_presenters
+  helper_method :pages_presenters
 
   private
 
