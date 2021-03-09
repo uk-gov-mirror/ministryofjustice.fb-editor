@@ -92,10 +92,14 @@ spec:
               secretKeyRef:
                 name: {{ .Values.editor_service_account_token }}
                 key: token
+          - name: SUBMISSION_ENCRYPTION_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: submission_encryption_key
       volumes:
         - name: tmp-files
           emptyDir: {}
-
 ---
 # workers
 apiVersion: apps/v1
@@ -186,6 +190,11 @@ spec:
               secretKeyRef:
                 name: {{ .Values.editor_service_account_token }}
                 key: token
+          - name: SUBMISSION_ENCRYPTION_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: submission_encryption_key
       volumes:
         - name: tmp-files
           emptyDir: {}

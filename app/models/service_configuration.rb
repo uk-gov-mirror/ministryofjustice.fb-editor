@@ -1,5 +1,12 @@
 class ServiceConfiguration < ApplicationRecord
   SECRETS = %w(BASIC_AUTH_USER BASIC_AUTH_PASS ENCODED_PRIVATE_KEY).freeze
+  SUBMISSION = %w(
+    SERVICE_EMAIL_OUTPUT
+    SERVICE_EMAIL_SUBJECT
+    SERVICE_EMAIL_BODY
+    SERVICE_EMAIL_PDF_HEADING
+    SERVICE_EMAIL_PDF_SUBHEADING
+  )
   BASIC_AUTH_USER = 'BASIC_AUTH_USER'.freeze
   BASIC_AUTH_PASS = 'BASIC_AUTH_PASS'.freeze
 
@@ -17,6 +24,14 @@ class ServiceConfiguration < ApplicationRecord
 
   def secrets?
     name.in?(SECRETS)
+  end
+
+  def do_not_send_submission?
+    name.in?(SUBMISSION) &&
+      SubmissionSetting.find_by(
+        service_id: service_id,
+        deployment_environment: deployment_environment
+      ).try(:send_email?).blank?
   end
 
   def decrypt_value

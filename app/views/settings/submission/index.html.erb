@@ -1,0 +1,7 @@
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-xl"><%= t('settings.submission.name') %></h1>
+      <p class="govuk-body"><%= t('settings.submission.sub_heading') %></p>
+      <%= link_to t('settings.submission.email.label'), settings_email_index_path(service.service_id), class: 'govuk-link' %>
+  </div>
+</div>
