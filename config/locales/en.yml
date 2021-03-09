@@ -28,14 +28,14 @@ en:
     preview_page: 'Preview page'
     preview_form: 'Preview form'
   pages:
-    form: 'Form pages'
+    form: 'Form flow'
     name: 'Pages'
     create: 'Add page'
     cancel: 'Cancel'
     actions: 'Actions'
   settings:
     name: 'Settings'
-    form_information: 'Form information'
+    form_information: 'Form details'
     form_information_label: 'Form name'
     form_information_help: 'The visible name of your form'
     submission:
@@ -83,8 +83,8 @@ en:
         page_url: "The page’s relative url - it must not contain any spaces"
       publish_service_creation:
         require_authentication: 'Require username & password for access'
-        username: 'Username'
-        password: 'Password'
+        username: 'Set username'
+        password: 'Set password'
     errors:
       models:
         page_creation:
