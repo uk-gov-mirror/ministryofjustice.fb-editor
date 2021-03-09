@@ -7,5 +7,17 @@
     <a href="/" class="govuk-header__link govuk-header__link--service-name">
       <%= t('header.service_name') %>
     </a>
+
+    <% if user_signed_in? %>
+      <ul class="govuk-navigation govuk-navigation-header govuk-!-font-size-19" aria-labelledby="editor-navigation-header">
+        <li>
+          <%= link_to t('.forms'), services_path %>
+        </li>
+
+        <li>
+          <%= link_to t('.sign_out'), user_session_path, method: :delete %>
+        </li>
+      </ul>
+    <% end %>
   </div>
 </header>

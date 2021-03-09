@@ -28,5 +28,5 @@ Rails.application.routes.draw do
     end
   end
 
-  root to: 'services#index'
+  root to: 'home#show'
 end
