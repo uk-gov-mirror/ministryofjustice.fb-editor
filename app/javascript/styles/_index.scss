@@ -226,8 +226,10 @@
 
 .form-step_thumbnail {
   border:  $govuk-link-colour solid 2px;
+  display: block;
   height: 145px;
   overflow: hidden;
+  text-decoration: none;
   width: 200px;
 
   img {
@@ -237,6 +239,7 @@
 
   .text {
     box-sizing: border-box;
+    color: govuk-colour("black");
     display: block;
     font-size: 12px;
     font-weight: bold;
