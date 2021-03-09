@@ -298,7 +298,7 @@ class EditableTextareaFieldComponent extends EditableComponentBase {
 }
 
 
-/* Editable Radio Buttons Field Component:
+/* Editable Collection (Radios/Checkboxes) Field Component:
  * Structured editable component comprising of one or more elements.
  * Produces a JSON string as content from internal data object.
  *
@@ -308,22 +308,22 @@ class EditableTextareaFieldComponent extends EditableComponentBase {
  *
  * Expected backend structure  (passed as JSON)
  * --------------------------------------------
- *  _id: radio_radios_1,
+ *  _id: collections_1,
  *  hint: Hint text,
- *  name: radio_radios_1,
- *  _type : radios,
+ *  name: collections_1,
+ *  _type : [radios|checkboxes],
  *  items: [
  *    {
- *      _id: component_radio_1,
+ *      _id: component_item_1,
  *      hint: Hint text,
- *      _type: radio,
- *      label: Option,
+ *      _type: [radio|checkbox],
+ *      label: Label Text,
  *      value: value-1
  *    },{
- *     _id: component_radio_2,
+ *     _id: component_item_2,
  *      hint: Hint text,
- *      _type: radio,
- *      label: Option,
+ *      _type: [radio|checkbox],
+ *      label: Label text,
  *      value: value-2
  *    }
  *  ],
@@ -334,32 +334,32 @@ class EditableTextareaFieldComponent extends EditableComponentBase {
  *  }
  *
  *
- * Expected (minimum) frontend struture
- * ------------------------------------
+ * Expected (minimum) frontend structure
+ * -------------------------------------
  * <div class="fb-editable" data-fb-content-id="foo" data-fb-content-type="radios" data-fb-conent-data=" ...JSON... ">
  *   <fieldset>
  *     <legend>Question</legend>
  *
- *     <input name="answers[single-question_textarea_1]" type="radio" />
+ *     <input name="answers[single-question_radio_1]" type="radio" />
  *     <label>Component label</label>
  *     <span>Component hint</span>
  *
- *     <input name="answers[single-question_textarea_1]" type="radio" />
+ *     <input name="answers[single-question_radio_1]" type="radio" />
  *     <label>Component label</label>
  *     <span>Component hint</span>
  *
  * </div>
  **/
-class EditableRadiosFieldComponent extends EditableComponentBase {
+class EditableCollectionFieldComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, config, {
       // Be better for consistency if this was 'label' and not 'legend',
       // but working with the JSON recognised by/sent from the  server.
-      label: new EditableElement($node.find(config.selectorRadioQuestion), config),
-      hint: new EditableElement($node.find(config.selectorRadioHint), config)
+      label: new EditableElement($node.find(config.selectorCollectionQuestion), config),
+      hint: new EditableElement($node.find(config.selectorCollectionHint), config)
     });
-    this.options = EditableRadiosFieldComponent.createEditableOptions($node, config);
-    $node.addClass("EditableRadiosFieldComponent");
+    this.options = EditableCollectionFieldComponent.createEditableCollectionItems($node, config);
+    $node.addClass("EditableCollectionFieldComponent");
   }
 
   // If we override the set content, we obliterate relationship with the inherited get content.
@@ -388,25 +388,25 @@ class EditableRadiosFieldComponent extends EditableComponentBase {
   }
 
   updateItemComponents() {
-    this.options = EditableRadiosFieldComponent.createEditableOptions(this.$node, this._config);
+    this.options = EditableCollectionFieldComponent.createEditableCollectionItems(this.$node, this._config);
   }
 }
 
-// Private function to find radio options and enhance with editable functionality.
-EditableRadiosFieldComponent.createEditableOptions = function($node, config) {
+// Private function to find radio options or checkboxes  and enhance with editable functionality.
+EditableCollectionFieldComponent.createEditableCollectionItems = function($node, config) {
   var options = [];
-  $node.find(config.selectorRadioOption).each(function(i) {
+  $node.find(config.selectorCollectionItem).each(function(i) {
     var itemConfig = mergeObjects({}, config);
     itemConfig.data = config.data.items[i];
-    options.push(new EditableItemComponent($(this), itemConfig));
+    options.push(new EditableCollectionItemComponent($(this), itemConfig));
   });
   return options;
 }
 
 
-/* Editable Collection:
- * Used for things like Radio Options that have a label and hint element but
- * are owned by a parent Editable Component, so does not need to save their
+/* Editable Collection Item:
+ * Used for things like Radio Options/Checkboxes that have a label and hint element
+ * but are owned by a parent Editable Component, so does not need to save their
  * own content by writing a hidden element (like other types). Not considered
  * a standalone 'type' to be used in the editableComponent() initialisation
  * function.
@@ -416,10 +416,10 @@ EditableRadiosFieldComponent.createEditableOptions = function($node, config) {
  * generated 'saved' content.
  *
  **/
-class EditableItemComponent extends EditableComponentBase {
+class EditableCollectionItemComponent extends EditableComponentBase {
   constructor($node, config) {
     super($node, config);
-    $node.addClass("EditableItemComponent");
+    $node.addClass("EditableCollectionItemComponent");
   }
 
   save() {
@@ -570,7 +570,8 @@ function editableComponent($node, config) {
       klass = EditableTextareaFieldComponent;
       break;
     case "radios":
-      klass = EditableRadiosFieldComponent;
+    case "checkboxes":
+      klass = EditableCollectionFieldComponent;
       break;
   }
   return new klass($node, config);
