@@ -9,6 +9,7 @@
 .ui-button {
   @extend .govuk-button;
   @include govuk-responsive-margin(7, "right");
+  @include fb-govuk-button;
 
   margin-bottom: 0;
 
