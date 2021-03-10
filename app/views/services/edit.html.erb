@@ -4,7 +4,7 @@
   <% service.pages.each do |page| %>
     <div class="form-step">
 
-      <%  thumbnail_type = page.components.nil? ? page._type.gsub("page.", "") : page.components[0]._type %>
+      <%  thumbnail_type = page.components.nil? || page.components.empty? ? page._type.gsub("page.", "") : page.components[0]._type %>
       <%= link_to edit_page_path(service.service_id, page.uuid),
           class: "form-step_thumbnail #{thumbnail_type}",
           'aria-hidden': true  do %>
