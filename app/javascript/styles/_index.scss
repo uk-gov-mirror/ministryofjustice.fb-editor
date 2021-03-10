@@ -172,16 +172,6 @@
   overflow: hidden;
   position: relative;
 
-  img {
-    border:  $govuk-link-colour solid 2px;
-    display: block;
-    width: 200px;
-
-    &:hover {
-      border-color: $govuk-link-hover-colour;
-    }
-  }
-
   &:after {
     border-top: govuk-colour("black") solid 2px;
     content: "";
@@ -231,6 +221,48 @@
     position: relative;
     text-indent: 0;
     top: -27px;
+  }
+}
+
+.form-step_thumbnail {
+  border:  $govuk-link-colour solid 2px;
+  display: block;
+  height: 145px;
+  overflow: hidden;
+  text-decoration: none;
+  width: 200px;
+
+  img {
+    display: block;
+    width: 200px;
+  }
+
+  .text {
+    box-sizing: border-box;
+    color: govuk-colour("black");
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0 15px 10px 15px;
+  }
+
+  &:hover {
+    border-color: $govuk-link-hover-colour;
+  }
+
+  /* Special case for styling the title */
+  &.confirmation {
+    span {
+      background-color: $govuk-success-colour;
+      color: govuk-colour("white");
+      max-width: 72%;
+      padding: 10px 5px;
+      text-align: center;
+    }
+
+    .body {
+      display: none;
+    }
   }
 }
 
@@ -358,8 +390,8 @@
 
 // For when a user is signed in
 .govuk-navigation-header {
+  color: govuk-colour("white");
   float: right;
-  color:  govuk-colour("white");
 
   a {
     &:link {
@@ -368,13 +400,13 @@
 
     &,
     &:hover {
-      color:  govuk-colour("white");
+      color: govuk-colour("white");
       font: inherit;
       text-decoration: underline;
     }
 
     &:hover {
-      color:  govuk-colour("white");
+      color: govuk-colour("white");
     }
   }
 
