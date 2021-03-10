@@ -35,6 +35,16 @@
   outline: $govuk-focus-width solid $govuk-focus-colour;
 }
 
+@mixin fb-govuk-button {
+  background-color: govuk-colour("blue");
+
+  &:hover,
+  &[disabled='disabled'],
+  &[disabled='disabled']:hover {
+    background-color: govuk-colour("dark-blue");
+  }
+}
+
 .width-responsive-two-thirds {
   @include responsive_width("two-thirds");
 }
@@ -271,13 +281,7 @@
  * green blue buttons on fb-editor.
  * --------------------------------------- */
 .fb-govuk-button {
-  background-color: govuk-colour("blue");
-
-  &:hover,
-  &[disabled='disabled'],
-  &[disabled='disabled']:hover {
-    background-color: govuk-colour("dark-blue");
-  }
+  @include fb-govuk-button;
 }
 
 .govuk-form-group--error {
