@@ -564,6 +564,7 @@ function editableComponent($node, config) {
       klass = EditableContent;
       break;
     case "text":
+    case "number":
       klass = EditableTextFieldComponent;
       break;
     case "textarea":
