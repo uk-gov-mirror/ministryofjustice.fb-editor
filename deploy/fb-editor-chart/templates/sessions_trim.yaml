@@ -1,0 +1,44 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: fb-editor-cron-sessions-trim-{{ .Values.environmentName }}
+  namespace: formbuilder-saas-{{ .Values.environmentName }}
+spec:
+  schedule: "0 3 * * *"
+  successfulJobsHistoryLimit: 0
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: "fb-editor-workers-{{ .Values.environmentName }}"
+            image: "754256621582.dkr.ecr.eu-west-2.amazonaws.com/formbuilder/fb-editor-workers:{{ .Values.circleSha1 }}"
+            args:
+            - /bin/sh
+            - -c
+            - bundle exec rails db:sessions:trim
+            securityContext:
+              runAsUser: 1001
+            imagePullPolicy: Always
+            envFrom:
+              - configMapRef:
+                  name: fb-editor-config-map
+            env:
+              - name: SENTRY_CURRENT_ENV
+                value: {{ .Values.environmentName }}
+              - name: SECRET_KEY_BASE
+                valueFrom:
+                  secretKeyRef:
+                    name: fb-editor-secrets-{{ .Values.environmentName }}
+                    key: secret_key_base
+              - name: DATABASE_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: rds-instance-formbuilder-editor-{{ .Values.environmentName }}
+                    key: url
+              - name: EDITOR_SERVICE_ACCOUNT_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    name: {{ .Values.editor_service_account_token }}
+                    key: token
+          restartPolicy: Never
