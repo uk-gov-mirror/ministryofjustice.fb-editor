@@ -19,7 +19,7 @@ en:
     show:
       title: MoJ Forms
       lede: Prototype, test and publish online forms quickly and easily
-      body: 'To find out more about MoJ Forms, please email us at <a href="mailto:moj-forms@digital.justice.gov.uk">moj-forms@digital.justice.gov.uk</a>, or you can also <a href="%{formbuilder_slack}">ask us a question on Slack</a>.'
+      body: 'To find out more about MoJ Forms, please email us at <a href="mailto:moj-forms@digital.justice.gov.uk">moj-forms@digital.justice.gov.uk</a>, or you can also <a href="https://app.slack.com/client/T02DYEB3A/CE26QEL1Z">ask us a question on Slack</a>.'
       callout: You will need a @digital.justice.gov.uk or @justice.gov.uk email address to use MoJ Forms.
       sign_in: Sign in
   auth:
