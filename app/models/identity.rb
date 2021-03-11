@@ -3,5 +3,5 @@ class Identity < ApplicationRecord
 
   include UserEncryption
 
-  before_save :encrypt_attributes
+  encrypt_fields :name, :email
 end

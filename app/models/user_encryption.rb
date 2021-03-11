@@ -1,23 +1,24 @@
 module UserEncryption
-  def encrypt_attributes
-    self.name = encrypt(raw_name)
-    self.email = encrypt(raw_email)
-  end
+  extend ActiveSupport::Concern
 
-  def name
-    decrypt(raw_name)
-  end
+  class_methods do
+    def encrypt_fields(*fields)
+      fields.each do |field|
+        define_method(field) do
+          decrypt("raw_#{field}")
+        end
 
-  def email
-    decrypt(raw_email)
-  end
+        define_method("raw_#{field}") do
+          read_attribute(field)
+        end
+      end
 
-  def raw_name
-    read_attribute :name
-  end
-
-  def raw_email
-    read_attribute :email
+      self.before_save do |record|
+        fields.each do |field|
+          self.send("#{field}=", encrypt("raw_#{field}"))
+        end
+      end
+    end
   end
 
   def decrypt(value)

@@ -1,9 +1,8 @@
 class User < ApplicationRecord
-  has_many :identities, dependent: :destroy
-
   include UserEncryption
+  encrypt_fields :name, :email
 
-  before_save :encrypt_attributes
+  has_many :identities, dependent: :destroy
 
   def has_identity?(identity)
     identities.any? do |id|
