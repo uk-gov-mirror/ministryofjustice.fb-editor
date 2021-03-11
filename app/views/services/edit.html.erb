@@ -4,14 +4,7 @@
   <% service.pages.each do |page| %>
     <div class="form-step">
 
-      <%  thumbnail_type = page.components.nil? ? page._type.gsub("page.", "") : page.components[0]._type %>
-      <%= link_to edit_page_path(service.service_id, page.uuid),
-          class: "form-step_thumbnail #{thumbnail_type}",
-          'aria-hidden': true  do %>
-        <%= image_pack_tag("thumbnails/thumbs_header.png", class: 'header') %>
-        <span class="text"><%= page.heading %></span>
-        <%= image_pack_tag("thumbnails/thumbs_#{thumbnail_type}.jpg", class: 'body') %>
-      <% end %>
+      <%= flow_thumbnail(page, service.service_id) %>
 
       <%# TODO: Backend to add dynamic data-driven values to this standard output %>
       <%# Note: This would probably be more efficient if outside the loop so that %>
