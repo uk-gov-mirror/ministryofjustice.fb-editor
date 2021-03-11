@@ -8,9 +8,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - fb-editor-{{ .Values.environmentName }}.apps.live-1.cloud-platform.service.justice.gov.uk
+    - {{ .Values.editor_host }}
+    secretName: editor-tls-certificate
   rules:
-  - host: fb-editor-{{ .Values.environmentName }}.apps.live-1.cloud-platform.service.justice.gov.uk
+  - host: {{ .Values.editor_host }}
     http:
       paths:
       - path: /
