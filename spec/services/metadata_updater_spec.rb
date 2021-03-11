@@ -62,4 +62,43 @@ RSpec.describe MetadataUpdater do
       end
     end
   end
+
+  describe '#destroy' do
+    context 'when deleting start page' do
+      let(:updated_metadata) do
+        service_metadata.deep_dup
+      end
+      let(:attributes) do
+        {
+          id: 'page.start',
+          service_id: service.service_id,
+          latest_metadata: service_metadata,
+        }
+      end
+
+      it 'creates new version with start page' do
+        expect(updater.destroy).to eq(updated_metadata)
+      end
+    end
+
+    context 'when deleting other pages' do
+      let(:updated_metadata) do
+        metadata = service_metadata.deep_dup
+        metadata['pages'].delete_at(1)
+        metadata['pages'][0]['steps'].delete('page.name')
+        metadata
+      end
+      let(:attributes) do
+        {
+          id: 'page.name',
+          service_id: service.service_id,
+          latest_metadata: service_metadata
+        }
+      end
+
+      it 'creates new version with page deleted' do
+        expect(updater.destroy).to eq(updated_metadata)
+      end
+    end
+  end
 end

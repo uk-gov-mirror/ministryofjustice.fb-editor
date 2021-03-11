@@ -1,6 +1,6 @@
 class PagesController < FormController
   default_form_builder GOVUKDesignSystemFormBuilder::FormBuilder
-  before_action :assign_required_objects, only: [:edit, :update]
+  before_action :assign_required_objects, only: [:edit, :update, :destroy]
 
   def create
     @page_creation = PageCreation.new(page_creation_params)
@@ -20,6 +20,13 @@ class PagesController < FormController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @metadata_updater = MetadataUpdater.new(common_params.merge(id: @page.id))
+
+    @metadata_updater.destroy
+    redirect_to edit_service_path(service.service_id)
   end
 
   def page_creation_params

@@ -25,7 +25,9 @@
           target: '_blank' %>
         </li>
         <li><a href="#add-page-here">Add page here</a></li>
-        <li><a href="#delete-page" class="destructive">Delete page...</a></li>
+        <li>
+          <%= link_to t('actions.delete_page'), page_path(service.service_id, page.uuid), method: :delete, class: 'destructive', data: { confirm: 'Are you sure?' } %>
+        </li>
       </ul>
 
       <%= link_to page.url, edit_page_path(service.service_id, page.uuid), class: 'govuk-link' %>
