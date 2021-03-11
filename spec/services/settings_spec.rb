@@ -10,22 +10,28 @@ RSpec.describe Settings do
   let(:latest_metadata) do
     { service_name: 'Grogu' }
   end
+  let(:current_user) do
+    double(id: SecureRandom.uuid)
+  end
 
   describe '#update' do
     context 'when valid' do
       let(:attributes) do
-        { service_name: 'Moff Gideon', current_user: double(id: '1') }
+        { service_name: 'Moff Gideon', current_user: current_user }
       end
       let(:service) do
         double(id: '05e12a93-3978-4624-a875-e59893f2c262', errors?: false)
       end
 
       before do
+        allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(current_user)
+        allow_any_instance_of(PermissionsController).to receive(:require_user!).and_return(true)
+
         expect(
           MetadataApiClient::Version
         ).to receive(:create).with(
           service_id: '123456',
-          payload: { service_name: 'Moff Gideon', created_by: '1234' }
+          payload: { service_name: 'Moff Gideon', created_by: current_user.id }
         ).and_return(service)
       end
 

@@ -1,5 +1,4 @@
-class ServicesController < ApplicationController
-  # before_action :require_user!
+class ServicesController < PermissionsController
   layout 'form', only: :edit
 
   def index
@@ -21,7 +20,7 @@ class ServicesController < ApplicationController
   end
 
   def services
-    @services ||= MetadataApiClient::Service.all(user_id: '1234')
+    @services ||= MetadataApiClient::Service.all(user_id: current_user.id)
   end
   helper_method :services
 

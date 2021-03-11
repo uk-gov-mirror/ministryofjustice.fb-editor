@@ -8,7 +8,7 @@ data:
   RAILS_LOG_TO_STDOUT: "true"
   PLATFORM_ENV: {{ .Values.environmentName }}
   RAILS_SERVE_STATIC_FILES: "true"
-  AUTH0_DOMAIN: mojds-trial.eu.auth0.com
   EDITOR_FULL_URL_ROOT: https://{{ .Values.editor_host }}
+  AUTH0_DOMAIN: moj-forms.eu.auth0.com
   ENCODED_PUBLIC_KEY: {{ .Values.encoded_public_key }}
   METADATA_API_URL: http://fb-metadata-api-svc-{{ .Values.environmentName }}

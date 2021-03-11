@@ -2,7 +2,7 @@ class Auth0Controller < ApplicationController
   skip_before_action :verify_authenticity_token, only: :developer_callback
 
   def callback
-    result = UserPolicy.process!(user_info, session)
+    UserPolicy.process!(user_info, session)
 
     redirect_to services_path,
                 flash: {
@@ -16,7 +16,7 @@ class Auth0Controller < ApplicationController
   def developer_callback
     fail unless Rails.env.development?
 
-    # callback
+    callback
   end
 
   def failure

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get '/health', to: 'health#show'
 
   # Auth0 routes
-  get "/auth/oauth2/callback" => "auth0#callback", as: 'auth0_callback'
+  get "/auth/auth0/callback" => "auth0#callback", as: 'auth0_callback'
   get "/auth/failure" => "auth0#failure"
 
   get '/signup_not_allowed' => 'user_sessions#signup_not_allowed', as: 'signup_not_allowed'
