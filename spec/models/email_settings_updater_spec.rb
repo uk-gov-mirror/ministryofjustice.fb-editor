@@ -266,6 +266,23 @@ RSpec.describe EmailSettingsUpdater do
       end
     end
 
+    context 'email from' do
+      let(:service_configuration) do
+        ServiceConfiguration.find_by(
+          service_id: service.service_id,
+          name: 'SERVICE_EMAIL_FROM'
+        )
+      end
+
+      before { email_settings_updater.create_or_update! }
+      it 'uses the default email from address' do
+        expect(service_configuration).to be_persisted
+        expect(
+          service_configuration.decrypt_value
+        ).to eq("moj-forms@digital.justice.gov.uk")
+      end
+    end
+
     context 'email subject' do
       context 'when email subject exists in the db' do
         let!(:service_configuration) do
