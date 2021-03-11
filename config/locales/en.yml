@@ -31,6 +31,7 @@ en:
     edit_page: 'Edit Page'
     preview_page: 'Preview page'
     preview_form: 'Preview form'
+    delete_page: 'Delete page...'
   pages:
     form: 'Form flow'
     name: 'Pages'
