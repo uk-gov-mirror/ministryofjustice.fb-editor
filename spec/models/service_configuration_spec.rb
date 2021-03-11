@@ -81,6 +81,7 @@ RSpec.describe ServiceConfiguration, type: :model do
 
         %w(
           SERVICE_EMAIL_OUTPUT
+          SERVICE_EMAIL_FROM
           SERVICE_EMAIL_SUBJECT
           SERVICE_EMAIL_BODY
           SERVICE_EMAIL_PDF_HEADING
