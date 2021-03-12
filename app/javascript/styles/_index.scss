@@ -71,10 +71,15 @@
   }
 }
 
-#main-content {
+html {
+  min-height: 100%;
   position: relative;
 }
 
+#main-content {
+  margin-bottom: 220px; /* approx height of footer - prevents visual overlap */
+  position: relative;
+}
 
 /* Editable components
  * ------------------- */
