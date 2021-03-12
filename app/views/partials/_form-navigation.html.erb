@@ -5,7 +5,7 @@
     </h2>
 
     <ul class="govuk-navigation" aria-labelledby="app-navigation-heading">
-      <li class="<%= controller_name.in?(['pages', 'services']) ? 'current' : '' %>">
+      <li class="<%= controller_name == 'services' ? 'current' : '' %>">
         <%= link_to t('pages.name'), edit_service_path(service.service_id) %>
       </li>
 
