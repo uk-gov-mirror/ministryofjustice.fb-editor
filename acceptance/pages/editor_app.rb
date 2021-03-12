@@ -9,6 +9,8 @@ class EditorApp < SitePrism::Page
     set_url ENV['ACCEPTANCE_TESTS_EDITOR_APP']
   end
 
+  element :sign_in_button, 'form.button_to button'
+
   element :service_name, '#form-navigation-heading'
   element :name_field, :field, 'What is the name of this form?'
   element :create_service_button, :button, 'Create a new form'

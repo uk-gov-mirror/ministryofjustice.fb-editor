@@ -1,5 +1,4 @@
-# coding: utf-8
-require_relative './spec_helper'
+require_relative '../spec_helper'
 
 feature 'Create page' do
   let(:editor) { EditorApp.new }
@@ -7,6 +6,7 @@ feature 'Create page' do
 
   background do
     editor.load
+    given_I_am_logged_in
     given_I_have_a_service
   end
 

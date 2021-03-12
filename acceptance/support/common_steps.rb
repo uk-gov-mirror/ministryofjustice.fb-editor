@@ -1,6 +1,11 @@
 module CommonSteps
-  def given_I_have_a_service(service = service_name)
+  def given_I_am_logged_in
     editor.load
+    editor.sign_in_button.click
+  end
+
+  def given_I_have_a_service(service = service_name)
+    given_I_am_logged_in
     given_I_want_to_create_a_service
     given_I_add_a_service(service)
     when_I_create_the_service

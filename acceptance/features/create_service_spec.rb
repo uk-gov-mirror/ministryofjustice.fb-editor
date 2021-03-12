@@ -1,4 +1,4 @@
-require_relative './spec_helper'
+require_relative '../spec_helper'
 
 feature 'Create a service' do
   let(:editor) { EditorApp.new }
@@ -7,6 +7,7 @@ feature 'Create a service' do
 
   background do
     editor.load
+    given_I_am_logged_in
     given_I_want_to_create_a_service
   end
 

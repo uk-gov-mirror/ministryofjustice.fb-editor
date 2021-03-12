@@ -1,4 +1,4 @@
-require_relative './spec_helper'
+require_relative '../spec_helper'
 
 feature 'Update settings form information' do
   let(:editor) { EditorApp.new }
@@ -8,6 +8,7 @@ feature 'Update settings form information' do
 
   background do
     editor.load
+    given_I_am_logged_in
     given_I_have_a_service
     and_I_go_to_update_the_form_information_in_settings
   end
