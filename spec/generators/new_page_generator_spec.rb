@@ -61,12 +61,40 @@ RSpec.describe NewPageGenerator do
     context 'when existing pages exist' do
       let(:latest_metadata) { metadata_fixture(:version) }
 
-      it 'creates a valid page metadata' do
-        expect(
-          MetadataPresenter::ValidateSchema.validate(
-            generator.page_metadata, "page.#{page_type}"
-          )
-        ).to be(valid)
+      context 'generating valid metadata' do
+        context 'pages with components' do
+          %w(singlequestion).each do |page|
+            context "when #{page} page" do
+              let(:page_type) { page }
+              let(:component_type) { 'text' }
+
+              it 'creates a valid page metadata' do
+                expect(
+                  MetadataPresenter::ValidateSchema.validate(
+                    generator.page_metadata, "page.#{page_type}"
+                  )
+                ).to be(valid)
+              end
+            end
+          end
+        end
+
+        context 'pages without components' do
+          %w(multiplequestions checkanswers confirmation).each do |page|
+            context "when #{page} page" do
+              let(:page_type) { page }
+              let(:component_type) { nil }
+
+              it 'creates a valid page metadata' do
+                expect(
+                  MetadataPresenter::ValidateSchema.validate(
+                    generator.page_metadata, "page.#{page_type}"
+                  )
+                ).to be(valid)
+              end
+            end
+          end
+        end
       end
 
       it 'generates page attributes' do
