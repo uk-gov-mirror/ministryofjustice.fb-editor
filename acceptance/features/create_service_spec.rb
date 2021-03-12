@@ -6,7 +6,6 @@ feature 'Create a service' do
   let(:another_service_name) { generate_service_name }
 
   background do
-    editor.load
     given_I_am_logged_in
     given_I_want_to_create_a_service
   end
