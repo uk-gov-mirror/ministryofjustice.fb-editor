@@ -412,7 +412,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     this._preservedItemCount = (this.type == "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
     EditableCollectionFieldComponent.createCollectionItemTemplate.call(this, config);
     EditableCollectionFieldComponent.createEditableCollectionItems.call(this, config);
-    $node.after(new EditableCollectionItemInjector(this, config).$node);
+    new EditableCollectionItemInjector(this, config);
     $node.addClass("EditableCollectionFieldComponent");
   }
 
@@ -584,6 +584,7 @@ class EditableCollectionItemInjector {
     var conf = mergeObjects({}, config);
     var text = mergeObjects({ addItem: 'add' }, config.text);
     var $node = $(createElement("button", text.addItem, conf.classes));
+    component.$node.append($node);
     $node.addClass("EditableCollectionItemInjector")
     $node.data("instance", this);;
     $node.on("click", function(e) {
