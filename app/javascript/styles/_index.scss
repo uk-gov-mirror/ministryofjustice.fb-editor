@@ -20,7 +20,7 @@
   color: govuk-colour("blue");
   cursor: pointer;
   display: block;
-  padding: govuk-spacing(1);
+  padding: 8px 10px 7px 10px;
   text-decoration: none;
 
   &:hover {
@@ -52,6 +52,11 @@
 
 /* General rules
  * ------------- */
+html {
+  min-height: 100%;
+  position: relative;
+}
+
 .sr-only {
   height: 1px;
   left: -10000px;
@@ -71,15 +76,19 @@
   }
 }
 
-html {
-  min-height: 100%;
+#header-logo-link {
+  display: inline-block;
+  margin-right: govuk-spacing(2);
   position: relative;
+  top: -2px;
+  vertical-align: middle;
 }
 
 #main-content {
   margin-bottom: 220px; /* approx height of footer - prevents visual overlap */
   position: relative;
 }
+
 
 /* Editable components
  * ------------------- */
@@ -106,6 +115,12 @@ html {
   // Trying to compensate for inherit GovUK maring-top settings
   // (or lack of them) on <p> tags and things that should be in them.
   margin-bottom: 1.2em;
+}
+
+.fb-editor-footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
 }
 
 .fb-editor-list,
@@ -147,12 +162,50 @@ html {
   }
 }
 
-#header-logo-link {
-  display: inline-block;
-  margin-right: govuk-spacing(2);
-  position: relative;
-  top: -2px;
-  vertical-align: middle;
+.fb-govuk-button {
+  // govuk-button style is green but we want blue buttons on fb-editor.
+  @include fb-govuk-button;
+}
+
+.fb-govuk-button-inverted {
+  @include button_type_link;
+}
+
+.fb-preview-button {
+  float: right;
+}
+
+
+/* Editable components
+ * ------------------- */
+.EditableContent,
+.EditableElement {
+  &:focus,
+  &.active {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
+  }
+}
+
+.EditableCollectionFieldComponent,
+.EditableTextFieldComponent,
+.EditableTextareaFieldComponent {
+  :disabled {
+    background-color: govuk-colour("white");
+  }
+}
+
+
+
+/* Dynamic components
+ * ------------------- */
+.EditableCollectionItemInjector {
+  @include button_type_link;
+  margin: 0 0 55px 55px;
+
+  &:before {
+    content: "+";
+    margin-right: 5px;
+  }
 }
 
 
@@ -171,7 +224,6 @@ html {
 .form-overview_button {
   // This element is injected by JS
   @include button_type_link;
-  padding: 9px;
   position: absolute;
   right: -113px;
   top: calc(50% - 30px);
@@ -278,24 +330,6 @@ html {
 
     .body {
       display: none;
-    }
-  }
-}
-
-
-/* govuk-button style is green but we want
- * green blue buttons on fb-editor.
- * --------------------------------------- */
-.fb-govuk-button {
-  @include fb-govuk-button;
-}
-
-.govuk-form-group--error {
-  .govuk-input {
-    border: $govuk-border-width-form-element-error solid $govuk-error-colour;
-
-    &:focus {
-      border-color: $govuk-input-border-colour;
     }
   }
 }
@@ -428,6 +462,16 @@ html {
 
 /* Override GovUK styles
  * --------------------- */
+.govuk-form-group--error {
+  .govuk-input {
+    border: $govuk-border-width-form-element-error solid $govuk-error-colour;
+
+    &:focus {
+      border-color: $govuk-input-border-colour;
+    }
+  }
+}
+
 .govuk-header {
   // Try to get consistency between with/without page navigation bars
   // and even update space above/below main headings.
@@ -441,14 +485,4 @@ html {
   @include govuk-media-query($until: tablet) {
     width: 100%;
   }
-}
-
-.fb-preview-button {
-  float: right;
-}
-
-.fb-editor-footer {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
 }
