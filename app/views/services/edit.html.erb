@@ -1,3 +1,8 @@
+<%= link_to t('actions.preview_form'),
+  preview_service_path(service.service_id),
+  class: 'govuk-button editor-button fb-govuk-button fb-preview-button',
+  target: '_blank' %>
+
 <h1 class="govuk-heading-xl"><%= t('pages.form') %></h1>
 
 <div class="form-overview">
