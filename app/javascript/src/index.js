@@ -12,6 +12,8 @@ $(document).ready(function() {
   bindEditableContentHandlers();
 });
 
+// Controls all the Editable Component setup for each page.
+// TODO: Add more description on how this works.
 function bindEditableContentHandlers($area) {
   var $editContentForm = $("#editContentForm");
   var $saveButton = $editContentForm.find(":submit");
@@ -23,6 +25,14 @@ function bindEditableContentHandlers($area) {
       editableContent.push(editableComponent($node, {
         editClassname: "active",
         data: $node.data("fb-content-data"),
+        filters: {
+          _id: function(index) {
+            return this.replace(/^(.*)?[\d]+$/, "$1" + index);
+          },
+          value: function(index) {
+            return this.replace(/^(.*)?[\d]+$/, "$1" + index);
+          }
+        },
         form: $editContentForm,
         id: $node.data("fb-content-id"),
         selectorDisabled: "input:not(:hidden), textarea",
@@ -32,6 +42,7 @@ function bindEditableContentHandlers($area) {
         selectorCollectionQuestion: ".govuk-heading-xl",
         selectorCollectionHint: "fieldset > .govuk-hint",
         selectorCollectionItem: ".govuk-radios__item, .govuk-checkboxes__item",
+        text: $node.data("fb-content-text"),
         onSaveRequired: function() {
           // Code detected something changed to
           // make the submit button available.
