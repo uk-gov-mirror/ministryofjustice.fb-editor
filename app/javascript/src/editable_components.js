@@ -441,6 +441,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     $lastItem.after($clone);
     EditableCollectionFieldComponent.addItem.call(this, $clone, this.$itemTemplate.data("config"));
     EditableCollectionFieldComponent.updateItems.call(this);
+    triggerSaveRequired(this._config.onSaveRequired);
   }
 
   // Dynamically removes an item to the components collection
@@ -449,6 +450,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     item.$node.remove();
     this.items.splice(index, 1);
     EditableCollectionFieldComponent.updateItems.call(this);
+    triggerSaveRequired(this._config.onSaveRequired);
   }
 
   save() {
