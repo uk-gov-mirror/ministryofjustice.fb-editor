@@ -16,7 +16,7 @@
 import DOMPurify from 'dompurify';
 import marked from 'marked';
 import TurndownService from 'turndown';
-import { mergeObjects, createElement } from './utilities';
+import { mergeObjects, createElement, safelyActivateFunction } from './utilities';
 
 var turndownService = new TurndownService();
 
@@ -91,7 +91,7 @@ class EditableElement extends EditableBase {
   set content(content) {
     if(this._content != content) {
       this._content = content;
-      triggerSaveRequired(this._config.onSaveRequired);
+      safelyActivateFunction(this._config.onSaveRequired);
     }
   }
 
@@ -141,7 +141,7 @@ class EditableContent extends EditableElement {
   set content(markdown) {
     if(this._markdown != markdown) {
       this._markdown = markdown;
-      triggerSaveRequired(this._config.onSaveRequired);
+      safelyActivateFunction(this._config.onSaveRequired);
     }
   }
 
@@ -441,7 +441,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     $lastItem.after($clone);
     EditableCollectionFieldComponent.addItem.call(this, $clone, this.$itemTemplate.data("config"));
     EditableCollectionFieldComponent.updateItems.call(this);
-    triggerSaveRequired(this._config.onSaveRequired);
+    safelyActivateFunction(this._config.onSaveRequired);
   }
 
   // Dynamically removes an item to the components collection
@@ -450,7 +450,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     item.$node.remove();
     this.items.splice(index, 1);
     EditableCollectionFieldComponent.updateItems.call(this);
-    triggerSaveRequired(this._config.onSaveRequired);
+    safelyActivateFunction(this._config.onSaveRequired);
   }
 
   save() {
@@ -580,7 +580,6 @@ class EditableComponentCollectionItem extends EditableComponentBase {
 
 class EditableCollectionItemInjector {
   constructor(component, config) {
-    console.log("EditableCollectionItemInjector");
     var conf = mergeObjects({}, config);
     var text = mergeObjects({ addItem: 'add' }, config.text);
     var $node = $(createElement("button", text.addItem, conf.classes));
@@ -591,6 +590,7 @@ class EditableCollectionItemInjector {
       e.preventDefault();
       $(this).data("instance").component.add();
     });
+
     this.component = component;
     this.$node = $node;
   }
@@ -611,16 +611,6 @@ class EditableCollectionItemRemover {
     });
     this.item = item;
     this.$node = $node;
-  }
-}
-
-
-/* Fires a passed function intended to run on code detection of
- * content required to be saved (updated and different).
- **/
-function triggerSaveRequired(action) {
-  if(typeof(action) === 'function' || action instanceof Function) {
-    action();
   }
 }
 
