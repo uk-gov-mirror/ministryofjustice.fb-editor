@@ -207,7 +207,6 @@ html {
 
 .EditableCollectionItemRemover {
   @include button_type_link;
-  //margin: 0 0 55px 55px;
 
   &:hover {
     background-color: govuk-colour("red");
