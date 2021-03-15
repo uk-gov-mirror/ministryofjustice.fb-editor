@@ -20,7 +20,7 @@
   color: govuk-colour("blue");
   cursor: pointer;
   display: block;
-  padding: 8px 10px 7px 10px;
+  padding: govuk-spacing(1) govuk-spacing(2);
   text-decoration: none;
 
   &:hover {
@@ -205,6 +205,17 @@ html {
   &:before {
     content: "+";
     margin-right: 5px;
+  }
+}
+
+.EditableCollectionItemRemover {
+  @include button_type_link;
+  //margin: 0 0 55px 55px;
+
+  &:hover {
+    background-color: govuk-colour("red");
+    border-color: govuk-colour("red");
+    color: govuk-colour("white");
   }
 }
 
