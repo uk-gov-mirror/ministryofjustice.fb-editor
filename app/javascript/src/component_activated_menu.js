@@ -173,6 +173,10 @@ class ActivatedMenuContainer {
       $node.attr("id", config.container_id);
     }
 
+    if(config.container_classname) {
+      $node.addClass(config.container_classname);
+    }
+
     // Allow component public functions to be triggered from the jQuery object without
     // jumping through all the hoops of creating/using a jQuery widget.
     // e.g. use  $("blah").trigger("component.open")
@@ -201,6 +205,12 @@ class ActivatedMenuActivator {
 
     $node.on("focus", (e) => {
       $node.addClass("active");
+    });
+
+    $node.on("blur", (e) => {
+      if(!menu.state.open) {
+        $node.removeClass("active");
+      }
     });
 
     $node.on("keydown", (e) => {
