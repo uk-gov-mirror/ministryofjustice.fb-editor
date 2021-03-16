@@ -41,8 +41,11 @@ function mergeObjects(a, b) {
  **/
 function createElement(tag, text, classes) {
   var node = document.createElement(tag);
-  if (arguments.length > 1 && text != '' && text != undefined) {
-    node.appendChild(document.createTextNode(text));
+  if (arguments.length > 1) {
+    if(text != '' && text != undefined) {
+      node.appendChild(document.createTextNode(text));
+    }
+
     if(arguments.length > 2 && classes != '' && classes != undefined) {
       node.className = classes;
     }
