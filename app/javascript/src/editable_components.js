@@ -617,8 +617,13 @@ class EditableCollectionItemRemover {
     $node.addClass("EditableCollectionItemRemover");
     $node.data("instance", this);
 
+    $node.on("click.EditableCollectionItemRemover", function(e) {
+      e.preventDefault();
+      $(this).data("instance").item.remove();
+    });
+
     // Close on SPACE and ENTER
-    $node.on("click keydown", function(e) {
+    $node.on("keydown.EditableCollectionItemRemover", function(e) {
       e.preventDefault();
       if(e.which == 13 || e.which == 32) {
         $(this).data("instance").item.remove();
