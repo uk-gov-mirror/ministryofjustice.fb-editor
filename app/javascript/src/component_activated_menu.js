@@ -14,22 +14,24 @@
  *
  **/
 
+import { mergeObjects, createElement, safelyActivateFunction } from './utilities';
+
 
 class ActivatedMenu {
   constructor($menu, config) {
     this.activator = $("<button class=\"ActivatedMenu_Activator\"></button>");
     this.container = $("<div class=\"ActivatedMenu_Container\"></div>");
-    this.config = config || {};
+    this.config = mergeObjects({ menu: {} }, config);
     this.menu = $menu;
 
-    this.position = {
+    this.position = mergeObjects({
       // Default position settings (can be set on instantiation or overide
       // on-the-fly by passing to component.open() function. Passing in a
       // position object will set the temporary value this.state.position.
       my: "left top",
       at: "left bottom",
       of: this.activator
-    };
+    }, config.menu.position);
 
     this.state = {
       open: false,
