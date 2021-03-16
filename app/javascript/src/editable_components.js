@@ -448,10 +448,10 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
   // Dynamically removes an item to the components collection
   remove(item) {
     var index = this.items.indexOf(item);
-    item.$node.remove();
-    this.items.splice(index, 1);
-    EditableCollectionFieldComponent.updateItems.call(this);
     safelyActivateFunction(this._config.onItemRemove, item);
+    this.items.splice(index, 1);
+    item.$node.remove();
+    EditableCollectionFieldComponent.updateItems.call(this);
     safelyActivateFunction(this._config.onSaveRequired);
   }
 
@@ -616,10 +616,15 @@ class EditableCollectionItemRemover {
     item.$node.append($node);
     $node.addClass("EditableCollectionItemRemover");
     $node.data("instance", this);
-    $node.on("click", function(e) {
+
+    // Close on SPACE and ENTER
+    $node.on("click keydown", function(e) {
       e.preventDefault();
-      $(this).data("instance").item.remove();
+      if(e.which == 13 || e.which == 32) {
+        $(this).data("instance").item.remove();
+      }
     });
+
     this.item = item;
     this.$node = $node;
   }

@@ -57,6 +57,7 @@ class ActivatedMenu {
     this.activator.$node.addClass("active");
     this.container.$node.show();
     this.state.open = true;
+    this.$node.find(".ui-menu-item:first > :first-child").focus();
   }
 
   // Method
@@ -98,13 +99,6 @@ ActivatedMenu.bindMenuEventHandlers = function() {
     component.state.close = false;
   });
 
-  /* TODO: Need something like this for ESC key closing.
-  this.container.$node.on("keydown", (e) => {
-    if(e.which == 27) {
-      component.close();
-    }
-  });
-  */
 
   // Add a trigger for any listening document event
   // to activate on menu item selection.
@@ -214,9 +208,19 @@ class ActivatedMenuActivator {
     });
 
     $node.on("keydown", (e) => {
+      // TODO: Add more for keyboard support
+      // console.log("e.which: , ", e.which);
+
+      // ESC
       if(e.which == 27) {
         menu.close();
       }
+
+      // DOWN
+      if(e.which == 40) {
+        menu.open();
+      }
+
     });
 
     menu.$node.before($node);
