@@ -1,0 +1,52 @@
+/* Note:
+ * These style rely on some sass code from the govuk design files
+ * This should only contain mixins written specifically for the 
+ * MOJ form builder (Editor) environment.
+ **/
+
+
+@mixin responsive_width($width: full, $at: tablet) {
+  @if $at != desktop {
+    width: 100%;
+  }
+
+  @include govuk-media-query($from: $at) {
+    width: govuk-grid-width($width);
+  }
+}
+
+@mixin button_type_link {
+  @include govuk-font($size: 19);
+  background-color: govuk-colour("white");
+  border: govuk-colour("blue") solid 2px;
+  border-radius: 0;
+  color: govuk-colour("blue");
+  cursor: pointer;
+  display: block;
+  height: auto;
+  padding: govuk-spacing(1) govuk-spacing(2);
+  text-decoration: none;
+  text-indent: 0;
+  width: auto;
+
+  &:hover {
+    background-color: govuk-colour("blue");
+    color: govuk-colour("white");
+  }
+}
+
+@mixin focus {
+  background-color: $govuk-focus-colour;
+  color: $govuk-focus-text-colour;
+  outline: $govuk-focus-width solid $govuk-focus-colour;
+}
+
+@mixin fb-govuk-button {
+  background-color: govuk-colour("blue");
+
+  &:hover,
+  &[disabled='disabled'],
+  &[disabled='disabled']:hover {
+    background-color: govuk-colour("dark-blue");
+  }
+}

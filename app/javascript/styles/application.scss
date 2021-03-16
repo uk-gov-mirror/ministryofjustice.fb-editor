@@ -15,6 +15,7 @@
  */
 
 @import "../packs/stylesheets/govuk";
-@import "./index";
+@import "./mixins";
 @import "./component_dialog";
 @import "./component_activated_menu";
+@import "./index";
