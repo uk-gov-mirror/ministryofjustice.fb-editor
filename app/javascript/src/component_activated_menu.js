@@ -57,6 +57,7 @@ class ActivatedMenu {
     bindEventHandlers.call(this);
     setMenuOpenPosition.call(this);
 
+    $(document.body).append(this.container);
     this.close();
   }
 

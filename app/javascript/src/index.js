@@ -1,3 +1,4 @@
+import { uniqueString } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
 import { ActivatedDialog } from './component_activated_dialog';
 import { editableComponent } from './editable_components';
@@ -43,6 +44,16 @@ function bindEditableContentHandlers($area) {
         selectorCollectionHint: "fieldset > .govuk-hint",
         selectorCollectionItem: ".govuk-radios__item, .govuk-checkboxes__item",
         text: $node.data("fb-content-text"),
+        onItemAdd: function($item) {
+          // Runs after adding a new Collection item.
+          // This adjust the view to wrap Remove button with desired menu component.
+          wrapWitActivatedMenuComponent(".EditableCollectionItemRemover", $item);
+        },
+        onItemRemove: function($item) {
+          // Runs before removing an editable Colleciton item.
+          // Currently not used but added for future option and consistency
+          // with onItemAdd (provides an opportunity for clean up).
+        },
         onSaveRequired: function() {
           // Code detected something changed to
           // make the submit button available.
@@ -50,6 +61,12 @@ function bindEditableContentHandlers($area) {
         },
         type: $node.data("fb-content-type")
       }));
+    });
+
+    // If any Collection items are present with ability to be removed, we need
+    // to find them and scoop up the Remove buttons to put in menu component.
+    $(".EditableComponentCollectionItem").each(function() {
+      wrapWitActivatedMenuComponent(".EditableCollectionItemRemover", this);
     });
 
     // Set focus on first editable component for design requirement.
@@ -169,9 +186,40 @@ function applyMenus() {
         position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
       }
     });
-
-    $(document.body).append(menu.container);
   });
+}
+
+
+/* Finds elements to wrap in Activated Menu component.
+ * Best used for dynamically generated elements that have been injected into the page
+ * through JS enhancement. If items existed in the template code, you could probably
+ * just use an easier method such as applyMenus() function.
+ *
+ * This function will basically find desired elments, wrap each one with an <li> tag,
+ * add those to a new <ul> element, and then create an ActivateMenu component from
+ * that structure.
+ *
+ * @selector (String) jQuery compatible selector to find elements for menu inclusion.
+ * @context  (Node) Wrapping element/container that should hold the elements sought.
+ * effects and wraps them with the required functionality.
+ **/
+function wrapWitActivatedMenuComponent(selector, context) {
+  var $ul = $("<ul />");
+  var $elements = $(selector, context);
+  if($elements.length) {
+    $elements.each(function() {
+      $ul.append(this);
+    });
+    $elements.wrap("<li></li>");
+    $(context).append($ul);
+
+    new ActivatedMenu($ul, {
+      container_id: uniqueString("activatedMenu-"),
+      menu: {
+        position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
+      }
+    });
+  }
 }
 
 

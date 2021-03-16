@@ -441,6 +441,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     $lastItem.after($clone);
     EditableCollectionFieldComponent.addItem.call(this, $clone, this.$itemTemplate.data("config"));
     EditableCollectionFieldComponent.updateItems.call(this);
+    safelyActivateFunction(this._config.onItemAdd, $clone);
     safelyActivateFunction(this._config.onSaveRequired);
   }
 
@@ -450,6 +451,7 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     item.$node.remove();
     this.items.splice(index, 1);
     EditableCollectionFieldComponent.updateItems.call(this);
+    safelyActivateFunction(this._config.onItemRemove, item);
     safelyActivateFunction(this._config.onSaveRequired);
   }
 

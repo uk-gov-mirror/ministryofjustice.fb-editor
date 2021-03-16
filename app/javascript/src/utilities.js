@@ -67,10 +67,10 @@ function createElement(tag, text, classes) {
  * Function only specifies an argument for the expected function but,
  * if you pass other arguments they will be passed on to your function.
  **/
-function safelyActivateFunction(func) {
+function safelyActivateFunction(func, ...args) {
   if(typeof(func) === 'function' || func instanceof Function) {
-    if(arguments.length > 1) {
-      func.apply(this, arguments);
+    if(args) {
+      func.apply(this, args);
     }
     else {
       func();
@@ -78,5 +78,14 @@ function safelyActivateFunction(func) {
   }
 }
 
+/* Generates randomised number to add onto a passed string.
+ * Useful when requiring unique ID values for dynamic elements.
+ *
+ * @str (String) Prefix for resulting unique string.
+ **/
+function uniqueString(str) {
+  return str + Date.now() + String(Math.random()).replace(".","");
+}
+
 // Make available for importing.
-export { mergeObjects, createElement, safelyActivateFunction };
+export { mergeObjects, createElement, safelyActivateFunction, uniqueString };
