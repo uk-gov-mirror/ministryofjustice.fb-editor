@@ -47,7 +47,9 @@ function bindEditableContentHandlers($area) {
         onItemAdd: function($item) {
           // Runs after adding a new Collection item.
           // This adjust the view to wrap Remove button with desired menu component.
-          wrapWitActivatedMenuComponent(".EditableCollectionItemRemover", $item);
+          wrapWitActivatedMenuComponent(".EditableCollectionItemRemover", $item, {
+            classnames: "editableCollectionItemControls"
+          });
         },
         onItemRemove: function($item) {
           // Runs before removing an editable Colleciton item.
@@ -66,7 +68,9 @@ function bindEditableContentHandlers($area) {
     // If any Collection items are present with ability to be removed, we need
     // to find them and scoop up the Remove buttons to put in menu component.
     $(".EditableComponentCollectionItem").each(function() {
-      wrapWitActivatedMenuComponent(".EditableCollectionItemRemover", this);
+      wrapWitActivatedMenuComponent(".EditableCollectionItemRemover", this, {
+        classnames: "editableCollectionItemControls"
+      });
     });
 
     // Set focus on first editable component for design requirement.
@@ -203,7 +207,7 @@ function applyMenus() {
  * @context  (Node) Wrapping element/container that should hold the elements sought.
  * effects and wraps them with the required functionality.
  **/
-function wrapWitActivatedMenuComponent(selector, context) {
+function wrapWitActivatedMenuComponent(selector, context, config) {
   var $ul = $("<ul class=\"govuk-navigation\"></ul>");
   var $elements = $(selector, context);
   if($elements.length) {
@@ -214,6 +218,7 @@ function wrapWitActivatedMenuComponent(selector, context) {
     $(context).append($ul);
 
     new ActivatedMenu($ul, {
+      container_classname: config.classnames,
       container_id: uniqueString("activatedMenu-"),
       menu: {
         position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.

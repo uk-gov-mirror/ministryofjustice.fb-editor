@@ -565,6 +565,15 @@ class EditableComponentCollectionItem extends EditableComponentBase {
     if(!config.preserveItem) {
       new EditableCollectionItemRemover(this, config);
     }
+
+    $node.on("focus.EditableComponentCollectionItem", "*", function() {
+      $node.addClass(config.editClassname);
+    });
+
+    $node.on("blur.EditableComponentCollectionItem", "*", function() {
+      $node.removeClass(config.editClassname);
+    });
+
     this.component = component;
     $node.addClass("EditableComponentCollectionItem");
   }

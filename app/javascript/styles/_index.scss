@@ -158,6 +158,7 @@ html {
 
   .ActivatedMenu_Activator {
     left: -40px;
+    opacity: 0;
     position: absolute;
     top: 0;
 
@@ -166,8 +167,19 @@ html {
     }
   }
 
-  &.active .ActivatedMenu_Activator {
-    visibility: visible;
+  &.active {
+    .ActivatedMenu_Activator {
+      opacity: 1;
+    }
+  }
+}
+
+.editableCollectionItemControls {
+  z-index: 1; // Attempt to prevent focus difficulty with GovUK radio inputs.
+
+  .ActivatedMenu_Menu {
+    border: none;
+    width: auto;
   }
 }
 
@@ -175,10 +187,11 @@ html {
 /* Injected/dynamic components
  * --------------------------- */
 .ActivatedMenu_Activator {
-  visibility: hidden;
+  opacity: 0;
+  overflow: hidden;
 
   &.active {
-    visibility: visible;
+    opacity: 1;
   }
 }
 
@@ -219,10 +232,10 @@ html {
 .form-overview_button {
   // This element is injected by JS
   @include button_type_link;
+  opacity: 1;
   position: absolute;
   right: -113px;
   top: calc(50% - 30px);
-  visibility: visible;
 
   &:after {
     display: none;
@@ -261,8 +274,8 @@ html {
   }
 
   &:hover {
-    button {
-      visibility: visible;
+    .ActivatedMenu_Activator {
+      opacity: 1;
     }
   }
 }
@@ -271,7 +284,6 @@ html {
   bottom: calc(25px + #{govuk-spacing(2)});
   left: 158px;
   position: absolute;
-  visibility: hidden;
 }
 
 .form-step_thumbnail {

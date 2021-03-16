@@ -67,7 +67,7 @@
     }
   }
 
-  &, ul {
+  &, li > ul {
     border: govuk-colour("blue") solid 2px;
     position: absolute;
     width: 250px;
