@@ -153,6 +153,19 @@ html {
   }
 }
 
+.EditableComponentCollectionItem {
+  position: relative;
+
+  .ActivatedMenu_Activator {
+    left: -40px;
+    position: absolute;
+    top: 0;
+
+    &:after {
+      top: -4px;
+    }
+  }
+}
 
 
 /* Dynamic components
