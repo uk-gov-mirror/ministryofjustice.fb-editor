@@ -204,7 +204,7 @@ function applyMenus() {
  * effects and wraps them with the required functionality.
  **/
 function wrapWitActivatedMenuComponent(selector, context) {
-  var $ul = $("<ul />");
+  var $ul = $("<ul class=\"govuk-navigation\"></ul>");
   var $elements = $(selector, context);
   if($elements.length) {
     $elements.each(function() {
@@ -216,7 +216,7 @@ function wrapWitActivatedMenuComponent(selector, context) {
     new ActivatedMenu($ul, {
       container_id: uniqueString("activatedMenu-"),
       menu: {
-        position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
+        position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
       }
     });
   }
