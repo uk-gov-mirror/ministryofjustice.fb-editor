@@ -1,4 +1,11 @@
 module CommonSteps
+  def given_I_am_logged_in
+    editor.load
+    editor.sign_in_button.click
+    editor.sign_in_email_field.set('form-builder-developers@digital.justice.gov.uk')
+    editor.sign_in_submit.click
+  end
+
   def given_I_have_a_service(service = service_name)
     editor.load
     given_I_want_to_create_a_service

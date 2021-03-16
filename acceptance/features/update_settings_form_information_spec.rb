@@ -1,4 +1,4 @@
-require_relative './spec_helper'
+require_relative '../spec_helper'
 
 feature 'Update settings form information' do
   let(:editor) { EditorApp.new }
@@ -8,8 +8,9 @@ feature 'Update settings form information' do
 
   background do
     editor.load
+    given_I_am_logged_in
     given_I_have_a_service
-    and_I_go_to_update_the_form_information_in_settings
+    and_I_go_to_update_the_form_details_in_settings
   end
 
   scenario 'current service name as input value' do
@@ -41,16 +42,16 @@ feature 'Update settings form information' do
 
   scenario 'validates uniqueness of the service name' do
     given_I_have_another_service
-    and_I_go_to_update_the_form_information_in_settings
+    and_I_go_to_update_the_form_details_in_settings
     when_I_try_to_change_service_name_adding_an_existing_service_name
     then_I_should_see_the_unique_validation_message
   end
 
-  def and_I_go_to_update_the_form_information_in_settings
+  def and_I_go_to_update_the_form_details_in_settings
     editor.load
     editor.edit_service_link(service_name).click
     editor.settings_link.click
-    editor.form_information_link.click
+    editor.form_details_link.click
   end
 
   def given_I_update_the_service_name
