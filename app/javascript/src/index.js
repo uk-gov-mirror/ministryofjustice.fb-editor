@@ -44,17 +44,28 @@ function bindEditableContentHandlers($area) {
         selectorCollectionHint: "fieldset > .govuk-hint",
         selectorCollectionItem: ".govuk-radios__item, .govuk-checkboxes__item",
         text: $node.data("fb-content-text"),
-        onItemAdd: function($item) {
+        onItemAdd: function($node) {
+          // @$node (jQuery node) Node (instance.$node) that has been added.
           // Runs after adding a new Collection item.
           // This adjust the view to wrap Remove button with desired menu component.
-          wrapWitActivatedMenuComponent(".EditableCollectionItemRemover", $item, {
+          //
+          // This is not very good but expecting it to get significant rework when
+          // we add more menu items (not for MVP).
+          var menu = wrapWitActivatedMenuComponent(".EditableCollectionItemRemover", $node, {
             classnames: "editableCollectionItemControls"
           });
         },
-        onItemRemove: function($item) {
+        onItemRemove: function(item) {
+          // @item (EditableComponentItem) Item to be deleted.
           // Runs before removing an editable Colleciton item.
           // Currently not used but added for future option and consistency
           // with onItemAdd (provides an opportunity for clean up).
+          var activatedMenu = item.$node.data("Related-ActivatedMenu");
+          if(activatedMenu) {
+            activatedMenu.activator.$node.remove();
+            activatedMenu.$node.remove();
+            activatedMenu.container.$node.remove();
+          }
         },
         onSaveRequired: function() {
           // Code detected something changed to
@@ -68,7 +79,7 @@ function bindEditableContentHandlers($area) {
     // If any Collection items are present with ability to be removed, we need
     // to find them and scoop up the Remove buttons to put in menu component.
     $(".EditableComponentCollectionItem").each(function() {
-      wrapWitActivatedMenuComponent(".EditableCollectionItemRemover", this, {
+      wrapWitActivatedMenuComponent(".EditableCollectionItemRemover", $(this), {
         classnames: "editableCollectionItemControls"
       });
     });
@@ -204,20 +215,21 @@ function applyMenus() {
  * that structure.
  *
  * @selector (String) jQuery compatible selector to find elements for menu inclusion.
- * @context  (Node) Wrapping element/container that should hold the elements sought.
+ * @$node  (jQuery node) Wrapping element/container that should hold the elements sought.
  * effects and wraps them with the required functionality.
  **/
-function wrapWitActivatedMenuComponent(selector, context, config) {
+function wrapWitActivatedMenuComponent(selector, $node, config) {
   var $ul = $("<ul class=\"govuk-navigation\"></ul>");
-  var $elements = $(selector, context);
+  var $elements = $(selector, $node);
+  var menu;
   if($elements.length) {
     $elements.each(function() {
       $ul.append(this);
     });
     $elements.wrap("<li></li>");
-    $(context).append($ul);
+    $node.append($ul);
 
-    new ActivatedMenu($ul, {
+    menu = new ActivatedMenu($ul, {
       container_classname: config.classnames,
       container_id: uniqueString("activatedMenu-"),
       menu: {
@@ -225,6 +237,7 @@ function wrapWitActivatedMenuComponent(selector, context, config) {
       }
     });
   }
+  $node.data("Related-ActivatedMenu", menu);
 }
 
 
