@@ -19,7 +19,7 @@ import { mergeObjects, createElement, safelyActivateFunction } from './utilities
 
 class ActivatedMenu {
   constructor($menu, config) {
-    this.activator = $("<button class=\"ActivatedMenu_Activator\"></button>");
+    this.activator = new ActivatedMenuActivator(this, config);
     this.container = $("<div class=\"ActivatedMenu_Container\"></div>");
     this.config = mergeObjects({ menu: {} }, config);
     this.menu = $menu;
@@ -30,7 +30,7 @@ class ActivatedMenu {
       // position object will set the temporary value this.state.position.
       my: "left top",
       at: "left bottom",
-      of: this.activator
+      of: this.activator.$node
     }, config.menu.position);
 
     this.state = {
@@ -43,17 +43,13 @@ class ActivatedMenu {
 
     this.menu.before(this.container);
     this.menu.menu(config.menu); // Bit confusing but is how jQueryUI adds effect to eleemnt.
-
-    this.activator.text(config.activator_text);
-    if(config.activator_classname) {
-      this.activator.addClass(config.activator_classname);
-    }
+    this.menu.addClass("ActivatedMenu_Menu");
 
     if(config.container_id) {
       this.container.attr("id", config.container_id);
     }
     this.container.append(this.menu);
-    this.container.before(this.activator);
+    this.container.before(this.activator.$node);
 
 
     bindEventHandlers.call(this);
@@ -67,18 +63,44 @@ class ActivatedMenu {
   // @position (Object) Optional (jQuery position) object.
   open(position) {
     setMenuOpenPosition.call(this, position);
+    this.activator.$node.addClass("active");
     this.container.show();
     this.state.open = true;
   }
 
   // Method
   close() {
+    this.activator.$node.removeClass("active");
     this.container.hide();
     this.state.open = false;
 
     // Reset any externally/temporary setting of
     // component.state.position back to default.
     resetMenuOpenPosition.call(this);
+  }
+}
+
+class ActivatedMenuActivator {
+  constructor(menu, config) {
+    var $node = $(createElement("button", config.activator_text, config.activator_classname));
+
+    $node.on("click.ActivatedMenuActivator", (event) => {
+      menu.state.activator = event.currentTarget;
+      menu.open();
+    });
+
+    $node.on("focus", (e) => {
+      $node.addClass("active");
+    });
+
+    $node.on("keydown", (e) => {
+      if(e.which == 27) {
+        menu.close();
+      }
+    });
+
+    $node.addClass("ActivatedMenu_Activator");
+    this.$node = $node;
   }
 }
 
@@ -128,10 +150,6 @@ function bindEventHandlers() {
 
   // Main (generated) activator uses this event to
   // open the menu.
-  this.activator.on("click.ActivatedMenu", (event) => {
-    component.state.activator = event.currentTarget;
-    component.open();
-  });
 
   this.menu.on("mouseout", (event) => {
     // event.currentTarget will be the menu (UL) element.

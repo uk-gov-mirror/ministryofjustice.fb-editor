@@ -165,11 +165,23 @@ html {
       top: -4px;
     }
   }
+
+  &.active .ActivatedMenu_Activator {
+    visibility: visible;
+  }
 }
 
 
-/* Dynamic components
- * ------------------- */
+/* Injected/dynamic components
+ * --------------------------- */
+.ActivatedMenu_Activator {
+  visibility: hidden;
+
+  &.active {
+    visibility: visible;
+  }
+}
+
 .EditableCollectionItemInjector {
   @include button_type_link;
   margin: 0 0 55px 55px;
