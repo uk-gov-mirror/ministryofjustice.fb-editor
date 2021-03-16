@@ -1,49 +1,8 @@
 /* Note:
- * These style rely on some sass code from the govuk design files
+ * These styles rely on some sass code from the govuk design files.
+ * Specific customisations for the MOJ form builder Editor.
  **/
 
-
-@mixin responsive_width($width: full, $at: tablet) {
-  @if $at != desktop {
-    width: 100%;
-  }
-
-  @include govuk-media-query($from: $at) {
-    width: govuk-grid-width($width);
-  }
-}
-
-@mixin button_type_link {
-  @include govuk-font($size: 19);
-  background-color: govuk-colour("white");
-  border: govuk-colour("blue") solid 2px;
-  color: govuk-colour("blue");
-  cursor: pointer;
-  display: block;
-  padding: govuk-spacing(1) govuk-spacing(2);
-  text-decoration: none;
-
-  &:hover {
-    background-color: govuk-colour("blue");
-    color: govuk-colour("white");
-  }
-}
-
-@mixin focus {
-  background-color: $govuk-focus-colour;
-  color: $govuk-focus-text-colour;
-  outline: $govuk-focus-width solid $govuk-focus-colour;
-}
-
-@mixin fb-govuk-button {
-  background-color: govuk-colour("blue");
-
-  &:hover,
-  &[disabled='disabled'],
-  &[disabled='disabled']:hover {
-    background-color: govuk-colour("dark-blue");
-  }
-}
 
 .width-responsive-two-thirds {
   @include responsive_width("two-thirds");
@@ -238,6 +197,11 @@ html {
   position: absolute;
   right: -113px;
   top: calc(50% - 30px);
+  visibility: visible;
+
+  &:after {
+    display: none;
+  }
 
   &:before {
     content: "+";
@@ -279,28 +243,10 @@ html {
 }
 
 .form-step_button {
-  @include button_type_link;
-  border: govuk-colour("blue") solid 2px;
-  border-radius: 25px;
   bottom: calc(25px + #{govuk-spacing(2)});
-  height: 35px;
   left: 158px;
-  padding: 0;
   position: absolute;
-  text-indent: -1000px;
   visibility: hidden;
-  width: 35px;
-
-  &:after {
-    content: "...";
-    display: block;
-    font-weight: bold;
-    letter-spacing: 2px;
-    left: 1px;
-    position: relative;
-    text-indent: 0;
-    top: -27px;
-  }
 }
 
 .form-step_thumbnail {
