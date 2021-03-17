@@ -443,6 +443,10 @@ html {
   }
 }
 
+.govuk-checkboxes__input:disabled + .govuk-checkboxes__label {
+	opacity: 1;
+}
+
 .fb-preview-button {
   float: right;
 }
