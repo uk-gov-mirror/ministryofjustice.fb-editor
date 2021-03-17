@@ -443,7 +443,8 @@ html {
   }
 }
 
-.govuk-checkboxes__input:disabled + .govuk-checkboxes__label {
+.govuk-checkboxes__input:disabled + .govuk-checkboxes__label,
+.govuk-radios__input:disabled + .govuk-radios__label {
 	opacity: 1;
 }
 
