@@ -181,7 +181,7 @@ function applyFormDialogs() {
       activatorText: $dialog.data("activator-text"),
       classes: {
         "ui-button": "govuk-button",
-        "ui-activator": "govuk-button"
+        "ui-activator": "govuk-button fb-govuk-button"
       },
       onOk: () => {
         $form.submit();
