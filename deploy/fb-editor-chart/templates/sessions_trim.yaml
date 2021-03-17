@@ -16,7 +16,7 @@ spec:
             args:
             - /bin/sh
             - -c
-            - bundle exec rails db:sessions:trim
+            - rake db:sessions:trim
             securityContext:
               runAsUser: 1001
             imagePullPolicy: Always
