@@ -17,14 +17,23 @@
 
 /* Single level object merging.
  * Merges object b into object a.
- * Returns the changed object a.
- * Does not merge nested level objects.
- * Duplicate properties overwrite existing.
+ * Returns a new object without storing references
+ * to any existing contained object or values.
+ *
+ * Notes:
+ * - Does not merge nested level objects.
+ * - Duplicate properties overwrite existing.
+ * @a      (Object) Receives key/values (overwriting it's own).
+ * @b      (Object) Gives key/values, remaining unchanged.
+ * @ignore (Array)  List of strings expected to match unwanted keys.
  **/
-function mergeObjects(a, b) {
+function mergeObjects(a, b, ignore) {
   for(var i in b) {
     if(b.hasOwnProperty(i)) {
-      a[i] = b[i]
+      if(ignore && ignore.includes(i)) {
+        continue;
+      }
+      a[i.toString()] = b[i]
     }
   }
   return a;
