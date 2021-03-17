@@ -2,8 +2,15 @@ module CommonSteps
   def given_I_am_logged_in
     editor.load
     editor.sign_in_button.click
-    editor.sign_in_email_field.set('form-builder-developers@digital.justice.gov.uk')
-    editor.sign_in_submit.click
+
+    if ENV['CI_MODE'].present?
+      editor.email_address_field.set(ENV['ACCEPTANCE_TESTS_USER'])
+      editor.password_field.set(ENV['ACCEPTANCE_TESTS_PASSWORD'])
+      editor.login_continue_button.click
+    else
+      editor.sign_in_email_field.set('form-builder-developers@digital.justice.gov.uk')
+      editor.sign_in_submit.click
+    end
   end
 
   def given_I_have_a_service(service = service_name)
