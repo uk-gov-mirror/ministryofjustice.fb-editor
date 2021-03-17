@@ -23,7 +23,7 @@ feature 'Deleting page' do
     and_I_want_to_delete_the_page_that_I_created
     when_I_delete_the_page
     and_I_return_to_flow_page
-    then_I_should_not_see_the_page_anymore
+    then_I_should_not_see_the_deleted_page_anymore
   end
 
   def given_I_want_to_delete_the_start_page
@@ -46,7 +46,7 @@ feature 'Deleting page' do
     expect(editor.form_urls.map(&:text)).to eq(['/'])
   end
 
-  def then_I_should_not_see_the_page_anymore
+  def then_I_should_not_see_the_deleted_page_anymore
     expect(editor.form_urls.map(&:text)).to eq(['/'])
   end
 end
