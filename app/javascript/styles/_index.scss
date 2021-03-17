@@ -443,6 +443,10 @@ html {
   }
 }
 
+.govuk-radios__input:disabled + .govuk-radios__label {
+	opacity: 1;
+}
+
 .fb-preview-button {
   float: right;
 }
