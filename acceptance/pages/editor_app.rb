@@ -59,6 +59,13 @@ class EditorApp < SitePrism::Page
   elements :question_heading, '.EditableElement'
   elements :editable_options, '.EditableCollectionItemComponent label'
 
+  elements :form_pages, '.form-step'
+  elements :form_urls, '.form-step a.govuk-link'
+  elements :preview_page_images, '.form-step img.body'
+  element :three_dots_button, '.form-step_button'
+  element :preview_page_link, :link, 'Preview page'
+  element :delete_page_link, :link, 'Delete page...'
+
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
   end

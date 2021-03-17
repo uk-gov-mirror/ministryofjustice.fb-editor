@@ -103,10 +103,6 @@ feature 'Edit single question page' do
     editor.save_page_button.click
   end
 
-  def and_I_return_to_flow_page
-    editor.pages_link.click
-  end
-
   def and_I_preview_the_form
     window_opened_by do
       editor.preview_form_button.click

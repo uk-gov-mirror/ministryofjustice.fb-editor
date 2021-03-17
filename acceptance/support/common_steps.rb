@@ -91,6 +91,10 @@ module CommonSteps
     editor.edit_service_link(service_name).click
   end
 
+  def and_I_return_to_flow_page
+    editor.pages_link.click
+  end
+
   def and_I_add_a_page_url
     editor.page_url_field.set(page_url)
   end
