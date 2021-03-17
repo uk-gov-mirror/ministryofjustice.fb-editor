@@ -12,6 +12,10 @@ class EditorApp < SitePrism::Page
   element :sign_in_email_field, :field, 'Email:'
   element :sign_in_submit, :button, 'Sign In'
 
+  element :email_address_field, :field, 'Email address'
+  element :password_field, :field, 'Password'
+  element :login_continue_button, :button, 'Continue'
+
   element :service_name, '#form-navigation-heading'
   element :name_field, :field, 'What is the name of this form?'
   element :create_service_button, :button, 'Create a new form'
