@@ -4,7 +4,7 @@ metadata:
   name: fb-editor-cron-sessions-trim-{{ .Values.environmentName }}
   namespace: formbuilder-saas-{{ .Values.environmentName }}
 spec:
-  schedule: "0 3 * * *"
+  schedule: "*/30 * * * *"
   successfulJobsHistoryLimit: 0
   jobTemplate:
     spec:
