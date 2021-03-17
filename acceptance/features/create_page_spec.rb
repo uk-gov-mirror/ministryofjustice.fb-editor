@@ -3,6 +3,7 @@ require_relative '../spec_helper'
 feature 'Create page' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
+  let(:page_url) { 'phasma' }
 
   background do
     given_I_am_logged_in
@@ -81,81 +82,8 @@ feature 'Create page' do
     then_I_should_see_a_validation_error_message_that_page_url_exists
   end
 
-  def given_I_have_a_single_question_page_with_text
-    given_I_add_a_single_question_page_with_text
-    and_I_add_a_page_url
-    when_I_add_the_page
-  end
-
-  def given_I_add_a_single_question_page_with_text
-    given_I_want_to_add_a_single_question_page
-    editor.add_single_question_text.click
-  end
-
-  def given_I_add_a_single_question_page_with_text_area
-    given_I_want_to_add_a_single_question_page
-    editor.add_single_question_text_area.click
-  end
-
-  def given_I_add_a_single_question_page_with_number
-    given_I_want_to_add_a_single_question_page
-    editor.add_single_question_number.click
-  end
-
-  def given_I_add_a_single_question_page_with_date
-    given_I_want_to_add_a_single_question_page
-    editor.add_single_question_date.click
-  end
-
-  def given_I_add_a_single_question_page_with_radio
-    given_I_want_to_add_a_single_question_page
-    editor.add_single_question_radio.click
-  end
-
-  def given_I_add_a_single_question_page_with_checkboxes
-    given_I_want_to_add_a_single_question_page
-    editor.add_single_question_checkboxes.click
-  end
-
-  def given_I_add_a_check_answers_page
-    given_I_want_to_add_a_page
-    editor.add_check_answers.click
-  end
-
-  def given_I_add_a_multiple_question_page
-    given_I_want_to_add_a_page
-    editor.add_multiple_question.click
-  end
-
-  def given_I_add_a_confirmation_page
-    given_I_want_to_add_a_page
-    editor.add_confirmation.click
-  end
-
-  def given_I_want_to_add_a_single_question_page
-    given_I_want_to_add_a_page
-    editor.add_single_question.hover
-  end
-
-  def given_I_want_to_add_a_page
-    editor.add_page.click
-  end
-
-  def and_I_edit_the_service
-    visit '/services'
-    editor.edit_service_link(service_name).click
-  end
-
-  def and_I_add_a_page_url
-    editor.page_url_field.set('phasma')
-  end
-
   def and_I_add_an_existing_page_url
     and_I_add_a_page_url
-  end
-
-  def when_I_add_the_page
-    editor.add_page_submit_button.last.click
   end
 
   def then_I_should_see_a_validation_error_message_that_page_url_exists

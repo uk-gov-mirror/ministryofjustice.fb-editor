@@ -1,4 +1,3 @@
-# coding: utf-8
 class EditorApp < SitePrism::Page
   if ENV['ACCEPTANCE_TESTS_USER'] && ENV['ACCEPTANCE_TESTS_PASSWORD']
     set_url ENV['ACCEPTANCE_TESTS_EDITOR_APP'] % {
@@ -17,10 +16,12 @@ class EditorApp < SitePrism::Page
   element :name_field, :field, 'What is the name of this form?'
   element :create_service_button, :button, 'Create a new form'
 
+  element :pages_link, :link, 'Pages'
   element :settings_link, :link, 'Settings'
   element :form_details_link, :link, 'Form details'
   element :form_name_field, :field, 'Form name'
   element :save_button, :button, 'Save'
+  element :preview_form_button, :link, 'Preview form'
 
   element :submission_settings_link, :link, 'Submission settings'
   element :send_by_email_link, :link, 'Send by email'
@@ -54,6 +55,9 @@ class EditorApp < SitePrism::Page
 
   elements :radio_options, :xpath, '//input[@type="radio"]', visible: false
   elements :checkboxes_options, :xpath, '//input[@type="checkbox"]', visible: false
+
+  elements :question_heading, '.EditableElement'
+  elements :editable_options, '.EditableCollectionItemComponent label'
 
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")
