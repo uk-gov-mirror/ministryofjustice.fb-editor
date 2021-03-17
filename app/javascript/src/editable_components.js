@@ -475,7 +475,12 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
  **/
 EditableCollectionFieldComponent.createCollectionItemTemplate = function(config) {
   var $item = this.$node.find(config.selectorCollectionItem).eq(0);
-  var itemConfig = mergeObjects(config, { data: config.data.items[0] });
+  var itemConfig = mergeObjects({}, config); // Clone config
+  delete itemConfig.data.items; // Won't need these for the item template data.
+  mergeObjects(itemConfig, { data: config.data.items[0] }); // Replace data with single item values.
+
+  // Filters could be changing the blah_1 values to blah_0, depending on filters in play.
+  itemConfig.data = EditableCollectionFieldComponent.applyFilters(config.filters, 0, itemConfig.data);
   $item.data("config", itemConfig);
 
   // Note: If we need to strip out some attributes or alter the template
@@ -520,8 +525,9 @@ EditableCollectionFieldComponent.addItem = function($node, config) {
  * of data _id values.
  **/
 EditableCollectionFieldComponent.updateItems = function() {
+  var filters = this._config.filters;
   for(var i=0; i < this.items.length; ++i) {
-    this.items[i].data = EditableCollectionFieldComponent.applyFilters.call(this, i+1, this.items[i].data);
+    this.items[i].data = EditableCollectionFieldComponent.applyFilters(filters, i+1, this.items[i].data);
   }
 }
 
@@ -533,8 +539,7 @@ EditableCollectionFieldComponent.updateItems = function() {
  * @unique (Integer|String) Should be current loop number, or at least something unique. 
  * @data   (Object) Collection item data.
  **/
-EditableCollectionFieldComponent.applyFilters = function(unique, data) {
-  var filters = this._config.filters;
+EditableCollectionFieldComponent.applyFilters = function(filters, unique, data) {
   var filtered_data = {};
   for(var prop in data) {
     if(filters && filters.hasOwnProperty(prop)) {
