@@ -82,3 +82,11 @@ This is for the unit tests. It only spins up the database and the editor app.
 #### docker-compose.ci.yml
 
 This makes use of the Dockerfile in the `acceptance` directory and is used only in the deployment pipeline.
+
+
+### Session duration rake task
+
+There is a rake task that removes any sessions that have been inactive for more than 90 minutes.
+This rake task is found in `lib/tasks/database.rake`.
+
+We could not use the [built in rails session trim task](https://github.com/rails/activerecord-session_store/blob/master/lib/tasks/database.rake) as this could only be modified in days.
