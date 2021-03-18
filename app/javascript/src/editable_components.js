@@ -469,15 +469,15 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
  * config (Object) key/value pairs for extra information.
  *
  * Note: Initial index elements of Array/Collection is called directly
- * without any checking of existence. This is because they should always
+ * without any checking for existence. This is because they should always
  * exist and, if they do not, we want the script to throw an error
  * because it would alert us to something very wrong.
  **/
 EditableCollectionFieldComponent.createCollectionItemTemplate = function(config) {
   var $item = this.$node.find(config.selectorCollectionItem).eq(0);
-  var itemConfig = mergeObjects({}, config); // Clone config
-  delete itemConfig.data.items; // Won't need these for the item template data.
-  mergeObjects(itemConfig, { data: config.data.items[0] }); // Replace data with single item values.
+  var data = mergeObjects({}, config.data, ["items"]); // pt.1 Copy without items.
+  var itemConfig = mergeObjects({}, config, ["data"]); // pt.2 Copy without data.
+  itemConfig.data = mergeObjects(data, config.data.items[0]); // Bug fix response to JS reference handling.
 
   // Filters could be changing the blah_1 values to blah_0, depending on filters in play.
   itemConfig.data = EditableCollectionFieldComponent.applyFilters(config.filters, 0, itemConfig.data);
@@ -497,7 +497,9 @@ EditableCollectionFieldComponent.createCollectionItemTemplate = function(config)
 EditableCollectionFieldComponent.createEditableCollectionItems = function(config) {
   var component = this;
   component.$node.find(config.selectorCollectionItem).each(function(i) {
-    var itemConfig = mergeObjects({ preserveItem: (i < component._preservedItemCount) }, config);
+    var data = mergeObjects({}, config.data, ["items"]); // pt.1 Copy without items.
+    var itemConfig = mergeObjects({ preserveItem: (i < component._preservedItemCount) }, config, ["data"]); // pt.2 Without data
+    itemConfig.data = mergeObjects(data, config.data.items[i]); // Bug fix response to JS reference handling.
 
     // Only wrap in EditableComponentCollectionItem functionality if doesn't look like it has it.
     if(this.className.indexOf("EditableComponentCollectionItem") < 0) {
