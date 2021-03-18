@@ -113,4 +113,38 @@ module CommonSteps
   def when_I_add_the_page
     editor.add_page_submit_button.last.click
   end
+
+  def when_I_preview_the_page
+    editor.preview_page_images.last.hover
+    when_I_click_preview_page
+  end
+
+  def when_I_click_preview_page
+    editor.three_dots_button.click
+
+    window_opened_by do
+      editor.preview_page_link.click
+    end
+  end
+
+  def then_I_should_preview_the_page(preview_page)
+    within_window(preview_page) do
+      expect(page.find('input[type="submit"]')).to_not be_disabled
+      expect(page.text).to include('Question')
+      yield if block_given?
+    end
+  end
+
+  def when_I_save_my_changes
+    # click outside of fields that will make save button re-enable
+    editor.service_name.click
+    expect(editor.save_page_button).to_not be_disabled
+    editor.save_page_button.click
+  end
+
+  def given_I_have_a_single_question_page_with_radio
+    given_I_add_a_single_question_page_with_radio
+    and_I_add_a_page_url
+    when_I_add_the_page
+  end
 end

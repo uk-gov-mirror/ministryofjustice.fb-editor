@@ -61,7 +61,9 @@ class EditorApp < SitePrism::Page
   elements :checkboxes_options, :xpath, '//input[@type="checkbox"]', visible: false
 
   elements :question_heading, '.EditableElement'
+  elements :all_hints, '.govuk-hint'
   elements :editable_options, '.EditableCollectionItemComponent label'
+  element :question_hint, '.govuk-hint'
 
   elements :form_pages, '.form-step'
   elements :form_urls, '.form-step a.govuk-link'

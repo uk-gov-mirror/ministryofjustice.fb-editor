@@ -12,10 +12,10 @@ gem 'daemons'
 # one of these lines:
 # gem 'metadata_presenter',
 #     github: 'ministryofjustice/fb-metadata-presenter',
-#     branch: 'feature/preview'
-#gem 'metadata_presenter', path: '../fb-metadata-presenter'
+#     branch: 'default-text'
+# gem 'metadata_presenter', path: '../fb-metadata-presenter'
 #
-gem 'metadata_presenter', '0.18.4'
+gem 'metadata_presenter', '0.19.1'
 gem 'faraday'
 gem 'faraday_middleware'
 gem 'fb-jwt-auth', '0.6.0'
