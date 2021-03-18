@@ -14,6 +14,8 @@
  *
  **/
 
+import { safelyActivateFunction } from './utilities';
+
 
 /* See jQueryUI Dialog for config options (all are passed straight in).
  *
@@ -33,11 +35,11 @@ class ActivatedDialog {
     this.activator = createDialogActivator($dialog, conf.activatorText, classes["ui-activator"]);
 
     buttons[conf.okText] = () => {
-      executeFunction(this._config.onOk);
+      safelyActivateFunction(this._config.onOk);
     }
 
     buttons[conf.cancelText] = () => {
-      executeFunction(this._config.onCancel);
+      safelyActivateFunction(this._config.onCancel);
       this.close();
     }
 
@@ -51,6 +53,8 @@ class ActivatedDialog {
       resizable: false,
       close: this._config.onClose
     });
+
+    $dialog.parents(".ui-dialog").addClass("ActivatedDialog");
   }
 
   open() {
@@ -59,16 +63,6 @@ class ActivatedDialog {
 
   close() {
     this.$node.dialog("close");
-  }
-}
-
-
-/* Checks if is a function and, if so, runs it.
- * func (Function) Required function to execute.
- **/
-function executeFunction(func) {
-  if(func && (typeof(func) === 'function' || func instanceof Function)) {
-    func();
   }
 }
 
