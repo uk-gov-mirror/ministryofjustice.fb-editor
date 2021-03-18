@@ -4,9 +4,11 @@ import { ActivatedDialog } from './component_activated_dialog';
 import { editableComponent } from './editable_components';
 
 
+
 // Always runs when document ready.
 //
 $(document).ready(function() {
+  createConfirmationDialog();
   applyFormDialogs();
   applyMenus();
   bindDocumentEventsForPagesSection();
@@ -51,7 +53,7 @@ function bindEditableContentHandlers($area) {
           //
           // This is not very good but expecting it to get significant rework when
           // we add more menu items (not for MVP).
-          var menu = wrapWitActivatedMenuComponent(".EditableCollectionItemRemover", $node, {
+          collectionItemControlsInActivatedMenu($node, {
             classnames: "editableCollectionItemControls"
           });
         },
@@ -60,7 +62,7 @@ function bindEditableContentHandlers($area) {
           // Runs before removing an editable Colleciton item.
           // Currently not used but added for future option and consistency
           // with onItemAdd (provides an opportunity for clean up).
-          var activatedMenu = item.$node.data("Related-ActivatedMenu");
+          var activatedMenu = item.$node.data("ActivatedMenu");
           if(activatedMenu) {
             activatedMenu.activator.$node.remove();
             activatedMenu.$node.remove();
@@ -79,7 +81,7 @@ function bindEditableContentHandlers($area) {
     // If any Collection items are present with ability to be removed, we need
     // to find them and scoop up the Remove buttons to put in menu component.
     $(".EditableComponentCollectionItem").each(function() {
-      wrapWitActivatedMenuComponent(".EditableCollectionItemRemover", $(this), {
+      collectionItemControlsInActivatedMenu($(this), {
         classnames: "editableCollectionItemControls"
       });
     });
@@ -218,26 +220,21 @@ function applyMenus() {
  * @$node  (jQuery node) Wrapping element/container that should hold the elements sought.
  * effects and wraps them with the required functionality.
  **/
-function wrapWitActivatedMenuComponent(selector, $node, config) {
-  var $ul = $("<ul class=\"govuk-navigation\"></ul>");
-  var $elements = $(selector, $node);
-  var menu;
+function collectionItemControlsInActivatedMenu($item, config) {
+  var $elements = $(".EditableCollectionItemRemover", $item);
   if($elements.length) {
-    $elements.each(function() {
-      $ul.append(this);
-    });
+    $elements.wrapAll("<ul class=\"govuk-navigation\"></ul>");
     $elements.wrap("<li></li>");
-    $node.append($ul);
-
-    menu = new ActivatedMenu($ul, {
+    let menu = new ActivatedMenu($elements.parents("ul"), {
       container_classname: config.classnames,
       container_id: uniqueString("activatedMenu-"),
       menu: {
         position: { my: "left top", at: "right-15 bottom-15" } // Position second-level menu in relation to first.
       }
     });
+
+    $item.data("ActivatedMenu", menu);
   }
-  $node.data("Related-ActivatedMenu", menu);
 }
 
 
