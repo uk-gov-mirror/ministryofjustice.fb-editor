@@ -1,6 +1,7 @@
 import { uniqueString } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
 import { ActivatedDialog } from './component_activated_dialog';
+import { ConfirmationDialog } from './component_confirmation_dialog';
 import { editableComponent } from './editable_components';
 
 
@@ -59,14 +60,26 @@ function bindEditableContentHandlers($area) {
         },
         onItemRemove: function(item) {
           // @item (EditableComponentItem) Item to be deleted.
-          // Runs before removing an editable Colleciton item.
-          // Currently not used but added for future option and consistency
-          // with onItemAdd (provides an opportunity for clean up).
+          // Runs before removing an editable Collection item.
+          // Provides an opportunity for clean up.
+          var dialog = $("#confirmation-dialog");
           var activatedMenu = item.$node.data("ActivatedMenu");
           if(activatedMenu) {
             activatedMenu.activator.$node.remove();
             activatedMenu.$node.remove();
             activatedMenu.container.$node.remove();
+          }
+        },
+        onItemRemoveConfirmation: function(item) {
+          // @item (EditableComponentItem) Item to be deleted.
+          // Runs before onItemRemove when removing an editable Collection item.
+          // Currently not used but added for future option and consistency
+          // with onItemAdd (provides an opportunity for clean up).
+          var $dialog = $("#confirmation-dialog");
+          if($dialog.length && $dialog.data("instance")) {
+            $dialog.data("instance").confirm({}, function() {
+              item.component.remove(item);
+            });
           }
         },
         onSaveRequired: function() {
@@ -270,4 +283,21 @@ function applyFormDialogs() {
     $submit.attr("disabled", true);
 
   });
+}
+
+function createConfirmationDialog() {
+  var $template = $("#template-confirmation-dialog");
+  var $node = $($template.text());
+  if($template.length && $node.length) {
+    new ConfirmationDialog($node, {
+      autoOpen: false,
+      cancelText: $template.data("text-cancel"),
+      okText: $template.data("text-ok"),
+      classes: {
+        "ui-button": "govuk-button",
+        "ui-activator": "govuk-button fb-govuk-button"
+      }
+    });
+    $(document.body).append($node);
+  }
 }

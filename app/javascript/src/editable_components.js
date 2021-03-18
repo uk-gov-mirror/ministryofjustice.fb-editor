@@ -565,12 +565,15 @@ EditableCollectionFieldComponent.applyFilters = function(filters, unique, data) 
  * but do nothing else with it. A parent component will read and use the
  * generated 'saved' content.
  *
+ * config.onItemRemoveConfirmation (Function) An action passed the item.
+ *
  **/
 class EditableComponentCollectionItem extends EditableComponentBase {
-  constructor(component, $node, config) {
+  constructor(editableCollectionFieldComponent, $node, config) {
     super($node, config);
+
     if(!config.preserveItem) {
-      new EditableCollectionItemRemover(this, config);
+      new EditableCollectionItemRemover(this, editableCollectionFieldComponent, config);
     }
 
     $node.on("focus.EditableComponentCollectionItem", "*", function() {
@@ -581,12 +584,19 @@ class EditableComponentCollectionItem extends EditableComponentBase {
       $node.removeClass(config.editClassname);
     });
 
-    this.component = component;
+    this.component = editableCollectionFieldComponent;
     $node.addClass("EditableComponentCollectionItem");
   }
 
   remove() {
-    this.component.remove(this);
+    if(this._config.onItemRemoveConfirmation) {
+      // If we have confirgured a way to confirm first...
+      safelyActivateFunction(this._config.onItemRemoveConfirmation, this);
+    }
+    else {
+      // or just run the remove function.
+      this.component.remove(this);
+    }
   }
 
   save() {
@@ -597,47 +607,52 @@ class EditableComponentCollectionItem extends EditableComponentBase {
 
 
 class EditableCollectionItemInjector {
-  constructor(component, config) {
+  constructor(editableCollectionFieldComponent, config) {
     var conf = mergeObjects({}, config);
     var text = mergeObjects({ addItem: 'add' }, config.text);
     var $node = $(createElement("button", text.addItem, conf.classes));
-    component.$node.append($node);
+    editableCollectionFieldComponent.$node.append($node);
     $node.addClass("EditableCollectionItemInjector")
-    $node.data("instance", this);;
+    $node.data("instance", this);
     $node.on("click", function(e) {
       e.preventDefault();
-      $(this).data("instance").component.add();
+      editableCollectionFieldComponent.add();
     });
 
-    this.component = component;
+    this.component = editableCollectionFieldComponent;
     this.$node = $node;
   }
 }
 
 
 class EditableCollectionItemRemover {
-  constructor(item, config) {
+  constructor(editableCollectionItem, editableCollectionFieldComponent, config) {
     var conf = mergeObjects({}, config);
     var text = mergeObjects({ removeItem: 'remove' }, config.text);
     var $node = $(createElement("button", text.removeItem, conf.classes));
-    item.$node.append($node);
-    $node.addClass("EditableCollectionItemRemover");
-    $node.data("instance", this);
+    var removeCollectionItem = function() {
+      editableCollectionFieldComponent.remove(editableCollectionItem);
+    }
 
+    $node.data("instance", this);
+    $node.addClass("EditableCollectionItemRemover");
     $node.on("click.EditableCollectionItemRemover", function(e) {
       e.preventDefault();
-      $(this).data("instance").item.remove();
+      editableCollectionItem.remove();
     });
 
     // Close on SPACE and ENTER
     $node.on("keydown.EditableCollectionItemRemover", function(e) {
       e.preventDefault();
       if(e.which == 13 || e.which == 32) {
-        $(this).data("instance").item.remove();
+        editableCollectionItem.remove();
       }
     });
 
-    this.item = item;
+    editableCollectionItem.$node.append($node);
+
+    this.component = editableCollectionFieldComponent;
+    this.item = editableCollectionItem;
     this.$node = $node;
   }
 }
