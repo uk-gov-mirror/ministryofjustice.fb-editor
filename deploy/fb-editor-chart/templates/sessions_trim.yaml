@@ -26,6 +26,11 @@ spec:
             env:
               - name: SENTRY_CURRENT_ENV
                 value: {{ .Values.environmentName }}
+              - name: SENTRY_DSN
+                valueFrom:
+                  secretKeyRef:
+                    name: fb-editor-secrets-{{ .Values.environmentName }}
+                    key: sentry_dsn
               - name: SECRET_KEY_BASE
                 valueFrom:
                   secretKeyRef:

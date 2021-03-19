@@ -49,6 +49,11 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: secret_key_base
+          - name: SENTRY_DSN
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: sentry_dsn
           - name: AUTH0_CLIENT_ID
             valueFrom:
               secretKeyRef:
@@ -147,6 +152,11 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: secret_key_base
+          - name: SENTRY_DSN
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: sentry_dsn
           - name: AUTH0_CLIENT_ID
             valueFrom:
               secretKeyRef:
