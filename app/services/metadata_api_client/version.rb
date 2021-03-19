@@ -7,6 +7,7 @@ module MetadataApiClient
         ).body
       )
     rescue Faraday::UnprocessableEntityError => exception
+      Sentry.capture_exception(exception)
       error_messages(exception)
     end
   end
