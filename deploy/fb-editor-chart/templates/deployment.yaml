@@ -42,8 +42,6 @@ spec:
           - configMapRef:
               name: fb-editor-config-map
         env:
-          - name: SENTRY_CURRENT_ENV
-            value: {{ .Values.environmentName }}
           - name: SECRET_KEY_BASE
             valueFrom:
               secretKeyRef:
@@ -145,8 +143,6 @@ spec:
           - configMapRef:
               name: fb-editor-config-map
         env:
-          - name: SENTRY_CURRENT_ENV
-            value: {{ .Values.environmentName }}
           - name: SECRET_KEY_BASE
             valueFrom:
               secretKeyRef:
