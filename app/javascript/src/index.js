@@ -46,7 +46,10 @@ function bindEditableContentHandlers($area) {
         selectorCollectionQuestion: ".govuk-heading-xl",
         selectorCollectionHint: "fieldset > .govuk-hint",
         selectorCollectionItem: ".govuk-radios__item, .govuk-checkboxes__item",
-        text: $node.data("fb-content-text"),
+        text: {
+          addItem: app.text.actions.option_add,
+          removeItem: app.text.actions.option_remove
+        },
         onItemAdd: function($node) {
           // @$node (jQuery node) Node (instance.$node) that has been added.
           // Runs after adding a new Collection item.

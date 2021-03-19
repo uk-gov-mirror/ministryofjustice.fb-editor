@@ -11,6 +11,8 @@
   
   <%= f.submit t('actions.save'), class: 'editor-button govuk-button fb-govuk-button' %>
 <% end %>
-<%= render partial: 'partials/confirmation_dialog' %>
 <%= render template: @page.template %>
+
+<%= render partial: 'partials/properties' %>
+<%= render partial: 'partials/confirmation_dialog' %>
 

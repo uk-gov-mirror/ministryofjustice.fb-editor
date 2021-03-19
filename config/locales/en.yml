@@ -41,6 +41,8 @@ en:
     preview_page: 'Preview page'
     preview_form: 'Preview form'
     delete_page: 'Delete page...'
+    option_add: 'Add option'
+    option_remove: 'Delete...'
   pages:
     form: 'Form flow'
     name: 'Pages'
