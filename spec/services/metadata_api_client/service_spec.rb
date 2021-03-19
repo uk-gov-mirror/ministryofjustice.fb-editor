@@ -83,7 +83,7 @@ RSpec.describe MetadataApiClient::Service do
   describe '.latest_version' do
     let(:expected_url) { "#{metadata_api_url}/services/12345/versions/latest" }
     let(:expected_body) do
-      JSON.parse(File.read(Rails.root.join('service.json')))
+      JSON.parse(File.read(Rails.root.join('spec', 'fixtures', 'service.json')))
     end
 
     before do
