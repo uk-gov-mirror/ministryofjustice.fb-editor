@@ -9,6 +9,7 @@ en:
   dialogs:
     button_cancel: 'Cancel'
     button_delete: 'Delete'
+    button_delete_option: 'Delete option'
     button_ok: 'Ok'
     heading: General heading here
     message: General message here
