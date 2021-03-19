@@ -36,4 +36,4 @@ setup-ci:
 
 .PHONY: acceptance-ci
 acceptance-ci: copy-env-vars-ci add-env-vars-ci setup-ci
-	docker-compose -f docker-compose.ci.yml run --rm editor_ci bundle exec rspec -f doc acceptance
+	docker-compose -f docker-compose.ci.yml run --rm editor_ci bundle exec parallel_rspec -f doc acceptance
