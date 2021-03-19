@@ -13,13 +13,13 @@ en:
     sign_out:
   partials:
     header:
-      forms: Forms
+      forms: Your forms
       sign_out: Sign out %{user_name}
   home:
     show:
       title: MoJ Forms
       lede: Prototype, test and publish online forms quickly and easily
-      body: 'To find out more about MoJ Forms, please email us at <a href="mailto:moj-forms@digital.justice.gov.uk">moj-forms@digital.justice.gov.uk</a>, or you can also <a href="https://app.slack.com/client/T02DYEB3A/CE26QEL1Z">ask us a question on Slack</a>.'
+      body: 'To find out more about MoJ Forms, email us at <a href="mailto:moj-forms@digital.justice.gov.uk">moj-forms@digital.justice.gov.uk</a>, or <a href="https://app.slack.com/client/T02DYEB3A/CE26QEL1Z">ask us a question on Slack</a>.'
       callout: You will need a @digital.justice.gov.uk or @justice.gov.uk email address to use MoJ Forms.
       sign_in: Sign in
   auth:
@@ -34,7 +34,7 @@ en:
     preview_form: 'Preview form'
     delete_page: 'Delete page...'
   pages:
-    form: 'Form flow'
+    form: 'Pages flow'
     name: 'Pages'
     create: 'Add page'
     cancel: 'Cancel'
@@ -42,10 +42,12 @@ en:
   settings:
     name: 'Settings'
     form_information: 'Form details'
+    form_information_hint: 'Set your form’s name, URL and phase (e.g. Alpha, Beta).'
     form_information_label: 'Form name'
     form_information_help: 'The visible name of your form'
     submission:
       name: 'Submission settings'
+      hint: 'Set what happens when a user submits their data.'
       sub_heading: 'Controls what will happen to the entered data when the form is submitted. This will take only effect when the form is filled while on Test or Live, not in the Editor preview.'
       email:
         label: 'Send by email'
@@ -61,6 +63,7 @@ en:
     live: 'Live'
     live_sub_heading: 'Live is where your form is hosted publicly when your service is running.'
   services:
+    heading: 'Your forms'
     edit: 'Edit'
     preview: 'Preview'
     create: 'Create a new form'
@@ -70,7 +73,7 @@ en:
       service_creation: 'Form'
     attributes:
       service_creation:
-        service_name: 'What is the name of this form?'
+        service_name: 'Give your form a name'
       settings:
         service_name: 'Form name'
       email_settings:
@@ -86,7 +89,7 @@ en:
         service_email_body_hint: The email text that will be sent
         pdf_hint: All answers will be written in a pdf attached to the email
       page_creation:
-        page_url: "The page’s relative url - it must not contain any spaces"
+        page_url: "What will be the URL for this page?"
       publish_service_creation:
         require_authentication: 'Require username & password for access'
         username: 'Set username'
