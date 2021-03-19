@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   include Auth0Helper
 
   def service
-    @service ||= MetadataPresenter::Service.new(service_metadata)
+    @service ||= MetadataPresenter::Service.new(service_metadata, editor: editable?)
   end
   helper_method :service
 

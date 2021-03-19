@@ -80,12 +80,6 @@ feature 'Edit single question page' do
     when_I_add_the_page
   end
 
-  def given_I_have_a_single_question_page_with_radio
-    given_I_add_a_single_question_page_with_radio
-    and_I_add_a_page_url
-    when_I_add_the_page
-  end
-
   def given_I_have_a_single_question_page_with_checkboxes
     given_I_add_a_single_question_page_with_checkboxes
     and_I_add_a_page_url
@@ -94,13 +88,6 @@ feature 'Edit single question page' do
 
   def and_I_edit_the_question
     editor.question_heading.first.set(question)
-  end
-
-  def when_I_save_my_changes
-    # click outside of fields that will make save button re-enable
-    editor.service_name.click
-    expect(editor.save_page_button).to_not be_disabled
-    editor.save_page_button.click
   end
 
   def and_I_preview_the_form

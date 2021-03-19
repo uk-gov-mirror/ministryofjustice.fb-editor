@@ -104,14 +104,14 @@ RSpec.describe NewPageGenerator do
           '_id' => 'page.home-one',
           '_type' => 'page.singlequestion',
           'heading' => 'Question',
-          'lede' => 'This is the lede',
+          'lede' => '',
           'body' => 'Body section',
           'components' => [
             {
               '_id'    => "#{page_url}_#{component_type}_1",
               '_type'  => 'text',
               'errors' => {},
-              'hint'   => '[Optional hint text]',
+              'hint'   => '',
               'label'  => 'Question',
               'name'   => "#{page_url}_#{component_type}_1",
               'validation' => {
