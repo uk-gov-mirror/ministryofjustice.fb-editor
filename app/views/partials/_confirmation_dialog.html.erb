@@ -1,11 +1,23 @@
-<script type="text/html" id="template-confirmation-dialog" class="template"
+<script type="text/html" id="template-confirmation-message"
         data-component="ConfirmationDialog"
-        data-text-cancel="Cancel"
-        data-text-ok="Ok">
+        data-classes="dialog-message"
+        data-text-cancel="<%= t('dialogs.button_cancel') %>"
+        data-text-ok="<%= t('dialogs.button_ok') %>">
 
-  <div class="component component-confirmation-dialog"
-       id="confirmation-dialog">
-    <h3 data-node="heading">Delete the option...</h3>
-    <p data-node="message">This cannot be undone</p>
+  <div class="component component-dialog" id="confirmation-message">
+    <h3 data-node="heading" class="govuk-label govuk-label--m"><%= t('dialogs.heading') %></h3>
+    <p data-node="message"><%= t('dialogs.message') %></p>
+  </div>
+</script>
+
+<script type="text/html" id="template-confirmation-delete"
+        data-component="ConfirmationDialog"
+        data-classes="dialog-delete"
+        data-text-cancel="<%= t('dialogs.button_cancel') %>"
+        data-text-ok="<%= t('dialogs.button_delete') %>">
+
+  <div class="component component-dialog" id="confirmation-delete">
+    <h3 data-node="heading" class="govuk-label govuk-label--m"><%= t('dialogs.heading_delete') %></h3>
+    <p data-node="message"><%= t('dialogs.message_delete') %></p>
   </div>
 </script>
