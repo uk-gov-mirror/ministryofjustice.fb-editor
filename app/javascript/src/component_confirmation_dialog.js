@@ -32,19 +32,20 @@ class ConfirmationDialog {
   constructor($node, config) {
     var conf = config || {};
     var classes = conf.classes || {};
+    var confirmationDialogInstance = this;
     var buttons = [
       {
         text: conf.okText,
         click: () => {
-          safelyActivateFunction(this._action);
-          $node.dialog("close");
+          safelyActivateFunction(confirmationDialogInstance._action);
+          confirmationDialogInstance.$node.dialog("close");
         }
       },
       {
         text: conf.cancelText,
         click: () => {
-          component.content = this._defaultText;
-          $node.dialog("close");
+          confirmationDialogInstance.content = confirmationDialogInstance._defaultText;
+          confirmationDialogInstance.$node.dialog("close");
         }
     }];
 
