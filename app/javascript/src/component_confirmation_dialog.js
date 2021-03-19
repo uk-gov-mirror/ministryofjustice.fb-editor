@@ -36,13 +36,14 @@ class ConfirmationDialog {
       {
         text: conf.okText,
         click: () => {
-          safelyActivateFunction(this.action);
+          safelyActivateFunction(this._action);
           $node.dialog("close");
         }
       },
       {
         text: conf.cancelText,
         click: () => {
+          component.content = this._defaultText;
           $node.dialog("close");
         }
     }];
@@ -60,20 +61,33 @@ class ConfirmationDialog {
     $node.parents(".ui-dialog").addClass("ConfirmationDialog");
     $node.data("instance", this);
 
-    ConfirmationDialog.setElements.call(this, $node, ["heading", "message"]);
+    ConfirmationDialog.setElements.call(this, $node);
+    ConfirmationDialog.setDefaultText.call(this, $node);
 
     this._config = conf;
+    this._action = function() {} // Should be overwritten in confirm()
     this.$node = $node;
-    this.action = function() {} // Should be overwritten in confirm()
+  }
+
+  get content() {
+    return this._defaultText;
+  }
+
+  set content(text) {
+    this._elements.heading.text(text.heading || this._defaultText.heading);
+    this._elements.message.text(text.message || this._defaultText.message);
+    this._elements.ok.text(text.ok || this._defaultText.ok);
+    this._elements.cancel.text(text.cancel || this._defaultText.cancel);
   }
 
   confirm(text, action) {
     for(var t in text) {
       if(text.hasOwnProperty(t) && this._elements[t]) {
-        this._elements[t].text(t);
+        let current = this._elements[t].text();
+        this._elements[t].text();
       }
     }
-    this.action = action;
+    this._action = action;
     this.$node.dialog("open");
   }
 }
@@ -81,19 +95,30 @@ class ConfirmationDialog {
 /* Private
  * Finds required elements to populate this._elements property.
  **/
-ConfirmationDialog.setElements = function($node, dataNodeNames) {
+ConfirmationDialog.setElements = function($node) {
   var elements = {};
-  var $buttons = $node.find(".ui-dialog-buttonset button");
-  for(var i=0; i<dataNodeNames.length; ++i) {
-    elements[dataNodeNames[i]] = $node.find("[data-node='heading']");
-  }
+  var $buttons = $node.parents(".ConfirmationDialog").find(".ui-dialog-buttonset button");
 
-  // Added by the jQueryUI widget but hard to get.
+  elements.heading = $node.find("[data-node='heading']");
+  elements.message = $node.find("[data-node='message']");
+
+  // Added by the jQueryUI widget so harder to get.
   elements.ok = $buttons.eq(0);
-  elements.cabcel = $buttons.eq(1);
+  elements.cancel = $buttons.eq(1);
   this._elements = elements;
 }
 
+/* Private
+ * Finds on-load text to use as default values.
+ **/
+ConfirmationDialog.setDefaultText = function($node) {
+  this._defaultText = {
+    heading: this._elements.heading.text(),
+    message: this._elements.message.text(),
+    ok: this._elements.ok.text(),
+    cancel: this._elements.cancel.text()
+  };
+}
 
 
 // Make available for importing.

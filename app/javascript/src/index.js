@@ -75,9 +75,13 @@ function bindEditableContentHandlers($area) {
           // Runs before onItemRemove when removing an editable Collection item.
           // Currently not used but added for future option and consistency
           // with onItemAdd (provides an opportunity for clean up).
-          var $dialog = $("#confirmation-dialog");
+          var $dialog = $("#confirmation-delete");
           if($dialog.length && $dialog.data("instance")) {
-            $dialog.data("instance").confirm({}, function() {
+            let dialog = $dialog.data("instance");
+            dialog.content = {
+              heading: dialog.content.heading.replace(/{option label}/, item._elements.label.$node.text())
+            };
+            dialog.confirm({}, function() {
               item.component.remove(item);
             });
           }
@@ -286,18 +290,20 @@ function applyFormDialogs() {
 }
 
 function createConfirmationDialog() {
-  var $template = $("#template-confirmation-dialog");
-  var $node = $($template.text());
-  if($template.length && $node.length) {
-    new ConfirmationDialog($node, {
-      autoOpen: false,
-      cancelText: $template.data("text-cancel"),
-      okText: $template.data("text-ok"),
-      classes: {
-        "ui-button": "govuk-button",
-        "ui-activator": "govuk-button fb-govuk-button"
-      }
-    });
-    $(document.body).append($node);
-  }
+  $("[data-component='ConfirmationDialog']").each(function() {
+    var $template = $(this);
+    var $node = $($template.text());
+    if($template.length && $node.length) {
+      new ConfirmationDialog($node, {
+        autoOpen: false,
+        cancelText: $template.data("text-cancel"),
+        okText: $template.data("text-ok"),
+        classes: {
+          "ui-activator": "govuk-button fb-govuk-button",
+          "ui-button": "govuk-button",
+          "ui-dialog": $template.data("classes")
+        }
+      });
+    }
+  });
 }

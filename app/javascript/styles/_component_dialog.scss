@@ -1,9 +1,24 @@
-/**
- * jQuery UI Dialog Widget
- * -----------------------
+/* fb-editor specific CSS for styling this third-party component.
+ * --------------------------------------------------------------
+ **/
+
+.component-dialog {
+  h3 {
+    margin-top: 0;
+  }
+}
+
+.dialog-delete {
+  .ui-dialog-buttonset > :first-child {
+    @extend .govuk-button--warning;
+  }
+}
+
+
+
+/* Adapting jQuery UI Dialog Widget Classes
+ * ----------------------------------------
  * https://api.jqueryui.com/dialog
- *
- * fb-editor specific CSS for styling this third-party component.
  **/
 
 .ui-button {
@@ -96,4 +111,5 @@
   width: 100%;
   z-index: 1;
 }
+
 
