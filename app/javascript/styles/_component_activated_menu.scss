@@ -18,7 +18,28 @@
   position: absolute;
 }
 
-.component-activated-menu {
+.ActivatedMenu_Activator {
+  @include button_type_link;
+  border: govuk-colour("blue") solid 2px;
+  border-radius: 25px;
+  height: 35px;
+  padding: 0;
+  text-indent: -1000px;
+  width: 35px;
+
+  &:after {
+    content: "...";
+    display: block;
+    font-weight: bold;
+    letter-spacing: 2px;
+    left: 1px;
+    position: relative;
+    text-indent: 0;
+    top: -27px;
+  }
+}
+
+.ActivatedMenu_Menu {
   a, span {
     @include button_type_link;
     border: none;
@@ -46,7 +67,7 @@
     }
   }
 
-  &, ul {
+  &, li > ul {
     border: govuk-colour("blue") solid 2px;
     position: absolute;
     width: 250px;

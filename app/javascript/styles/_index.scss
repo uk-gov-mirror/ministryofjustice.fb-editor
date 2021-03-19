@@ -1,49 +1,8 @@
 /* Note:
- * These style rely on some sass code from the govuk design files
+ * These styles rely on some sass code from the govuk design files.
+ * Specific customisations for the MOJ form builder Editor.
  **/
 
-
-@mixin responsive_width($width: full, $at: tablet) {
-  @if $at != desktop {
-    width: 100%;
-  }
-
-  @include govuk-media-query($from: $at) {
-    width: govuk-grid-width($width);
-  }
-}
-
-@mixin button_type_link {
-  @include govuk-font($size: 19);
-  background-color: govuk-colour("white");
-  border: govuk-colour("blue") solid 2px;
-  color: govuk-colour("blue");
-  cursor: pointer;
-  display: block;
-  padding: govuk-spacing(1);
-  text-decoration: none;
-
-  &:hover {
-    background-color: govuk-colour("blue");
-    color: govuk-colour("white");
-  }
-}
-
-@mixin focus {
-  background-color: $govuk-focus-colour;
-  color: $govuk-focus-text-colour;
-  outline: $govuk-focus-width solid $govuk-focus-colour;
-}
-
-@mixin fb-govuk-button {
-  background-color: govuk-colour("blue");
-
-  &:hover,
-  &[disabled='disabled'],
-  &[disabled='disabled']:hover {
-    background-color: govuk-colour("dark-blue");
-  }
-}
 
 .width-responsive-two-thirds {
   @include responsive_width("two-thirds");
@@ -52,6 +11,11 @@
 
 /* General rules
  * ------------- */
+html {
+  min-height: 100%;
+  position: relative;
+}
+
 .sr-only {
   height: 1px;
   left: -10000px;
@@ -71,15 +35,19 @@
   }
 }
 
-html {
-  min-height: 100%;
+#header-logo-link {
+  display: inline-block;
+  margin-right: govuk-spacing(2);
   position: relative;
+  top: -2px;
+  vertical-align: middle;
 }
 
 #main-content {
   margin-bottom: 220px; /* approx height of footer - prevents visual overlap */
   position: relative;
 }
+
 
 /* Editable components
  * ------------------- */
@@ -106,6 +74,12 @@ html {
   // Trying to compensate for inherit GovUK maring-top settings
   // (or lack of them) on <p> tags and things that should be in them.
   margin-bottom: 1.2em;
+}
+
+.fb-editor-footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
 }
 
 .fb-editor-list,
@@ -147,12 +121,98 @@ html {
   }
 }
 
-#header-logo-link {
-  display: inline-block;
-  margin-right: govuk-spacing(2);
+.fb-govuk-button {
+  // govuk-button style is green but we want blue buttons on fb-editor.
+  @include fb-govuk-button;
+}
+
+.fb-govuk-button-inverted {
+  @include button_type_link;
+}
+
+.fb-preview-button {
+  float: right;
+}
+
+
+/* Editable components
+ * ------------------- */
+.EditableContent,
+.EditableElement {
+  &:focus,
+  &.active {
+    outline: $govuk-focus-width solid $govuk-focus-colour;
+  }
+}
+
+.EditableCollectionFieldComponent,
+.EditableTextFieldComponent,
+.EditableTextareaFieldComponent {
+  :disabled {
+    background-color: govuk-colour("white");
+  }
+}
+
+.EditableComponentCollectionItem {
   position: relative;
-  top: -2px;
-  vertical-align: middle;
+
+  .ActivatedMenu_Activator {
+    left: -40px;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+
+    &:after {
+      top: -4px;
+    }
+  }
+
+  &.active {
+    .ActivatedMenu_Activator {
+      opacity: 1;
+    }
+  }
+}
+
+.editableCollectionItemControls {
+  z-index: 1; // Attempt to prevent focus difficulty with GovUK radio inputs.
+
+  .ActivatedMenu_Menu {
+    border: none;
+    width: auto;
+  }
+}
+
+
+/* Injected/dynamic components
+ * --------------------------- */
+.ActivatedMenu_Activator {
+  opacity: 0;
+  overflow: hidden;
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+.EditableCollectionItemInjector {
+  @include button_type_link;
+  margin: 0 0 55px 55px;
+
+  &:before {
+    content: "+";
+    margin-right: 5px;
+  }
+}
+
+.EditableCollectionItemRemover {
+  @include button_type_link;
+
+  &:hover {
+    background-color: govuk-colour("red");
+    border-color: govuk-colour("red");
+    color: govuk-colour("white");
+  }
 }
 
 
@@ -171,10 +231,14 @@ html {
 .form-overview_button {
   // This element is injected by JS
   @include button_type_link;
-  padding: 9px;
+  opacity: 1;
   position: absolute;
   right: -113px;
   top: calc(50% - 30px);
+
+  &:after {
+    display: none;
+  }
 
   &:before {
     content: "+";
@@ -209,35 +273,16 @@ html {
   }
 
   &:hover {
-    button {
-      visibility: visible;
+    .ActivatedMenu_Activator {
+      opacity: 1;
     }
   }
 }
 
 .form-step_button {
-  @include button_type_link;
-  border: govuk-colour("blue") solid 2px;
-  border-radius: 25px;
   bottom: calc(25px + #{govuk-spacing(2)});
-  height: 35px;
   left: 158px;
-  padding: 0;
   position: absolute;
-  text-indent: -1000px;
-  visibility: hidden;
-  width: 35px;
-
-  &:after {
-    content: "...";
-    display: block;
-    font-weight: bold;
-    letter-spacing: 2px;
-    left: 1px;
-    position: relative;
-    text-indent: 0;
-    top: -27px;
-  }
 }
 
 .form-step_thumbnail {
@@ -278,24 +323,6 @@ html {
 
     .body {
       display: none;
-    }
-  }
-}
-
-
-/* govuk-button style is green but we want
- * green blue buttons on fb-editor.
- * --------------------------------------- */
-.fb-govuk-button {
-  @include fb-govuk-button;
-}
-
-.govuk-form-group--error {
-  .govuk-input {
-    border: $govuk-border-width-form-element-error solid $govuk-error-colour;
-
-    &:focus {
-      border-color: $govuk-input-border-colour;
     }
   }
 }
@@ -428,6 +455,16 @@ html {
 
 /* Override GovUK styles
  * --------------------- */
+.govuk-form-group--error {
+  .govuk-input {
+    border: $govuk-border-width-form-element-error solid $govuk-error-colour;
+
+    &:focus {
+      border-color: $govuk-input-border-colour;
+    }
+  }
+}
+
 .govuk-header {
   // Try to get consistency between with/without page navigation bars
   // and even update space above/below main headings.
@@ -446,14 +483,4 @@ html {
 .govuk-checkboxes__input:disabled + .govuk-checkboxes__label,
 .govuk-radios__input:disabled + .govuk-radios__label {
 	opacity: 1;
-}
-
-.fb-preview-button {
-  float: right;
-}
-
-.fb-editor-footer {
-  position: absolute;
-  width: 100%;
-  bottom: 0;
 }

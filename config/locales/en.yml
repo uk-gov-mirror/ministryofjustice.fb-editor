@@ -6,6 +6,15 @@ en:
     service_email_body: 'Please find attached a submission sent from %{service_name}'
     service_email_pdf_heading: 'Submission for %{service_name}'
     service_email_pdf_subheading: ''
+  dialogs:
+    button_cancel: 'Cancel'
+    button_delete: 'Delete'
+    button_delete_option: 'Delete option'
+    button_ok: 'Ok'
+    heading: General heading here
+    message: General message here
+    heading_delete: 'Delete the option "{option label}"?'
+    message_delete: 'This cannot be undone'
   header:
     service_name: "MoJ Forms"
     home_link_text: "Back to Home"
@@ -33,6 +42,8 @@ en:
     preview_page: 'Preview page'
     preview_form: 'Preview form'
     delete_page: 'Delete page...'
+    option_add: 'Add option'
+    option_remove: 'Delete...'
   pages:
     form: 'Form flow'
     name: 'Pages'

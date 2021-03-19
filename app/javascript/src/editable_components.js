@@ -16,7 +16,7 @@
 import DOMPurify from 'dompurify';
 import marked from 'marked';
 import TurndownService from 'turndown';
-import { mergeObjects } from './utilities';
+import { mergeObjects, createElement, safelyActivateFunction } from './utilities';
 
 var turndownService = new TurndownService();
 
@@ -39,6 +39,7 @@ class EditableBase {
     this._content = $node.text();
     this.type = config.type;
     this.$node = $node;
+    $node.data("instance", this);
 
     $node.on("click.editablecomponent focus.editablecomponent", (e) => {
       e.preventDefault();
@@ -90,7 +91,7 @@ class EditableElement extends EditableBase {
   set content(content) {
     if(this._content != content) {
       this._content = content;
-      triggerSaveRequired(this._config.onSaveRequired);
+      safelyActivateFunction(this._config.onSaveRequired);
     }
   }
 
@@ -140,7 +141,7 @@ class EditableContent extends EditableElement {
   set content(markdown) {
     if(this._markdown != markdown) {
       this._markdown = markdown;
-      triggerSaveRequired(this._config.onSaveRequired);
+      safelyActivateFunction(this._config.onSaveRequired);
     }
   }
 
@@ -180,6 +181,7 @@ class EditableComponentBase extends EditableBase {
   constructor($node, config, elements) {
     super($node, config);
     this.data = config.data;
+    $node.data("instance", this);
 
     // e.g. elements = {
     //        something: new EditableElement($node.find("something"), config)
@@ -405,7 +407,12 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
       label: new EditableElement($node.find(config.selectorCollectionQuestion), config),
       hint: new EditableElement($node.find(config.selectorCollectionHint), config)
     });
-    this.options = EditableCollectionFieldComponent.createEditableCollectionItems($node, config);
+
+    //var text = JSON.parse(config.text || "{}");
+    this._preservedItemCount = (this.type == "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
+    EditableCollectionFieldComponent.createCollectionItemTemplate.call(this, config);
+    EditableCollectionFieldComponent.createEditableCollectionItems.call(this, config);
+    new EditableCollectionItemInjector(this, config);
     $node.addClass("EditableCollectionFieldComponent");
   }
 
@@ -419,39 +426,135 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
     this.data.legend = elements.label.content;
     this.data.hint = elements.hint.content;
 
-    // Set data from options.
+    // Set data from items.
     this.data.items = [];
-    for(var i=0; i< this.options.length; ++i) {
-      this.data.items.push(this.options[i].data);
+    for(var i=0; i< this.items.length; ++i) {
+      this.data.items.push(this.items[i].data);
     }
+  }
+
+  // Dynamically adds an item to the components collection
+  add() {
+    // Component should always have at least one item, otherwise something is very wrong.
+    var $lastItem = this.items[this.items.length - 1].$node;
+    var $clone = this.$itemTemplate.clone();
+    $lastItem.after($clone);
+    EditableCollectionFieldComponent.addItem.call(this, $clone, this.$itemTemplate.data("config"));
+    EditableCollectionFieldComponent.updateItems.call(this);
+    safelyActivateFunction(this._config.onItemAdd, $clone);
+    safelyActivateFunction(this._config.onSaveRequired);
+  }
+
+  // Dynamically removes an item to the components collection
+  remove(item) {
+    var index = this.items.indexOf(item);
+    safelyActivateFunction(this._config.onItemRemove, item);
+    this.items.splice(index, 1);
+    item.$node.remove();
+    EditableCollectionFieldComponent.updateItems.call(this);
+    safelyActivateFunction(this._config.onSaveRequired);
   }
 
   save() {
-    // Trigger the save action on options before calling it's own.
-    for(var i=0; i<this.options.length; ++i) {
-      this.options[i].save();
+    // Trigger the save action on items before calling it's own.
+    for(var i=0; i<this.items.length; ++i) {
+      this.items[i].save();
     }
     super.save();
   }
+}
 
-  updateItemComponents() {
-    this.options = EditableCollectionFieldComponent.createEditableCollectionItems(this.$node, this._config);
+/* Private function
+ * Create an item template which can be cloned in component.add()
+ * config (Object) key/value pairs for extra information.
+ *
+ * Note: Initial index elements of Array/Collection is called directly
+ * without any checking for existence. This is because they should always
+ * exist and, if they do not, we want the script to throw an error
+ * because it would alert us to something very wrong.
+ **/
+EditableCollectionFieldComponent.createCollectionItemTemplate = function(config) {
+  var $item = this.$node.find(config.selectorCollectionItem).eq(0);
+  var data = mergeObjects({}, config.data, ["items"]); // pt.1 Copy without items.
+  var itemConfig = mergeObjects({}, config, ["data"]); // pt.2 Copy without data.
+  itemConfig.data = mergeObjects(data, config.data.items[0]); // Bug fix response to JS reference handling.
+
+  // Filters could be changing the blah_1 values to blah_0, depending on filters in play.
+  itemConfig.data = EditableCollectionFieldComponent.applyFilters(config.filters, 0, itemConfig.data);
+  $item.data("config", itemConfig);
+
+  // Note: If we need to strip out some attributes or alter the template
+  //       in some way, do that here.
+
+  this.$itemTemplate = $item;
+}
+
+/* Private function
+ * Find radio or checkbox items and enhance with editable functionality.
+ * Creates the initialising values for this.items
+ * config (Object) key/value pairs for extra information.
+ **/
+EditableCollectionFieldComponent.createEditableCollectionItems = function(config) {
+  var component = this;
+  component.$node.find(config.selectorCollectionItem).each(function(i) {
+    var data = mergeObjects({}, config.data, ["items"]); // pt.1 Copy without items.
+    var itemConfig = mergeObjects({ preserveItem: (i < component._preservedItemCount) }, config, ["data"]); // pt.2 Without data
+    itemConfig.data = mergeObjects(data, config.data.items[i]); // Bug fix response to JS reference handling.
+
+    // Only wrap in EditableComponentCollectionItem functionality if doesn't look like it has it.
+    if(this.className.indexOf("EditableComponentCollectionItem") < 0) {
+      EditableCollectionFieldComponent.addItem.call(component, $(this), itemConfig);
+    }
+  });
+}
+
+/* Private function
+ * Enhance an item and add to this.items array.
+ * $node (jQuery node) Should be a clone of this.itemTemplate
+ * config (Object) key/value pairs for extra information.
+ **/
+EditableCollectionFieldComponent.addItem = function($node, config) {
+  if(!this.items) { this.items = []; } // Should be true on first call only.
+  this.items.push(new EditableComponentCollectionItem(this, $node, config));
+
+  // TODO: need to update the data on each item so _id and value are different.
+  
+}
+
+/* Private function
+ * Run through the collection items to make sure data is sync'd when we've
+ * either added a new item or removed one (e.g. makes sure to avoid clash
+ * of data _id values.
+ **/
+EditableCollectionFieldComponent.updateItems = function() {
+  var filters = this._config.filters;
+  for(var i=0; i < this.items.length; ++i) {
+    this.items[i].data = EditableCollectionFieldComponent.applyFilters(filters, i+1, this.items[i].data);
   }
 }
 
-// Private function to find radio options or checkboxes  and enhance with editable functionality.
-EditableCollectionFieldComponent.createEditableCollectionItems = function($node, config) {
-  var options = [];
-  $node.find(config.selectorCollectionItem).each(function(i) {
-    var itemConfig = mergeObjects({}, config);
-    itemConfig.data = config.data.items[i];
-    options.push(new EditableCollectionItemComponent($(this), itemConfig));
-  });
-  return options;
+
+/* Private function
+ * Applies config.filters to the data passed in, with an index number, since this should
+ * be called within a loop of the items. It has been expracted out to counter complications
+ * running into closure issues due to manipulating data within a loop.
+ * @unique (Integer|String) Should be current loop number, or at least something unique. 
+ * @data   (Object) Collection item data.
+ **/
+EditableCollectionFieldComponent.applyFilters = function(filters, unique, data) {
+  var filtered_data = {};
+  for(var prop in data) {
+    if(filters && filters.hasOwnProperty(prop)) {
+      filtered_data[prop] = filters[prop].call(data[prop], unique);
+    }
+    else {
+      filtered_data[prop] = data[prop];
+    }
+  }
+  return filtered_data;
 }
 
-
-/* Editable Collection Item:
+/* Editable Component Collection Item:
  * Used for things like Radio Options/Checkboxes that have a label and hint element
  * but are owned by a parent Editable Component, so does not need to save their
  * own content by writing a hidden element (like other types). Not considered
@@ -462,11 +565,38 @@ EditableCollectionFieldComponent.createEditableCollectionItems = function($node,
  * but do nothing else with it. A parent component will read and use the
  * generated 'saved' content.
  *
+ * config.onItemRemoveConfirmation (Function) An action passed the item.
+ *
  **/
-class EditableCollectionItemComponent extends EditableComponentBase {
-  constructor($node, config) {
+class EditableComponentCollectionItem extends EditableComponentBase {
+  constructor(editableCollectionFieldComponent, $node, config) {
     super($node, config);
-    $node.addClass("EditableCollectionItemComponent");
+
+    if(!config.preserveItem) {
+      new EditableCollectionItemRemover(this, editableCollectionFieldComponent, config);
+    }
+
+    $node.on("focus.EditableComponentCollectionItem", "*", function() {
+      $node.addClass(config.editClassname);
+    });
+
+    $node.on("blur.EditableComponentCollectionItem", "*", function() {
+      $node.removeClass(config.editClassname);
+    });
+
+    this.component = editableCollectionFieldComponent;
+    $node.addClass("EditableComponentCollectionItem");
+  }
+
+  remove() {
+    if(this._config.onItemRemoveConfirmation) {
+      // If we have confirgured a way to confirm first...
+      safelyActivateFunction(this._config.onItemRemoveConfirmation, this);
+    }
+    else {
+      // or just run the remove function.
+      this.component.remove(this);
+    }
   }
 
   save() {
@@ -476,12 +606,54 @@ class EditableCollectionItemComponent extends EditableComponentBase {
 }
 
 
-/* Fires a passed function intended to run on code detection of
- * content required to be saved (updated and different).
- **/
-function triggerSaveRequired(action) {
-  if(typeof(action) === 'function' || action instanceof Function) {
-    action();
+class EditableCollectionItemInjector {
+  constructor(editableCollectionFieldComponent, config) {
+    var conf = mergeObjects({}, config);
+    var text = mergeObjects({ addItem: 'add' }, config.text);
+    var $node = $(createElement("button", text.addItem, conf.classes));
+    editableCollectionFieldComponent.$node.append($node);
+    $node.addClass("EditableCollectionItemInjector")
+    $node.data("instance", this);
+    $node.on("click", function(e) {
+      e.preventDefault();
+      editableCollectionFieldComponent.add();
+    });
+
+    this.component = editableCollectionFieldComponent;
+    this.$node = $node;
+  }
+}
+
+
+class EditableCollectionItemRemover {
+  constructor(editableCollectionItem, editableCollectionFieldComponent, config) {
+    var conf = mergeObjects({}, config);
+    var text = mergeObjects({ removeItem: 'remove' }, config.text);
+    var $node = $(createElement("button", text.removeItem, conf.classes));
+    var removeCollectionItem = function() {
+      editableCollectionFieldComponent.remove(editableCollectionItem);
+    }
+
+    $node.data("instance", this);
+    $node.addClass("EditableCollectionItemRemover");
+    $node.on("click.EditableCollectionItemRemover", function(e) {
+      e.preventDefault();
+      editableCollectionItem.remove();
+    });
+
+    // Close on SPACE and ENTER
+    $node.on("keydown.EditableCollectionItemRemover", function(e) {
+      e.preventDefault();
+      if(e.which == 13 || e.which == 32) {
+        editableCollectionItem.remove();
+      }
+    });
+
+    editableCollectionItem.$node.append($node);
+
+    this.component = editableCollectionFieldComponent;
+    this.item = editableCollectionItem;
+    this.$node = $node;
   }
 }
 
