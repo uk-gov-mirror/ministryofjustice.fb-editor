@@ -45,6 +45,8 @@ spec:
             value: <%= secret_key_base %>
           - name: SERVICE_METADATA
             value: '<%= service_metadata %>'
+          - name: SENTRY_DSN
+            value: '<%= service_sentry_dsn %>'
         <% secrets.each do |secret|  %>
           - name: <%= secret.name %>
             valueFrom:

@@ -232,4 +232,40 @@ RSpec.describe Publisher::ServiceProvisioner do
       end
     end
   end
+
+  describe '#service_sentry_dsn' do
+    before do
+      allow(ENV).to receive(:[])
+      allow(ENV).to receive(:[]).with('SERVICE_SENTRY_DSN_TEST').and_return('test')
+      allow(ENV).to receive(:[]).with('SERVICE_SENTRY_DSN_LIVE').and_return('live')
+    end
+
+    context 'not live production' do
+      not_live_production = [
+        { platform_environment: 'test', deployment_environment: 'dev' },
+        { platform_environment: 'test', deployment_environment: 'production' },
+        { platform_environment: 'live', deployment_environment: 'dev' }
+      ]
+
+      not_live_production.each do |platform_deployment|
+        context "#{platform_deployment[:platform_environment]}-#{platform_deployment[:deployment_environment]}" do
+          let(:attributes) { platform_deployment }
+
+          it 'creates the correct platform deployment' do
+            expect(service_provisioner.service_sentry_dsn).to eq('test')
+          end
+        end
+      end
+    end
+
+    context 'live production' do
+      let(:attributes) do
+        { platform_environment: 'live', deployment_environment: 'production' }
+      end
+
+      it 'creates the correct platform deployment' do
+        expect(service_provisioner.service_sentry_dsn).to eq('live')
+      end
+    end
+  end
 end

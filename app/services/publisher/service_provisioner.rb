@@ -17,6 +17,8 @@ class Publisher
 
     validates :service_configuration, private_public_key: true
 
+    LIVE_PRODUCTION = 'live-production'.freeze
+
     def service_metadata
       service.to_json
     end
@@ -102,6 +104,15 @@ class Publisher
       '128Mi'
     end
 
+    def service_sentry_dsn
+      if platform_deployment == LIVE_PRODUCTION
+        ENV["SERVICE_SENTRY_DSN_LIVE"]
+      else
+        # test-dev, test-production and live-dev
+        ENV["SERVICE_SENTRY_DSN_TEST"]
+      end
+    end
+
     def config_map
       service_configuration.reject(&:secrets?).reject(&:do_not_send_submission?)
     end
@@ -116,6 +127,10 @@ class Publisher
       @service ||= MetadataPresenter::Service.new(
         MetadataApiClient::Service.latest_version(service_id)
       )
+    end
+
+    def platform_deployment
+      "#{platform_environment}-#{deployment_environment}"
     end
   end
 end
