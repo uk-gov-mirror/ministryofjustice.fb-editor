@@ -129,7 +129,7 @@ function bindEditableContentHandlers($area) {
 // prevents complicated multiple element binding/handling.
 //
 function bindDocumentEventsForPagesSection() {
-  if($(".form-overview").length) {
+  if($("#form-overview").length) {
     let $document = $(document);
 
     $document.on("FormStepContextMenuSelection", formStepContextMenuSelection);
@@ -172,6 +172,7 @@ function addPageTypeMenuSelection(event, data) {
 function formStepContextMenuSelection(event, data) {
   var $link = data.activator.find("a");
   var fragId = findFragmentIdentifier($link.attr("href"))
+
   switch(fragId) {
     case "edit-page": console.log("edit page");
          break;
@@ -195,9 +196,9 @@ function formStepContextMenuSelection(event, data) {
 }
 
 
-// Finds navigation elements structured to become Activated Menu
-// effects and wraps them with the required functionality.
-//
+/* Finds navigation elements structured to become Activated Menu
+ * effects and wraps them with the required functionality.
+ **/
 function applyMenus() {
   $(".component-activated-menu").each(function(i, el) {
     var $menu = $(el);
