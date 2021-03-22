@@ -99,5 +99,20 @@ function uniqueString(str) {
   return str + Date.now() + String(Math.random()).replace(".","");
 }
 
+
+// Utility funciton
+// Return the fragment identifier value from a URL.
+// Intended for use on an href value rather than document
+// location, which can use location.hash.
+// e.g. pass in
+// "http://foo.com#something" or
+// "http://foo.com#something?else=here"
+// and get "something" in either case.
+//
+function findFragmentIdentifier(url) {
+  return url.replace(/^.*#(.*?)(?:(\?).*)?$/, "$1");
+}
+
+
 // Make available for importing.
-export { mergeObjects, createElement, safelyActivateFunction, uniqueString };
+export { mergeObjects, createElement, safelyActivateFunction, uniqueString, findFragmentIdentifier };
