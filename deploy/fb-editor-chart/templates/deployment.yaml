@@ -42,13 +42,16 @@ spec:
           - configMapRef:
               name: fb-editor-config-map
         env:
-          - name: SENTRY_CURRENT_ENV
-            value: {{ .Values.environmentName }}
           - name: SECRET_KEY_BASE
             valueFrom:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: secret_key_base
+          - name: SENTRY_DSN
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: sentry_dsn
           - name: AUTH0_CLIENT_ID
             valueFrom:
               secretKeyRef:
@@ -140,13 +143,16 @@ spec:
           - configMapRef:
               name: fb-editor-config-map
         env:
-          - name: SENTRY_CURRENT_ENV
-            value: {{ .Values.environmentName }}
           - name: SECRET_KEY_BASE
             valueFrom:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: secret_key_base
+          - name: SENTRY_DSN
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: sentry_dsn
           - name: AUTH0_CLIENT_ID
             valueFrom:
               secretKeyRef:

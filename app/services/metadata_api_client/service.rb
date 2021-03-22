@@ -15,6 +15,7 @@ module MetadataApiClient
       response = connection.post('/services', metadata)
       new(response.body)
     rescue Faraday::UnprocessableEntityError => exception
+      Sentry.capture_exception(exception)
       error_messages(exception)
     end
   end
