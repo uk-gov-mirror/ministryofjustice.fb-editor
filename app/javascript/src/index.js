@@ -1,4 +1,4 @@
-import { uniqueString } from './utilities';
+import { uniqueString, findFragmentIdentifier } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
 import { ActivatedDialog } from './component_activated_dialog';
 import { ConfirmationDialog } from './component_confirmation_dialog';
@@ -192,20 +192,6 @@ function formStepContextMenuSelection(event, data) {
 
     default: console.log(data.activator.href);
   }
-}
-
-
-// Utility funciton
-// Return the fragment identifier value from a URL.
-// Intended for use on an href value rather than document
-// location, which can use location.hash.
-// e.g. pass in
-// "http://foo.com#something" or
-// "http://foo.com#something?else=here"
-// and get "something" in either case.
-//
-function findFragmentIdentifier(url) {
-  return url.replace(/^.*#(.*?)(?:(\?).*)?$/, "$1");
 }
 
 
