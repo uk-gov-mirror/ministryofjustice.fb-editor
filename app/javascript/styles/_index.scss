@@ -371,6 +371,7 @@ html {
     &,
     &:hover {
       @include govuk-font($size: 19);
+      border-bottom:  govuk-colour("light-grey") solid 4px;
       color: $govuk-link-colour;
       display: block;
       font: inherit;
@@ -397,7 +398,7 @@ html {
 
     &.current {
       a {
-        border-bottom:  govuk-colour("blue") solid 4px;
+        border-color:  govuk-colour("blue");
 
         &:focus {
           border-color: $govuk-text-colour;
