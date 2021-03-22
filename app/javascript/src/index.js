@@ -82,7 +82,7 @@ function bindEditableContentHandlers($area) {
           if($dialog.length && $dialog.data("instance")) {
             let dialog = $dialog.data("instance");
             dialog.content = {
-              heading: dialog.content.heading.replace(/{option label}/, item._elements.label.$node.text()),
+              heading: app.text.dialogs.heading_delete_option.replace(/#{option label}/, item._elements.label.$node.text()),
               ok: app.text.dialogs.button_delete_option
             };
             dialog.confirm({}, function() {
