@@ -31,7 +31,7 @@
         </li>
         <li><a href="#add-page-here">Add page here</a></li>
         <li>
-          <%= link_to t('actions.delete_page'), page_path(service.service_id, page.uuid), method: :delete, class: 'destructive', data: { confirm: 'Are you sure?' } %>
+          <%= link_to t('actions.delete_page'), page_path(service.service_id, page.uuid), method: :delete, class: 'destructive delete' } %>
         </li>
       </ul>
 
