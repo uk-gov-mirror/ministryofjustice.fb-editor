@@ -25,10 +25,16 @@ import { DefaultPage } from './page_default';
 class FormOverviewPage extends DefaultPage {
   constructor() {
     super();
+
+    let $document = $(document);
+    // Bind document event listeners to control functionality not specific to a single component or where
+    // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
+    $document.on("FormStepContextMenuSelection", formStepContextMenuSelection);
+    $document.on("AddPageTypeMenuSelection", addPageTypeMenuSelection);
+
     applyMenus();
     new PageCreateDialog($("[data-component='PageCreateDialog']"));
 
-    bindDocumentEventsForPagesSection();
   }
 }
 
@@ -49,23 +55,6 @@ function applyMenus() {
       }
     });
   });
-}
-
-
-// Bind document event listeners for the 'Pages' section of
-// form builder. This will only do something if the main
-// "#form-overview" container is found. It is used to control
-// functionality not specific to a single component or where
-// a component can be activated by more than one element (so
-// prevents complicated multiple element binding/handling.
-//
-function bindDocumentEventsForPagesSection() {
-  if($("#form-overview").length) {
-    let $document = $(document);
-
-    $document.on("FormStepContextMenuSelection", formStepContextMenuSelection);
-    $document.on("AddPageTypeMenuSelection", addPageTypeMenuSelection);
-  }
 }
 
 
@@ -167,7 +156,6 @@ class PageCreateDialog {
     this.$errors.parents().removeClass(".govuk-form-group--error");
   }
 }
-
 
 
 export { FormOverviewPage }
