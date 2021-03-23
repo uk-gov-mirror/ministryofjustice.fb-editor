@@ -22,26 +22,23 @@ import { ConfirmationDialog } from './component_confirmation_dialog';
 
 class DefaultPage {
   constructor() {
-    createConfirmationDialog();
+    this.dialog = createConfirmationDialog.call(this, "ConfirmationDialog");
+    this.dialogDelete = createConfirmationDialog.call(this, "ConfirmationDialogDelete");
   }
 }
 
 
-function createConfirmationDialog() {
-  $("[data-component='ConfirmationDialog']").each(function() {
-    var $template = $(this);
-    var $node = $($template.text());
-    if($template.length && $node.length) {
-      new ConfirmationDialog($node, {
-        autoOpen: false,
-        cancelText: $template.data("text-cancel"),
-        okText: $template.data("text-ok"),
-        classes: {
-          "ui-activator": "govuk-button fb-govuk-button",
-          "ui-button": "govuk-button",
-          "ui-dialog": $template.data("classes")
-        }
-      });
+function createConfirmationDialog(template) {
+  var $template = $("[data-component-template='" + template + "']");
+  var $node = $($template.text());
+  return new ConfirmationDialog($node, {
+    autoOpen: false,
+    cancelText: $template.data("text-cancel"),
+    okText: $template.data("text-ok"),
+    classes: {
+      "ui-activator": "govuk-button fb-govuk-button",
+      "ui-button": "govuk-button",
+      "ui-dialog": $template.data("classes")
     }
   });
 }

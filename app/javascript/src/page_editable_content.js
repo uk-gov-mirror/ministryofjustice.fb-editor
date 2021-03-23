@@ -25,7 +25,7 @@ import { editableComponent } from './editable_components';
 class EditableContentPage extends DefaultPage {
   constructor() {
     super();
-    bindEditableContentHandlers();
+    bindEditableContentHandlers.call(this);
   }
 }
 
@@ -33,6 +33,7 @@ class EditableContentPage extends DefaultPage {
 // Controls all the Editable Component setup for each page.
 // TODO: Add more description on how this works.
 function bindEditableContentHandlers($area) {
+  var PAGE = this;
   var $editContentForm = $("#editContentForm");
   var $saveButton = $editContentForm.find(":submit");
   var editableContent = [];
@@ -79,7 +80,6 @@ function bindEditableContentHandlers($area) {
           // @item (EditableComponentItem) Item to be deleted.
           // Runs before removing an editable Collection item.
           // Provides an opportunity for clean up.
-          var dialog = $("#confirmation-dialog");
           var activatedMenu = item.$node.data("ActivatedMenu");
           if(activatedMenu) {
             activatedMenu.activator.$node.remove();
@@ -92,17 +92,13 @@ function bindEditableContentHandlers($area) {
           // Runs before onItemRemove when removing an editable Collection item.
           // Currently not used but added for future option and consistency
           // with onItemAdd (provides an opportunity for clean up).
-          var $dialog = $("#confirmation-delete");
-          if($dialog.length && $dialog.data("instance")) {
-            let dialog = $dialog.data("instance");
-            dialog.content = {
-              heading: app.text.dialogs.heading_delete_option.replace(/#{option label}/, item._elements.label.$node.text()),
-              ok: app.text.dialogs.button_delete_option
-            };
-            dialog.confirm({}, function() {
-              item.component.remove(item);
-            });
-          }
+          PAGE.dialog.content = {
+            heading: app.text.dialogs.heading_delete_option.replace(/#{option label}/, item._elements.label.$node.text()),
+            ok: app.text.dialogs.button_delete_option
+          };
+          PAGE.dialog.confirm({}, function() {
+            item.component.remove(item);
+          });
         },
         onSaveRequired: function() {
           // Code detected something changed to
