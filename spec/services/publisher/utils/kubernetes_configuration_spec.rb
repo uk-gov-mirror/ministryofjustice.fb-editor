@@ -45,6 +45,9 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
     allow(ENV).to receive(:[])
       .with('SUBMISSION_ENCRYPTION_KEY')
       .and_return('65a27a35-c475-48b9-9a20-30142f14')
+    allow(ENV).to receive(:[])
+      .with('SERVICE_SENTRY_DSN_TEST')
+      .and_return('sentry-dsn-test')
   end
 
   describe '#generate' do

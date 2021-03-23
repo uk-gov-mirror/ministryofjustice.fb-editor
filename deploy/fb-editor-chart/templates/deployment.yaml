@@ -77,14 +77,6 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: encryption_salt
-          # secrets created by terraform
-          # which may or may not depend on values
-          # canonically defined in secrets.tfvars
-          # Some assets aren't loading properly yet
-          # ...maybe an issue with how they're referenced,
-          # maybe something else - re-enabled this later
-          #
-          # Created by cloud-platforms-environments
           - name: DATABASE_URL
             valueFrom:
               secretKeyRef:
@@ -100,6 +92,16 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: submission_encryption_key
+          - name: SERVICE_SENTRY_DSN_TEST
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: service_sentry_dsn_test
+          - name: SERVICE_SENTRY_DSN_LIVE
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: service_sentry_dsn_live
       volumes:
         - name: tmp-files
           emptyDir: {}
@@ -178,14 +180,6 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: encryption_salt
-          # secrets created by terraform
-          # which may or may not depend on values
-          # canonically defined in secrets.tfvars
-          # Some assets aren't loading properly yet
-          # ...maybe an issue with how they're referenced,
-          # maybe something else - re-enabled this later
-          #
-          # Created by cloud-platforms-environments
           - name: DATABASE_URL
             valueFrom:
               secretKeyRef:
@@ -201,6 +195,16 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: submission_encryption_key
+          - name: SERVICE_SENTRY_DSN_TEST
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: service_sentry_dsn_test
+          - name: SERVICE_SENTRY_DSN_LIVE
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: service_sentry_dsn_live
       volumes:
         - name: tmp-files
           emptyDir: {}
