@@ -20,17 +20,17 @@
           data-activator-text="<%= t('pages.actions') %>"
           data-activator-classname="form-step_button"
           data-document-event="FormStepContextMenuSelection">
-        <li>
+        <li data-action="edit">
           <%= link_to t('actions.edit_page'),
           edit_page_path(service.service_id, page.uuid) %>
         </li>
-        <li>
+        <li data-action="preview">
           <%= link_to t('actions.preview_page'),
           File.join(preview_service_path(service.service_id), page.url),
           target: '_blank' %>
         </li>
-        <li><a href="#add-page-here">Add page here</a></li>
-        <li>
+        <li data-action="add"><a href="#add-page-here">Add page here</a></li>
+        <li data-action="delete">
           <%= link_to t('actions.delete_page'), page_path(service.service_id, page.uuid), method: :delete, class: 'destructive delete' %>
         </li>
       </ul>
