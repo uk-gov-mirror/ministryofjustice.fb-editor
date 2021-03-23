@@ -26,7 +26,8 @@ class FormOverviewPage extends DefaultPage {
   constructor() {
     super();
     applyMenus();
-    applyFormDialogs();
+    new PageCreateDialog($("[data-component='PageCreateDialog']"));
+
     bindDocumentEventsForPagesSection();
   }
 }
@@ -126,38 +127,45 @@ function addPageTypeMenuSelection(event, data) {
 }
 
 
-// Finds forms structured to become dialog effects and
-// wraps them with the required functionality.
-//
-function applyFormDialogs() {
-	$(".component-dialog-form").each(function(i, el) {
-    var $dialog = $(el);
-    var $form = $dialog.find("form");
+/* Wrap the create page form in a dialog effect.
+ * Errors will also show here on page return.
+ **/
+class PageCreateDialog {
+  constructor($node, config) {
+    var pageCreateDialog = this;
+    var $form = $node.find("form");
     var $submit = $form.find(":submit");
-    var $errors = $dialog.find(".govuk-form-group--error");
+    var $errors = $node.find(".govuk-error-message");
 
-    new ActivatedDialog($dialog, {
+    new ActivatedDialog($node, {
       autoOpen: $errors.length ? true: false,
-      cancelText: $dialog.data("cancel-text"),
+      cancelText: $node.data("cancel-text"),
       okText: $submit.val(),
-      activatorText: $dialog.data("activator-text"),
+      activatorText: $node.data("activator-text"),
       classes: {
         "ui-button": "govuk-button",
         "ui-activator": "govuk-button fb-govuk-button"
       },
       onOk: () => {
-        $form.submit();
+        pageCreateDialog.$form.submit();
       },
       onClose: () => {
-        $errors.removeClass("govuk-form-group--error");
-        $errors.find(".govuk-error-message").remove();
+        pageCreateDialog.clearErrors();
       }
     });
 
     // Disable button as we're replacing it.
     $submit.attr("disabled", true);
 
-  });
+    this.$form = $form;
+    this.$submit = $submit;
+    this.$errors = $errors;
+  }
+
+  clearErrors() {
+    this.$errors.remove();
+    this.$errors.parents().removeClass(".govuk-form-group--error");
+  }
 }
 
 
