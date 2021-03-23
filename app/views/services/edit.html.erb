@@ -82,7 +82,8 @@
   <div class="component-dialog-form"
        id="new-page-create-dialog"
        data-activator-text="<%= t('pages.create') %>"
-       data-cancel-text="<%= t('pages.cancel') %>">
+       data-cancel-text="<%= t('pages.cancel') %>"
+       data-component="PageCreateDialog">
     <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
       <%= f.hidden_field :page_type, value: f.object.page_type.nil? ? 'singlequestion' : f.object.page_type  %>
       <%= f.hidden_field :component_type, value: f.object.component_type.nil? ? 'text' : f.object.component_type %>
