@@ -16,7 +16,7 @@
  **/
 
 
-import { findFragmentIdentifier } from './utilities';
+import { mergeObjects } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
 import { ActivatedDialog } from './component_activated_dialog';
 import { DefaultPage } from './page_default';
@@ -29,40 +29,43 @@ class FormOverviewPage extends DefaultPage {
     let $document = $(document);
     // Bind document event listeners to control functionality not specific to a single component or where
     // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
-    $document.on("FormStepContextMenuSelection", formStepContextMenuSelection);
-    $document.on("AddPageTypeMenuSelection", addPageTypeMenuSelection);
+    $document.on("PageActionMenuSelection", pageActionMenuSelection);
+    $document.on("PageAdditionMenuSelection", pageAdditionMenuSelection);
 
-    applyMenus();
+    // Create dialog for handling new page input and error reporting.
     new PageCreateDialog($("[data-component='PageCreateDialog']"));
+
+
+    // Create the context menus for each page thumbnail.
+    $("[data-component='PageActionMenu']").each((i, el) => {
+      new PageActionMenu($(el), {
+        selection_event: "PageActionMenuSelection",
+        preventDefault: true, // Stops the default action of triggering element.
+        menu: {
+          position: { at: "right+2 top-2" }
+        }
+      });
+    });
+
+    // Create the menu for Add Page functionality.
+    $("[data-component='PageAdditionMenu']").each((i, el) => {
+      new PageActionMenu($(el), {
+        selection_event: "PageAdditionMenuSelection",
+        menu: {
+          position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
+        }
+      });
+    });
 
   }
 }
 
 
-/* Finds navigation elements structured to become Activated Menu
- * effects and wraps them with the required functionality.
+/* Handle item selections on the form step context
+ * menu elements.
+ * TODO: What are other actions?
  **/
-function applyMenus() {
-  $(".component-activated-menu").each(function(i, el) {
-    var $menu = $(el);
-    var menu =  new ActivatedMenu($menu, {
-      activator_classname: $menu.data("activator-classname"),
-      container_id: $menu.data("activated-menu-container-id"),
-      activator_text: $menu.data("activator-text"),
-      selection_event: $menu.data("document-event"),
-      menu: {
-        position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
-      }
-    });
-  });
-}
-
-
-// Handle item selections on the form step context
-// menu elements.
-// TODO: What are other actions?
-//
-function formStepContextMenuSelection(event, data) {
+function pageActionMenuSelection(event, data) {
   event.preventDefault();
   var element = data.original.element;
   var action = data.activator.data("action");
@@ -89,14 +92,14 @@ function formStepContextMenuSelection(event, data) {
 }
 
 
-// Controls what happens when user selects a page type.
-// 1). Clear page_type & component_type values in hidden form.
-// (if we then have new values):
-// 2). Set new page_type & component_type in hidden form.
-// 3). Close the open menu
-// 4). Open the form URL input dialog.
-//
-function addPageTypeMenuSelection(event, data) {
+/* Controls what happens when user selects a page type.
+ * 1). Clear page_type & component_type values in hidden form.
+ * (if we then have new values):
+ * 2). Set new page_type & component_type in hidden form.
+ * 3). Close the open menu
+ * 4). Open the form URL input dialog.
+ **/
+function pageAdditionMenuSelection(event, data) {
   var $pageTypeInput = $("#page_page_type");
   var $componentTypeInput = $("#page_component_type");
   var $activator = data.activator.find("> a");
@@ -154,6 +157,21 @@ class PageCreateDialog {
   clearErrors() {
     this.$errors.remove();
     this.$errors.parents().removeClass(".govuk-form-group--error");
+  }
+}
+
+
+/* Controls form step add/edit/delete/preview controls
+ **/
+class PageActionMenu {
+  constructor($node, config) {
+    var conf = mergeObjects({
+      activator_classname: $node.data("activator-classname"),
+      container_id: $node.data("activated-menu-container-id"),
+      activator_text: $node.data("activator-text")
+    }, config);
+
+    this.menu = new ActivatedMenu($node, conf);
   }
 }
 

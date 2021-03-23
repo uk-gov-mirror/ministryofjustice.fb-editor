@@ -19,7 +19,7 @@
       <ul class="govuk-navigation component-activated-menu"
           data-activator-text="<%= t('pages.actions') %>"
           data-activator-classname="form-step_button"
-          data-document-event="FormStepContextMenuSelection">
+          data-component="PageActionMenu">
         <li data-action="edit">
           <%= link_to t('actions.edit_page'),
           edit_page_path(service.service_id, page.uuid) %>
@@ -44,7 +44,7 @@
       data-activated-menu-container-id="ActivatedMenu_AddPage"
       data-activator-classname="form-overview_button"
       data-activator-text="<%= t('pages.create') %>"
-      data-document-event="AddPageTypeMenuSelection">
+      data-component="PageAdditionMenu">
     <li>
       <span>Single question page</span>
       <ul class="govuk-navigation">
