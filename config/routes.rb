@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   get '/health', to: 'health#show'
+  get '/metrics', to: 'metrics#show'
 
   # Auth0 routes
   get "/auth/auth0/callback" => "auth0#callback", as: 'auth0_callback'
