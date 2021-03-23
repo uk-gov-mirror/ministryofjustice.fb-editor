@@ -20,7 +20,7 @@ class Publisher
     LIVE_PRODUCTION = 'live-production'.freeze
 
     def service_metadata
-      service.to_json
+      service.to_json.inspect
     end
 
     def get_binding
