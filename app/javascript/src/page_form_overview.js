@@ -74,25 +74,24 @@ function bindDocumentEventsForPagesSection() {
 //
 function formStepContextMenuSelection(event, data) {
   event.preventDefault();
-  var $link = data.activator.find("a");
-  var fragId = findFragmentIdentifier($link.attr("href"))
-
-  switch(fragId) {
-    case "edit-page": console.log("edit page");
+  var element = data.original.element;
+  var action = data.activator.data("action");
+  switch(action) {
+    case "edit": console.log("edit page");
          break;
 
-    case "preview-page": console.log("preview page");
+    case "preview": console.log("preview page");
          break;
 
-    case "add-page-here":
+    case "add":
          $("#ActivatedMenu_AddPage").trigger("component.open", {
            my: "left top",
            at: "right top",
-           of: $link
+           of: element
          });
          break;
 
-    case "delete-page": console.log("delete page");
+    case "delete": console.log("delete page");
          break;
 
     default: console.log(data.activator.href);
