@@ -35,7 +35,8 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
   before do
     allow(service_provisioner).to receive(:service).and_return(
       MetadataPresenter::Service.new(
-        'service_name' => 'acceptance-tests-date'
+        'service_name' => 'acceptance-tests-date',
+        'test_escaping' => "I don't know"
       )
     )
     allow(service_provisioner).to receive(:secret_key_base).and_return(
