@@ -344,6 +344,16 @@ class EditableGroupFieldComponent extends EditableComponentBase {
     });
     $node.addClass("EditableGroupFieldComponent");
   }
+
+  // Override get/set content only because we need to use data.legend instead of data.label
+  get content() {
+    return JSON.stringify(this.data);
+  }
+
+  set content(elements) {
+    this.data.legend = elements.label.content;
+    this.data.hint = elements.hint.content;
+  }
 }
 
 
@@ -791,6 +801,7 @@ function editableComponent($node, config) {
       break;
     case "date":
       klass = EditableGroupFieldComponent;
+      break;
     case "radios":
     case "checkboxes":
       klass = EditableCollectionFieldComponent;
