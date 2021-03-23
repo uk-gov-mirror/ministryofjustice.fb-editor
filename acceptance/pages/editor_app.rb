@@ -17,7 +17,7 @@ class EditorApp < SitePrism::Page
   element :login_continue_button, :button, 'Continue'
 
   element :service_name, '#form-navigation-heading'
-  element :name_field, :field, 'What is the name of this form?'
+  element :name_field, :field, 'Give your form a name'
   element :create_service_button, :button, 'Create a new form'
 
   element :pages_link, :link, 'Pages'
@@ -30,7 +30,7 @@ class EditorApp < SitePrism::Page
   element :submission_settings_link, :link, 'Submission settings'
   element :send_by_email_link, :link, 'Send by email'
 
-  element :page_url_field, :field, 'The page’s relative url - it must not contain any spaces', visible: false
+  element :page_url_field, :field, 'What will be the URL for this page?'
   element :new_page_form, '#new_page', visible: false
 
   element :add_page, :button, 'Add page'
