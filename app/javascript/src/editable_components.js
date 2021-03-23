@@ -791,6 +791,7 @@ function editableComponent($node, config) {
       break;
     case "date":
       klass = EditableGroupFieldComponent;
+      break;
     case "radios":
     case "checkboxes":
       klass = EditableCollectionFieldComponent;
