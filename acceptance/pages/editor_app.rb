@@ -17,7 +17,7 @@ class EditorApp < SitePrism::Page
   element :login_continue_button, :button, 'Continue'
 
   element :service_name, '#form-navigation-heading'
-  element :name_field, :field, 'What is the name of this form?'
+  element :name_field, :field, 'Give your form a name'
   element :create_service_button, :button, 'Create a new form'
 
   element :pages_link, :link, 'Pages'
