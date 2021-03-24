@@ -96,4 +96,66 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
       cloud_platform.post_publishing
     end
   end
+
+  describe '#completed' do
+    let(:service_id) { '0da69306-cafd-4d32-bbee-fff98cac74ce' }
+    let(:service_provisioner) do
+      ::Publisher::ServiceProvisioner.new(
+        service_id: service_id,
+        platform_environment: platform_environment,
+        deployment_environment: deployment_environment
+      )
+    end
+
+    before do
+      allow(service_provisioner).to receive(:service_name).and_return('sam-or-frodo')
+      allow(service_provisioner).to receive(:hostname).and_return('sam-or-frodo.service.justice.gov.uk')
+    end
+
+    context 'publishing to live-production' do
+      let(:platform_environment) { 'live' }
+      let(:deployment_environment) { 'production' }
+
+      context 'when first published' do
+        context 'when there is a published for development' do
+          let!(:publish_service) do
+            create(:publish_service, :completed, :dev, service_id: service_id)
+          end
+
+          it 'sends a notification to the slack channel' do
+            expect(NotificationService).to receive(:notify).with("sam-or-frodo has been published to formbuilder-services-live-production.\nsam-or-frodo.service.justice.gov.uk")
+            cloud_platform.completed
+          end
+        end
+
+        context 'when publish directly to live production' do
+          it 'sends a notification to the slack channel' do
+            expect(NotificationService).to receive(:notify).with("sam-or-frodo has been published to formbuilder-services-live-production.\nsam-or-frodo.service.justice.gov.uk")
+            cloud_platform.completed
+          end
+        end
+      end
+
+      context 'when not on first publish' do
+        let!(:publish_service) do
+          create(:publish_service, :completed, :production, service_id: service_id)
+        end
+
+        it 'does not send a notification to the slack channel' do
+          expect(NotificationService).not_to receive(:notify)
+          cloud_platform.completed
+        end
+      end
+    end
+
+    context 'when not live production' do
+      let(:platform_environment) { 'live' }
+      let(:deployment_environment) { 'dev' }
+
+      it 'does not send a notification to the slack channel' do
+        expect(NotificationService).not_to receive(:notify)
+        cloud_platform.completed
+      end
+    end
+  end
 end
