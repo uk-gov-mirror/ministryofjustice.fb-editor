@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'MetricsController', type: :request do
   describe 'GET /metrics' do
     before do
+      ActiveRecord::SessionStore::Session.delete_all
       get '/metrics'
     end
 
