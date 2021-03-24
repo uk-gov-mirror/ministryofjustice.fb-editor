@@ -69,10 +69,12 @@ function pageActionMenuSelection(event, data) {
   var element = data.original.element;
   var action = data.activator.data("action");
   switch(action) {
-    case "edit": console.log("edit page");
+    case "edit":
+         location.href = element.href;
          break;
 
-    case "preview": console.log("preview page");
+    case "preview":
+         window.open(element.href);
          break;
 
     case "add":
