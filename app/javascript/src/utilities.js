@@ -99,5 +99,59 @@ function uniqueString(str) {
   return str + Date.now() + String(Math.random()).replace(".","");
 }
 
+
+/* Utility funciton
+ * Return the fragment identifier value from a URL.
+ * Intended for use on an href value rather than document
+ * location, which can use location.hash.
+ * e.g. pass in
+ * "http://foo.com#something" or
+ * "http://foo.com#something?else=here"
+ * and get "something" in either case.
+ **/
+function findFragmentIdentifier(url) {
+  return url.replace(/^.*#(.*?)(?:(\?).*)?$/, "$1");
+}
+
+
+/* Gets value from <meta /> tag
+ **/
+function meta(name) {
+  var meta = document.querySelector('meta[name=' + name + ']');
+  return meta && meta.content;
+}
+
+
+/* Send POST request with token.
+ * Can be used for sending Rails style delete links.
+ * e.g. post('/path/to/some/resource', { _method: 'delete' });
+ **/
+function post(url, data) {
+  var param = meta("csrf-param");
+  var token = meta("csrf-token");
+  var form = document.createElement("form");
+  var params = {};
+
+  params = mergeObjects(params, data);
+  params[param] = token;
+
+  form.setAttribute("action", url);
+  form.setAttribute("method", "post");
+  document.body.appendChild(form);
+
+  // Add params.
+  for(var param in params) {
+    if(params.hasOwnProperty(param)) {
+      let input = document.createElement("input");
+      input.setAttribute("type", "hidden");
+      input.setAttribute("name", param);
+      input.setAttribute("value", params[param]);
+      form.appendChild(input);
+    }
+  }
+  form.submit();
+}
+
+
 // Make available for importing.
-export { mergeObjects, createElement, safelyActivateFunction, uniqueString };
+export { mergeObjects, createElement, safelyActivateFunction, uniqueString, findFragmentIdentifier, meta, post };

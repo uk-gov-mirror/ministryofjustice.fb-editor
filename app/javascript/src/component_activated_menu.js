@@ -104,19 +104,22 @@ ActivatedMenu.bindMenuEventHandlers = function() {
   // to activate on menu item selection.
   if(this.config.selection_event) {
     let component = this;
-    let selection_event = component.config.selection_event;
     component.$node.on("menuselect", function(event, ui) {
-      $(document).trigger(selection_event, {
+      var e = event.originalEvent;
+
+      if(component.config.preventDefault) {
+         e.preventDefault();
+      }
+
+      $(document).trigger(component.config.selection_event, {
         activator: ui.item,
         menu: event.currentTarget,
-        component: component
+        component: component,
+        original: {
+          element: e.target,
+          event: e
+        }
       });
-
-      // If link and link only has fragment identifier as href value,
-      // prevent default assuming code will handle the action.
-      if(event.currentTarget.nodeName.toUpperCase() == "A" && event.currentTarget.match(/^#[\w\d-]*$/)) {
-        event.preventDefault();
-      }
     });
   }
 }

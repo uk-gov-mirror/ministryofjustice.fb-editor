@@ -5,7 +5,7 @@
 
 <h1 class="govuk-heading-xl"><%= t('pages.form') %></h1>
 
-<div class="form-overview">
+<div id="form-overview">
   <% service.pages.each do |page| %>
     <div class="form-step">
 
@@ -19,19 +19,20 @@
       <ul class="govuk-navigation component-activated-menu"
           data-activator-text="<%= t('pages.actions') %>"
           data-activator-classname="form-step_button"
-          data-document-event="FormStepContextMenuSelection">
-        <li>
+          data-component="PageActionMenu"
+          data-page-heading="<%= flow_thumbnail_heading(page) %>">
+        <li data-action="edit">
           <%= link_to t('actions.edit_page'),
           edit_page_path(service.service_id, page.uuid) %>
         </li>
-        <li>
+        <li data-action="preview">
           <%= link_to t('actions.preview_page'),
           File.join(preview_service_path(service.service_id), page.url),
           target: '_blank' %>
         </li>
-        <li><a href="#add-page-here">Add page here</a></li>
-        <li>
-          <%= link_to t('actions.delete_page'), page_path(service.service_id, page.uuid), method: :delete, class: 'destructive', data: { confirm: 'Are you sure?' } %>
+        <li data-action="add"><a href="#add-page-here">Add page here</a></li>
+        <li data-action="delete">
+          <%= link_to t('actions.delete_page'), page_path(service.service_id, page.uuid), method: :delete, class: 'destructive delete' %>
         </li>
       </ul>
 
@@ -44,7 +45,7 @@
       data-activated-menu-container-id="ActivatedMenu_AddPage"
       data-activator-classname="form-overview_button"
       data-activator-text="<%= t('pages.create') %>"
-      data-document-event="AddPageTypeMenuSelection">
+      data-component="PageAdditionMenu">
     <li>
       <span>Single question page</span>
       <ul class="govuk-navigation">
@@ -82,7 +83,8 @@
   <div class="component-dialog-form"
        id="new-page-create-dialog"
        data-activator-text="<%= t('pages.create') %>"
-       data-cancel-text="<%= t('pages.cancel') %>">
+       data-cancel-text="<%= t('pages.cancel') %>"
+       data-component="PageCreateDialog">
     <%= form_for(@page_creation, as: :page, url: pages_path) do |f| %>
       <%= f.hidden_field :page_type, value: f.object.page_type.nil? ? 'singlequestion' : f.object.page_type  %>
       <%= f.hidden_field :component_type, value: f.object.component_type.nil? ? 'text' : f.object.component_type %>
@@ -97,4 +99,6 @@
     <% end %>
   </div>
 
+  <%= render partial: 'partials/template_confirmation_dialog' %>
+  <%= render partial: 'partials/template_confirmation_dialog_delete' %>
 </div>

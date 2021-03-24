@@ -49,25 +49,6 @@ html {
 }
 
 
-/* Editable components
- * ------------------- */
-.EditableContent,
-.EditableElement {
-  &:focus,
-  &.active {
-    outline: $govuk-focus-width solid $govuk-focus-colour;
-  }
-}
-
-.EditableCollectionFieldComponent,
-.EditableTextFieldComponent,
-.EditableTextareaFieldComponent {
-  :disabled {
-    background-color: govuk-colour("white");
-  }
-}
-
-
 /* FB-Editor styles
  * ---------------- */
 .fb-editable {
@@ -219,21 +200,12 @@ html {
 /* Navigation: Pages
  * URLs: /services/.../edit
  * ------------------------ */
-.form-overview {
-  display: inline-flex;
-  position: relative;
-
-  .govuk-button {
-    display: none; // JS injected element, not required.
-  }
-}
-
 .form-overview_button {
   // This element is injected by JS
   @include button_type_link;
   opacity: 1;
   position: absolute;
-  right: -113px;
+  right: -118px;
   top: calc(50% - 30px);
 
   &:after {
@@ -324,6 +296,15 @@ html {
     .body {
       display: none;
     }
+  }
+}
+
+#form-overview {
+  display: inline-flex;
+  position: relative;
+
+  .govuk-button {
+    display: none; // JS injected element, not required.
   }
 }
 

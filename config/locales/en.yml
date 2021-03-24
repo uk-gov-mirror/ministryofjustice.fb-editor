@@ -10,10 +10,12 @@ en:
     button_cancel: 'Cancel'
     button_delete: 'Delete'
     button_delete_option: 'Delete option'
+    button_delete_page: 'Delete page'
     button_ok: 'Ok'
     heading: General heading here
+    heading_delete: Delete \"#{label}\"?
+    heading_delete_option: Delete the option \"#{option label}\"?
     message: General message here
-    heading_delete: 'Delete the option "{option label}"?'
     message_delete: 'This cannot be undone'
   header:
     service_name: "MoJ Forms"

@@ -1,10 +1,10 @@
 require 'capybara/rspec'
 require 'selenium/webdriver'
 require 'site_prism'
-require 'metadata_presenter'
 require 'dotenv'
 Dotenv.load('.env.acceptance_tests')
 require 'rails/all'
+require 'metadata_presenter'
 
 Dir[File.join('acceptance', 'pages', '*')].each { |f| require File.expand_path(f) }
 Dir[File.join('acceptance', 'support', '*')].each { |f| require File.expand_path(f) }
