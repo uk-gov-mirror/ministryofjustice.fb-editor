@@ -106,6 +106,11 @@ ActivatedMenu.bindMenuEventHandlers = function() {
     let component = this;
     component.$node.on("menuselect", function(event, ui) {
       var e = event.originalEvent;
+
+      if(component.config.preventDefault) {
+         e.preventDefault();
+      }
+
       $(document).trigger(component.config.selection_event, {
         activator: ui.item,
         menu: event.currentTarget,
@@ -115,12 +120,6 @@ ActivatedMenu.bindMenuEventHandlers = function() {
           event: e
         }
       });
-
-      // If link and link only has fragment identifier as href value,
-      // prevent default assuming code will handle the action.
-      if(event.currentTarget.nodeName.toUpperCase() == "A" && event.currentTarget.match(/^#[\w\d-]*$/)) {
-        event.preventDefault();
-      }
     });
   }
 }
