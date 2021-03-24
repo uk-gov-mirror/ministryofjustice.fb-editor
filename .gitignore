@@ -40,3 +40,6 @@ yarn-debug.log*
 
 # Visual Studio Code #
 **/.vscode/
+
+# macOS finder #
+.DS_Store
