@@ -71,6 +71,7 @@ class EditorApp < SitePrism::Page
   element :three_dots_button, '.form-step_button'
   element :preview_page_link, :link, 'Preview page'
   element :delete_page_link, :link, 'Delete page...'
+  element :delete_page_modal_button, :button, 'Delete page'
 
   def edit_service_link(service_name)
     find("#service-#{service_name.parameterize} .edit")

@@ -37,9 +37,8 @@ feature 'Deleting page' do
   end
 
   def when_I_delete_the_page
-    accept_confirm do
-      editor.delete_page_link.click
-    end
+    editor.delete_page_link.click
+    editor.delete_page_modal_button.click
   end
 
   def then_I_should_still_see_the_start_page
