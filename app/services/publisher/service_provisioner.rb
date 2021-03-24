@@ -31,6 +31,10 @@ class Publisher
       service.service_slug
     end
 
+    def service_name
+      service.service_name
+    end
+
     def namespace
       Rails.application.config.platform_environments[:common][:namespace] % {
         platform_environment: platform_environment,
@@ -105,12 +109,16 @@ class Publisher
     end
 
     def service_sentry_dsn
-      if platform_deployment == LIVE_PRODUCTION
+      if live_production?
         ENV["SERVICE_SENTRY_DSN_LIVE"]
       else
         # test-dev, test-production and live-dev
         ENV["SERVICE_SENTRY_DSN_TEST"]
       end
+    end
+
+    def live_production?
+      platform_deployment == LIVE_PRODUCTION
     end
 
     def config_map
