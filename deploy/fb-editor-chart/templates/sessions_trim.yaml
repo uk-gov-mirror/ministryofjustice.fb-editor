@@ -5,10 +5,13 @@ metadata:
   namespace: formbuilder-saas-{{ .Values.environmentName }}
 spec:
   schedule: "*/30 * * * *"
-  successfulJobsHistoryLimit: 0
+  successfulJobsHistoryLimit: 1
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            sessions-trim: cronjob
         spec:
           containers:
           - name: "fb-editor-workers-{{ .Values.environmentName }}"
