@@ -19,7 +19,8 @@
       <ul class="govuk-navigation component-activated-menu"
           data-activator-text="<%= t('pages.actions') %>"
           data-activator-classname="form-step_button"
-          data-component="PageActionMenu">
+          data-component="PageActionMenu"
+          data-page-heading="<%= flow_thumbnail_heading(page) %>">
         <li data-action="edit">
           <%= link_to t('actions.edit_page'),
           edit_page_path(service.service_id, page.uuid) %>

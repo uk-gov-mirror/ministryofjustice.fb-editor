@@ -29,16 +29,16 @@ class FormOverviewPage extends DefaultPage {
     let $document = $(document);
     // Bind document event listeners to control functionality not specific to a single component or where
     // a component can be activated by more than one element (prevents complicated multiple element binding/handling).
-    $document.on("PageActionMenuSelection", pageActionMenuSelection);
-    $document.on("PageAdditionMenuSelection", pageAdditionMenuSelection);
+    $document.on("PageActionMenuSelection", pageActionMenuSelection.bind(this) );
+    $document.on("PageAdditionMenuSelection", pageAdditionMenuSelection.bind(this) );
 
     // Create dialog for handling new page input and error reporting.
-    new PageCreateDialog($("[data-component='PageCreateDialog']"));
+    new PageCreateDialog(this, $("[data-component='PageCreateDialog']"));
 
 
     // Create the context menus for each page thumbnail.
     $("[data-component='PageActionMenu']").each((i, el) => {
-      new PageActionMenu($(el), {
+      new PageActionMenu(this, $(el), {
         selection_event: "PageActionMenuSelection",
         preventDefault: true, // Stops the default action of triggering element.
         menu: {
@@ -49,7 +49,7 @@ class FormOverviewPage extends DefaultPage {
 
     // Create the menu for Add Page functionality.
     $("[data-component='PageAdditionMenu']").each((i, el) => {
-      new PageActionMenu($(el), {
+      new PageActionMenu(this, $(el), {
         selection_event: "PageAdditionMenuSelection",
         menu: {
           position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
@@ -66,7 +66,6 @@ class FormOverviewPage extends DefaultPage {
  * TODO: What are other actions?
  **/
 function pageActionMenuSelection(event, data) {
-  event.preventDefault();
   var element = data.original.element;
   var action = data.activator.data("action");
   switch(action) {
@@ -85,6 +84,13 @@ function pageActionMenuSelection(event, data) {
          break;
 
     case "delete": console.log("delete page");
+          this.dialog.content = {
+            heading: app.text.dialogs.heading_delete.replace(/#{label}/, data.component.$node.data("page-heading")),
+            ok: app.text.dialogs.button_delete_option
+          };
+          this.dialog.confirm({}, function() {
+            console.log("Somehow delete the page");
+          });
          break;
 
     default: console.log(data.activator.href);
@@ -123,7 +129,7 @@ function pageAdditionMenuSelection(event, data) {
  * Errors will also show here on page return.
  **/
 class PageCreateDialog {
-  constructor($node, config) {
+  constructor(page, $node, config) {
     var pageCreateDialog = this;
     var $form = $node.find("form");
     var $submit = $form.find(":submit");
@@ -164,7 +170,7 @@ class PageCreateDialog {
 /* Controls form step add/edit/delete/preview controls
  **/
 class PageActionMenu {
-  constructor($node, config) {
+  constructor(page, $node, config) {
     var conf = mergeObjects({
       activator_classname: $node.data("activator-classname"),
       container_id: $node.data("activated-menu-container-id"),
