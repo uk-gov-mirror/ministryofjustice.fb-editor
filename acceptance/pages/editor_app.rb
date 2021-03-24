@@ -62,7 +62,7 @@ class EditorApp < SitePrism::Page
 
   elements :question_heading, '.EditableElement'
   elements :all_hints, '.govuk-hint'
-  elements :editable_options, '.EditableCollectionItemComponent label'
+  elements :editable_options, '.EditableComponentCollectionItem label'
   element :question_hint, '.govuk-hint'
 
   elements :form_pages, '.form-step'

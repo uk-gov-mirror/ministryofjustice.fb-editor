@@ -88,7 +88,7 @@ feature 'Create page' do
 
   def then_I_should_see_a_validation_error_message_that_page_url_exists
     expect(editor.text).to include(
-      "Your answer for ‘The page’s relative url - it must not contain any spaces' is already used by another page. Please modify it."
+      "Your answer for ‘What will be the URL for this page?' is already used by another page. Please modify it"
     )
   end
 

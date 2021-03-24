@@ -1,6 +1,7 @@
 require 'capybara/rspec'
 require 'selenium/webdriver'
 require 'site_prism'
+require 'metadata_presenter'
 require 'dotenv'
 Dotenv.load('.env.acceptance_tests')
 require 'rails/all'
