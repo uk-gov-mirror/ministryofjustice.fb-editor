@@ -49,25 +49,6 @@ html {
 }
 
 
-/* Editable components
- * ------------------- */
-.EditableContent,
-.EditableElement {
-  &:focus,
-  &.active {
-    outline: $govuk-focus-width solid $govuk-focus-colour;
-  }
-}
-
-.EditableCollectionFieldComponent,
-.EditableTextFieldComponent,
-.EditableTextareaFieldComponent {
-  :disabled {
-    background-color: govuk-colour("white");
-  }
-}
-
-
 /* FB-Editor styles
  * ---------------- */
 .fb-editable {

@@ -86,11 +86,11 @@ function pageActionMenuSelection(event, data) {
          break;
 
     case "delete":
-          this.dialog.content = {
+          this.dialogDelete.content = {
             heading: app.text.dialogs.heading_delete.replace(/#{label}/, data.component.$node.data("page-heading")),
-            ok: app.text.dialogs.button_delete_option
+            ok: app.text.dialogs.button_delete_page
           };
-          this.dialog.confirm({}, function() {
+          this.dialogDelete.confirm({}, function() {
             post(element.href, { _method: "delete" });
           });
          break;
