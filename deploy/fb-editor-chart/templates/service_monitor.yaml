@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: "fb-editor-{{ .Values.environmentName }}"
+      app: "fb-editor-web-{{ .Values.environmentName }}"
   endpoints:
   - port: http
     interval: 15s
@@ -19,7 +19,7 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-      app: "fb-editor-{{ .Values.environmentName }}"
+      app: "fb-editor-web-{{ .Values.environmentName }}"
   policyTypes:
   - Ingress
   ingress:
