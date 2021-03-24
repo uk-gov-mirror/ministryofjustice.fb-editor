@@ -5,10 +5,10 @@
     <span class="govuk-details__summary-text" id="configure-<%= deployment_environment %>">Configure</span>
   </summary>
   <fieldset class="govuk-fieldset">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-      <h2 class="govuk-fieldset__heading">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+      <h3 class="govuk-fieldset__heading">
         <%= f.object.class.human_attribute_name :email_fieldset %>
-      </h2>
+      </h3>
     </legend>
 
     <div class="govuk-form-group <%= !f.object.errors[:service_email_output].empty? ? 'govuk-form-group--error' : '' %> ">
@@ -34,10 +34,10 @@
   </fieldset>
 
   <fieldset class="govuk-fieldset">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-      <h2 class="govuk-fieldset__heading">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+      <h3 class="govuk-fieldset__heading">
         <%= f.object.class.human_attribute_name :pdf_fieldset %>
-      </h2>
+      </h3>
     </legend>
 
     <a href="#" class="govuk-link">See sample PDF</a>
