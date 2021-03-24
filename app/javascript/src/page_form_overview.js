@@ -16,7 +16,7 @@
  **/
 
 
-import { mergeObjects } from './utilities';
+import { mergeObjects, post } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
 import { ActivatedDialog } from './component_activated_dialog';
 import { DefaultPage } from './page_default';
@@ -83,13 +83,13 @@ function pageActionMenuSelection(event, data) {
          });
          break;
 
-    case "delete": console.log("delete page");
+    case "delete":
           this.dialog.content = {
             heading: app.text.dialogs.heading_delete.replace(/#{label}/, data.component.$node.data("page-heading")),
             ok: app.text.dialogs.button_delete_option
           };
           this.dialog.confirm({}, function() {
-            console.log("Somehow delete the page");
+            post(element.href, { _method: "delete" });
           });
          break;
 
