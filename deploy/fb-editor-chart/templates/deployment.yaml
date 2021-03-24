@@ -102,6 +102,11 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: service_sentry_dsn_live
+          - name: SLACK_PUBLISH_WEBHOOK
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: slack_publish_webhook
       volumes:
         - name: tmp-files
           emptyDir: {}
@@ -205,6 +210,11 @@ spec:
               secretKeyRef:
                 name: fb-editor-secrets-{{ .Values.environmentName }}
                 key: service_sentry_dsn_live
+          - name: SLACK_PUBLISH_WEBHOOK
+            valueFrom:
+              secretKeyRef:
+                name: fb-editor-secrets-{{ .Values.environmentName }}
+                key: slack_publish_webhook
       volumes:
         - name: tmp-files
           emptyDir: {}
