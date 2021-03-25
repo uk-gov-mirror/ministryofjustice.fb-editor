@@ -121,3 +121,5 @@ en:
   time:
     formats:
       simple: '%d/%m/%Y %H:%M:%S'
+      date: '%d/%m/%Y'
+      time: '%H:%M:%S'
