@@ -73,8 +73,11 @@ en:
       description: 'Forms on Test can be shared with colleagues and protected by password. They will not be listed on search engines.'
       version: 'Version: Latest  -'
       by: 'by %{name}'
-    live: 'Live'
-    live_sub_heading: 'Live is where your form is hosted publicly when your service is running.'
+    live:
+      heading: 'Live site'
+      description: 'Forms on Live can be seen by anyone and can be listed on search engines if requested.'
+      version: 'Version: Latest  -'
+      by: 'by %{name}'
   services:
     heading: 'Your forms'
     edit: 'Edit'
