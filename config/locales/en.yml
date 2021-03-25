@@ -67,12 +67,12 @@ en:
         help: 'Sends the form data via email'
         configure_pdf_label: PDF attachment
   publish:
-    name: 'Publishing'
-    heading: 'Editor'
-    sub_heading: 'The Editor is where you are making changes. Only you and MOJ staff with the right permissions can access your form.'
-    version: 'Version: %{time}'
-    test: 'Test'
-    test_sub_heading: 'Test is where others can view your form and can also be used to ensure everything works before you launch your form publicly.'
+    heading: 'Publishing'
+    test:
+      heading: 'Test site'
+      description: 'Forms on Test can be shared with colleagues and protected by password. They will not be listed on search engines.'
+      version: 'Version: Latest  -'
+      by: 'by %{name}'
     live: 'Live'
     live_sub_heading: 'Live is where your form is hosted publicly when your service is running.'
   services:
