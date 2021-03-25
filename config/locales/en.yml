@@ -13,8 +13,8 @@ en:
     button_delete_page: 'Delete page'
     button_ok: 'Ok'
     heading: General heading here
-    heading_delete: Delete \"#{label}\"?
-    heading_delete_option: Delete the option \"#{option label}\"?
+    heading_delete: Delete \"%{label}\"?
+    heading_delete_option: Delete the option \"%{option label}\"?
     message: General message here
     message_delete: 'This cannot be undone'
   header:

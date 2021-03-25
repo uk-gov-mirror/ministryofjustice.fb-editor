@@ -93,7 +93,7 @@ function bindEditableContentHandlers($area) {
           // Currently not used but added for future option and consistency
           // with onItemAdd (provides an opportunity for clean up).
           PAGE.dialogDelete.content = {
-            heading: app.text.dialogs.heading_delete_option.replace(/#{option label}/, item._elements.label.$node.text()),
+            heading: app.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
             ok: app.text.dialogs.button_delete_option
           };
           PAGE.dialogDelete.confirm({}, function() {
