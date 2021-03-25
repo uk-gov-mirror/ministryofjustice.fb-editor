@@ -67,7 +67,7 @@ en:
         help: 'Sends the form data via email'
         configure_pdf_label: PDF attachment
   publish:
-    name: 'Publish'
+    name: 'Publishing'
     heading: 'Editor'
     sub_heading: 'The Editor is where you are making changes. Only you and MOJ staff with the right permissions can access your form.'
     version: 'Version: %{time}'
