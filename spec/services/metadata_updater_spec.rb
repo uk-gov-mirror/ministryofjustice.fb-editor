@@ -19,16 +19,16 @@ RSpec.describe MetadataUpdater do
 
   describe '#update' do
     let(:valid) { true }
+    let(:attributes) do
+      {
+        id: 'page.start',
+        service_id: service.service_id,
+        latest_metadata: service_metadata,
+      }.merge(attributes_to_update)
+    end
 
     context 'page attributes' do
       let(:page_url) { '/' }
-      let(:attributes) do
-        {
-          id: 'page.start',
-          service_id: service.service_id,
-          latest_metadata: service_metadata,
-        }.merge(attributes_to_update)
-      end
       let(:attributes_to_update) do
         {
           section_heading: 'Some important section heading',
@@ -59,6 +59,185 @@ RSpec.describe MetadataUpdater do
             updater.update, 'service.base'
           )
         ).to be(valid)
+      end
+    end
+
+    context 'when updating attributes and adding new components' do
+      context 'when there are no components to the page' do
+        let(:page_url) { '/confirmation' }
+        let(:expected_created_component) do
+          ActiveSupport::HashWithIndifferentAccess.new({
+            '_id': 'confirmation_content_1',
+            '_type': 'content',
+            'html': '[Optional content]',
+            'name': 'confirmation_content_1',
+          })
+        end
+        let(:expected_updated_page) do
+          {
+            '_id'     => 'page._confirmation',
+            '_type'   => 'page.confirmation',
+            'body'    => "You'll receive a confirmation email",
+            'heading' => 'Complaint sent',
+            'lede'    => 'Updated lede',
+            'url'     => '/confirmation',
+            'components' => [expected_created_component]
+          }
+        end
+        let(:updated_metadata) do
+          metadata = service_metadata.deep_dup
+          metadata['pages'][-1] = metadata['pages'][-1].merge(expected_updated_page)
+          metadata
+        end
+        let(:attributes) do
+          ActiveSupport::HashWithIndifferentAccess.new({
+            id: 'page._confirmation',
+            service_id: service.service_id,
+            latest_metadata: service_metadata,
+            actions: { add_component: 'content' },
+            lede: 'Updated lede'
+          })
+        end
+
+        it 'updates the page metadata' do
+          updater.update['pages'][-1]
+          expect(
+            updater.component_added.to_h.stringify_keys
+          ).to eq(expected_created_component)
+        end
+      end
+
+      context 'when there are existing components to the page' do
+        context 'when add a new component type' do
+          let(:new_component) do
+            {
+              '_id' => 'star-wars-knowledge_number_1',
+              '_type' => 'number',
+              'errors' => {},
+              'hint' => '',
+              'label' => 'Question',
+              'name' => 'star-wars-knowledge_number_1',
+              'validation' => {'number' => true, 'required' => true},
+              'width_class_input' => '10'
+            }
+          end
+          let(:updated_metadata) do
+            metadata = service_metadata.deep_dup
+            page = metadata['pages'].find do |page|
+              page['url'] == '/star-wars-knowledge'
+            end
+
+            page['components'] = page['components'].push(new_component)
+            metadata
+          end
+          let(:attributes) do
+            ActiveSupport::HashWithIndifferentAccess.new({
+              service_id: service.service_id,
+              latest_metadata: service_metadata,
+              id: 'page.star-wars-knowledge',
+              actions: { add_component: 'number' }
+            })
+          end
+
+          it 'add new component' do
+            updater.update['pages']
+            expect(
+              updater.component_added.to_h.stringify_keys
+            ).to eq(new_component)
+          end
+        end
+
+        context 'when add existing input components' do
+          let(:new_component) do
+            {
+              '_id' => 'star-wars-knowledge_text_2',
+              '_type' => 'text',
+              'errors' => {},
+              'hint' => '',
+              'label' => 'Question',
+              'name' => 'star-wars-knowledge_text_2',
+              'validation' => { 'required' => true }
+            }
+          end
+          let(:updated_metadata) do
+            metadata = service_metadata.deep_dup
+            page = metadata['pages'].find do |page|
+              page['url'] == '/star-wars-knowledge'
+            end
+
+            page['components'] = page['components'].push(new_component)
+            metadata
+          end
+          let(:attributes) do
+            ActiveSupport::HashWithIndifferentAccess.new({
+              service_id: service.service_id,
+              latest_metadata: service_metadata,
+              id: 'page.star-wars-knowledge',
+              actions: { add_component: 'text' }
+            })
+          end
+
+          it 'add new component' do
+            updater.update['pages']
+            expect(
+              updater.component_added.to_h.stringify_keys
+            ).to eq(new_component)
+          end
+        end
+
+        context 'when add existing collection component' do
+          let(:new_component) do
+            {
+              '_id' => 'star-wars-knowledge_radios_2',
+              '_type' => 'radios',
+              'errors' => {},
+              'hint' => '',
+              'items' => [
+                {
+                  '_id' => 'star-wars-knowledge_radios_2_item_1',
+                  '_type' => 'radio',
+                  'hint' => '',
+                  'label' => 'Option',
+                  'value' => 'value-1'
+                },
+                {
+                  '_id'   => 'star-wars-knowledge_radios_2_item_2',
+                  '_type' => 'radio',
+                  'hint'  => '',
+                  'label' => 'Option',
+                  'value' => 'value-2'
+                }
+              ],
+              'name' => 'star-wars-knowledge_radios_2',
+              'legend' => 'Question',
+              'validation' => { 'required' => true }
+            }
+          end
+          let(:updated_metadata) do
+            metadata = service_metadata.deep_dup
+            page = metadata['pages'].find do |page|
+              page['url'] == '/star-wars-knowledge'
+            end
+
+            page['components'] = page['components'].push(new_component)
+            metadata
+          end
+          let(:attributes) do
+            ActiveSupport::HashWithIndifferentAccess.new({
+              service_id: service.service_id,
+              latest_metadata: service_metadata,
+              id: 'page.star-wars-knowledge',
+              actions: { add_component: 'radios' }
+            })
+          end
+
+          it 'add new component' do
+            updater.update['pages']
+            expect(
+              updater.component_added.to_h.stringify_keys
+            ).to eq(new_component)
+          end
+        end
       end
     end
   end

@@ -57,5 +57,17 @@ RSpec.describe PagesController do
         })
       end
     end
+
+    context 'when adding a new component' do
+      let(:params) do
+        { add_component: 'radios' }
+      end
+
+      it 'returns actions to add a component' do
+        expect(controller.page_update_params).to include(
+          'actions' => { 'add_component' => 'radios' }
+        )
+      end
+    end
   end
 end
