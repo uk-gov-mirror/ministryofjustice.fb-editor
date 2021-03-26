@@ -80,7 +80,7 @@ function createElement(tag, text, classes) {
  * if you pass other arguments they will be passed on to your function.
  **/
 function safelyActivateFunction(func, ...args) {
-  if(typeof(func) === 'function' || func instanceof Function) {
+  if(isFunction(func)) {
     if(args) {
       func.apply(this, args);
     }
@@ -88,6 +88,13 @@ function safelyActivateFunction(func, ...args) {
       func();
     }
   }
+}
+
+
+/* Expects a function but returns true/false depending on valid passed argument.
+ **/
+function isFunction(func) {
+  return typeof(func) === 'function' || func instanceof Function;
 }
 
 /* Generates randomised number to add onto a passed string.
@@ -154,4 +161,4 @@ function post(url, data) {
 
 
 // Make available for importing.
-export { mergeObjects, createElement, safelyActivateFunction, uniqueString, findFragmentIdentifier, meta, post };
+export { mergeObjects, createElement, safelyActivateFunction, isFunction, uniqueString, findFragmentIdentifier, meta, post };

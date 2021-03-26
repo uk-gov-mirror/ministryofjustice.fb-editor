@@ -11,26 +11,28 @@
   </div>
 </div>
 
-<div class="govuk-form-group <%= !f.object.errors[:username].empty? ? 'govuk-form-group--error' : '' %>">
-  <% f.object.errors[:username].each do |message| %>
-    <span class="govuk-error-message"><%= message %></span>
-  <% end %>
-   <%= f.label :username, class: 'govuk-label' %>
-   <%= f.text_field :username, value: f.object.username || f.object.service_configuration(
-       name: ServiceConfiguration::BASIC_AUTH_USER,
-       deployment_environment: deployment_environment
-     ),
-     class: 'govuk-input' %>
-</div>
+<fieldset class="govuk-fieldset">
+  <div class="govuk-form-group <%= !f.object.errors[:username].empty? ? 'govuk-form-group--error' : '' %>">
+    <% f.object.errors[:username].each do |message| %>
+      <span class="govuk-error-message"><%= message %></span>
+    <% end %>
+    <%= f.label :username, class: 'govuk-label' %>
+    <%= f.text_field :username, value: f.object.username || f.object.service_configuration(
+         name: ServiceConfiguration::BASIC_AUTH_USER,
+         deployment_environment: deployment_environment
+        ),
+        class: 'govuk-input' %>
+  </div>
 
-<div class="govuk-form-group <%= !f.object.errors[:password].empty? ? 'govuk-form-group--error' : '' %>">
-  <% f.object.errors[:password].each do |message| %>
-    <span class="govuk-error-message"><%= message %></span>
-  <% end %>
-   <%= f.label :password, class: 'govuk-label' %>
-   <%= f.password_field :password, value: f.object.password || f.object.service_configuration(
-       name: ServiceConfiguration::BASIC_AUTH_PASS,
-       deployment_environment: deployment_environment
-     ),
-     class: 'govuk-input' %>
-</div>
+  <div class="govuk-form-group <%= !f.object.errors[:password].empty? ? 'govuk-form-group--error' : '' %>">
+    <% f.object.errors[:password].each do |message| %>
+      <span class="govuk-error-message"><%= message %></span>
+    <% end %>
+    <%= f.label :password, class: 'govuk-label' %>
+    <%= f.password_field :password, value: f.object.password || f.object.service_configuration(
+        name: ServiceConfiguration::BASIC_AUTH_PASS,
+        deployment_environment: deployment_environment
+      ),
+      class: 'govuk-input' %>
+  </div>
+</fieldset>
