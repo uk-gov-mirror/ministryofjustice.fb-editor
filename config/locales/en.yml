@@ -67,13 +67,20 @@ en:
         help: 'Sends the form data via email'
         configure_pdf_label: PDF attachment
   publish:
+    name: 'Publishing'
     heading: 'Publishing'
+    dialog:
+      heading: Publish to Test?
+      option_1: Allow anyone with the link to view
+      option_2: Set a username and password
     test:
+      button: Publish to Test
       heading: 'Test site'
       description: 'Forms on Test can be shared with colleagues and protected by password. They will not be listed on search engines.'
       version: 'Version: Latest  -'
       by: 'by %{name}'
     live:
+      button: Publish to Live
       heading: 'Live site'
       description: 'Forms on Live can be seen by anyone and can be listed on search engines if requested.'
       version: 'Version: Latest  -'
@@ -107,7 +114,8 @@ en:
       page_creation:
         page_url: "What will be the URL for this page?"
       publish_service_creation:
-        require_authentication: 'Require username & password for access'
+        allow_anonymous: 'Allow anyone with the link to view'
+        require_authentication: 'Set a username and password'
         username: 'Set username'
         password: 'Set password'
     errors:

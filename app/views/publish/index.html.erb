@@ -16,10 +16,11 @@
       <%= PublishServicePresenter.hostname_for(deployment_environment: 'dev', view: self) %>
     </span>
 
-    <%= form_for(@publish_service_creation_dev, url: publish_index_path(service.service_id)) do |f| %>
+    <%= form_for(@publish_service_creation_dev,
+        url: publish_index_path(service.service_id),
+        html: { id: 'publish-form-dev', class: 'publish-form' }) do |f| %>
       <%= render 'form', f: f, deployment_environment: 'dev' %>
-
-      <%= f.submit t('actions.publish_to_test'), class: 'govuk-button editor-button' %>
+      <%= f.submit t('actions.publish_to_test'), class: 'govuk-button editor-button fb-govuk-button' %>
     <% end %>
   </dd>
 
@@ -37,10 +38,11 @@
       <%= PublishServicePresenter.hostname_for(deployment_environment: 'production', view: self) %>
     </span>
 
-    <%= form_for(@publish_service_creation_production, url: publish_index_path(service.service_id)) do |f| %>
+    <%= form_for(@publish_service_creation_production,
+        url: publish_index_path(service.service_id),
+        html: { id: 'publish-form-live', class: 'publish-form' }) do |f| %>
       <%= render 'form', f: f, deployment_environment: 'production' %>
-
-      <%= f.submit t('actions.publish_to_live'), class: 'govuk-button editor-button' %>
+      <%= f.submit t('actions.publish_to_live'), class: 'govuk-button editor-button fb-govuk-button' %>
     <% end %>
   </dd>
 </dl>
