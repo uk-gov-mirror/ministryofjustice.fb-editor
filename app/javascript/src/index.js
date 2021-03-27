@@ -24,7 +24,8 @@ $(document).ready(function() {
     break;
 
     case "PublishController#index":
-         new PublishController(app.page.action);
+    case "PublishController#create":
+         new PublishController(app);
     break;
 
     default:

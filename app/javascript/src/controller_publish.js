@@ -17,15 +17,17 @@
 
 
 import { mergeObjects, safelyActivateFunction, isFunction, post } from './utilities';
+import { ActivatedFormDialog } from './component_activated_form_dialog';
 import { DefaultPage } from './page_default';
 
 
 class PublishController extends DefaultPage {
-  constructor(action) {
+  constructor(app) {
     super();
 
-    switch(action) {
+    switch(app.page.action) {
       case "index":
+      case "create":
         PublishController.index.call(this);
         break;
     }
@@ -42,7 +44,13 @@ PublishController.index = function() {
     var $publishForm = $(el);
     var $content = $publishForm.find("fieldset");
     var $radios = $publishForm.find("input[type=radio]");
-    new contentVisibilityController($content, $radios);
+    var $submit = $publishForm.find("input[type=submit]");
+    new ContentVisibilityController($content, $radios);
+    new ActivatedFormDialog($publishForm, {
+      cancelText: app.text.dialogs.button_cancel,
+      okText: $submit.val(),
+      activator: $submit
+    });
   });
 }
 
@@ -56,7 +64,7 @@ PublishController.index = function() {
  *         visibleOnLoad: Function || Boolean // Value should be true/false but you can pass a function to return such a value.
  *       }
  **/
-class contentVisibilityController {
+class ContentVisibilityController {
   constructor($content, $radios) {
     // Set listener.
     $radios.eq(0).on("change", this.toggle.bind(this));
