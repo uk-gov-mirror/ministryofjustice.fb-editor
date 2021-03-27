@@ -26,6 +26,7 @@ class ActivatedFormDialog {
     var $errors = $form.find(".govuk-error-message");
 
     new ActivatedDialog($form, {
+      autoOpen: $errors.length ? true: false,
       cancelText: config.cancelText,
       okText: config.activator.val(),
       activator: config.activator,
