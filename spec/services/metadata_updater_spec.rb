@@ -63,7 +63,8 @@ RSpec.describe MetadataUpdater do
     end
 
     context 'when updating attributes and adding new components' do
-      context 'when there are no components to the page' do
+      context 'when there are no components on the page' do
+        let(:fixture) { metadata_fixture(:no_component_page) }
         let(:page_url) { '/confirmation' }
         let(:expected_created_component) do
           ActiveSupport::HashWithIndifferentAccess.new({
@@ -85,7 +86,7 @@ RSpec.describe MetadataUpdater do
           }
         end
         let(:updated_metadata) do
-          metadata = service_metadata.deep_dup
+          metadata = fixture.deep_dup
           metadata['pages'][-1] = metadata['pages'][-1].merge(expected_updated_page)
           metadata
         end
@@ -93,7 +94,7 @@ RSpec.describe MetadataUpdater do
           ActiveSupport::HashWithIndifferentAccess.new({
             id: 'page._confirmation',
             service_id: service.service_id,
-            latest_metadata: service_metadata,
+            latest_metadata: fixture,
             actions: { add_component: 'content' },
             lede: 'Updated lede'
           })
