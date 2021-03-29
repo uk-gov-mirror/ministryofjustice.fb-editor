@@ -73,6 +73,9 @@ en:
       heading: Publish to Test?
       option_1: Allow anyone with the link to view
       option_2: Set a username and password
+      alert_heading: Your form is being published
+      alert_text: 'It may take up to 15 minutes for your link to work.<br />Future updates will happen straight away.'
+      alert_button: I understand
     test:
       button: Publish to Test
       heading: 'Test site'

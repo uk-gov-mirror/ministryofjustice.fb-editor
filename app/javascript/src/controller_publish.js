@@ -26,9 +26,11 @@ class PublishController extends DefaultPage {
     super();
 
     switch(app.page.action) {
-      case "index":
       case "create":
-        PublishController.index.call(this);
+        PublishController.create.call(this, app);
+        // Allow fallthrough to share index action as well.
+      case "index":
+        PublishController.index.call(this, app);
         break;
     }
   }
@@ -37,7 +39,8 @@ class PublishController extends DefaultPage {
 
 /* Setup for the Index action
  **/
-PublishController.index = function() {
+	PublishController.index = function(app) {
+  var controller = this;
 
   // Add show/hide to credential forms.
   $(".publish-form").each(function(i, el) {
@@ -52,6 +55,20 @@ PublishController.index = function() {
       activator: $submit
     });
   });
+}
+
+
+/* Set up for the Create action
+ **/
+PublishController.create = function(app) {
+  // TODO: If no errors...
+  this.dialog.content = {
+    ok: app.text.dialogs.button_publish,
+    heading: app.text.dialogs.heading_publish,
+    message: app.text.dialogs.message_publish
+  };
+
+  this.dialog.open();
 }
 
 

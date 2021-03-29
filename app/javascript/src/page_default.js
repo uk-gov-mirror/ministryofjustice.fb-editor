@@ -16,20 +16,34 @@
  **/
 
 
-import { ActivatedDialog } from './component_activated_dialog';
+import { Dialog } from './component_dialog';
 import { ConfirmationDialog } from './component_confirmation_dialog';
 
 
 class DefaultPage {
   constructor() {
-    this.dialog = createConfirmationDialog.call(this, "ConfirmationDialog");
-    this.dialogDelete = createConfirmationDialog.call(this, "ConfirmationDialogDelete");
+    this.dialog = createDialog.call(this);
+    this.dialogDelete = createConfirmationDialog.call(this);
   }
 }
 
 
-function createConfirmationDialog(template) {
-  var $template = $("[data-component-template='" + template + "']");
+function createDialog() {
+  var $template = $("[data-component-template=Dialog]");
+  var $node = $($template.text());
+  return new Dialog($node, {
+    autoOpen: false,
+    okText: $template.data("text-ok"),
+    classes: {
+      "ui-button": "fb-govuk-button",
+      "ui-dialog": $template.data("classes")
+    }
+  });
+}
+
+
+function createConfirmationDialog() {
+  var $template = $("[data-component-template=ConfirmationDialogDelete]");
   var $node = $($template.text());
   return new ConfirmationDialog($node, {
     autoOpen: false,
