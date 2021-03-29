@@ -1,5 +1,5 @@
 /**
- * Confirmation Dialog Component
+ * Dialog Confirmation Component
  * ----------------------------------------------------
  * Description:
  * Enhances jQueryUI Dialog component.
@@ -29,35 +29,34 @@ import { Dialog } from './component_dialog';
  * @$node  (jQuery node) Element found in template that should be enhanced.
  * @config (Object) Configurable key/value pairs.
  **/
-class ConfirmationDialog extends Dialog {
+class DialogConfirmation extends Dialog {
   constructor($node, config) {
-    super($node, mergeObjects( {
+    super($node, mergeObjects( config, {
       buttons: [
       {
         text: config.okText,
         click: () => {
-          safelyActivateFunction(instance._action);
-          instance.$node.dialog("close");
+          safelyActivateFunction($node.data("instance")._action);
+          $node.dialog("close");
         }
       },
       {
         text: config.cancelText,
         click: () => {
+          var instance = $node.data("instance");
           instance.content = instance._defaultText;
-          instance.$node.dialog("close");
+          $node.dialog("close");
         }
       }]
-    }, config));
-
-    var instance = this;
+    }));
 
     if($node && $node.length) {
       $node.parents(".ui-dialog").removeClass("Dialog");
-      $node.parents(".ui-dialog").addClass("ConfirmationDialog");
+      $node.parents(".ui-dialog").addClass("DialogConfirmation");
       $node.data("instance", this);
 
-      ConfirmationDialog.setElements.call(this, $node);
-      ConfirmationDialog.setDefaultText.call(this, $node);
+      DialogConfirmation.setElements.call(this, $node);
+      DialogConfirmation.setDefaultText.call(this, $node);
     }
 
     this._config = config;
@@ -91,9 +90,10 @@ class ConfirmationDialog extends Dialog {
 /* Private
  * Finds required elements to populate this._elements property.
  **/
-ConfirmationDialog.setElements = function($node) {
+DialogConfirmation.setElements = function($node) {
   var elements = {};
-  var $buttons = $node.parents(".ConfirmationDialog").find(".ui-dialog-buttonset button");
+  var $buttons = $node.parents(".DialogConfirmation").find(".ui-dialog-buttonset button");
+  $buttons.eq(1).show(); // Reverse inherited state.
 
   elements.heading = $node.find("[data-node='heading']");
   elements.message = $node.find("[data-node='message']");
@@ -107,7 +107,7 @@ ConfirmationDialog.setElements = function($node) {
 /* Private
  * Finds on-load text to use as default values.
  **/
-ConfirmationDialog.setDefaultText = function($node) {
+DialogConfirmation.setDefaultText = function($node) {
   this._defaultText = {
     heading: this._elements.heading.text(),
     message: this._elements.message.text(),
@@ -118,5 +118,5 @@ ConfirmationDialog.setDefaultText = function($node) {
 
 
 // Make available for importing.
-export { ConfirmationDialog };
+export { DialogConfirmation };
 

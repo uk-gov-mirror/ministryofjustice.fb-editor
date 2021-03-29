@@ -29,14 +29,11 @@ class Dialog {
   constructor($node, config) {
     var conf = config || {};
     var classes = conf.classes || {};
-   
-    var instance = this;
     var buttons = conf.buttons || [
       {
         text: conf.okText,
         click: () => {
-          safelyActivateFunction(instance._action);
-          instance.$node.dialog("close");
+          $node.dialog("close");
         }
       }];
 
@@ -59,7 +56,6 @@ class Dialog {
     }
 
     this._config = conf;
-    this._action = function() {} // Should be overwritten in confirm()
     this.$node = $node;
   }
 
