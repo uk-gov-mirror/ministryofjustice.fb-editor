@@ -12,7 +12,7 @@ class PublishServicePresenter
 
     if publish_service.present?
       host = new(publish_service, view: view).hostname
-      view.link_to host, "https://#{host}", target: '_blank'
+      view.link_to host, "https://#{host}", target: '_blank', class: 'govuk-link'
     end
   end
 

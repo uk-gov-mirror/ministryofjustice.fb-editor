@@ -116,6 +116,27 @@ html {
 }
 
 
+/* Publishing
+ * ------------------- */
+#publish-intro {
+  .time {
+    color: $govuk-secondary-text-colour;
+  }
+}
+
+#publish-environments {
+  padding-top: 1.5em;
+
+  dd {
+    margin: 0 0 1em 0;
+  }
+
+  .description {
+    color: $govuk-secondary-text-colour;
+  }
+}
+
+
 /* Editable components
  * ------------------- */
 .EditableContent,

@@ -1,5 +1,5 @@
-<h1><%= t('publish.heading') %></h1>
-<p>
+<h1 class="govuk-heading-xl"><%= t('publish.heading') %></h1>
+<p id="publish-intro">
   <%# COMMENT: Should we have service.updated_at instead of creation date? %>
   You are publishing the version from <span class="date version"><%= l(service.created_at.to_time, format: :date) %></span>
   <span class="time version"><%= l(service.created_at.to_time, format: :time) %></span>.
@@ -7,8 +7,8 @@
   <%# last updated by <span class="name by">C. Smith</span      %>
 </p>
 
-<dl>
-  <dt class="environment"><%= t('publish.test.heading') %></dt>
+<dl id="publish-environments">
+  <dt class="environment govuk-heading-l"><%= t('publish.test.heading') %></dt>
   <dd>
     <p class="description"><%= t('publish.test.description') %></p>
     <%# TODO: Require BE to expose this data before we can see it. %>
@@ -31,7 +31,7 @@
     <% end %>
   </dd>
 
-  <dt class="environment"><%= t('publish.live.heading') %></dt>
+  <dt class="environment govuk-heading-l"><%= t('publish.live.heading') %></dt>
   <dd>
     <p class="description"><%= t('publish.live.description') %></p>
     <%# TODO: Require BE to expose this data before we can see it.%>
