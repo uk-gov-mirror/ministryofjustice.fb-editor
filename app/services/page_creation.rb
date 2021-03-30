@@ -5,7 +5,8 @@ class PageCreation
                 :component_type,
                 :latest_metadata,
                 :service_id,
-                :version
+                :version,
+                :add_page_after
   validates :page_url, :page_type, presence: true
   validates :page_url, format: { with: /\A[\sa-zA-Z0-9-]*\z/ }
 
@@ -38,7 +39,8 @@ class PageCreation
       page_type: page_type,
       page_url: page_url.strip,
       component_type: component_type,
-      latest_metadata: latest_metadata
+      latest_metadata: latest_metadata,
+      add_page_after: add_page_after
     ).to_metadata
   end
 end
