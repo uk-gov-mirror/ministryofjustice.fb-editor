@@ -11,7 +11,7 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
         build(:service_configuration, name: 'ENCODED_PRIVATE_KEY', value: private_key),
         build(:service_configuration, name: 'ENCODED_PUBLIC_KEY', value: public_key),
         build(:service_configuration, name: 'BASIC_AUTH_USER', value: basic_auth_user),
-        build(:service_configuration, name: 'BASIC_AUTH_PASS', value: basic_auth_pass),
+        build(:service_configuration, name: 'BASIC_AUTH_PASS', value: basic_auth_pass)
       ]
     )
   end
@@ -64,7 +64,7 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
     after do |example_group|
       # We don't want to delete if the test fail so we can verify
       # the contents of the directory.
-      FileUtils.rm_r(tmp_dir) unless example_group.exception.present?
+      FileUtils.rm_r(tmp_dir) if example_group.exception.blank?
     end
 
     context 'service.yaml' do
@@ -176,8 +176,8 @@ RSpec.describe Publisher::Utils::KubernetesConfiguration do
 
       it 'generates the secrets.yaml' do
         expect('secrets.yaml').to be_generated_in(
-            tmp_dir
-          ).with_content(secrets_yaml)
+          tmp_dir
+        ).with_content(secrets_yaml)
       end
     end
   end

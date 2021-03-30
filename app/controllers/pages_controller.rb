@@ -1,6 +1,6 @@
 class PagesController < FormController
   default_form_builder GOVUKDesignSystemFormBuilder::FormBuilder
-  before_action :assign_required_objects, only: [:edit, :update, :destroy]
+  before_action :assign_required_objects, only: %i[edit update destroy]
 
   def create
     @page_creation = PageCreation.new(page_creation_params)
@@ -47,12 +47,14 @@ class PagesController < FormController
       id: @page.id
     }.merge(common_params).merge(page_attributes))
 
-    update_params[:actions] = {
-      add_component: params[:page][:add_component]
-    } if params[:page] && params[:page][:add_component]
+    if params[:page] && params[:page][:add_component]
+      update_params[:actions] = {
+        add_component: params[:page][:add_component]
+      }
+    end
 
     if update_params[:components]
-      update_params[:components] = update_params[:components].each.map do |_,value|
+      update_params[:components] = update_params[:components].each.map do |_, value|
         JSON.parse(value)
       end
     end
@@ -62,7 +64,7 @@ class PagesController < FormController
 
   def page_attributes
     params.require(:page).permit(
-      @page.editable_attributes.keys.push({ components: {}})
+      @page.editable_attributes.keys.push({ components: {} })
     )
   end
 
@@ -73,9 +75,7 @@ class PagesController < FormController
     }
   end
 
-  def service_id
-    service.service_id
-  end
+  delegate :service_id, to: :service
 
   def change_answer_path(url:)
     ''
@@ -96,7 +96,7 @@ class PagesController < FormController
   end
   helper_method :pages_presenters
 
-  private
+private
 
   # The metadata presenter gem requires this objects to render a page
   #

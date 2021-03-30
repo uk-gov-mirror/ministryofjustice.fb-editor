@@ -13,7 +13,7 @@ class Settings::FormInformationController < FormController
     end
   end
 
-  private
+private
 
   def service_params
     params.require(:service).permit(:service_name).merge(

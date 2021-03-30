@@ -10,12 +10,12 @@ module Auth0Helper
     root_path
   end
 
-  private
+private
 
   # Is the user signed in?
   # @return [Boolean]
   def user_signed_in?
-    session.try(:[],:user_id).present?
+    session.try(:[], :user_id).present?
   end
 
   def identify_user(user_id = session[:user_id])
@@ -33,5 +33,4 @@ module Auth0Helper
       redirect_to login_path
     end
   end
-
 end

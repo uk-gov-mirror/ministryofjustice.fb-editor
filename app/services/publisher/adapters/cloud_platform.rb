@@ -3,6 +3,7 @@ class Publisher
     class CloudPlatform
       class ConfigFilesNotFound < StandardError; end
       attr_reader :service_provisioner
+
       delegate :service_id,
                :namespace,
                :service_slug,
@@ -28,7 +29,7 @@ class Publisher
             "apply -f #{config_dir}", namespace: namespace
           )
         else
-          raise ConfigFilesNotFound.new("Config files not found in #{config_dir}")
+          raise ConfigFilesNotFound, "Config files not found in #{config_dir}"
         end
       end
 
@@ -49,7 +50,7 @@ class Publisher
         end
       end
 
-      private
+    private
 
       def first_published?
         PublishService.completed

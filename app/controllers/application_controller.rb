@@ -11,8 +11,7 @@ class ApplicationController < ActionController::Base
   end
   helper_method :editable?
 
-  def back_link
-  end
+  def back_link; end
   helper_method :back_link
 
   def save_user_data

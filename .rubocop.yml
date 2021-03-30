@@ -15,6 +15,8 @@ AllCops:
     - "bin/**/*"
     - "config/**/*"
     - "tmp/**/*"
+    - "node_modules/**/*"
+    - "acceptance/**/*"
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
@@ -30,3 +32,6 @@ Style/TrailingCommaInArrayLiteral:
 
 Metrics/BlockLength:
   IgnoredMethods: ['describe', 'context', 'let']
+
+Rails/FilePath:
+  EnforcedStyle: arguments

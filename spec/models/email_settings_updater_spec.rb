@@ -279,7 +279,7 @@ RSpec.describe EmailSettingsUpdater do
         expect(service_configuration).to be_persisted
         expect(
           service_configuration.decrypt_value
-        ).to eq("moj-forms@digital.justice.gov.uk")
+        ).to eq('moj-forms@digital.justice.gov.uk')
       end
     end
 

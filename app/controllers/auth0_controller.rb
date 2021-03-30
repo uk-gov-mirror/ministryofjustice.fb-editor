@@ -6,7 +6,7 @@ class Auth0Controller < ApplicationController
 
     redirect_to services_path,
                 flash: {
-                  success: I18n.t(:welcome_html, scope: [:auth, :existing_user])
+                  success: I18n.t(:welcome_html, scope: %i[auth existing_user])
                 }
   rescue SignupNotAllowedError
     # no new user or existing user, so they weren't allowed to sign up
@@ -14,7 +14,7 @@ class Auth0Controller < ApplicationController
   end
 
   def developer_callback
-    fail unless Rails.env.development?
+    raise unless Rails.env.development?
 
     callback
   end

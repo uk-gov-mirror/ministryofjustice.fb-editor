@@ -50,7 +50,8 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
             ::Publisher::Utils::KubeControl
           ).to receive(:execute).with(
             "apply -f #{config_dir}",
-            namespace: 'formbuilder-services-test-dev')
+            namespace: 'formbuilder-services-test-dev'
+          )
           cloud_platform.publishing
         end
       end
@@ -87,12 +88,14 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
         ::Publisher::Utils::KubeControl
       ).to receive(:execute).with(
         'rollout restart deployment obi-wan',
-        namespace: 'formbuilder-services-test-dev')
+        namespace: 'formbuilder-services-test-dev'
+      )
       expect(
         ::Publisher::Utils::KubeControl
       ).to receive(:execute).with(
         'rollout status deployment obi-wan',
-        namespace: 'formbuilder-services-test-dev')
+        namespace: 'formbuilder-services-test-dev'
+      )
       cloud_platform.post_publishing
     end
   end

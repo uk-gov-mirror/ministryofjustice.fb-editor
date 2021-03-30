@@ -9,6 +9,7 @@ class Publisher
                   :platform_environment,
                   :deployment_environment,
                   :service_configuration
+
     validates :service_id,
               :platform_environment,
               :deployment_environment,
@@ -27,19 +28,12 @@ class Publisher
       binding
     end
 
-    def service_slug
-      service.service_slug
-    end
+    delegate :service_slug, to: :service
 
-    def service_name
-      service.service_name
-    end
+    delegate :service_name, to: :service
 
     def namespace
-      Rails.application.config.platform_environments[:common][:namespace] % {
-        platform_environment: platform_environment,
-        deployment_environment: deployment_environment
-      }
+      sprintf(Rails.application.config.platform_environments[:common][:namespace], platform_environment: platform_environment, deployment_environment: deployment_environment)
     end
 
     def container_port
@@ -75,17 +69,11 @@ class Publisher
     end
 
     def user_datastore_url
-      Rails.application.config.platform_environments[:common][:user_datastore_url] % {
-        platform_environment: platform_environment,
-        deployment_environment: deployment_environment
-      }
+      sprintf(Rails.application.config.platform_environments[:common][:user_datastore_url], platform_environment: platform_environment, deployment_environment: deployment_environment)
     end
 
     def submitter_url
-      Rails.application.config.platform_environments[:common][:submitter_url] % {
-        platform_environment: platform_environment,
-        deployment_environment: deployment_environment
-      }
+      sprintf(Rails.application.config.platform_environments[:common][:submitter_url], platform_environment: platform_environment, deployment_environment: deployment_environment)
     end
 
     def submission_encryption_key
@@ -110,10 +98,10 @@ class Publisher
 
     def service_sentry_dsn
       if live_production?
-        ENV["SERVICE_SENTRY_DSN_LIVE"]
+        ENV['SERVICE_SENTRY_DSN_LIVE']
       else
         # test-dev, test-production and live-dev
-        ENV["SERVICE_SENTRY_DSN_TEST"]
+        ENV['SERVICE_SENTRY_DSN_TEST']
       end
     end
 
@@ -129,7 +117,7 @@ class Publisher
       service_configuration.select(&:secrets?)
     end
 
-    private
+  private
 
     def service
       @service ||= MetadataPresenter::Service.new(

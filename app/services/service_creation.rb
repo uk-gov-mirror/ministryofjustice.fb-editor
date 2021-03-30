@@ -15,7 +15,7 @@ class ServiceCreation < Editor::Service
   end
 
   def assign_service_attributes(service)
-    self.tap do
+    tap do
       self.service_id = service.id
     end
   end
@@ -29,4 +29,3 @@ class ServiceCreation < Editor::Service
     }
   end
 end
-

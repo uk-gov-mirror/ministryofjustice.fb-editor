@@ -12,7 +12,7 @@ class DefaultConfiguration
     create_private_public_keys
   end
 
-  private
+private
 
   def create_private_public_keys
     Rails.application.config.deployment_environments.each do |deployment_environment|

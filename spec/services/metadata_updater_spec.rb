@@ -23,7 +23,7 @@ RSpec.describe MetadataUpdater do
       {
         id: 'page.start',
         service_id: service.service_id,
-        latest_metadata: service_metadata,
+        latest_metadata: service_metadata
       }.merge(attributes_to_update)
     end
 
@@ -71,17 +71,17 @@ RSpec.describe MetadataUpdater do
             '_id': 'confirmation_content_1',
             '_type': 'content',
             'html': '[Optional content]',
-            'name': 'confirmation_content_1',
+            'name': 'confirmation_content_1'
           })
         end
         let(:expected_updated_page) do
           {
-            '_id'     => 'page._confirmation',
-            '_type'   => 'page.confirmation',
-            'body'    => "You'll receive a confirmation email",
+            '_id' => 'page._confirmation',
+            '_type' => 'page.confirmation',
+            'body' => "You'll receive a confirmation email",
             'heading' => 'Complaint sent',
-            'lede'    => 'Updated lede',
-            'url'     => '/confirmation',
+            'lede' => 'Updated lede',
+            'url' => '/confirmation',
             'components' => [expected_created_component]
           }
         end
@@ -118,14 +118,14 @@ RSpec.describe MetadataUpdater do
               'hint' => '',
               'label' => 'Question',
               'name' => 'star-wars-knowledge_number_1',
-              'validation' => {'number' => true, 'required' => true},
+              'validation' => { 'number' => true, 'required' => true },
               'width_class_input' => '10'
             }
           end
           let(:updated_metadata) do
             metadata = service_metadata.deep_dup
-            page = metadata['pages'].find do |page|
-              page['url'] == '/star-wars-knowledge'
+            page = metadata['pages'].find do |fixture_page|
+              fixture_page['url'] == '/star-wars-knowledge'
             end
 
             page['components'] = page['components'].push(new_component)
@@ -162,8 +162,8 @@ RSpec.describe MetadataUpdater do
           end
           let(:updated_metadata) do
             metadata = service_metadata.deep_dup
-            page = metadata['pages'].find do |page|
-              page['url'] == '/star-wars-knowledge'
+            page = metadata['pages'].find do |fixture_page|
+              fixture_page['url'] == '/star-wars-knowledge'
             end
 
             page['components'] = page['components'].push(new_component)
@@ -202,9 +202,9 @@ RSpec.describe MetadataUpdater do
                   'value' => 'value-1'
                 },
                 {
-                  '_id'   => 'star-wars-knowledge_radios_2_item_2',
+                  '_id' => 'star-wars-knowledge_radios_2_item_2',
                   '_type' => 'radio',
-                  'hint'  => '',
+                  'hint' => '',
                   'label' => 'Option',
                   'value' => 'value-2'
                 }
@@ -216,8 +216,8 @@ RSpec.describe MetadataUpdater do
           end
           let(:updated_metadata) do
             metadata = service_metadata.deep_dup
-            page = metadata['pages'].find do |page|
-              page['url'] == '/star-wars-knowledge'
+            page = metadata['pages'].find do |fixture_page|
+              fixture_page['url'] == '/star-wars-knowledge'
             end
 
             page['components'] = page['components'].push(new_component)
@@ -252,7 +252,7 @@ RSpec.describe MetadataUpdater do
         {
           id: 'page.start',
           service_id: service.service_id,
-          latest_metadata: service_metadata,
+          latest_metadata: service_metadata
         }
       end
 

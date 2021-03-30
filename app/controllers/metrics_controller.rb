@@ -17,7 +17,7 @@ class MetricsController < ActionController::Base
   end
   helper_method :filter_to_string
 
-  private
+private
 
   def delayed_jobs_stats
     pending_job_count = Delayed::Job.where('attempts = 0').count
@@ -27,8 +27,7 @@ class MetricsController < ActionController::Base
       { name: :delayed_jobs_pending,
         type: 'gauge',
         docstring: 'Number of pending jobs',
-        value: pending_job_count
-      },
+        value: pending_job_count },
       {
         name: :delayed_jobs_failed,
         type: 'gauge',
@@ -50,7 +49,7 @@ class MetricsController < ActionController::Base
   def active_sessions_stats
     cutoff_period = 90.minutes.ago
     count = ActiveRecord::SessionStore::Session.where(
-      "updated_at < ?", cutoff_period
+      'updated_at < ?', cutoff_period
     ).count
 
     {

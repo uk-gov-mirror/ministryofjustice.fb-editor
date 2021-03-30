@@ -61,7 +61,7 @@ RSpec.describe ServiceCreation do
           service_creation.create
           expect(
             service_creation.errors.full_messages.first
-          ).to include("is already used by another form. Please modify it.")
+          ).to include('is already used by another form. Please modify it.')
         end
       end
     end
@@ -94,7 +94,7 @@ RSpec.describe ServiceCreation do
     end
 
     context 'when name is invalid format' do
-      [ 'something.invalid', 'with_underscore' ].each do |invalid|
+      ['something.invalid', 'with_underscore'].each do |invalid|
         let(:attributes) { { service_name: invalid } }
 
         context "when format is #{invalid}" do

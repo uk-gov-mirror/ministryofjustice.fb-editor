@@ -22,12 +22,12 @@ FactoryBot.define do
 
     trait :service_email_subject do
       name { 'SERVICE_EMAIL_SUBJECT' }
-      value { "Aren’t you a little short for a Stormtrooper?" }
+      value { 'Aren’t you a little short for a Stormtrooper?' }
     end
 
     trait :service_email_output do
       name { 'SERVICE_EMAIL_OUTPUT' }
-      value { "wookies@grrrrr.uk" }
+      value { 'wookies@grrrrr.uk' }
     end
 
     trait :service_email_body do

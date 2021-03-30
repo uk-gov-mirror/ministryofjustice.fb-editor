@@ -40,9 +40,9 @@ RSpec.describe ApplicationController do
       it 'saves it with the service id' do
         expect(controller.session.to_h).to eq(
           {
-            "123456" => {
-              "user_data" => {
-                "frodo" => "samwise"
+            '123456' => {
+              'user_data' => {
+                'frodo' => 'samwise'
               }
             }
           }
@@ -51,7 +51,7 @@ RSpec.describe ApplicationController do
 
       it 'retrieves user data using the service id' do
         expect(controller.load_user_data.to_h).to eq(
-          { "frodo" => "samwise" }
+          { 'frodo' => 'samwise' }
         )
       end
     end

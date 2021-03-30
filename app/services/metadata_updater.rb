@@ -36,7 +36,7 @@ class MetadataUpdater
     MetadataPresenter::Component.new(@component_added) if @component_added
   end
 
-  private
+private
 
   def find_node_attribute_by_id
     @latest_metadata.extend Hashie::Extensions::DeepLocate
@@ -45,7 +45,7 @@ class MetadataUpdater
   end
 
   def find_id
-    lambda do |key, value, object|
+    lambda do |key, value, _object|
       key == '_id' && value == @id
     end
   end

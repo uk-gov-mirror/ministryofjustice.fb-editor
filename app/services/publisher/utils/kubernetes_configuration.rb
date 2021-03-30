@@ -3,14 +3,14 @@ class Publisher
     class KubernetesConfiguration
       attr_reader :service_provisioner
 
-      TEMPLATES = %w(
+      TEMPLATES = %w[
         service
         service_monitor
         ingress
         deployment
         config_map
         secrets
-      )
+      ]
 
       def initialize(service_provisioner)
         @service_provisioner = service_provisioner
@@ -37,7 +37,7 @@ class Publisher
         end
       end
 
-      private
+    private
 
       def write_config_file(file:, content:)
         FileUtils.mkdir_p(File.dirname(file))

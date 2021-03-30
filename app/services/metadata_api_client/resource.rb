@@ -2,7 +2,7 @@ module MetadataApiClient
   class Resource
     attr_accessor :id, :name, :metadata
 
-    def initialize(attributes={})
+    def initialize(attributes = {})
       @id = attributes['service_id']
       @name = attributes['service_name']
       @metadata = attributes
@@ -29,4 +29,3 @@ module MetadataApiClient
     end
   end
 end
-

@@ -14,8 +14,9 @@ RSpec.describe NewServiceGenerator do
       it 'creates a valid service metadata' do
         expect(
           MetadataPresenter::ValidateSchema.validate(
-            service_metadata, 'service.base')
-          ).to be(valid)
+            service_metadata, 'service.base'
+          )
+        ).to be(valid)
       end
 
       it 'creates start page' do
@@ -29,8 +30,10 @@ RSpec.describe NewServiceGenerator do
 
     context 'invalid metadata' do
       it 'raises a schema validation error' do
-        expect { MetadataPresenter::ValidateSchema.validate(
-          { foo: 'bar' }, 'service.base')
+        expect {
+          MetadataPresenter::ValidateSchema.validate(
+            { foo: 'bar' }, 'service.base'
+          )
         }.to raise_error(JSON::Schema::ValidationError)
       end
     end

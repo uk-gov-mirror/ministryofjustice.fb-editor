@@ -19,11 +19,11 @@ class Settings::EmailController < FormController
       else
         @email_settings_production = @email_settings
       end
-      render :index, status: 422
+      render :index, status: :unprocessable_entity
     end
   end
 
-  private
+private
 
   def email_settings_params
     params.require(:email_settings).permit(

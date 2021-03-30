@@ -23,7 +23,7 @@ class Auth0UserSession
       save_to(actual_session)
       self
     else
-      raise SignupNotAllowedError.new
+      raise SignupNotAllowedError
     end
   end
 
@@ -42,10 +42,10 @@ class Auth0UserSession
   end
 
   def new_user?
-    self.new_user
+    new_user
   end
 
-  private
+private
 
   def email_domain_is_valid
     errors.add(:user_info, "email must end with one of #{VALID_EMAIL_DOMAINS}") \

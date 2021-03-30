@@ -140,13 +140,13 @@ feature 'Create page' do
   def and_I_should_see_default_radio_options_created
     expect(
       editor.radio_options.map { |option| option[:value] }
-    ).to match_array(['Option', 'Option'])
+    ).to match_array(%w[Option Option])
   end
 
   def and_I_should_see_default_checkboxes_created
     expect(
       editor.checkboxes_options.map { |option| option[:value] }
-    ).to match_array(['Option', 'Option'])
+    ).to match_array(%w[Option Option])
   end
 
   def then_I_should_see_the_edit_multiple_question_page

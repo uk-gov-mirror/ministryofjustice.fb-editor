@@ -17,7 +17,7 @@ class EmailSettings
   validates :service_email_output, presence: true, if: :send_by_email?
 
   validates :service_email_output, format: { with: URI::MailTo::EMAIL_REGEXP },
-    allow_blank: true
+                                   allow_blank: true
 
   def send_by_email_checked?
     send_by_email? || SubmissionSetting.find_by(
@@ -57,14 +57,14 @@ class EmailSettings
   def settings_for(setting_name)
     params(setting_name).presence ||
       database(setting_name) ||
-        default_value(setting_name)
+      default_value(setting_name)
   end
 
   def database(setting_name)
     ServiceConfiguration.find_by(
       service_id: service.service_id,
       deployment_environment: deployment_environment,
-      name: setting_name.upcase,
+      name: setting_name.upcase
     ).try(:decrypt_value)
   end
 
@@ -73,6 +73,6 @@ class EmailSettings
   end
 
   def params(setting_name)
-    self.instance_variable_get(:"@#{setting_name}")
+    instance_variable_get(:"@#{setting_name}")
   end
 end

@@ -3,4 +3,3 @@ module TestHelpers
     "Acceptance-test-Stormtrooper-FN-#{SecureRandom.uuid}"
   end
 end
-
