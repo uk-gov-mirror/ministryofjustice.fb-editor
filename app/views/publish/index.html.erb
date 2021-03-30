@@ -1,16 +1,23 @@
 <h1><%= t('publish.heading') %></h1>
-<p>You are publishing the version from <span class="date version"><%= l(service.created_at.to_time, format: :date) %></span> <span class="time version"><%= l(service.created_at.to_time, format: :time) %></span> last updated by <span class="name by">C. Smith</span>.</p>
+<p>
+  <%# COMMENT: Should we have service.updated_at instead of creation date? %>
+  You are publishing the version from <span class="date version"><%= l(service.created_at.to_time, format: :date) %></span>
+  <span class="time version"><%= l(service.created_at.to_time, format: :time) %></span>.
+  <%# TODO: Require BE to expose this data before we can see it %>
+  <%# last updated by <span class="name by">C. Smith</span      %>
+</p>
 
 <dl>
   <dt class="environment"><%= t('publish.test.heading') %></dt>
   <dd>
     <p class="description"><%= t('publish.test.description') %></p>
-    <p>
-      <%= t('publish.test.version') %>
-      <span class="date version"><%= l(service.created_at.to_time, format: :date) %></span>
-      <span class="time version"><%= l(service.created_at.to_time, format: :time) %></span>
-      <span class="name by"><%= t('publish.test.by', name: 'C. Smith') %></span>
-    </p>
+    <%# TODO: Require BE to expose this data before we can see it. %>
+    <%# p %>
+      <%# t('publish.test.version') %>
+      <%# span class="date version"><%= l(service.created_at.to_time, format: :date) %></span %>
+      <%# span class="time version"><%= l(service.created_at.to_time, format: :time) %></span %>
+      <%# span class="name by"><%= t('publish.test.by', name: 'C. Smith') %></span %>
+    <%# /p %>
 
     <span>
       <%= PublishServicePresenter.hostname_for(deployment_environment: 'dev', view: self) %>
@@ -27,12 +34,13 @@
   <dt class="environment"><%= t('publish.live.heading') %></dt>
   <dd>
     <p class="description"><%= t('publish.live.description') %></p>
-    <p>
-      <%= t('publish.live.version') %>
-      <span class="date version"><%= l(service.created_at.to_time, format: :date) %></span>
-      <span class="time version"><%= l(service.created_at.to_time, format: :time) %></span>
-      <span class="name by"><%= t('publish.test.by', name: 'C. Smith') %></span>
-    </p>
+    <%# TODO: Require BE to expose this data before we can see it.%>
+    <%# p %>
+      <%# t('publish.live.version') %>
+      <%# span class="date version"><%= l(service.created_at.to_time, format: :date) %></span %>
+      <%# span class="time version"><%= l(service.created_at.to_time, format: :time) %></span %>
+      <%# span class="name by"><%= t('publish.test.by', name: 'C. Smith') %></span %>
+    <%# /p %>
 
     <span>
       <%= PublishServicePresenter.hostname_for(deployment_environment: 'production', view: self) %>
