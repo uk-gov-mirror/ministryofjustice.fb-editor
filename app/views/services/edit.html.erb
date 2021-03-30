@@ -11,11 +11,6 @@
 
       <%= flow_thumbnail(page, service.service_id) %>
 
-      <%# TODO: Backend to add dynamic data-driven values to this standard output %>
-      <%# Note: This would probably be more efficient if outside the loop so that %>
-      <%# we only generated one, with events and blah attached. However, since I  %>
-      <%# am currently unaware of exactly how we're going to use this element, it %>
-      <%# is in this one-for-each-step form, for now.                             %>
       <ul class="govuk-navigation component-activated-menu"
           data-activator-text="<%= t('pages.actions') %>"
           data-activator-classname="form-step_button"
@@ -32,7 +27,11 @@
         </li>
         <li data-action="add"><a href="#add-page-here">Add page here</a></li>
         <li data-action="delete">
-          <%= link_to t('actions.delete_page'), page_path(service.service_id, page.uuid), method: :delete, class: 'destructive delete' %>
+          <% unless page.type == 'page.start' %>
+            <%= link_to t('actions.delete_page'),
+              page_path(service.service_id, page.uuid),
+              method: :delete, class: 'destructive delete' %>
+          <% end %>
         </li>
       </ul>
 
@@ -40,7 +39,6 @@
     </div>
   <% end %>
 
-  <%# TODO: Backend to replace this with dynamic data-driven output %>
   <ul class="component-activated-menu govuk-navigation"
       data-activated-menu-container-id="ActivatedMenu_AddPage"
       data-activator-classname="form-overview_button"
@@ -78,7 +76,6 @@
     <li><a href="#add-page" data-page-type="confirmation">Confirmation page</a></li>
     <li><a href="#add-page" data-page-type="content">Content page</a></li>
   </ul>
-
 
   <div class="component-dialog-form"
        id="new-page-create-dialog"
