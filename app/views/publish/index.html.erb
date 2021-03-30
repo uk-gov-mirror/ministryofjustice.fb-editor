@@ -18,14 +18,14 @@
       <%# span class="time version"><%= l(service.created_at.to_time, format: :time) %></span %>
       <%# span class="name by"><%= t('publish.test.by', name: 'C. Smith') %></span %>
     <%# /p %>
+    <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'dev', view: self) %></p>
 
-    <span>
-      <%= PublishServicePresenter.hostname_for(deployment_environment: 'dev', view: self) %>
-    </span>
-
+    <%# TODO: Need an indicator from BE code that shows whether this is first-time publish   %>
+    <%#       Currently have hardcoded 'false' value to avoid dialog showing but this should %>
+    <%#       be dynamic to control dialog visibility.                                        %>
     <%= form_for(@publish_service_creation_dev,
         url: publish_index_path(service.service_id),
-        html: { id: 'publish-form-dev', class: 'publish-form' }) do |f| %>
+        html: { id: 'publish-form-dev', class: 'publish-form', data: { firstpublish: false } }) do |f| %>
       <%= render 'form', f: f, deployment_environment: 'dev' %>
       <%= f.submit t('actions.publish_to_test'), class: 'govuk-button editor-button fb-govuk-button' %>
     <% end %>
@@ -42,13 +42,12 @@
       <%# span class="name by"><%= t('publish.test.by', name: 'C. Smith') %></span %>
     <%# /p %>
 
-    <span>
-      <%= PublishServicePresenter.hostname_for(deployment_environment: 'production', view: self) %>
-    </span>
+    <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'production', view: self) %></p>
 
+    <%# TODO: Hardcoded 'firstpublish' (see comment above) %>
     <%= form_for(@publish_service_creation_production,
         url: publish_index_path(service.service_id),
-        html: { id: 'publish-form-live', class: 'publish-form' }) do |f| %>
+        html: { id: 'publish-form-live', class: 'publish-form', data: { firstpublish: false } }) do |f| %>
       <%= render 'form', f: f, deployment_environment: 'production' %>
       <%= f.submit t('actions.publish_to_live'), class: 'govuk-button editor-button fb-govuk-button' %>
     <% end %>

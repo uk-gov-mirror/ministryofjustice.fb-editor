@@ -28,7 +28,7 @@ class PublishController extends DefaultPage {
     switch(app.page.action) {
       case "create":
         PublishController.create.call(this, app);
-        // Allow fallthrough to share index action as well.
+        break;
       case "index":
         PublishController.index.call(this, app);
         break;
@@ -39,36 +39,54 @@ class PublishController extends DefaultPage {
 
 /* Setup for the Index action
  **/
-	PublishController.index = function(app) {
-  var controller = this;
+PublishController.index = function(app) {
+  setupPublishForms.call(this);
 
-  // Add show/hide to credential forms.
-  $(".publish-form").each(function(i, el) {
-    var $publishForm = $(el);
-    var $content = $publishForm.find("fieldset");
-    var $radios = $publishForm.find("input[type=radio]");
-    var $submit = $publishForm.find("input[type=submit]");
-    new ContentVisibilityController($content, $radios);
-    new ActivatedFormDialog($publishForm, {
-      cancelText: app.text.dialogs.button_cancel,
-      okText: $submit.val(),
-      activator: $submit
-    });
-  });
+  // When to show 15 minute message.
+  if(this.publishFormTest.firstTimePublish() || this.publishFormProd.firstTimePublish()) {
+    this.dialog.content = {
+      ok: app.text.dialogs.button_publish,
+      heading: app.text.dialogs.heading_publish,
+      message: app.text.dialogs.message_publish
+    };
+
+    this.dialog.open();
+  }
 }
 
 
 /* Set up for the Create action
  **/
 PublishController.create = function(app) {
-  // TODO: If no errors...
-  this.dialog.content = {
-    ok: app.text.dialogs.button_publish,
-    heading: app.text.dialogs.heading_publish,
-    message: app.text.dialogs.message_publish
-  };
+  setupPublishForms.call(this);
+}
 
-  this.dialog.open();
+
+/* Setup the Publish Form as an enhanced object.
+ **/
+class PublishForm {
+  constructor($node) {
+    var $content = $node.find("fieldset");
+    var $radios = $node.find("input[type=radio]");
+    var $submit = $node.find("input[type=submit]");
+    new ContentVisibilityController($content, $radios);
+    new ActivatedFormDialog($node, {
+      cancelText: app.text.dialogs.button_cancel,
+      okText: $submit.val(),
+      activator: $submit
+    });
+
+    this.$node = $node;
+    this.$errors = $(".govuk-error-message", $node);
+  }
+
+  hasError() {
+    return this.$errors.length > 0;
+  }
+
+  firstTimePublish() {
+    return this.$node.data("firstpublish");
+  }
 }
 
 
@@ -102,5 +120,14 @@ class ContentVisibilityController {
   }
 }
 
+
+// Private
+
+/* Find and setup publish forms
+ **/
+function setupPublishForms(page) {
+  this.publishFormTest = new PublishForm($("#publish-form-dev"));
+  this.publishFormProd = new PublishForm($("#publish-form-live"));
+}
 
 export { PublishController }
