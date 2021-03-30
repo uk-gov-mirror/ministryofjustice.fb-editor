@@ -1,11 +1,15 @@
 class NewPageGenerator
   include ActiveModel::Model
-  attr_accessor :page_type, :page_url, :component_type, :latest_metadata
+  attr_accessor :page_type,
+                :page_url,
+                :component_type,
+                :latest_metadata,
+                :add_page_after
 
   def to_metadata
     latest_metadata.tap do
-      latest_metadata['pages'].push(page_metadata)
-      latest_metadata['pages'][0]['steps'].push(page_name)
+      latest_metadata['pages'].insert(insert_page_at, page_metadata)
+      latest_metadata['pages'][0]['steps'].insert(insert_page_at, page_name)
     end
   end
 
@@ -33,5 +37,23 @@ class NewPageGenerator
       component_type: component_type,
       page_url: page_url
     ).to_metadata
+  end
+
+  INSERT_LAST = -1
+
+  def insert_page_at
+    if add_page_after.present?
+      index = find_page_index_to_be_inserted_after
+
+      return index + 1 if index
+    end
+
+    INSERT_LAST
+  end
+
+  def find_page_index_to_be_inserted_after
+    latest_metadata['pages'].index(
+      latest_metadata['pages'].find { |page| page['_uuid'] == add_page_after }
+    )
   end
 end

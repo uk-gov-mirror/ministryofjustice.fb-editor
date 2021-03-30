@@ -33,7 +33,7 @@ class PagesController < FormController
     params.require(
       :page
     ).permit(
-      :page_url, :page_type, :component_type
+      :page_url, :page_type, :component_type, :add_page_after
     ).merge(common_params)
   end
 

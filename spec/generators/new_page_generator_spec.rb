@@ -4,15 +4,41 @@ RSpec.describe NewPageGenerator do
       page_type: page_type,
       page_url: page_url,
       component_type: component_type,
-      latest_metadata: latest_metadata
+      latest_metadata: latest_metadata,
+      add_page_after: add_page_after
     )
   end
+  let(:add_page_after) { nil }
 
   describe '#to_metadata' do
     let(:valid) { true }
     let(:page_type) { 'singlequestion' }
     let(:page_url) { 'home-one' }
     let(:component_type) { 'text' }
+    let(:page_attributes) do
+      {
+        'url' => page_url,
+        '_id' => 'page.home-one',
+        '_type' => 'page.singlequestion',
+        'heading' => 'Question',
+        'lede' => '',
+        'body' => 'Body section',
+        'components' => [
+          {
+            '_id'    => "#{page_url}_#{component_type}_1",
+            '_type'  => 'text',
+            'errors' => {},
+            'hint'   => '',
+            'label'  => 'Question',
+            'name'   => "#{page_url}_#{component_type}_1",
+            'validation' => {
+              'required' => true
+            }
+          }
+        ]
+      }
+    end
+
 
     before do
       allow(SecureRandom). to receive(:uuid).and_return('mandalorian-123')
@@ -97,29 +123,41 @@ RSpec.describe NewPageGenerator do
         end
       end
 
+      context 'when inserting page after a given page' do
+        # this is the third page so the new page should be the fourth page
+        let(:add_page_after) { 'ccf49acb-ad33-4fd3-8a7e-f0594b86cc96' }
+
+        it 'adds new page after the given page' do
+          expect(generator.to_metadata['pages']).to_not be_blank
+          expect(generator.to_metadata['pages'][4]).to include(page_attributes)
+        end
+
+        it 'adds the new page after given page steps' do
+          expect(
+            # the step index is 3 because 'steps' doesn't count the start page
+            generator.to_metadata['pages'][0]['steps'][3]
+          ).to include("page.#{page_url}")
+        end
+      end
+
+      context 'when inserting page after an invalid page' do
+        let(:add_page_after) { 'this-uuid-does-not-exist' }
+
+        it 'adds new page in last position' do
+          expect(generator.to_metadata['pages']).to_not be_blank
+          expect(generator.to_metadata['pages'].last).to include(page_attributes)
+        end
+
+        it 'adds the new page to last step' do
+          expect(
+            generator.to_metadata['pages'][0]['steps'].last
+          ).to include("page.#{page_url}")
+        end
+      end
+
       it 'generates page attributes' do
         expect(generator.to_metadata['pages']).to_not be_blank
-        expect(generator.to_metadata['pages'].last).to include(
-          'url' => page_url,
-          '_id' => 'page.home-one',
-          '_type' => 'page.singlequestion',
-          'heading' => 'Question',
-          'lede' => '',
-          'body' => 'Body section',
-          'components' => [
-            {
-              '_id'    => "#{page_url}_#{component_type}_1",
-              '_type'  => 'text',
-              'errors' => {},
-              'hint'   => '',
-              'label'  => 'Question',
-              'name'   => "#{page_url}_#{component_type}_1",
-              'validation' => {
-                'required' => true
-              }
-            }
-          ]
-        )
+        expect(generator.to_metadata['pages'].last).to include(page_attributes)
       end
     end
   end
