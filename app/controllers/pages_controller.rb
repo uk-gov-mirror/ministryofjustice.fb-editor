@@ -22,6 +22,7 @@ class PagesController < FormController
         anchor: @metadata_updater.component_added.try(:id)
       )
     else
+      @page.errors.add(:base, :unprocessable)
       render :edit, status: :unprocessable_entity
     end
   end
