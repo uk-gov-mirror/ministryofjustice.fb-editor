@@ -460,6 +460,14 @@ html {
   @include govuk-media-query($until: tablet) {
     width: 100%;
   }
+
+  .govuk-panel__body {
+    margin-bottom: 0; // Couter other rules to get back to original.
+  }
+
+  .govuk-panel__title {
+    margin-bottom: govuk-spacing(6); // Counter other rules to get back to original.
+  }
 }
 
 .govuk-checkboxes__input:disabled + .govuk-checkboxes__label,
