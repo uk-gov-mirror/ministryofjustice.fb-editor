@@ -117,6 +117,7 @@ en:
         too_long: "Your answer for ‘%{attribute}’ is too long (%{count} characters at most)"
         invalid: "Your answer for ‘%{attribute}' contains characters that are not allowed."
         taken: "Your answer for ‘%{attribute}' is already used by another form. Please modify it."
+        unprocessable: 'There is an error in the metadata. Please try again and if the error persists contact us in the #ask-formbuilder channel'
   time:
     formats:
       simple: '%d/%m/%Y %H:%M:%S'

@@ -6,12 +6,14 @@ RSpec.describe NewComponentGenerator do
       components: components
     )
   end
+  input_components = %w(text textarea number radios checkboxes)
+  non_input_components = %w(content)
 
   describe '#to_metadata' do
     context 'valid component metadata' do
       let(:valid) { true }
 
-      %w(text textarea number radios checkboxes).each do |component|
+      (input_components + non_input_components).each do |component|
         context "when component '#{component}'" do
           let(:component_type) { component }
           let(:page_url) { 'some-page' }
@@ -30,6 +32,16 @@ RSpec.describe NewComponentGenerator do
               generator.to_metadata['_id']
             ).to eq("some-page_#{component}_1")
           end
+        end
+      end
+    end
+
+    context 'input components validation' do
+      input_components.each do |component|
+        context "when component '#{component}'" do
+          let(:component_type) { component }
+          let(:page_url) { 'some-page' }
+          let(:components) { [] }
 
           it 'generates required validation as default' do
             expect(

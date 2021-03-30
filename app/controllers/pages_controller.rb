@@ -16,8 +16,13 @@ class PagesController < FormController
     @metadata_updater = MetadataUpdater.new(page_update_params)
 
     if @metadata_updater.update
-      redirect_to edit_page_path(service.service_id, params[:page_uuid])
+      redirect_to edit_page_path(
+        service.service_id,
+        params[:page_uuid],
+        anchor: @metadata_updater.component_added.try(:id)
+      )
     else
+      @page.errors.add(:base, :unprocessable)
       render :edit, status: :unprocessable_entity
     end
   end
@@ -41,6 +46,10 @@ class PagesController < FormController
     update_params = ActiveSupport::HashWithIndifferentAccess.new({
       id: @page.id
     }.merge(common_params).merge(page_attributes))
+
+    update_params[:actions] = {
+      add_component: params[:page][:add_component]
+    } if params[:page] && params[:page][:add_component]
 
     if update_params[:components]
       update_params[:components] = update_params[:components].each.map do |_,value|

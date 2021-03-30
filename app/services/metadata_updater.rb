@@ -5,6 +5,7 @@ class MetadataUpdater
     @latest_metadata = attributes.delete(:latest_metadata).to_h.deep_dup
     @service_id = attributes.delete(:service_id)
     @id = attributes.delete(:id)
+    @actions = attributes.delete(:actions)
     @attributes = attributes
   end
 
@@ -31,6 +32,10 @@ class MetadataUpdater
     @latest_metadata
   end
 
+  def component_added
+    MetadataPresenter::Component.new(@component_added) if @component_added
+  end
+
   private
 
   def find_node_attribute_by_id
@@ -47,7 +52,20 @@ class MetadataUpdater
 
   def update_node(object:, index:)
     new_object = object.merge(attributes)
+
+    if @actions && @actions[:add_component].present?
+      new_object['components'] ||= []
+      component = NewComponentGenerator.new(
+        component_type: @actions[:add_component],
+        page_url: new_object['url'].gsub(/^\//, ''),
+        components: new_object['components']
+      ).to_metadata
+      new_object['components'].push(component)
+      @component_added = component
+    end
+
     @latest_metadata['pages'][index] = new_object
+    @latest_metadata
   end
 
   def destroy_node(object:, index:)

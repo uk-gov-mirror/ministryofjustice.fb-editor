@@ -84,15 +84,15 @@ RSpec.describe NewPageGenerator do
       end
     end
 
-    context 'when existing pages exist' do
+    context 'when there is more than just a start page' do
       let(:latest_metadata) { metadata_fixture(:version) }
 
       context 'generating valid metadata' do
-        context 'pages with components' do
-          %w(singlequestion).each do |page|
-            context "when #{page} page" do
-              let(:page_type) { page }
-              let(:component_type) { 'text' }
+        context 'single questions pages with input components' do
+          %w(checkboxes date number radios text textarea).each do |type|
+            context "when #{type} component" do
+              let(:page_type) { 'singlequestion' }
+              let(:component_type) { type }
 
               it 'creates a valid page metadata' do
                 expect(
@@ -105,7 +105,7 @@ RSpec.describe NewPageGenerator do
           end
         end
 
-        context 'pages without components' do
+        context 'pages without components when first generated' do
           %w(multiplequestions checkanswers confirmation).each do |page|
             context "when #{page} page" do
               let(:page_type) { page }
@@ -117,6 +117,61 @@ RSpec.describe NewPageGenerator do
                     generator.page_metadata, "page.#{page_type}"
                   )
                 ).to be(valid)
+              end
+            end
+          end
+        end
+
+        context 'pages that allow only content components' do
+          %w(content checkanswers confirmation).each do |page|
+            context "when #{page} page" do
+              let(:page_type) { page }
+              let(:component_type) { 'content' }
+
+              it 'creates a valid page metadata' do
+                expect(
+                  MetadataPresenter::ValidateSchema.validate(
+                    generator.page_metadata, "page.#{page_type}"
+                  )
+                ).to be(valid)
+              end
+            end
+          end
+        end
+
+        context 'multiple questions page allow any component type' do
+          %w(checkboxes content date number radios text textarea).each do |type|
+            context "when #{type} component type" do
+              let(:page_type) { 'multiplequestions' }
+              let(:component_type) { type }
+
+              it 'creates a valid page metadata' do
+                expect(
+                  MetadataPresenter::ValidateSchema.validate(
+                    generator.page_metadata, "page.#{page_type}"
+                  )
+                ).to be(valid)
+              end
+            end
+          end
+        end
+      end
+
+      context 'when metadata is invalid' do
+        context 'pages that only allow content components' do
+          %w(content checkanswers confirmation).each do |page|
+            %w(checkboxes date number radios text textarea).each do |type|
+              context "#{page} page and #{type} component" do
+                let(:page_type) { page }
+                let(:component_type) { type }
+
+                it 'raises a validation error' do
+                  expect{
+                    MetadataPresenter::ValidateSchema.validate(
+                      generator.page_metadata, "page.#{page_type}"
+                    )
+                  }.to raise_error(JSON::Schema::ValidationError)
+                end
               end
             end
           end

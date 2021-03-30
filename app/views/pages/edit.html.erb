@@ -1,3 +1,11 @@
+<% if @page.errors.present? %>
+  <div class="govuk-grid-column-two-thirds govuk-error-summary">
+    <% @page.errors.each do |error|  %>
+      <span class="govuk-error-message"><%= error.message %></span>
+    <% end %>
+  </div>
+<% end %>
+
 <%= form_for @page, as: :page, url: page_path(service.service_id, @page.uuid), html: { id: "editContentForm" }, method: :patch do |f| %>
   <% @page.editable_attributes.each do |key, value| %>
     <% if key == :components %>
@@ -8,7 +16,7 @@
       <%= f.hidden_field key, value: value %>
     <% end %>
   <% end %>
-  
+
   <%= f.submit t('actions.save'), class: 'editor-button govuk-button fb-govuk-button' %>
 <% end %>
 <%= render template: @page.template %>
