@@ -44,6 +44,7 @@ function bindEditableContentHandlers($area) {
       editableContent.push(editableComponent($node, {
         editClassname: "active",
         data: $node.data("fb-content-data"),
+        defaultTextAttribute: "fb-default-text",
         filters: {
           _id: function(index) {
             return this.replace(/^(.*)?[\d]+$/, "$1" + index);

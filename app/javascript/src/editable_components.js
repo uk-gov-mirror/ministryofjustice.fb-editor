@@ -74,6 +74,7 @@ class EditableBase {
 class EditableElement extends EditableBase {
   constructor($node, config) {
     super($node, config);
+    this.defaultText = $node.data(config.defaultTextAttribute) || $node.html();
 
     $node.on("blur.editablecomponent", this.update.bind(this));
     $node.on("focus.editablecomponent", this.edit.bind(this) );
@@ -102,6 +103,13 @@ class EditableElement extends EditableBase {
   update() {
     this.content = this.content; // confusing ES6 syntax makes sense if you look closely
     this.$node.removeClass(this._config.editClassname);
+    this.populate();
+  }
+
+  populate() {
+    if(this.content.replace(/\s/mig, "") == "") {
+      this.$node.html(this.defaultText);
+    }
   }
 
   focus() {
@@ -163,6 +171,7 @@ class EditableContent extends EditableElement {
       this.$node.removeClass(this._config.editClassname);
       this._editing = false;
     }
+    this.populate();
   }
 }
 
