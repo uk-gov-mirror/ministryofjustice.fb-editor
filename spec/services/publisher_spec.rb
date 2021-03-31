@@ -10,14 +10,11 @@ RSpec.describe Publisher do
   end
   let(:fake_adapter) do
     class FakeAdapter
-      def initialize(service_provisioner)
-      end
+      def initialize(service_provisioner); end
 
-      def pre_publishing
-      end
+      def pre_publishing; end
 
-      def publishing
-      end
+      def publishing; end
     end
     FakeAdapter
   end
@@ -33,7 +30,7 @@ RSpec.describe Publisher do
     end
 
     it 'updates status on publish service' do
-      publisher.call(steps: %w(pre_publishing))
+      publisher.call(steps: %w[pre_publishing])
       expect(publish_service.reload.status).to eq('pre_publishing')
     end
 
@@ -42,7 +39,7 @@ RSpec.describe Publisher do
         service_provisioner
       ).and_return(fake_adapter_instance)
       expect(fake_adapter_instance).to receive(:publishing)
-      publisher.call(steps: %w(publishing))
+      publisher.call(steps: %w[publishing])
     end
   end
 end

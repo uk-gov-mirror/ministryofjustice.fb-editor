@@ -1,13 +1,13 @@
 class ServiceConfiguration < ApplicationRecord
-  SECRETS = %w(BASIC_AUTH_USER BASIC_AUTH_PASS ENCODED_PRIVATE_KEY).freeze
-  SUBMISSION = %w(
+  SECRETS = %w[BASIC_AUTH_USER BASIC_AUTH_PASS ENCODED_PRIVATE_KEY].freeze
+  SUBMISSION = %w[
     SERVICE_EMAIL_OUTPUT
     SERVICE_EMAIL_FROM
     SERVICE_EMAIL_SUBJECT
     SERVICE_EMAIL_BODY
     SERVICE_EMAIL_PDF_HEADING
     SERVICE_EMAIL_PDF_SUBHEADING
-  )
+  ]
   BASIC_AUTH_USER = 'BASIC_AUTH_USER'.freeze
   BASIC_AUTH_PASS = 'BASIC_AUTH_PASS'.freeze
 
@@ -19,7 +19,7 @@ class ServiceConfiguration < ApplicationRecord
   }
 
   validates :name, uniqueness: {
-    scope: [:service_id, :deployment_environment],
+    scope: %i[service_id deployment_environment],
     case_sensitive: false
   }
 
@@ -36,8 +36,10 @@ class ServiceConfiguration < ApplicationRecord
   end
 
   def decrypt_value
-    @decrypt_value ||=
-      EncryptionService.new.decrypt(value) if value.present?
+    if value.present?
+      @decrypt_value ||=
+        EncryptionService.new.decrypt(value)
+    end
   end
 
   def encode64

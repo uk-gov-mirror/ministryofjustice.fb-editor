@@ -25,12 +25,12 @@ RSpec.describe NewPageGenerator do
         'body' => 'Body section',
         'components' => [
           {
-            '_id'    => "#{page_url}_#{component_type}_1",
-            '_type'  => 'text',
+            '_id' => "#{page_url}_#{component_type}_1",
+            '_type' => 'text',
             'errors' => {},
-            'hint'   => '',
-            'label'  => 'Question',
-            'name'   => "#{page_url}_#{component_type}_1",
+            'hint' => '',
+            'label' => 'Question',
+            'name' => "#{page_url}_#{component_type}_1",
             'validation' => {
               'required' => true
             }
@@ -39,9 +39,8 @@ RSpec.describe NewPageGenerator do
       }
     end
 
-
     before do
-      allow(SecureRandom). to receive(:uuid).and_return('mandalorian-123')
+      allow(SecureRandom).to receive(:uuid).and_return('mandalorian-123')
     end
 
     context 'when only start page exists' do
@@ -89,7 +88,7 @@ RSpec.describe NewPageGenerator do
 
       context 'generating valid metadata' do
         context 'single questions pages with input components' do
-          %w(checkboxes date number radios text textarea).each do |type|
+          %w[checkboxes date number radios text textarea].each do |type|
             context "when #{type} component" do
               let(:page_type) { 'singlequestion' }
               let(:component_type) { type }
@@ -106,7 +105,7 @@ RSpec.describe NewPageGenerator do
         end
 
         context 'pages without components when first generated' do
-          %w(multiplequestions checkanswers confirmation).each do |page|
+          %w[multiplequestions checkanswers confirmation].each do |page|
             context "when #{page} page" do
               let(:page_type) { page }
               let(:component_type) { nil }
@@ -123,7 +122,7 @@ RSpec.describe NewPageGenerator do
         end
 
         context 'pages that allow only content components' do
-          %w(content checkanswers confirmation).each do |page|
+          %w[content checkanswers confirmation].each do |page|
             context "when #{page} page" do
               let(:page_type) { page }
               let(:component_type) { 'content' }
@@ -140,7 +139,7 @@ RSpec.describe NewPageGenerator do
         end
 
         context 'multiple questions page allow any component type' do
-          %w(checkboxes content date number radios text textarea).each do |type|
+          %w[checkboxes content date number radios text textarea].each do |type|
             context "when #{type} component type" do
               let(:page_type) { 'multiplequestions' }
               let(:component_type) { type }
@@ -159,14 +158,14 @@ RSpec.describe NewPageGenerator do
 
       context 'when metadata is invalid' do
         context 'pages that only allow content components' do
-          %w(content checkanswers confirmation).each do |page|
-            %w(checkboxes date number radios text textarea).each do |type|
+          %w[content checkanswers confirmation].each do |page|
+            %w[checkboxes date number radios text textarea].each do |type|
               context "#{page} page and #{type} component" do
                 let(:page_type) { page }
                 let(:component_type) { type }
 
                 it 'raises a validation error' do
-                  expect{
+                  expect {
                     MetadataPresenter::ValidateSchema.validate(
                       generator.page_metadata, "page.#{page_type}"
                     )

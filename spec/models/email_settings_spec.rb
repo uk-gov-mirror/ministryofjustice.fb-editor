@@ -85,7 +85,7 @@ RSpec.describe EmailSettings do
     end
 
     context 'when a value already exists in the db' do
-      let(:params) { {deployment_environment: 'dev'} }
+      let(:params) { { deployment_environment: 'dev' } }
       let!(:service_configuration) do
         create(
           :service_configuration,
@@ -113,8 +113,7 @@ RSpec.describe EmailSettings do
     context 'when user submits a value' do
       let(:params) do
         { deployment_environment: 'production',
-          service_email_output: 'han.solo@milleniumfalcon.uk'
-        }
+          service_email_output: 'han.solo@milleniumfalcon.uk' }
       end
 
       it 'shows the submitted value' do
@@ -125,7 +124,7 @@ RSpec.describe EmailSettings do
     end
 
     context 'when a value already exists in the db' do
-      let(:params) { {deployment_environment: 'production'} }
+      let(:params) { { deployment_environment: 'production' } }
       let!(:service_configuration) do
         create(
           :service_configuration,
@@ -168,7 +167,7 @@ RSpec.describe EmailSettings do
     end
 
     context 'when a value already exists in the db' do
-      let(:params) { {deployment_environment: 'dev'} }
+      let(:params) { { deployment_environment: 'dev' } }
       let!(:service_configuration) do
         create(
           :service_configuration,
@@ -198,8 +197,7 @@ RSpec.describe EmailSettings do
     context 'when user submits a value' do
       let(:params) do
         { deployment_environment: 'production',
-          service_email_subject: 'Never tell me the odds.'
-        }
+          service_email_subject: 'Never tell me the odds.' }
       end
 
       it 'shows the submitted value' do
@@ -210,7 +208,7 @@ RSpec.describe EmailSettings do
     end
 
     context 'when a value already exists in the db' do
-      let(:params) { {deployment_environment: 'production'} }
+      let(:params) { { deployment_environment: 'production' } }
       let!(:service_configuration) do
         create(
           :service_configuration,
@@ -242,7 +240,7 @@ RSpec.describe EmailSettings do
         {
           deployment_environment: 'dev',
           service_email_body: 'Please find attached the Death star plans'
-          }
+        }
       end
 
       it 'shows the submitted value' do
@@ -253,7 +251,7 @@ RSpec.describe EmailSettings do
     end
 
     context 'when a value already exists in the db' do
-      let(:params) { {deployment_environment: 'dev'} }
+      let(:params) { { deployment_environment: 'dev' } }
       let!(:service_configuration) do
         create(
           :service_configuration,
@@ -296,7 +294,7 @@ RSpec.describe EmailSettings do
     end
 
     context 'when a value already exists in the db' do
-      let(:params) { {deployment_environment: 'production'} }
+      let(:params) { { deployment_environment: 'production' } }
       let!(:service_configuration) do
         create(
           :service_configuration,
@@ -339,7 +337,7 @@ RSpec.describe EmailSettings do
     end
 
     context 'when a value already exists in the db' do
-      let(:params) { {deployment_environment: 'dev'} }
+      let(:params) { { deployment_environment: 'dev' } }
       let!(:service_configuration) do
         create(
           :service_configuration,
@@ -382,7 +380,7 @@ RSpec.describe EmailSettings do
     end
 
     context 'when a value already exists in the db' do
-      let(:params) { {deployment_environment: 'production'} }
+      let(:params) { { deployment_environment: 'production' } }
       let!(:service_configuration) do
         create(
           :service_configuration,
@@ -423,7 +421,7 @@ RSpec.describe EmailSettings do
     end
 
     context 'when a value already exists in the db' do
-      let(:params) { {deployment_environment: 'dev'} }
+      let(:params) { { deployment_environment: 'dev' } }
       let!(:service_configuration) do
         create(
           :service_configuration,
@@ -464,7 +462,7 @@ RSpec.describe EmailSettings do
     end
 
     context 'when a value already exists in the db' do
-      let(:params) { {deployment_environment: 'production'} }
+      let(:params) { { deployment_environment: 'production' } }
       let!(:service_configuration) do
         create(
           :service_configuration,

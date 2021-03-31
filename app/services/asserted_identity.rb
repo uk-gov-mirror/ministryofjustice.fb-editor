@@ -26,10 +26,10 @@ class AssertedIdentity
 
   def to_identity
     Identity.new(
-      uid: self.uid,
-      provider: self.provider,
-      name: self.name,
-      email: self.email
+      uid: uid,
+      provider: provider,
+      name: name,
+      email: email
     )
   end
 end

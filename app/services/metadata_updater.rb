@@ -45,7 +45,7 @@ class MetadataUpdater
   end
 
   def find_id
-    lambda do |key, value, object|
+    lambda do |key, value, _object|
       key == '_id' && value == @id
     end
   end

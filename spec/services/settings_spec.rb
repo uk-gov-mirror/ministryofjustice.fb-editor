@@ -87,7 +87,7 @@ RSpec.describe Settings do
           settings.update
           expect(
             settings.errors.full_messages.first
-          ).to include("is already used by another form. Please modify it.")
+          ).to include('is already used by another form. Please modify it.')
         end
       end
     end

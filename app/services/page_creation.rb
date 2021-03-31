@@ -7,6 +7,7 @@ class PageCreation
                 :service_id,
                 :version,
                 :add_page_after
+
   validates :page_url, :page_type, presence: true
   validates :page_url, format: { with: /\A[\sa-zA-Z0-9-]*\z/ }
 
@@ -27,7 +28,7 @@ class PageCreation
     )
 
     if version.errors?
-      self.errors.add(:base, :invalid, message: version.errors)
+      errors.add(:base, :invalid, message: version.errors)
       false
     else
       @version = version

@@ -18,6 +18,9 @@ jobs:
           name: security
           command: docker-compose -f docker-compose.unit-tests.ci.yml run --rm editor-app-tests-ci bundle exec brakeman -q --no-pager -i brakeman.ignore
       - run:
+          name: lint
+          command: docker-compose -f docker-compose.unit-tests.ci.yml run --rm editor-app-tests-ci bundle exec rubocop
+      - run:
           name: unit tests
           command: docker-compose -f docker-compose.unit-tests.ci.yml run --rm editor-app-tests-ci bundle exec rspec
       - slack/status: &slack_status

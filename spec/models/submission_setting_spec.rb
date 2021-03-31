@@ -18,5 +18,4 @@ RSpec.describe SubmissionSetting, type: :model do
       end
     end
   end
-
 end

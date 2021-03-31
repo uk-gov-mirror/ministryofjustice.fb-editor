@@ -8,7 +8,7 @@ class User < ApplicationRecord
   def has_identity?(identity)
     identities.any? do |id|
       id.uid == identity.uid &&
-      id.provider == identity.provider
+        id.provider == identity.provider
     end
   end
 end

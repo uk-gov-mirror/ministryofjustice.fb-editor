@@ -21,21 +21,17 @@ class UserPolicy
     # This can happen in testing (User.create!(...) then login_as!)
     # or if an existing user un-links their oauth account, and then
     # logs in with it again
-    if existing_user
-      unless existing_user.has_identity?(asserted_identity)
-        # then add the oauth identity to this user
-        UserService.add_identity!(existing_user, asserted_identity)
-      end
+    if existing_user && !existing_user.has_identity?(asserted_identity)
+      # then add the oauth identity to this user
+      UserService.add_identity!(existing_user, asserted_identity)
     end
 
     Auth0UserSession.new(
-      new_user: (not existing_user.present?),
+      new_user: existing_user.blank?,
       user_id: existing_user.try(:id),
       user_info: userinfo
     )
   end
-
-  private
 
   def self.create_user!(auth0_user_session)
     new_user = UserService.create!(

@@ -13,7 +13,7 @@ describe Publisher::Utils::Shell do
 
   describe '.build_cmd' do
     let(:executable) { 'myexe' }
-    let(:args) { ['arg1', 'arg2'] }
+    let(:args) { %w[arg1 arg2] }
     let(:redirect) { nil }
     let(:pipe) { nil }
 
@@ -50,7 +50,6 @@ describe Publisher::Utils::Shell do
     end
   end
 
-
   describe '.exec' do
     let(:cmd_return) { 'ok' }
     before do
@@ -82,7 +81,7 @@ describe Publisher::Utils::Shell do
     let(:output) { 'output' }
     let(:success) { true }
     let(:exit_status) { double('status', success?: success) }
-    let(:cmd) { ['myexe', 'arg1', 'arg2'] }
+    let(:cmd) { %w[myexe arg1 arg2] }
     let(:stdin) { 'some stuff' }
     before do
       allow(Open3).to receive(:capture2).and_return [output, exit_status]
@@ -90,7 +89,7 @@ describe Publisher::Utils::Shell do
 
     it 'builds the command, passing the first arg as the executable' do
       expect(described_class).to receive(:build_cmd)
-        .with(executable: 'myexe', args: ['arg1', 'arg2'])
+        .with(executable: 'myexe', args: %w[arg1 arg2])
       described_class.capture_with_stdin(cmd: cmd, stdin: stdin)
     end
 
@@ -137,7 +136,7 @@ describe Publisher::Utils::Shell do
 
     it 'calls capture_with_stdin, passing the given args as cmd:' do
       expect(described_class).to receive(:capture_with_stdin)
-        .with(cmd: ['any', 'thing']).and_return('result   ')
+        .with(cmd: %w[any thing]).and_return('result   ')
       described_class.output_of('any', 'thing')
     end
 
