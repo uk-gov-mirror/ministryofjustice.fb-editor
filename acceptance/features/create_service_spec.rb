@@ -58,19 +58,19 @@ feature 'Create a service' do
 
   def then_I_should_see_a_validation_message_for_required
     expect(editor.text).to include(
-      "Your answer for ‘Give your form a name’ can not be blank."
+      'Your answer for ‘Give your form a name’ can not be blank.'
     )
   end
 
   def then_I_should_see_a_validation_message_for_min_length
     expect(editor.text).to include(
-      "Your answer for ‘Give your form a name’ is too short (3 characters at least)"
+      'Your answer for ‘Give your form a name’ is too short (3 characters at least)'
     )
   end
 
   def then_I_should_see_a_validation_message_for_max_length
     expect(editor.text).to include(
-      "Your answer for ‘Give your form a name’ is too long (128 characters at most)"
+      'Your answer for ‘Give your form a name’ is too long (128 characters at most)'
     )
   end
 

@@ -13,11 +13,11 @@ module UserEncryption
   end
 
   def raw_name
-    read_attribute :name
+    self[:name]
   end
 
   def raw_email
-    read_attribute :email
+    self[:email]
   end
 
   def decrypt(value)

@@ -42,7 +42,7 @@ RSpec.describe DefaultConfiguration do
             {
               name: 'ENCODED_PUBLIC_KEY',
               deployment_environment: 'production'
-            },
+            }
           ]
         )
       end

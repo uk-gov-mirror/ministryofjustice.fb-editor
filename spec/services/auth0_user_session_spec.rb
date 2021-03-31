@@ -32,19 +32,19 @@ describe Auth0UserSession do
   end
 
   describe '#save_to' do
-    let(:user_info){
+    let(:user_info) do
       {
         'info' => {
           'email' => 'test-only@some-agency.defra.gov.uk',
           'name' => 'Example McUser'
         }
       }
-    }
+    end
     subject do
       described_class.new(user_id: 1234, user_info: user_info)
     end
     context 'given a hash' do
-      let(:session){ {} }
+      let(:session) { {} }
       before do
         subject.save_to(session)
       end
@@ -60,14 +60,14 @@ describe Auth0UserSession do
   end
 
   describe '#name' do
-    let(:user_info){
+    let(:user_info) do
       {
         'info' => {
           'email' => 'test-only@some-agency.defra.gov.uk',
           'name' => 'Example McUser'
         }
       }
-    }
+    end
     subject do
       described_class.new(user_id: 1234, user_info: user_info)
     end

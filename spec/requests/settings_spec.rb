@@ -14,7 +14,7 @@ RSpec.describe 'Settings' do
       allow_any_instance_of(PermissionsController).to receive(:require_user!).and_return(true)
 
       post "/services/#{service.service_id}/settings/form_information",
-            params: { service: { service_name: 'R2-D2' } }
+           params: { service: { service_name: 'R2-D2' } }
     end
 
     context 'when valid' do

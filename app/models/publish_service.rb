@@ -1,11 +1,11 @@
 class PublishService < ApplicationRecord
-  STATUS = %w(
+  STATUS = %w[
     queued
     pre_publishing
     publishing
     post_publishing
     completed
-  ).freeze
+  ].freeze
 
   validates :deployment_environment, :status, :service_id, presence: true
   validates :deployment_environment, inclusion: {

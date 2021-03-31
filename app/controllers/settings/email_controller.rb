@@ -19,7 +19,7 @@ class Settings::EmailController < FormController
       else
         @email_settings_production = @email_settings
       end
-      render :index, status: 422
+      render :index, status: :unprocessable_entity
     end
   end
 

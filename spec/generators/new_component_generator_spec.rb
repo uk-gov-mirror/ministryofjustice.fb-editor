@@ -6,8 +6,8 @@ RSpec.describe NewComponentGenerator do
       components: components
     )
   end
-  input_components = %w(text textarea number radios checkboxes)
-  non_input_components = %w(content)
+  input_components = %w[text textarea number radios checkboxes]
+  non_input_components = %w[content]
 
   describe '#to_metadata' do
     context 'valid component metadata' do
@@ -52,7 +52,7 @@ RSpec.describe NewComponentGenerator do
       end
     end
 
-    context "when component has other default validation" do
+    context 'when component has other default validation' do
       let(:component_type) { 'number' }
       let(:page_url) { 'some-page' }
       let(:components) { [] }
@@ -70,14 +70,14 @@ RSpec.describe NewComponentGenerator do
       let(:components) do
         [
           {
-            "_id" => "another-page_text_1",
-            "_type" => "text",
-            "name" => "another-page_text_1"
+            '_id' => 'another-page_text_1',
+            '_type' => 'text',
+            'name' => 'another-page_text_1'
           },
           {
-            "_id" => "another-page_text_2",
-            "_type" => "text",
-            "name" => "another-page_text_2"
+            '_id' => 'another-page_text_2',
+            '_type' => 'text',
+            'name' => 'another-page_text_2'
           }
         ]
       end

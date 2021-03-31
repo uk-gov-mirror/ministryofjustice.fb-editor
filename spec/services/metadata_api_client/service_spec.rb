@@ -1,16 +1,16 @@
 RSpec.describe MetadataApiClient::Service do
   let(:metadata_api_url) { 'http://metadata-api' }
-  let(:expected_body) {
+  let(:expected_body) do
     {
       "services": [
         service_attributes
       ]
     }
-  }
+  end
   let(:service_attributes) do
     {
-      "service_name": "basset",
-      "service_id": "634aa3d5-a3b3-4d0f-9078-bb754542a1d3"
+      "service_name": 'basset',
+      "service_id": '634aa3d5-a3b3-4d0f-9078-bb754542a1d3'
     }
   end
 

@@ -4,6 +4,7 @@ module MetadataApiClient
     TIMEOUT = 10
 
     attr_reader :connection
+
     delegate :get, :post, :put, :delete, to: :connection
 
     def initialize(root_url: ENV['METADATA_API_URL'])

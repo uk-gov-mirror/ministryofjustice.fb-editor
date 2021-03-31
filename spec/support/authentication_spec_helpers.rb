@@ -1,11 +1,11 @@
 module AuthenticationSpecHelpers
-  def auth0_userinfo(attributes={})
+  def auth0_userinfo(attributes = {})
     user_info = {
-      "provider"=>"auth0",
-      "uid"=>"google-oauth2|012345678900123456789",
-      "info"=> {
-        "name"=> "John Smith",
-        "email"=> "john.smith@test-only.justice.gov.uk"
+      'provider' => 'auth0',
+      'uid' => 'google-oauth2|012345678900123456789',
+      'info' => {
+        'name' => 'John Smith',
+        'email' => 'john.smith@test-only.justice.gov.uk'
       }.merge(attributes.stringify_keys)
     }
     OmniAuth::AuthHash.new(user_info)
@@ -20,7 +20,7 @@ module AuthenticationSpecHelpers
     cookie_jar = Capybara.current_session.driver.browser.current_session\
                          .instance_variable_get(:@rack_mock_session)\
                          .cookie_jar
-    cookie_jar[:"stub_#{name.to_s}"] = value
+    cookie_jar[:"stub_#{name}"] = value
   end
 
   def clear_session!

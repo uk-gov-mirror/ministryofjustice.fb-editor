@@ -59,11 +59,11 @@ feature 'Default text' do
   end
 
   def then_I_should_see_default_text
-    expect(editor.question_hint.text).to eq("[Optional hint text]")
+    expect(editor.question_hint.text).to eq('[Optional hint text]')
   end
 
   def and_I_should_not_see_the_default_text
-    expect(page.text).to_not include(MetadataPresenter::DefaultText['hint'])
+    expect(page.text).to_not include('[Optional hint text]')
   end
 
   def when_I_customise_hint
@@ -75,7 +75,7 @@ feature 'Default text' do
   end
 
   def then_I_should_see_default_text_in_label_and_options
-    expect(editor.all_hints.map(&:text)).to eq(["[Optional hint text]", "[Optional hint text]", "[Optional hint text]"])
+    expect(editor.all_hints.map(&:text)).to eq(['[Optional hint text]', '[Optional hint text]', '[Optional hint text]'])
   end
 
   def when_I_customise_all_hints

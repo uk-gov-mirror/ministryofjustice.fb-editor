@@ -1,17 +1,17 @@
 class EmailSettingsUpdater
   attr_reader :email_settings, :service
 
-  CONFIG_WITHOUT_DEFAULTS = %w(
+  CONFIG_WITHOUT_DEFAULTS = %w[
     SERVICE_EMAIL_OUTPUT
     SERVICE_EMAIL_PDF_SUBHEADING
-  ).freeze
+  ].freeze
 
-  CONFIG_WITH_DEFAULTS = %w(
+  CONFIG_WITH_DEFAULTS = %w[
     SERVICE_EMAIL_SUBJECT
     SERVICE_EMAIL_BODY
     SERVICE_EMAIL_PDF_HEADING
     SERVICE_EMAIL_FROM
-  ).freeze
+  ].freeze
 
   def initialize(email_settings:, service:)
     @email_settings = email_settings

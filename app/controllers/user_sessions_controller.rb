@@ -1,9 +1,9 @@
 class UserSessionsController < ApplicationController
-  before_action :require_user!, except: [:signup_not_allowed, :signup_error]
+  before_action :require_user!, except: %i[signup_not_allowed signup_error]
 
   def destroy
     reset_session
-    flash[:success] = I18n.t(:success, scope: [:user_sessions, :destroy])
+    flash[:success] = I18n.t(:success, scope: %i[user_sessions destroy])
     redirect_to root_path
   end
 

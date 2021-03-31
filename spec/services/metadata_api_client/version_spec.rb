@@ -30,7 +30,7 @@ RSpec.describe MetadataApiClient::Version do
 
     context 'when is unprocessable entity' do
       let(:expected_body) do
-        { 'message': ['Name has already been taken']}
+        { 'message': ['Name has already been taken'] }
       end
 
       before do

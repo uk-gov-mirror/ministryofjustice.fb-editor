@@ -6,9 +6,9 @@ module MetadataApiClient
           "/services/#{service_id}/versions", { metadata: payload }
         ).body
       )
-    rescue Faraday::UnprocessableEntityError => exception
-      Sentry.capture_exception(exception)
-      error_messages(exception)
+    rescue Faraday::UnprocessableEntityError => e
+      Sentry.capture_exception(e)
+      error_messages(e)
     end
   end
 end

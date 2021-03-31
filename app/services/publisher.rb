@@ -3,12 +3,12 @@ class Publisher
   attr_accessor :publish_service, :service_provisioner, :adapter
 
   MAIN = 'publisher.main'.freeze
-  STEPS = %w(
+  STEPS = %w[
     pre_publishing
     publishing
     post_publishing
     completed
-  ).freeze
+  ].freeze
 
   def call(steps: STEPS)
     ActiveSupport::Notifications.instrument(MAIN) do

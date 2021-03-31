@@ -79,14 +79,14 @@ RSpec.describe ServiceConfiguration, type: :model do
       context 'when send email flag is true' do
         let(:send_email) { true }
 
-        %w(
+        %w[
           SERVICE_EMAIL_OUTPUT
           SERVICE_EMAIL_FROM
           SERVICE_EMAIL_SUBJECT
           SERVICE_EMAIL_BODY
           SERVICE_EMAIL_PDF_HEADING
           SERVICE_EMAIL_PDF_SUBHEADING
-        ).each do |configuration|
+        ].each do |configuration|
           context "when configuration is #{configuration}" do
             let(:service_configuration) do
               described_class.new(
@@ -102,7 +102,7 @@ RSpec.describe ServiceConfiguration, type: :model do
           end
         end
 
-        %w(OTHER_ENV_VARS ENCODED_PRIVATE_KEY).each do |configuration|
+        %w[OTHER_ENV_VARS ENCODED_PRIVATE_KEY].each do |configuration|
           context "when configuration is #{configuration}" do
             let(:service_configuration) do
               described_class.new(
@@ -122,7 +122,7 @@ RSpec.describe ServiceConfiguration, type: :model do
       context 'when send email flag is false' do
         let(:send_email) { false }
 
-        %w(OTHER_ENV_VARS ENCODED_PRIVATE_KEY).each do |configuration|
+        %w[OTHER_ENV_VARS ENCODED_PRIVATE_KEY].each do |configuration|
           context "when configuration is #{configuration}" do
             let(:service_configuration) do
               described_class.new(

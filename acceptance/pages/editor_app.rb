@@ -1,9 +1,6 @@
 class EditorApp < SitePrism::Page
   if ENV['ACCEPTANCE_TESTS_USER'] && ENV['ACCEPTANCE_TESTS_PASSWORD']
-    set_url ENV['ACCEPTANCE_TESTS_EDITOR_APP'] % {
-      user: ENV['ACCEPTANCE_TESTS_USER'],
-      password: ENV['ACCEPTANCE_TESTS_PASSWORD']
-    }
+    set_url sprintf(ENV['ACCEPTANCE_TESTS_EDITOR_APP'], user: ENV['ACCEPTANCE_TESTS_USER'], password: ENV['ACCEPTANCE_TESTS_PASSWORD'])
   else
     set_url ENV['ACCEPTANCE_TESTS_EDITOR_APP']
   end

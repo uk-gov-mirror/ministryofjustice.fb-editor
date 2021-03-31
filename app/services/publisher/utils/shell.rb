@@ -19,7 +19,7 @@ class Publisher
           result = Kernel.system(cmd_line)
         end
 
-        raise CmdFailedError.new(cause: "#{$?}", message: "failing cmd: #{cmd_line}") unless result
+        raise CmdFailedError.new(cause: $?.to_s, message: "failing cmd: #{cmd_line}") unless result
       end
 
       def self.output_of(*args)
@@ -27,12 +27,13 @@ class Publisher
       end
 
       def self.capture_with_stdin(cmd: [], stdin: nil)
-        cmd_line = build_cmd( executable: cmd[0], args: cmd[1..-1] )
+        cmd_line = build_cmd(executable: cmd[0], args: cmd[1..-1])
 
         stdout_str, status = Open3.capture2(cmd_line, stdin_data: stdin)
         unless status.success?
-          raise CmdFailedError.new(cause: "#{$?}", message: "failing cmd: #{cmd_line}")
+          raise CmdFailedError.new(cause: $?.to_s, message: "failing cmd: #{cmd_line}")
         end
+
         stdout_str
       end
 
