@@ -74,7 +74,7 @@ class EditableBase {
 class EditableElement extends EditableBase {
   constructor($node, config) {
     super($node, config);
-    this.defaultText = $node.data(config.defaultTextAttribute) || "[empty]";
+    this.defaultText = $node.data(config.defaultTextAttribute) || $node.html();
 
     $node.on("blur.editablecomponent", this.update.bind(this));
     $node.on("focus.editablecomponent", this.edit.bind(this) );
@@ -107,8 +107,8 @@ class EditableElement extends EditableBase {
   }
 
   populate() {
-    if(this.content == "") {
-      this.$node.text(this.defaultText);
+    if(this.content.replace(/\s/mig, "") == "") {
+      this.$node.html(this.defaultText);
     }
   }
 
