@@ -19,7 +19,9 @@ Install the gems, create migrate the test database and start the Rails server:
       bundle exec rails s
     ```
 
-This application talks to the [fb-metadata-api](https://github.com/ministryofjustice/fb-metadata-api) project. You will need to clone this and run the following:
+This application talks to the [fb-metadata-api](https://github.com/ministryofjustice/fb-metadata-api) project.
+
+You will need to run the following in the **fb-editor**:
 
 ```
 docker-compose down
