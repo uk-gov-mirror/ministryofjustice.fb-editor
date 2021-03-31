@@ -45,7 +45,7 @@ class Auth0UserSession
     new_user
   end
 
-private
+  private
 
   def email_domain_is_valid
     errors.add(:user_info, "email must end with one of #{VALID_EMAIL_DOMAINS}") \

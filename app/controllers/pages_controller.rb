@@ -96,7 +96,7 @@ class PagesController < FormController
   end
   helper_method :pages_presenters
 
-private
+  private
 
   # The metadata presenter gem requires this objects to render a page
   #

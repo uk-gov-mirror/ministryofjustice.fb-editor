@@ -18,7 +18,7 @@ class EncryptionService
     decrypt_and_verify(value)
   end
 
-private
+  private
 
   def encryptor
     ActiveSupport::MessageEncryptor.new(KEY)

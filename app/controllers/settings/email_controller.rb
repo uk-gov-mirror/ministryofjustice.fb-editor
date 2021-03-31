@@ -23,7 +23,7 @@ class Settings::EmailController < FormController
     end
   end
 
-private
+  private
 
   def email_settings_params
     params.require(:email_settings).permit(

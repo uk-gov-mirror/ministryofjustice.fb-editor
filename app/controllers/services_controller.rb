@@ -24,7 +24,7 @@ class ServicesController < PermissionsController
   end
   helper_method :services
 
-private
+  private
 
   def service_creation_params
     params.require(

@@ -17,7 +17,7 @@ class MetricsController < ActionController::Base
   end
   helper_method :filter_to_string
 
-private
+  private
 
   def delayed_jobs_stats
     pending_job_count = Delayed::Job.where('attempts = 0').count

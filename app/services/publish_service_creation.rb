@@ -55,7 +55,7 @@ class PublishServiceCreation
     ).present?
   end
 
-private
+  private
 
   def create_publish_service
     publish_service.save!

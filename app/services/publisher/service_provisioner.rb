@@ -117,7 +117,7 @@ class Publisher
       service_configuration.select(&:secrets?)
     end
 
-  private
+    private
 
     def service
       @service ||= MetadataPresenter::Service.new(

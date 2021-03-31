@@ -22,7 +22,7 @@ class NewComponentGenerator
     end
   end
 
-private
+  private
 
   def component_id
     @component_id ||= "#{page_url}_#{component_type}_#{increment}"

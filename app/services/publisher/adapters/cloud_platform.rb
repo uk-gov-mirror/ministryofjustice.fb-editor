@@ -50,7 +50,7 @@ class Publisher
         end
       end
 
-    private
+      private
 
       def first_published?
         PublishService.completed

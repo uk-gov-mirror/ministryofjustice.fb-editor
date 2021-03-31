@@ -10,7 +10,7 @@ module Auth0Helper
     root_path
   end
 
-private
+  private
 
   # Is the user signed in?
   # @return [Boolean]

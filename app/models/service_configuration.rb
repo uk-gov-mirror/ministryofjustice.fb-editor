@@ -46,7 +46,7 @@ class ServiceConfiguration < ApplicationRecord
     Base64.strict_encode64(decrypt_value) if decrypt_value.present?
   end
 
-private
+  private
 
   def encrypt_value
     self.value = EncryptionService.new.encrypt(value)

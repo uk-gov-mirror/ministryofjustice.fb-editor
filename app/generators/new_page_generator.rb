@@ -26,7 +26,7 @@ class NewPageGenerator
     end
   end
 
-private
+  private
 
   def page_name
     "page.#{page_url}"

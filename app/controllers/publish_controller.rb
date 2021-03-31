@@ -15,7 +15,7 @@ class PublishController < FormController
     end
   end
 
-private
+  private
 
   def publish_service_params
     params.require(:publish_service_creation).permit(
