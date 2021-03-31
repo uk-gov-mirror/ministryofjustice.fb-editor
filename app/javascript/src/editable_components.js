@@ -501,19 +501,23 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
  * because it would alert us to something very wrong.
  **/
 EditableCollectionFieldComponent.createCollectionItemTemplate = function(config) {
-  var $item = this.$node.find(config.selectorCollectionItem).eq(0);
+  var $clone = this.$node.find(config.selectorCollectionItem).eq(0).clone();
   var data = mergeObjects({}, config.data, ["items"]); // pt.1 Copy without items.
   var itemConfig = mergeObjects({}, config, ["data"]); // pt.2 Copy without data.
   itemConfig.data = mergeObjects(data, config.data.items[0]); // Bug fix response to JS reference handling.
 
   // Filters could be changing the blah_1 values to blah_0, depending on filters in play.
   itemConfig.data = EditableCollectionFieldComponent.applyFilters(config.filters, 0, itemConfig.data);
-  $item.data("config", itemConfig);
+
+  // In case we need some custom actions on element.
+  safelyActivateFunction(config.onCollectionItemClone, $clone);
+
+  $clone.data("config", itemConfig);
 
   // Note: If we need to strip out some attributes or alter the template
   //       in some way, do that here.
 
-  this.$itemTemplate = $item;
+  this.$itemTemplate = $clone;
 }
 
 /* Private function

@@ -150,6 +150,13 @@ function bindEditableContentHandlers($area) {
           addItem: app.text.actions.option_add,
           removeItem: app.text.actions.option_remove
         },
+        onCollectionItemClone: function($node) {
+           // @node is the collection item (e.g. <div> wrapping <input type=radio> and <label> elements)
+           // Runs after the collection item has been cloned, so further custom manipulation can be
+           // carried out on the element.
+           $node.find("label").text(app.text.default_option);
+           $node.find("span").text(app.text.default_option_hint);
+        },
         onItemAdd: function($node) {
           // @$node (jQuery node) Node (instance.$node) that has been added.
           // Runs after adding a new Collection item.
