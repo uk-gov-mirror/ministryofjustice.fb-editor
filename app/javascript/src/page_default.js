@@ -16,22 +16,63 @@
  **/
 
 
-import { ActivatedDialog } from './component_activated_dialog';
-import { ConfirmationDialog } from './component_confirmation_dialog';
+import { Dialog } from './component_dialog';
+import { DialogConfirmation } from './component_dialog_confirmation';
 
 
 class DefaultPage {
   constructor() {
-    this.dialog = createConfirmationDialog.call(this, "ConfirmationDialog");
-    this.dialogDelete = createConfirmationDialog.call(this, "ConfirmationDialogDelete");
+    this.dialog = createDialog.call(this);
+    this.dialogConfirmation = createDialogConfirmation.call(this);
+    this.dialogConfirmationDelete = createDialogConfirmationDelete.call(this);
   }
 }
 
 
-function createConfirmationDialog(template) {
-  var $template = $("[data-component-template='" + template + "']");
+/* Create standard Dialog component with single 'ok' type button.
+ **/ 
+function createDialog() {
+  var $template = $("[data-component-template=Dialog]");
   var $node = $($template.text());
-  return new ConfirmationDialog($node, {
+  return new Dialog($node, {
+    autoOpen: false,
+    okText: $template.data("text-ok"),
+    classes: {
+      "ui-button": "fb-govuk-button",
+      "ui-dialog": $template.data("classes")
+    }
+  });
+}
+
+
+/* Create standard Dialog Confirmation component with 'ok' and 'cancel' type buttons.
+ * Component allows passing a function to it's 'confirm()' function so that actions
+ * can be played out on whether user clicks 'ok' or 'cancel'.
+ **/
+function createDialogConfirmation() {
+  var $template = $("[data-component-template=DialogConfirmation]");
+  var $node = $($template.text());
+  return new DialogConfirmation($node, {
+    autoOpen: false,
+    cancelText: $template.data("text-cancel"),
+    okText: $template.data("text-ok"),
+    classes: {
+      "ui-activator": "govuk-button fb-govuk-button",
+      "ui-button": "govuk-button",
+      "ui-dialog": $template.data("classes")
+    }
+  });
+}
+
+
+/* Dialog Confirmation Delete is simply a Dialog Confirmation with a different
+ * class name (dialog-confirmation-delete) added to meet style requirements
+ * of the 'delete' button.
+ **/
+function createDialogConfirmationDelete() {
+  var $template = $("[data-component-template=DialogConfirmationDelete]");
+  var $node = $($template.text());
+  return new DialogConfirmation($node, {
     autoOpen: false,
     cancelText: $template.data("text-cancel"),
     okText: $template.data("text-ok"),

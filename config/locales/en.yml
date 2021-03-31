@@ -13,8 +13,8 @@ en:
     button_delete_page: 'Delete page'
     button_ok: 'Ok'
     heading: General heading here
-    heading_delete: Delete \"#{label}\"?
-    heading_delete_option: Delete the option \"#{option label}\"?
+    heading_delete: Delete \"%{label}\"?
+    heading_delete_option: Delete the option \"%{option label}\"?
     message: General message here
     message_delete: 'This cannot be undone'
   header:
@@ -67,14 +67,27 @@ en:
         help: 'Sends the form data via email'
         configure_pdf_label: PDF attachment
   publish:
-    name: 'Publish'
-    heading: 'Editor'
-    sub_heading: 'The Editor is where you are making changes. Only you and MOJ staff with the right permissions can access your form.'
-    version: 'Version: %{time}'
-    test: 'Test'
-    test_sub_heading: 'Test is where others can view your form and can also be used to ensure everything works before you launch your form publicly.'
-    live: 'Live'
-    live_sub_heading: 'Live is where your form is hosted publicly when your service is running.'
+    name: 'Publishing'
+    heading: 'Publishing'
+    dialog:
+      heading: Publish to Test?
+      option_1: Allow anyone with the link to view
+      option_2: Set a username and password
+      alert_heading: Your form is being published
+      alert_text: 'It may take up to 15 minutes for your link to work.<br />Future updates will happen straight away.'
+      alert_button: I understand
+    test:
+      button: Publish to Test
+      heading: 'Test site'
+      description: 'Forms on Test can be shared with colleagues and protected by password. They will not be listed on search engines.'
+      version: 'Version: Latest  -'
+      by: 'by %{name}'
+    live:
+      button: Publish to Live
+      heading: 'Live site'
+      description: 'Forms on Live can be seen by anyone and can be listed on search engines if requested.'
+      version: 'Version: Latest  -'
+      by: 'by %{name}'
   services:
     heading: 'Your forms'
     edit: 'Edit'
@@ -104,7 +117,8 @@ en:
       page_creation:
         page_url: "What will be the URL for this page?"
       publish_service_creation:
-        require_authentication: 'Require username & password for access'
+        allow_anonymous: 'Allow anyone with the link to view'
+        require_authentication: 'Set a username and password'
         username: 'Set username'
         password: 'Set password'
     errors:
@@ -121,3 +135,5 @@ en:
   time:
     formats:
       simple: '%d/%m/%Y %H:%M:%S'
+      date: '%d/%m/%Y'
+      time: '%H:%M:%S'

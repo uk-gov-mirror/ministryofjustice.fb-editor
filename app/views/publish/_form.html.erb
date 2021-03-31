@@ -1,29 +1,38 @@
- <%= f.hidden_field :deployment_environment, value: deployment_environment %>
+<%= f.hidden_field :deployment_environment, value: deployment_environment %>
 
- <div class="govuk-form-group">
-   <%= f.check_box :require_authentication, checked: f.object.existing_authentication?(deployment_environment: deployment_environment) %>
-   <%= f.label :require_authentication %>
- </div>
+<div class="govuk-radios">
+  <div class="govuk-radios__item">
+    <%= f.radio_button :require_authentication, 0, class: 'govuk-radios__input', checked: f.object.existing_authentication?(deployment_environment: deployment_environment), id: "require_authentication_#{deployment_environment}_1" %>
+    <%= f.label :allow_anonymous, class: 'govuk-label govuk-radios__label', for: "require_authentication_#{deployment_environment}_1" %>
+  </div>
+  <div class="govuk-radios__item">
+    <%= f.radio_button :require_authentication, 1, class: 'govuk-radios__input', checked: f.object.existing_authentication?(deployment_environment: deployment_environment), id: 'require_authentication_2' %>
+    <%= f.label :require_authentication, class: 'govuk-label govuk-radios__label', for: 'require_authentication_2'  %>
+  </div>
+</div>
 
- <div class="govuk-form-group <%= !f.object.errors[:username].empty? ? 'govuk-form-group--error' : '' %>">
-  <% f.object.errors[:username].each do |message| %>
-    <span class="govuk-error-message"><%= message %></span>
-  <% end %>
-   <%= f.label :username %>
+<fieldset class="govuk-fieldset">
+  <div class="govuk-form-group <%= !f.object.errors[:username].empty? ? 'govuk-form-group--error' : '' %>">
+    <% f.object.errors[:username].each do |message| %>
+      <span class="govuk-error-message"><%= message %></span>
+    <% end %>
+    <%= f.label :username, class: 'govuk-label' %>
+    <%= f.text_field :username, value: f.object.username || f.object.service_configuration(
+         name: ServiceConfiguration::BASIC_AUTH_USER,
+         deployment_environment: deployment_environment
+        ),
+        class: 'govuk-input' %>
+  </div>
 
-   <%= f.text_field :username, value: f.object.username || f.object.service_configuration(
-     name: ServiceConfiguration::BASIC_AUTH_USER,
-     deployment_environment: deployment_environment
-   ) %>
- </div>
-
- <div class="govuk-form-group <%= !f.object.errors[:password].empty? ? 'govuk-form-group--error' : '' %>">
-  <% f.object.errors[:password].each do |message| %>
-    <span class="govuk-error-message"><%= message %></span>
-  <% end %>
-   <%= f.label :password %>
-   <%= f.password_field :password, value: f.object.password || f.object.service_configuration(
-     name: ServiceConfiguration::BASIC_AUTH_PASS,
-     deployment_environment: deployment_environment
-   ) %>
- </div>
+  <div class="govuk-form-group <%= !f.object.errors[:password].empty? ? 'govuk-form-group--error' : '' %>">
+    <% f.object.errors[:password].each do |message| %>
+      <span class="govuk-error-message"><%= message %></span>
+    <% end %>
+    <%= f.label :password, class: 'govuk-label' %>
+    <%= f.password_field :password, value: f.object.password || f.object.service_configuration(
+        name: ServiceConfiguration::BASIC_AUTH_PASS,
+        deployment_environment: deployment_environment
+      ),
+      class: 'govuk-input' %>
+  </div>
+</fieldset>

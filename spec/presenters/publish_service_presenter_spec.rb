@@ -26,7 +26,7 @@ RSpec.describe PublishServicePresenter do
 
         it 'returns hostname link' do
           expect(hostname).to eq(
-            %(<a target=\"_blank\" rel=\"noopener\" href=\"https://service-name.dev.test.form.service.justice.gov.uk\">service-name.dev.test.form.service.justice.gov.uk</a>)
+            %(<a target=\"_blank\" class=\"govuk-link\" rel=\"noopener\" href=\"https://service-name.dev.test.form.service.justice.gov.uk\">service-name.dev.test.form.service.justice.gov.uk</a>)
           )
         end
       end

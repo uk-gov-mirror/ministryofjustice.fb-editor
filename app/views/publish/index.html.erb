@@ -1,35 +1,55 @@
-<h1><%= t('publish.name') %><h1>
+<h1 class="govuk-heading-xl"><%= t('publish.heading') %></h1>
+<p id="publish-intro">
+  <%# COMMENT: Should we have service.updated_at instead of creation date? %>
+  You are publishing the version from <span class="date version"><%= l(service.created_at.to_time, format: :date) %></span>
+  <span class="time version"><%= l(service.created_at.to_time, format: :time) %></span>.
+  <%# TODO: Require BE to expose this data before we can see it %>
+  <%# last updated by <span class="name by">C. Smith</span      %>
+</p>
 
-<h2><%= t('publish.heading') %></h2>
+<dl id="publish-environments">
+  <dt class="environment govuk-heading-l"><%= t('publish.test.heading') %></dt>
+  <dd>
+    <p class="description"><%= t('publish.test.description') %></p>
+    <%# TODO: Require BE to expose this data before we can see it. %>
+    <%# p %>
+      <%# t('publish.test.version') %>
+      <%# span class="date version"><%= l(service.created_at.to_time, format: :date) %></span %>
+      <%# span class="time version"><%= l(service.created_at.to_time, format: :time) %></span %>
+      <%# span class="name by"><%= t('publish.test.by', name: 'C. Smith') %></span %>
+    <%# /p %>
+    <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'dev', view: self) %></p>
 
-<p><%= t('publish.sub_heading') %></p>
+    <%# TODO: Need an indicator from BE code that shows whether this is first-time publish   %>
+    <%#       Currently have hardcoded 'false' value to avoid dialog showing but this should %>
+    <%#       be dynamic to control dialog visibility.                                        %>
+    <%= form_for(@publish_service_creation_dev,
+        url: publish_index_path(service.service_id),
+        html: { id: 'publish-form-dev', class: 'publish-form', data: { first_publish: false } }) do |f| %>
+      <%= render 'form', f: f, deployment_environment: 'dev' %>
+      <%= f.submit t('actions.publish_to_test'), class: 'govuk-button editor-button fb-govuk-button' %>
+    <% end %>
+  </dd>
 
-<p><%= t('publish.version', time: l(service.created_at.to_time, format: :simple)) %></p>
+  <dt class="environment govuk-heading-l"><%= t('publish.live.heading') %></dt>
+  <dd>
+    <p class="description"><%= t('publish.live.description') %></p>
+    <%# TODO: Require BE to expose this data before we can see it.%>
+    <%# p %>
+      <%# t('publish.live.version') %>
+      <%# span class="date version"><%= l(service.created_at.to_time, format: :date) %></span %>
+      <%# span class="time version"><%= l(service.created_at.to_time, format: :time) %></span %>
+      <%# span class="name by"><%= t('publish.test.by', name: 'C. Smith') %></span %>
+    <%# /p %>
 
-<h2><%= t('publish.test') %></h2>
+    <p><%= PublishServicePresenter.hostname_for(deployment_environment: 'production', view: self) %></p>
 
-<span>
-  <%= PublishServicePresenter.hostname_for(deployment_environment: 'dev', view: self) %>
-</span>
-
-<p><%= t('publish.test_sub_heading') %></p>
-
-<%= form_for(@publish_service_creation_dev, url: publish_index_path(service.service_id)) do |f| %>
-  <%= render 'form', f: f, deployment_environment: 'dev' %>
-
-  <%= f.submit t('actions.publish_to_test'), class: 'govuk-button editor-button' %>
-<% end %>
-
-<h2><%= t('publish.live') %></h2>
-
-<span>
-  <%= PublishServicePresenter.hostname_for(deployment_environment: 'production', view: self) %>
-</span>
-
-<p><%= t('publish.live_sub_heading') %></p>
-
-<%= form_for(@publish_service_creation_production, url: publish_index_path(service.service_id)) do |f| %>
-  <%= render 'form', f: f, deployment_environment: 'production' %>
-
-  <%= f.submit t('actions.publish_to_live'), class: 'govuk-button editor-button' %>
-<% end %>
+    <%# TODO: Hardcoded 'firstpublish' (see comment above) %>
+    <%= form_for(@publish_service_creation_production,
+        url: publish_index_path(service.service_id),
+        html: { id: 'publish-form-live', class: 'publish-form', data: { first_publish: false } }) do |f| %>
+      <%= render 'form', f: f, deployment_environment: 'production' %>
+      <%= f.submit t('actions.publish_to_live'), class: 'govuk-button editor-button fb-govuk-button' %>
+    <% end %>
+  </dd>
+</dl>

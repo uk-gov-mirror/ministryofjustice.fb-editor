@@ -63,7 +63,7 @@
   }
 }
 
-.ui-dialog-buttonset > :last-child {
+.ui-dialog-buttonset > :nth-child(2) {
   @extend .govuk-button--secondary;
 }
 

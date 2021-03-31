@@ -14,7 +14,7 @@
  *
  **/
 
-import { safelyActivateFunction } from './utilities';
+import { mergeObjects, safelyActivateFunction } from './utilities';
 
 
 /* See jQueryUI Dialog for config options (all are passed straight in).
@@ -27,12 +27,12 @@ import { safelyActivateFunction } from './utilities';
  **/
 class ActivatedDialog {
   constructor($dialog, config) {
-    var conf = config || {};
+    var conf = mergeObjects({}, config);
+    var activator = new Activator($dialog, conf);
     var buttons = {};
-    var classes = conf.classes || {};
-    this._config = conf;
-    this.$node = $dialog;
-    this.activator = createDialogActivator($dialog, conf.activatorText, classes["ui-activator"]);
+
+    // Make sure classes is an object even if nothing passed.
+    conf.classes = mergeObjects({}, config.classes);
 
     buttons[conf.okText] = () => {
       safelyActivateFunction(this._config.onOk);
@@ -46,15 +46,20 @@ class ActivatedDialog {
     $dialog.dialog({
       autoOpen: conf.autoOpen || false,
       buttons: buttons,
-      classes: classes,
+      classes: conf.classes,
       closeOnEscape: true,
       height: "auto",
       modal: true,
       resizable: false,
-      close: this._config.onClose
+      close: conf.onClose
     });
 
     $dialog.parents(".ui-dialog").addClass("ActivatedDialog");
+
+    this._config = conf;
+    this.$node = $dialog;
+    this.$node.data("instance", this);
+    this.activator = activator;
   }
 
   open() {
@@ -67,19 +72,31 @@ class ActivatedDialog {
 }
 
 
-// Creates a button and links with the passed dialog element.
-// @$dialog (jQuery object) Target dialog element enhanced with dialog funcitonality.
-// @text    (String) Text that will show on the button.
-// @classes (String) Classes added to button.
-//
-function createDialogActivator($dialog, text, classes) {
+class Activator {
+  constructor($dialog, config) {
+    var $node = config.activator;
+    if(!$node || $node.length < 1) {
+      $node = createActivator($dialog, config.activatorText, config.classes["ui-activator"]);
+    }
+
+    $node.on( "click", () => {
+      $dialog.dialog( "open" );
+    });
+
+    this.$dialog = $dialog;
+    this.$node = $node;
+  }
+}
+
+/* Creates a button and links with the passed dialog element.
+ * @$dialog (jQuery object) Target dialog element enhanced with dialog funcitonality.
+ * @text    (String) Text that will show on the button.
+ * @classes (String) Classes added to button.
+ **/
+function createActivator($dialog, text, classes) {
   var $activator = $("<button>\</button>");
   $activator.text((text || "open dialog")); 
   $activator.addClass(classes);
-  $activator.on( "click", () => {
-    $dialog.dialog( "open" );
-  });
-
   $dialog.before($activator);
   return $activator;
 }

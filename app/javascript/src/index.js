@@ -2,29 +2,40 @@ import { DefaultPage } from './page_default';
 import { EditableContentPage } from './page_editable_content';
 import { FormOverviewPage } from './page_form_overview';
 import { FormListPage } from './page_form_list';
+import { PublishController } from './controller_publish'
 
 
 // Always runs when document ready.
 //
 $(document).ready(function() {
-  switch(app.page.controller) {
-    case "services":
-         if(app.page.action == "index" || app.page.action == "create") {
-           new FormListPage();
-         }
-         if(app.page.action == "edit") {
-           new FormOverviewPage();
-         }
-         break;
-    case "pages":
-         if(app.page.action == "create") {
-           new FormOverviewPage();
-         }
-         else {
-           new EditableContentPage();
-         }
-         break;
-    default: new DefaultPage();
+  switch(controllerAndAction()) {
+    case "ServicesController#index":
+    case "ServicesController#create":
+         new FormListPage();
+    break;
+
+    case "ServicesController#edit":
+    case "PagesController#create":
+         new FormOverviewPage();
+    break;
+
+    case "PagesController#edit":
+         new EditableContentPage();
+    break;
+
+    case "PublishController#index":
+    case "PublishController#create":
+         new PublishController(app);
+    break;
+
+    default:
+         console.log(controllerAndAction());
+         new DefaultPage();
   }
 });
 
+
+function controllerAndAction() {
+  var controller = app.page.controller.charAt(0).toUpperCase() + app.page.controller.slice(1);
+  return controller + "Controller#" + app.page.action;
+}
