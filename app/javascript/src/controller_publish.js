@@ -85,7 +85,7 @@ class PublishForm {
   }
 
   firstTimePublish() {
-    return this.$node.data("firstpublish");
+    return this.$node.data("first_publish");
   }
 }
 
