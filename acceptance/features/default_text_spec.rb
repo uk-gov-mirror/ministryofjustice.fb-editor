@@ -63,7 +63,7 @@ feature 'Default text' do
   end
 
   def and_I_should_not_see_the_default_text
-    expect(page.text).to_not include(MetadataPresenter::DefaultText['hint'])
+    expect(page.text).to_not include('[Optional hint text]')
   end
 
   def when_I_customise_hint
