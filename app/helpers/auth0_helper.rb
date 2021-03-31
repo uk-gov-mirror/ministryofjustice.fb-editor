@@ -7,7 +7,7 @@ module Auth0Helper
 
   # @return the path to the login page
   def login_path
-    root_path
+    FbEditor::Application.routes.url_helpers.root_path
   end
 
   private
