@@ -15,7 +15,7 @@
         </li>
 
         <li>
-          <%= link_to t('.sign_out', user_name: user_name), user_session_path, method: :delete %>
+          <%= link_to t('.sign_out', user_name: user_name), user_session_path, method: :delete, class: "sign-out" %>
         </li>
       </ul>
     <% end %>

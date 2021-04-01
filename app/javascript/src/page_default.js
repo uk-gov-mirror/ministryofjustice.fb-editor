@@ -18,6 +18,7 @@
 
 import { Dialog } from './component_dialog';
 import { DialogConfirmation } from './component_dialog_confirmation';
+import { post } from './utilities';
 
 
 class DefaultPage {
@@ -25,6 +26,8 @@ class DefaultPage {
     this.dialog = createDialog.call(this);
     this.dialogConfirmation = createDialogConfirmation.call(this);
     this.dialogConfirmationDelete = createDialogConfirmationDelete.call(this);
+
+    setupUserLinks();
   }
 }
 
@@ -81,6 +84,15 @@ function createDialogConfirmationDelete() {
       "ui-button": "govuk-button",
       "ui-dialog": $template.data("classes")
     }
+  });
+}
+
+/* Targets the user links in header
+ **/
+function setupUserLinks() {
+  $(".sign-out").on("click", function(e) {
+    e.preventDefault();
+    post(this.href, { _method: "delete" });
   });
 }
 
