@@ -27,7 +27,7 @@ class DefaultPage {
     this.dialogConfirmation = createDialogConfirmation.call(this);
     this.dialogConfirmationDelete = createDialogConfirmationDelete.call(this);
 
-    setupUserLinks();
+    isolatedMethodDeleteLinks();
   }
 }
 
@@ -89,7 +89,7 @@ function createDialogConfirmationDelete() {
 
 /* Targets the user links in header
  **/
-function setupUserLinks() {
+function isolatedMethodDeleteLinks() {
   $("header [data-method=delete]").on("click", function(e) {
     e.preventDefault();
     post(this.href, { _method: "delete" });
