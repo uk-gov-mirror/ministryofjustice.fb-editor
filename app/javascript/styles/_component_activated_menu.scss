@@ -51,6 +51,10 @@
     }
   }
 
+  a:focus-visible {
+    outline: none;
+  }
+
   span {
     padding-right: 30px;
     position: relative;
