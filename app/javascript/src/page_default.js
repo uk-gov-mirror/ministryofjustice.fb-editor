@@ -90,7 +90,7 @@ function createDialogConfirmationDelete() {
 /* Targets the user links in header
  **/
 function setupUserLinks() {
-  $(".sign-out").on("click", function(e) {
+  $("header [data-method=delete]").on("click", function(e) {
     e.preventDefault();
     post(this.href, { _method: "delete" });
   });
