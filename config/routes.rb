@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   get '/signup_not_allowed' => 'user_sessions#signup_not_allowed', as: 'signup_not_allowed'
   get '/signup_error/:error_type' => 'user_sessions#signup_error', as: 'signup_error'
-  resource :user_session, only: [:destroy]
+  resources :user_sessions, only: [:destroy]
 
   if Rails.env.development?
     post '/auth/developer/callback' => 'auth0#developer_callback'

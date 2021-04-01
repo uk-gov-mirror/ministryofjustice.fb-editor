@@ -7,6 +7,7 @@
 // Scripts called by javascript_pack_tag
 require("jquery")
 require("jquery-ui")
+require("@rails/ujs").start()
 require("../src/index")
 
 // Entry point for fb-editor stylesheets
