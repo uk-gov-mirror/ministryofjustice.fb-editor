@@ -1,0 +1,21 @@
+<% if @page.input_components.present? %>
+  <div class="component add-component">
+    <ul class="govuk-navigation">
+      <% @page.input_components.each do |component| %>
+        <li><a href="#add_component"><%= component %></a></li>
+      <% end %>
+    </ul>
+    <a class="fb-govuk-button fb-govuk-button-inverted" href="#add-input-component"><%= t('actions.add_component') %></a>
+  </div>
+<% end %>
+
+<% if @page.content_components.present? %>
+  <div class="component add-component">
+    <ul class="govuk-navigation">
+      <% @page.content_components.each do |component| %>
+        <li><a href="#add_component"><%= component %></a></li>
+      <% end %>
+    </ul>
+    <a class="fb-govuk-button fb-govuk-button-inverted" href="#add-content-component"><%= t('actions.add_content') %></a>
+  </div>
+<% end %>
