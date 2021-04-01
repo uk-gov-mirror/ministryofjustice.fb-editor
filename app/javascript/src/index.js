@@ -1,5 +1,5 @@
 import { DefaultPage } from './page_default';
-import { EditableContentPage } from './page_editable_content';
+import { PagesController } from './controller_pages';
 import { FormOverviewPage } from './page_form_overview';
 import { FormListPage } from './page_form_list';
 import { PublishController } from './controller_publish'
@@ -20,7 +20,7 @@ $(document).ready(function() {
     break;
 
     case "PagesController#edit":
-         new EditableContentPage();
+         new PagesController(app);
     break;
 
     case "PublishController#index":

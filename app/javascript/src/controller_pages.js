@@ -1,5 +1,5 @@
 /**
- * Editable Component Page
+ * Pages Controller
  * ----------------------------------------------------
  * Description:
  * Adds functionality required to enhance FB Editor form pages with editable components.
@@ -22,11 +22,24 @@ import { DefaultPage } from './page_default';
 import { editableComponent } from './editable_components';
 
 
-class EditableContentPage extends DefaultPage {
-  constructor() {
+class PagesController extends DefaultPage {
+  constructor(app) {
     super();
-    bindEditableContentHandlers.call(this);
+
+    switch(app.page.action) {
+      case "edit":
+        PagesController.edit.call(this, app);
+        break;
+    }
   }
+}
+
+
+/* Setup for the Edit action
+ **/
+PagesController.edit = function() {
+  bindEditableContentHandlers.call(this, app);
+
 }
 
 
@@ -164,4 +177,4 @@ function collectionItemControlsInActivatedMenu($item, config) {
 }
 
 
-export { EditableContentPage }
+export { PagesController }
