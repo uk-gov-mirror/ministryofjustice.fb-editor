@@ -139,6 +139,19 @@ html {
 
 /* Editable components
  * ------------------- */
+.AddComponent {
+  a {
+    &:after {
+      display: none;
+    }
+
+    &:before {
+      content: "+";
+      margin-right: 2px;
+    }
+  }
+}
+
 .EditableContent,
 .EditableElement {
   &:focus,
