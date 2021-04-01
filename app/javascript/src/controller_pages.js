@@ -40,6 +40,29 @@ class PagesController extends DefaultPage {
 PagesController.edit = function() {
   bindEditableContentHandlers.call(this, app);
 
+  $(".add-component").each(function() {
+    var $node = $(this);
+    new AddComponent($node);
+  });
+}
+
+
+class AddComponent {
+  constructor($node) {
+    var $list = $node.find("> ul");
+    var $button = $node.find("> a");
+
+    this.menu = new ActivatedMenu($list, {
+      selection_event: "PageActionMenuSelection",
+      preventDefault: true, // Stops the default action of triggering element.
+      activator: $button,
+      menu: {
+        position: { at: "right+2 top-2" }
+      }
+    });
+
+    $node.addClass("AddComponent");
+  }
 }
 
 
