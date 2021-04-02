@@ -40,10 +40,16 @@ class PagesController extends DefaultPage {
 PagesController.edit = function() {
   bindEditableContentHandlers.call(this, app);
 
+  // Bind document event listeners.
+  $(document).on("AddComponentMenuSelection", addComponentMenuSelection.bind(this) );
+
+  // Find and enhance the Add Component buttons.
   $(".add-component").each(function() {
     var $node = $(this);
     new AddComponent($node);
   });
+
+  this.$form = $("#editContentForm");
 }
 
 
@@ -53,7 +59,7 @@ class AddComponent {
     var $button = $node.find("> a");
 
     this.menu = new ActivatedMenu($list, {
-      selection_event: "PageActionMenuSelection",
+      selection_event: "AddComponentMenuSelection",
       preventDefault: true, // Stops the default action of triggering element.
       activator: $button,
       menu: {
@@ -66,8 +72,21 @@ class AddComponent {
 }
 
 
-// Controls all the Editable Component setup for each page.
-// TODO: Add more description on how this works.
+/* Handle item selections on the AddComponent context menu elements.
+ **/
+function addComponentMenuSelection(event, data) {
+  var element = data.original.element;
+  var action = data.activator.data("action");
+  var $input = $("<input type=\"hidden\" name=\"page[add_component]\" />");
+  $input.val(action);
+  this.$form.append($input);
+  this.$form.submit();
+}
+
+
+/* Controls all the Editable Component setup for each page.
+ * TODO: Add more description on how this works.
+ **/
 function bindEditableContentHandlers($area) {
   var PAGE = this;
   var $editContentForm = $("#editContentForm");
