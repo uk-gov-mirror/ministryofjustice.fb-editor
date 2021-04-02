@@ -16,7 +16,7 @@
  **/
 
 
-import { uniqueString, findFragmentIdentifier } from './utilities';
+import { uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
 import { DefaultPage } from './page_default';
 import { editableComponent } from './editable_components';
@@ -38,26 +38,41 @@ class PagesController extends DefaultPage {
 /* Setup for the Edit action
  **/
 PagesController.edit = function() {
+  var $form = $("#editContentForm");
+
   bindEditableContentHandlers.call(this, app);
 
   // Bind document event listeners.
-  $(document).on("AddComponentMenuSelection", addComponentMenuSelection.bind(this) );
+  $(document).on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(this) );
 
   // Find and enhance the Add Component buttons.
-  $(".add-component").each(function() {
+  $("[data-component=add-component]").each(function() {
     var $node = $(this);
     new AddComponent($node);
   });
 
-  this.$form = $("#editContentForm");
+  // Find and enhance the Add Content buttons.
+  $("[data-component=add-content]").each(function() {
+    var $node = $(this);
+    new AddContent($node, { $form: $form });
+  });
+
+  this.$form = $form;
 }
 
 
+/* Gives add component buttons functionality to select a component type
+ * from a drop menu, and update the 'save' form by activation of a 
+ * global document event.
+ * (see addComponentMenuSelection function)
+ **/
 class AddComponent {
   constructor($node) {
     var $list = $node.find("> ul");
     var $button = $node.find("> a");
 
+    this.$list = $list;
+    this.$button = $button;
     this.menu = new ActivatedMenu($list, {
       selection_event: "AddComponentMenuSelection",
       preventDefault: true, // Stops the default action of triggering element.
@@ -74,13 +89,27 @@ class AddComponent {
 
 /* Handle item selections on the AddComponent context menu elements.
  **/
-function addComponentMenuSelection(event, data) {
-  var element = data.original.element;
+AddComponent.MenuSelection = function(event, data) {
   var action = data.activator.data("action");
-  var $input = $("<input type=\"hidden\" name=\"page[add_component]\" />");
-  $input.val(action);
-  this.$form.append($input);
+  updateHiddenInputOnForm(this.$form, "page[add_component]", action);
   this.$form.submit();
+}
+
+
+/* Gives add content buttons functionality to update the 'save' form.
+ **/
+class AddContent {
+  constructor($node, config) {
+    var $button = $node.find("> a");
+    this.$button = $button;
+
+    $button.on("click", function() {
+      updateHiddenInputOnForm(config.$form, "page[add_component]", "content");
+      config.$form.submit();
+    });
+
+    $node.addClass("AddContent");
+  }
 }
 
 

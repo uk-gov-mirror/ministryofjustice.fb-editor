@@ -50,3 +50,10 @@
     background-color: govuk-colour("dark-blue");
   }
 }
+
+@mixin addition_icon {
+  &:before {
+    content: "+";
+    margin-right: 5px;
+  }
+}

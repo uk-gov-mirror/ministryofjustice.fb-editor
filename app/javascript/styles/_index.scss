@@ -139,15 +139,13 @@ html {
 
 /* Editable components
  * ------------------- */
-.AddComponent {
+.AddComponent,
+.AddContent {
   a {
+    @include addition_icon;
+
     &:after {
       display: none;
-    }
-
-    &:before {
-      content: "+";
-      margin-right: 2px;
     }
   }
 }
@@ -203,12 +201,8 @@ html {
  * --------------------------- */
 .EditableCollectionItemInjector {
   @include button_type_link;
+  @include addition_icon;
   margin: 0 0 55px 55px;
-
-  &:before {
-    content: "+";
-    margin-right: 5px;
-  }
 }
 
 .EditableCollectionItemRemover {
@@ -228,6 +222,7 @@ html {
 .form-overview_button {
   // This element is injected by JS
   @include button_type_link;
+  @include addition_icon;
   opacity: 1;
   position: absolute;
   right: -118px;
@@ -235,11 +230,6 @@ html {
 
   &:after {
     display: none;
-  }
-
-  &:before {
-    content: "+";
-    margin-right: 2px;
   }
 }
 

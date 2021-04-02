@@ -16,7 +16,7 @@
 import DOMPurify from 'dompurify';
 import marked from 'marked';
 import TurndownService from 'turndown';
-import { mergeObjects, createElement, safelyActivateFunction } from './utilities';
+import { mergeObjects, createElement, safelyActivateFunction, updateHiddenInputOnForm } from './utilities';
 
 var turndownService = new TurndownService();
 
@@ -674,24 +674,6 @@ class EditableCollectionItemRemover {
     this.item = editableCollectionItem;
     this.$node = $node;
   }
-}
-
-
-/* Function used to update (or create if does not exist) a hidden
- * form input field that will be part of the submitted data
- * capture form (new content sent to server).
- *
- * @$form   (jQuery Object) The target form to send content back to the server.
- * @id      (String) Used as the name attribute on input[hidden] form elements.
- * @content (String) instance.content value added to input[hidden] field.
- **/
-function updateHiddenInputOnForm($form, id, content) {
-  var $input = $form.find("input[name=\"" + id + "\"]");
-  if($input.length == 0) {
-    $input = $("<input type=\"hidden\" name=\"" + id + "\" />");
-    $form.prepend($input);
-  }
-  $input.val(content);
 }
 
 

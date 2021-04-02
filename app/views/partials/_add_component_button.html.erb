@@ -1,6 +1,6 @@
 <% if ['multiplequestions'].include? @page._type.gsub('page.', '') %>
   <% if @page.input_components.present? %>
-    <div class="component add-component">
+    <div class="component add-component" data-component="add-component">
       <ul class="govuk-navigation">
         <li>
           <span><%= t('components.menu.question') %></span>

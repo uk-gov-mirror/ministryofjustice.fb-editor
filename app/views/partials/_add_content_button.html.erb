@@ -1,6 +1,6 @@
 <% if ['checkanswers', 'confirmation', 'content'].include? @page._type.gsub('page.', '') %>
   <% if @page.content_components.present? %>
-    <div class="component add-component">
+    <div class="component add-content" data-component="add-content">
       <%# TODO: This will be basis of v2 code %>
       <%# ul class="govuk-navigation" %>
         <%# @page.content_components.each do |component| %>
