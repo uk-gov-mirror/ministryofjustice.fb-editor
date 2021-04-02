@@ -132,7 +132,7 @@ class EditableElement extends EditableBase {
 class EditableContent extends EditableElement {
   constructor($node, config) {
     super($node, config);
-    this._markdown = convertToMarkdown(this.$node.html());
+    this._markdown = this.markdown();
     this._editing = false;
 
     // Adjust event for multiple line input.
@@ -158,7 +158,7 @@ class EditableContent extends EditableElement {
 
   edit() {
     if(!this._editing) {
-      let markdown = convertToMarkdown(this.$node.html());
+      let markdown = this.markdown();
       markdown = markdown.replace(/\n/mig, "<br>");
       this.$node.html(markdown);
       this._editing = true;
@@ -168,13 +168,18 @@ class EditableContent extends EditableElement {
 
   update() {
     if(this._editing) {
-      let markdown = this.$node.html();
+      let markdown = this.markdown();
       this.content = sanitiseMarkdown(markdown);
       this.$node.html(convertToHtml(markdown));
       this.$node.removeClass(this._config.editClassname);
       this._editing = false;
     }
     this.populate();
+  }
+
+  markdown() {
+    let html = this.$node.html();
+    return (html != this.defaultText ? convertToMarkdown(html) : "");
   }
 }
 
