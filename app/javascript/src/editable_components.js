@@ -13,6 +13,7 @@
  *
  **/
 
+
 import DOMPurify from 'dompurify';
 import marked from 'marked';
 import TurndownService from 'turndown';
@@ -86,7 +87,8 @@ class EditableElement extends EditableBase {
   }
 
   get content() {
-    return this.$node.text();
+    var content = this.$node.text();
+    return content == this.defaultText ? "" : content;
   }
 
   set content(content) {
@@ -143,7 +145,8 @@ class EditableContent extends EditableElement {
   }
 
   get content() {
-    return this._markdown;
+    var content = this._markdown;
+    return content == this.defaultText ? "" : content;
   }
 
   set content(markdown) {
