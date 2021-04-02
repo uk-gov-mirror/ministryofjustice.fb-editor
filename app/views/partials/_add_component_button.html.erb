@@ -1,0 +1,31 @@
+<% if ['multiplequestions'].include? @page._type.gsub('page.', '') %>
+  <% if @page.input_components.present? %>
+    <div class="component add-component">
+      <ul class="govuk-navigation">
+        <li>
+          <span><%= t('components.menu.question') %></span>
+          <ul class="govuk-navigation">
+            <% @page.input_components.each do |component| %>
+              <li data-action="<%= component %>"><a href="#add_component"><%= component.capitalize %></a></li>
+            <% end %>
+          </ul>
+        </li>
+        <% if @page.content_components.present? %>
+          <%# TODO: This will be basis of v2 code %>
+          <%#li %>
+            <%# span>Content area</span %>
+            <%# ul class="govuk-navigation" %>
+              <%# @page.content_components.each do |component| %>
+                <%# li data-action="< component >"><a href="#add_component">< component.capitalize ></a></li %>
+              <%# end %>
+            <%# /ul %>
+          <%# /li %>
+
+          <%# This line is MVP version only (only outputs single content) %>
+          <li data-action="content"><a href="#add_component"><%= t('components.menu.content_area') %></a></li>
+        <% end %>
+      </ul>
+      <a class="fb-govuk-button fb-govuk-button-inverted" href="#add-input-component"><%= t('components.actions.add_component') %></a>
+    </div>
+  <% end %>
+<% end %>

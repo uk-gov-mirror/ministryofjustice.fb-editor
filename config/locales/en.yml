@@ -37,8 +37,6 @@ en:
     existing_user:
       welcome_html: 'Signed in successfully'
   actions:
-    add_component: 'Add component'
-    add_content: 'Add content area'
     save: 'Save'
     publish_to_test: 'Publish to Test'
     publish_to_live: 'Publish to Live'
@@ -54,6 +52,13 @@ en:
     create: 'Add page'
     cancel: 'Cancel'
     actions: 'Actions'
+  components:
+    actions:
+      add_component: 'Add component'
+      add_content: 'Add content area'
+    menu:
+      question: 'Question'
+      content_area: 'Content area'
   settings:
     name: 'Settings'
     form_information: 'Form details'
