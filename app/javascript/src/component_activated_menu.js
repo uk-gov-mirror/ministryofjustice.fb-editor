@@ -193,7 +193,10 @@ class ActivatedMenuContainer {
 
 class ActivatedMenuActivator {
   constructor(menu, config) {
-    var $node = $(createElement("button", config.activator_text, config.activator_classname));
+    var $node = config.activator;
+    if(!$node || $node.length < 1) {
+      $node = $(createElement("button", config.activator_text, config.activator_classname));
+    }
 
     $node.on("click.ActivatedMenuActivator", (event) => {
       menu.state.activator = event.currentTarget;
@@ -228,7 +231,9 @@ class ActivatedMenuActivator {
 
     menu.$node.before($node);
     $node.addClass("ActivatedMenu_Activator");
+
     this.$node = $node;
+    this.menu = menu;
   }
 }
 

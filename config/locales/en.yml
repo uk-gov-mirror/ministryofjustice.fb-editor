@@ -52,6 +52,13 @@ en:
     create: 'Add page'
     cancel: 'Cancel'
     actions: 'Actions'
+  components:
+    actions:
+      add_component: 'Add component'
+      add_content: 'Add content area'
+    menu:
+      question: 'Question'
+      content_area: 'Content area'
   settings:
     name: 'Settings'
     form_information: 'Form details'

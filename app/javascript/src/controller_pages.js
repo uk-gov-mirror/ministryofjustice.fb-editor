@@ -1,5 +1,5 @@
 /**
- * Editable Component Page
+ * Pages Controller
  * ----------------------------------------------------
  * Description:
  * Adds functionality required to enhance FB Editor form pages with editable components.
@@ -16,22 +16,106 @@
  **/
 
 
-import { uniqueString, findFragmentIdentifier } from './utilities';
+import { uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from './utilities';
 import { ActivatedMenu } from './component_activated_menu';
 import { DefaultPage } from './page_default';
 import { editableComponent } from './editable_components';
 
 
-class EditableContentPage extends DefaultPage {
-  constructor() {
+class PagesController extends DefaultPage {
+  constructor(app) {
     super();
-    bindEditableContentHandlers.call(this);
+
+    switch(app.page.action) {
+      case "edit":
+        PagesController.edit.call(this, app);
+        break;
+    }
   }
 }
 
 
-// Controls all the Editable Component setup for each page.
-// TODO: Add more description on how this works.
+/* Setup for the Edit action
+ **/
+PagesController.edit = function() {
+  var $form = $("#editContentForm");
+
+  bindEditableContentHandlers.call(this, app);
+
+  // Bind document event listeners.
+  $(document).on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(this) );
+
+  // Find and enhance the Add Component buttons.
+  $("[data-component=add-component]").each(function() {
+    var $node = $(this);
+    new AddComponent($node);
+  });
+
+  // Find and enhance the Add Content buttons.
+  $("[data-component=add-content]").each(function() {
+    var $node = $(this);
+    new AddContent($node, { $form: $form });
+  });
+
+  this.$form = $form;
+}
+
+
+/* Gives add component buttons functionality to select a component type
+ * from a drop menu, and update the 'save' form by activation of a 
+ * global document event.
+ * (see addComponentMenuSelection function)
+ **/
+class AddComponent {
+  constructor($node) {
+    var $list = $node.find("> ul");
+    var $button = $node.find("> a");
+
+    this.$list = $list;
+    this.$button = $button;
+    this.menu = new ActivatedMenu($list, {
+      selection_event: "AddComponentMenuSelection",
+      preventDefault: true, // Stops the default action of triggering element.
+      activator: $button,
+      menu: {
+        position: { at: "right+2 top-2" }
+      }
+    });
+
+    $node.addClass("AddComponent");
+  }
+}
+
+
+/* Handle item selections on the AddComponent context menu elements.
+ **/
+AddComponent.MenuSelection = function(event, data) {
+  var action = data.activator.data("action");
+  updateHiddenInputOnForm(this.$form, "page[add_component]", action);
+  this.$form.submit();
+}
+
+
+/* Gives add content buttons functionality to update the 'save' form.
+ **/
+class AddContent {
+  constructor($node, config) {
+    var $button = $node.find("> a");
+    this.$button = $button;
+
+    $button.on("click", function() {
+      updateHiddenInputOnForm(config.$form, "page[add_component]", "content");
+      config.$form.submit();
+    });
+
+    $node.addClass("AddContent");
+  }
+}
+
+
+/* Controls all the Editable Component setup for each page.
+ * TODO: Add more description on how this works.
+ **/
 function bindEditableContentHandlers($area) {
   var PAGE = this;
   var $editContentForm = $("#editContentForm");
@@ -164,4 +248,4 @@ function collectionItemControlsInActivatedMenu($item, config) {
 }
 
 
-export { EditableContentPage }
+export { PagesController }

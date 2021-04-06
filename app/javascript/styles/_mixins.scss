@@ -22,7 +22,7 @@
   border-radius: 0;
   color: govuk-colour("blue");
   cursor: pointer;
-  display: block;
+  display: inline-block;
   height: auto;
   padding: govuk-spacing(1) govuk-spacing(2);
   text-decoration: none;
@@ -48,5 +48,12 @@
   &[disabled='disabled'],
   &[disabled='disabled']:hover {
     background-color: govuk-colour("dark-blue");
+  }
+}
+
+@mixin addition_icon {
+  &:before {
+    content: "+";
+    margin-right: 5px;
   }
 }

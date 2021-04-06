@@ -13,10 +13,11 @@
  *
  **/
 
+
 import DOMPurify from 'dompurify';
 import marked from 'marked';
 import TurndownService from 'turndown';
-import { mergeObjects, createElement, safelyActivateFunction } from './utilities';
+import { mergeObjects, createElement, safelyActivateFunction, updateHiddenInputOnForm } from './utilities';
 
 var turndownService = new TurndownService();
 
@@ -86,7 +87,8 @@ class EditableElement extends EditableBase {
   }
 
   get content() {
-    return this.$node.text();
+    var content = this.$node.text();
+    return content == this.defaultText ? "" : content;
   }
 
   set content(content) {
@@ -130,7 +132,7 @@ class EditableElement extends EditableBase {
 class EditableContent extends EditableElement {
   constructor($node, config) {
     super($node, config);
-    this._markdown = convertToMarkdown(this.$node.html());
+    this._markdown = this.markdown();
     this._editing = false;
 
     // Adjust event for multiple line input.
@@ -143,7 +145,8 @@ class EditableContent extends EditableElement {
   }
 
   get content() {
-    return this._markdown;
+    var content = this._markdown;
+    return content == this.defaultText ? "" : content;
   }
 
   set content(markdown) {
@@ -155,7 +158,7 @@ class EditableContent extends EditableElement {
 
   edit() {
     if(!this._editing) {
-      let markdown = convertToMarkdown(this.$node.html());
+      let markdown = this.markdown();
       markdown = markdown.replace(/\n/mig, "<br>");
       this.$node.html(markdown);
       this._editing = true;
@@ -165,13 +168,18 @@ class EditableContent extends EditableElement {
 
   update() {
     if(this._editing) {
-      let markdown = this.$node.html();
+      let markdown = this.markdown();
       this.content = sanitiseMarkdown(markdown);
       this.$node.html(convertToHtml(markdown));
       this.$node.removeClass(this._config.editClassname);
       this._editing = false;
     }
     this.populate();
+  }
+
+  markdown() {
+    let html = this.$node.html();
+    return (html != this.defaultText ? convertToMarkdown(html) : "");
   }
 }
 
@@ -674,24 +682,6 @@ class EditableCollectionItemRemover {
     this.item = editableCollectionItem;
     this.$node = $node;
   }
-}
-
-
-/* Function used to update (or create if does not exist) a hidden
- * form input field that will be part of the submitted data
- * capture form (new content sent to server).
- *
- * @$form   (jQuery Object) The target form to send content back to the server.
- * @id      (String) Used as the name attribute on input[hidden] form elements.
- * @content (String) instance.content value added to input[hidden] field.
- **/
-function updateHiddenInputOnForm($form, id, content) {
-  var $input = $form.find("input[name=\"" + id + "\"]");
-  if($input.length == 0) {
-    $input = $("<input type=\"hidden\" name=\"" + id + "\" />");
-    $form.prepend($input);
-  }
-  $input.val(content);
 }
 
 
