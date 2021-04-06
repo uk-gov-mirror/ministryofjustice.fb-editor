@@ -40,7 +40,11 @@ class PagesController extends DefaultPage {
 PagesController.edit = function() {
   var $form = $("#editContentForm");
 
+  this.$form = $form;
+  this.editableContent = [];
+
   bindEditableContentHandlers.call(this, app);
+  focusOnEditableComponent.call(this);
 
   // Bind document event listeners.
   $(document).on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(this) );
@@ -57,7 +61,6 @@ PagesController.edit = function() {
     new AddContent($node, { $form: $form });
   });
 
-  this.$form = $form;
 }
 
 
@@ -113,6 +116,25 @@ class AddContent {
 }
 
 
+/* Set focus on first editable component or, if a new component has been
+ * added, the first element with that new component.
+ **/
+function focusOnEditableComponent() {
+  var target = location.hash;
+  if(target.match(/^[#\w\d_]+$/)) {
+    let $newComponent = $(target);
+    if($newComponent.length) {
+      $newComponent.data("instance").focus();
+    }
+    else {
+      if(this.editableContent.length > 0) {
+        this.editableContent[0].focus();
+      }
+    }
+  }
+}
+
+
 /* Controls all the Editable Component setup for each page.
  * TODO: Add more description on how this works.
  **/
@@ -120,12 +142,11 @@ function bindEditableContentHandlers($area) {
   var PAGE = this;
   var $editContentForm = $("#editContentForm");
   var $saveButton = $editContentForm.find(":submit");
-  var editableContent = [];
   if($editContentForm.length) {
     $saveButton.attr("disabled", true); // disable until needed.
     $(".fb-editable").each(function(i, node) {
       var $node = $(node);
-      editableContent.push(editableComponent($node, {
+      PAGE.editableContent.push(editableComponent($node, {
         editClassname: "active",
         data: $node.data("fb-content-data"),
         defaultTextAttribute: "fb-default-text",
@@ -202,15 +223,10 @@ function bindEditableContentHandlers($area) {
       });
     });
 
-    // Set focus on first editable component for design requirement.
-    if(editableContent.length > 0) {
-      editableContent[0].focus();
-    }
-
     // Add handler to activate save functionality from the independent 'save' button.
     $editContentForm.on("submit", (e) => {
-      for(var i=0; i<editableContent.length; ++i) {
-        editableContent[i].save();
+      for(var i=0; i<PAGE.editableContent.length; ++i) {
+        PAGE.editableContent[i].save();
       }
     });
   }
