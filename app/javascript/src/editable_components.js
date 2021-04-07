@@ -435,7 +435,8 @@ class EditableCollectionFieldComponent extends EditableComponentBase {
       hint: new EditableElement($node.find(config.selectorCollectionHint), config)
     });
 
-    //var text = JSON.parse(config.text || "{}");
+    var text = config.text || {}; // Make sure it exists to avoid errors later on.
+
     this._preservedItemCount = (this.type == "radios" ? 2 : 1); // Either minimum 2 radios or 1 checkbox.
     EditableCollectionFieldComponent.createCollectionItemTemplate.call(this, config);
     EditableCollectionFieldComponent.createEditableCollectionItems.call(this, config);
