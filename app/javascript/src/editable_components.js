@@ -37,7 +37,6 @@ var turndownService = new TurndownService();
 class EditableBase {
   constructor($node, config) {
     this._config = config || {};
-    this._content = $node.text();
     this.type = config.type;
     this.$node = $node;
     $node.data("instance", this);
@@ -48,7 +47,7 @@ class EditableBase {
   }
 
   get content() {
-    return this._content;
+    return $node.text();
   }
 
   save() {
@@ -87,15 +86,13 @@ class EditableElement extends EditableBase {
   }
 
   get content() {
-    var content = this.$node.text();
+    var content = this.$node.html();
     return content == this.defaultText ? "" : content;
   }
 
   set content(content) {
-    if(this._content != content) {
-      this._content = content;
-      safelyActivateFunction(this._config.onSaveRequired);
-    }
+    this.populate(content);
+    safelyActivateFunction(this._config.onSaveRequired);
   }
 
   edit() {
@@ -103,15 +100,13 @@ class EditableElement extends EditableBase {
   }
 
   update() {
-    this.content = this.content; // confusing ES6 syntax makes sense if you look closely
+    this.content = this.$node.text();
     this.$node.removeClass(this._config.editClassname);
-    this.populate();
   }
 
-  populate() {
-    if(this.content.replace(/\s/mig, "") == "") {
-      this.$node.html(this.defaultText);
-    }
+  // Expects HTML or blank string to show HTML or default text in view.
+  populate(content) {
+    this.$node.html(content.replace(/\s/mig, "") == "" ? this.defaultText : content);
   }
 
   focus() {
@@ -180,11 +175,6 @@ class EditableContent extends EditableElement {
   markdown() {
     var markdown = convertToMarkdown(this.content);
     return markdown;
-  }
-
-  // Expects HTML or blank string to show HTML or default text in view.
-  populate(content) {
-    this.$node.html(content.replace(/\s/mig, "") == "" ? this.defaultText : content);
   }
 }
 
