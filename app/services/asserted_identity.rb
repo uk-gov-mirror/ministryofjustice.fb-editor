@@ -14,14 +14,23 @@ class AssertedIdentity
     new(
       uid: userinfo['uid'],
       provider: userinfo['provider'],
-      name: userinfo['info'].try(:[], 'name') || humanised_name(userinfo),
+      name: humanised_name(userinfo),
       email: userinfo['info'].try(:[], 'email')
     )
   end
 
   def self.humanised_name(userinfo)
-    email_address = userinfo['info'].try(:[], 'email')
-    email_address[/[^@]+/].split('.').map(&:capitalize).join(' ') if email_address
+    name = extract_name(userinfo)
+    name.split('.').map(&:capitalize).join(' ').tr('0-9', '') if name
+  end
+
+  def self.extract_name(userinfo)
+    userinfo['info'].try(:[], 'nickname') || from_email(userinfo)
+  end
+
+  def self.from_email(userinfo)
+    email = userinfo['info'].try(:[], 'email')
+    email[/[^@]+/] if email
   end
 
   def to_identity
