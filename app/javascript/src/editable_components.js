@@ -122,9 +122,10 @@ class EditableElement extends EditableBase {
 
 /* Editable Content:
  * Used for creating complex content control objects on HTML areas such as a <DIV>,
- * or <article>. The content will, when in edit mode, expect Markdown input which
- * will be translated into HTML, for view to user, when switched out of edit mode
- * (controlled by focus and blur events).
+ * or <article>. The content will, when in edit mode, convert to Markdown and expect
+ * user input in as Markdown. On exit of edit mode visible content will be translated
+ * back into HTML for non-edit view and to save.
+ * (Edit mode controlled by focus and blur events).
  *
  * @$node  (jQuery object) jQuery wrapped HTML node.
  * @config (Object) Configurable options.
@@ -132,35 +133,36 @@ class EditableElement extends EditableBase {
 class EditableContent extends EditableElement {
   constructor($node, config) {
     super($node, config);
-    this._markdown = this.markdown();
     this._editing = false;
 
     // Adjust event for multiple line input.
     $node.off("keydown.editablecomponent");
-    $node.on("keydown.editablecomponent", e => multipleLineInputRestrictions(e) );
+    $node.on("keydown.editablecontent", e => multipleLineInputRestrictions(e) );
 
     // Correct the class:
     $node.removeClass("EditableElement");
     $node.addClass("EditableContent");
   }
 
+  // Get content must always return HTML because that' what we save.
   get content() {
-    var content = this._markdown;
-    return content == this.defaultText ? "" : content;
+    var content = this.$node.html();
+    return content.replace(/\s/mig, "") == this.defaultText ? "" : content;
   }
 
+  // Set content takes markdown (because it should be called after editing).
+  // It should convert the markdown to HTML and put back as DOM node content.
   set content(markdown) {
-    if(this._markdown != markdown) {
-      this._markdown = markdown;
-      safelyActivateFunction(this._config.onSaveRequired);
-    }
+    var markdown = sanitiseMarkdown(markdown);
+    var html = convertToHtml(markdown);
+    var content = html.replace("<p>" + this.defaulText + "</p>", ""); // conversion adds the <p> which trips up our default text checks.
+    this.populate(content);
+    safelyActivateFunction(this._config.onSaveRequired);
   }
 
   edit() {
     if(!this._editing) {
-      let markdown = this.markdown();
-      markdown = markdown.replace(/\n/mig, "<br>");
-      this.$node.html(markdown);
+      this.$node.html(this.markdown()); // Show as markdown in edit mode.
       this._editing = true;
       super.edit();
     }
@@ -168,18 +170,21 @@ class EditableContent extends EditableElement {
 
   update() {
     if(this._editing) {
-      let markdown = this.markdown();
-      this.content = sanitiseMarkdown(markdown);
-      this.$node.html(convertToHtml(markdown));
+      this.content = this.$node.text(); // Converts markdown back to HTML.
       this.$node.removeClass(this._config.editClassname);
       this._editing = false;
     }
-    this.populate();
   }
 
+  // Returns $node.html() converted to markdown.
   markdown() {
-    let html = this.$node.html();
-    return (html != this.defaultText ? convertToMarkdown(html) : "");
+    var markdown = convertToMarkdown(this.content);
+    return markdown;
+  }
+
+  // Expects HTML or blank string to show HTML or default text in view.
+  populate(content) {
+    this.$node.html(content.replace(/\s/mig, "") == "" ? this.defaultText : content);
   }
 }
 
