@@ -122,14 +122,17 @@ class AddContent {
 function focusOnEditableComponent() {
   var target = location.hash;
   if(target.match(/^[#\w\d_]+$/)) {
+    // Newly added component with fragment identifier so find first
+    // first editable item of last component.
     let $newComponent = $(target);
     if($newComponent.length) {
       $newComponent.data("instance").focus();
     }
-    else {
-      if(this.editableContent.length > 0) {
-        this.editableContent[0].focus();
-      }
+  }
+  else {
+    // Standard editable page so find first editable item.
+    if(this.editableContent.length > 0) {
+      this.editableContent[0].focus();
     }
   }
 }
@@ -164,7 +167,7 @@ function bindEditableContentHandlers($area) {
         selectorQuestion: "label",
         selectorHint: "span",
         selectorGroupQuestion: ".govuk-heading-xl",
-        selectorCollectionQuestion: ".govuk-heading-xl",
+        selectorCollectionQuestion: "legend > :first-child",
         selectorCollectionHint: "fieldset > .govuk-hint",
         selectorCollectionItem: ".govuk-radios__item, .govuk-checkboxes__item",
         text: {
