@@ -147,4 +147,10 @@ module CommonSteps
     and_I_add_a_page_url
     when_I_add_the_page
   end
+
+  def and_I_preview_the_form
+    window_opened_by do
+      editor.preview_form_button.click
+    end
+  end
 end
