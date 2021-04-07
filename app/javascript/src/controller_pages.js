@@ -166,7 +166,7 @@ function bindEditableContentHandlers($area) {
         selectorDisabled: "input:not(:hidden), textarea",
         selectorQuestion: "label",
         selectorHint: "span",
-        selectorGroupQuestion: ".govuk-heading-xl",
+        selectorGroupQuestion: "legend > :first-child",
         selectorCollectionQuestion: "legend > :first-child",
         selectorCollectionHint: "fieldset > .govuk-hint",
         selectorCollectionItem: ".govuk-radios__item, .govuk-checkboxes__item",
