@@ -74,7 +74,7 @@ class EditableBase {
 class EditableElement extends EditableBase {
   constructor($node, config) {
     super($node, config);
-    this.defaultText = $node.data(config.defaultTextAttribute) || $node.html();
+    var originalContent = $node.html();
 
     $node.on("blur.editablecomponent", this.update.bind(this));
     $node.on("focus.editablecomponent", this.edit.bind(this) );
@@ -83,11 +83,14 @@ class EditableElement extends EditableBase {
 
     $node.attr("contentEditable", true);
     $node.addClass("EditableElement");
+
+    this.originalContent = originalContent;
+    this.defaultContent = $node.data(config.attributeDefaultText);
   }
 
   get content() {
     var content = this.$node.html();
-    return content == this.defaultText ? "" : content;
+    return content == this.defaultContent ? "" : content;
   }
 
   set content(content) {
@@ -106,7 +109,8 @@ class EditableElement extends EditableBase {
 
   // Expects HTML or blank string to show HTML or default text in view.
   populate(content) {
-    this.$node.html(content.replace(/\s/mig, "") == "" ? this.defaultText : content);
+    var defaultContent = this.defaultContent || this.originalContent;
+    this.$node.html(content.trim() == "" ? defaultContent : content);
   }
 
   focus() {
@@ -142,7 +146,7 @@ class EditableContent extends EditableElement {
   // Get content must always return HTML because that' what we save.
   get content() {
     var content = this.$node.html();
-    return content.replace(/\s/mig, "") == this.defaultText ? "" : content;
+    return content.replace(/\s/mig, "") == this.defaultContent ? "" : content;
   }
 
   // Set content takes markdown (because it should be called after editing).
