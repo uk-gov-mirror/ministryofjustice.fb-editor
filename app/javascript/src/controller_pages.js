@@ -106,7 +106,7 @@ class AddContent {
     var $button = $node.find("> a");
     this.$button = $button;
 
-    $button.on("click", function() {
+    $button.on("click.AddContent", function() {
       updateHiddenInputOnForm(config.$form, "page[add_component]", "content");
       config.$form.submit();
     });
@@ -152,7 +152,7 @@ function bindEditableContentHandlers($area) {
       PAGE.editableContent.push(editableComponent($node, {
         editClassname: "active",
         data: $node.data("fb-content-data"),
-        defaultTextAttribute: "fb-default-text",
+        attributeDefaultText: "fb-default-text",
         filters: {
           _id: function(index) {
             return this.replace(/^(.*)?[\d]+$/, "$1" + index);
