@@ -133,6 +133,7 @@ class EditableContent extends EditableElement {
   constructor($node, config) {
     super($node, config);
     this._editing = false;
+    this._html = $node.html();
 
     // Adjust event for multiple line input.
     $node.off("keydown.editablecomponent");
@@ -145,8 +146,16 @@ class EditableContent extends EditableElement {
 
   // Get content must always return HTML because that' what we save.
   get content() {
-    var content = this.$node.html();
-    return content.replace(/\s/mig, "") == this.defaultContent ? "" : content;
+    var content = this._html;
+    var value = "";
+    if(this._config.data) {
+      this._config.data.html = content;
+      value = JSON.stringify(this._config.data);
+    }
+    else {
+      value = (content.replace(/\s/mig, "") == this.defaultContent ? "" : content);
+    }
+    return value;
   }
 
   // Set content takes markdown (because it should be called after editing).
@@ -154,8 +163,8 @@ class EditableContent extends EditableElement {
   set content(markdown) {
     var markdown = sanitiseMarkdown(markdown);
     var html = convertToHtml(markdown);
-    var content = html.replace("<p>" + this.defaulText + "</p>", ""); // conversion adds the <p> which trips up our default text checks.
-    this.populate(content);
+    this._html = html;
+    this.populate(html);
     safelyActivateFunction(this._config.onSaveRequired);
   }
 
@@ -169,7 +178,7 @@ class EditableContent extends EditableElement {
 
   update() {
     if(this._editing) {
-      this.content = this.$node.text(); // Converts markdown back to HTML.
+      this.content = this.$node.html(); // Converts markdown back to HTML.
       this.$node.removeClass(this._config.editClassname);
       this._editing = false;
     }
@@ -177,7 +186,7 @@ class EditableContent extends EditableElement {
 
   // Returns $node.html() converted to markdown.
   markdown() {
-    var markdown = convertToMarkdown(this.content);
+    var markdown = convertToMarkdown(this._html);
     return markdown;
   }
 }
@@ -710,7 +719,7 @@ function convertToHtml(markdown) {
  * format new lines, so we're fixing that with line-breaks and stripping excess.
  **/
 function sanitiseMarkdown(markdown) {
-  markdown = markdown.replace(/\*\s+/mig, "* ");
+  markdown = markdown.replace(/\*\s+/mig, "* "); // Make sure only one space after an asterisk
   markdown = markdown.replace(/<br>/mig, "\n");
   markdown = markdown.replace(/<\/div><div>/mig, "\n");
   markdown = markdown.replace(/<[\/]?div>/mig, "");
