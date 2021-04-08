@@ -53,7 +53,7 @@ ServicesController.edit = function(app) {
   $("[data-component='PageActionMenu']").each((i, el) => {
     new PageActionMenu(this, $(el), {
       selection_event: "PageActionMenuSelection",
-      form: pageCreateDialog.$form,
+      pageCreateDialog: pageCreateDialog,
       preventDefault: true, // Stops the default action of triggering element.
       menu: {
         position: { at: "right+2 top-2" }
@@ -62,13 +62,17 @@ ServicesController.edit = function(app) {
   });
 
   // Create the menu for Add Page functionality.
-  $("[data-component='PageAdditionMenu']").each((i, el) => {
-    new PageActionMenu(this, $(el), {
-      selection_event: "PageAdditionMenuSelection",
-      menu: {
-        position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
-      }
-    });
+  let pageAdditionMenu = new PageActionMenu(this, $("[data-component='PageAdditionMenu']"), {
+    selection_event: "PageAdditionMenuSelection",
+    pageCreateDialog: pageCreateDialog,
+    menu: {
+      position: { at: "right+2 top-2" } // Position second-level menu in relation to first.
+    }
+  });
+
+  // Add handler for main 'Add page' button to clear any add_page_after values.
+  pageAdditionMenu.menu.activator.$node.on("click.servicescontrolleredit", function() {
+    updateHiddenInputOnForm(pageCreateDialog.$form, "page[add_page_after]", "");
   });
 }
 
@@ -150,7 +154,7 @@ function pageActionMenuSelection(event, data) {
          // Set the 'add_page_here' value in form.
          // This should be a uuid value if from thumbnail context menu, of
          // just set it to blank string if from the main 'Add page' button.
-         updateHiddenInputOnForm(data.component.config.form, "page[add_page_after]", data.component.$node.data("uuid"));
+         updateHiddenInputOnForm(data.component.config.pageCreateDialog.$form, "page[add_page_after]", data.component.$node.data("uuid"));
 
          // Current menu option needs to activate the (separate entity)
          // Add page menu to allow add page options to show.
@@ -184,18 +188,17 @@ function pageActionMenuSelection(event, data) {
  * 4). Open the form URL input dialog.
  **/
 function pageAdditionMenuSelection(event, data) {
-  var $pageTypeInput = $("#page_page_type");
-  var $componentTypeInput = $("#page_component_type");
   var $activator = data.activator.find("> a");
+  var form = data.component.config.pageCreateDialog.$form;
 
-  // First reset to empty.
-  $pageTypeInput.val("");
-  $componentTypeInput.val("");
+  // First reset to remove any lingering values.
+  updateHiddenInputOnForm(form, "page[page_type]", "");
+  updateHiddenInputOnForm(form, "page[component_type]", "");
 
-  // Then add any found values.
+  // Then add any required values.
   if($activator.length) {
-    $pageTypeInput.val($activator.data("page-type"));
-    $componentTypeInput.val($activator.data("component-type"));
+    updateHiddenInputOnForm(form, "page[page_type]", $activator.data("page-type"));
+    updateHiddenInputOnForm(form, "page[component_type]", $activator.data("component-type"));
 
     data.component.close();
     $("#new-page-create-dialog").dialog("open");
