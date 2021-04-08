@@ -149,7 +149,7 @@ class EditableContent extends EditableElement {
     var content = this._html;
     var value = "";
     if(this._config.data) {
-      this._config.data.html = content;
+      this._config.data.content = content;
       value = JSON.stringify(this._config.data);
     }
     else {
