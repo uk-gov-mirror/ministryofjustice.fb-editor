@@ -102,7 +102,6 @@ class PageCreateDialog {
 
     // Disable button as we're replacing it.
     $submit.attr("disabled", true);
-
     this.$form = $form;
     this.$submit = $submit;
     this.$errors = $errors;
@@ -151,7 +150,7 @@ function pageActionMenuSelection(event, data) {
          // Set the 'add_page_here' value in form.
          // This should be a uuid value if from thumbnail context menu, of
          // just set it to blank string if from the main 'Add page' button.
-         updateHiddenInputOnForm(data.component.config.form, "uuid", data.component.$node.data("uuid"));
+         updateHiddenInputOnForm(data.component.config.form, "page[add_page_after]", data.component.$node.data("uuid"));
 
          // Current menu option needs to activate the (separate entity)
          // Add page menu to allow add page options to show.
