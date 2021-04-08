@@ -1,6 +1,6 @@
 import { DefaultPage } from './page_default';
 import { PagesController } from './controller_pages';
-import { FormOverviewPage } from './page_form_overview';
+import { ServicesController } from './controller_services';
 import { FormListPage } from './page_form_list';
 import { PublishController } from './controller_publish'
 
@@ -15,11 +15,11 @@ $(document).ready(function() {
     break;
 
     case "ServicesController#edit":
-    case "PagesController#create":
-         new FormOverviewPage();
+         new ServicesController(app);
     break;
 
     case "PagesController#edit":
+    case "PagesController#create":
          new PagesController(app);
     break;
 

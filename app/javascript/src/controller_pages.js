@@ -20,6 +20,7 @@ import { uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from '.
 import { ActivatedMenu } from './component_activated_menu';
 import { DefaultPage } from './page_default';
 import { editableComponent } from './editable_components';
+import { ServicesController } from './controller_services';
 
 
 class PagesController extends DefaultPage {
@@ -30,6 +31,9 @@ class PagesController extends DefaultPage {
       case "edit":
         PagesController.edit.call(this, app);
         break;
+      case "create":
+        PagesController.create.call(this, app);
+        break;
     }
   }
 }
@@ -37,7 +41,7 @@ class PagesController extends DefaultPage {
 
 /* Setup for the Edit action
  **/
-PagesController.edit = function() {
+PagesController.edit = function(app) {
   var $form = $("#editContentForm");
 
   bindEditableContentHandlers.call(this, app);
@@ -58,6 +62,14 @@ PagesController.edit = function() {
   });
 
   this.$form = $form;
+}
+
+
+/* Setup for the Create action
+ **/
+PagesController.create = function(app) {
+  // Actually uses the Services controller due to view redirect on server.
+  ServicesController.edit.call(this, app);
 }
 
 
