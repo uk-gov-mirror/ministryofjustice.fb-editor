@@ -70,7 +70,7 @@ RSpec.describe MetadataUpdater do
           ActiveSupport::HashWithIndifferentAccess.new({
             '_id': 'confirmation_content_1',
             '_type': 'content',
-            'html': '[Optional content]',
+            'content': '[Optional content]',
             'name': 'confirmation_content_1'
           })
         end
