@@ -15,9 +15,9 @@ feature 'Edit confirmation pages' do
 
   scenario 'updates all fields' do
     given_I_have_a_confirmation_page
-    and_I_change_the_confirmation_heading(confirmation_heading)
-    and_I_change_the_confirmation_lede(confirmation_lede)
-    and_I_change_the_confirmation_body(confirmation_body)
+    and_I_change_the_page_heading(confirmation_heading)
+    and_I_change_the_page_lede(confirmation_lede)
+    and_I_change_the_page_body(confirmation_body)
     when_I_save_my_changes
     and_I_return_to_flow_page
     and_I_edit_the_page(url: confirmation_url)
@@ -32,15 +32,15 @@ feature 'Edit confirmation pages' do
     when_I_add_the_page
   end
 
-  def and_I_change_the_confirmation_heading(heading)
+  def and_I_change_the_page_heading(heading)
     editor.page_heading.set(heading)
   end
 
-  def and_I_change_the_confirmation_lede(lede)
+  def and_I_change_the_page_lede(lede)
     editor.page_lede.set(lede)
   end
 
-  def and_I_change_the_confirmation_body(body)
+  def and_I_change_the_page_body(body)
     editor.page_body.set(body)
   end
 
