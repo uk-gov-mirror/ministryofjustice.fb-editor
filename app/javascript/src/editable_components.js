@@ -144,9 +144,9 @@ class EditableContent extends EditableElement {
     $node.addClass("EditableContent");
   }
 
-  // Get content must always return HTML because that' what we save.
+  // Get content must always return Markdown because that's what we save.
   get content() {
-    var content = this._html;
+    var content = convertToMarkdown(this._html);
     var value = "";
     if(this._config.data) {
       this._config.data.content = content;
