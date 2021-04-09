@@ -66,11 +66,12 @@ PagesController.edit = function(app) {
          if(buttons.length) {
            $target.before(buttons[0].$node);
          }
+         break;
 
-         break;
     case "page.confirmation":
-         console.log("page.confirmation");
+         createAddContentButton($form);
          break;
+
     case "page.checkanswers":
          console.log("page.checkanswers");
          break;
