@@ -61,21 +61,23 @@ PagesController.edit = function(app) {
          break;
 
     case "page.content":
-         let buttons = createAddContentButton($form);
-         let $target = $("#new_answers :submit");
-         if(buttons.length) {
-           $target.before(buttons[0].$node);
-         }
+         editPageContentViewCustomisations.call(this);
          break;
 
     case "page.confirmation":
-         createAddContentButton($form);
+         // Nothing required (yet?).
          break;
 
     case "page.checkanswers":
-         console.log("page.checkanswers");
+         editPageCheckAnswersViewCustomisations.call(this);
          break;
   }
+
+  // Enhance any Add Content buttons
+  $("[data-component=add-content]").each(function() {
+    var $node = $(this);
+    new AddContent($node, { $form: $form });
+  });
 
   // Find and enhance the Add Component buttons.
   $("[data-component=add-component]").each(function() {
@@ -143,19 +145,6 @@ class AddContent {
 
     $node.addClass("AddContent");
   }
-}
-
-
-/* Adds a button to allow editor control of new
- * content components.
- **/
-function createAddContentButton($form) {
-  var buttons = [];
-  $("[data-component=add-content]").each(function() {
-    var $node = $(this);
-    buttons.push(new AddContent($node, { $form: $form }));
-  });
-  return buttons;
 }
 
 
@@ -315,6 +304,30 @@ function collectionItemControlsInActivatedMenu($item, config) {
     $item.data("ActivatedMenu", menu);
   }
 }
+
+
+/**************************************************************/
+/* View customisations for PageController.edit actions follow */
+/**************************************************************/
+
+
+function editPageContentViewCustomisations() {
+  var $button1 = $("[data-component=add-content]");
+  var $target = $("#new_answers :submit");
+  $target.before($button1);
+}
+
+
+function editPageCheckAnswersViewCustomisations() {
+  var $button1 = $("[data-component=add-content]");
+  var $target1 = $(".fb-editable").last();
+  var $button2 = $button1.clone();
+  var $target2 = $("#answers-form dl");
+  $target1.after($button1);
+  $target2.before($button2);
+}
+
+
 
 
 export { PagesController }
