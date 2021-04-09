@@ -1,4 +1,6 @@
 class MetadataUrlValidator < ActiveModel::EachValidator
+  include ApplicationHelper
+
   def validate_each(record, attribute, value)
     return if value.blank?
 
@@ -11,9 +13,5 @@ class MetadataUrlValidator < ActiveModel::EachValidator
     if urls.include?(strip_url(value))
       record.errors.add(attribute, :taken)
     end
-  end
-
-  def strip_url(url)
-    url.to_s.chomp('/').reverse.chomp('/').reverse
   end
 end

@@ -156,6 +156,19 @@ RSpec.describe NewPageGenerator do
             end
           end
         end
+
+        context 'standalone page type' do
+          let(:page_type) { 'standalone' }
+          let(:component_type) { nil }
+
+          it 'creates a valid page metadata' do
+            expect(
+              MetadataPresenter::ValidateSchema.validate(
+                generator.page_metadata, "page.#{page_type}"
+              )
+            ).to be(valid)
+          end
+        end
       end
 
       context 'when metadata is invalid' do
@@ -214,6 +227,57 @@ RSpec.describe NewPageGenerator do
       it 'generates page attributes' do
         expect(generator.to_metadata['pages']).to_not be_blank
         expect(generator.to_metadata['pages'].last).to include(page_attributes)
+      end
+    end
+
+    context 'when no latest_metadata present' do
+      subject(:generator) do
+        described_class.new(
+          page_type: 'standalone',
+          page_url: page_url
+        )
+      end
+
+      it 'should return just the page metadata' do
+        expect(generator.to_metadata['_type']).to eq('page.standalone')
+      end
+    end
+
+    context 'when adding a flow page' do
+      let(:latest_metadata) { metadata_fixture(:service) }
+
+      it 'adds the page to the pages array' do
+        expect(generator.to_metadata['pages'].count).to eq(2) # including start page
+      end
+    end
+
+    context 'when adding a standalone page' do
+      subject(:generator) do
+        described_class.new(
+          page_type: 'standalone',
+          latest_metadata: latest_metadata,
+          page_url: page_url
+        )
+      end
+      let(:latest_metadata) { metadata_fixture(:service) }
+
+      it 'adds the page to the standalone_pages array' do
+        metadata = generator.to_metadata
+        expect(metadata['standalone_pages'].count).to eq(1)
+        expect(metadata['pages'].count).to eq(1)
+      end
+    end
+  end
+
+  describe '#page_metadata' do
+    let(:page_type) { 'standalone' }
+    let(:page_url) { '/home-one/' }
+    let(:latest_metadata) { nil }
+    let(:component_type) { nil }
+
+    context 'when there is a / in the page _id' do
+      it 'removes the / in page name' do
+        expect(generator.page_metadata['_id']).to eq('page.home-one')
       end
     end
   end
