@@ -324,7 +324,7 @@ function editPageCheckAnswersViewCustomisations() {
   var $button1 = $("[data-component=add-content]");
   var $target1 = $(".fb-editable").last();
   var $button2 = $button1.clone();
-  var $target2 = $("#answers-form dl");
+  var $target2 = $("#answers-form dl").first();
   $target1.after($button1);
   $target2.before($button2);
 }
