@@ -6,9 +6,6 @@ en:
     service_email_body: 'Please find attached a submission sent from %{service_name}'
     service_email_pdf_heading: 'Submission for %{service_name}'
     service_email_pdf_subheading: ''
-  default_text:
-    option: '[Required option text]'
-    option_hint: '[Optional hint text]'
   dialogs:
     button_cancel: 'Cancel'
     button_delete: 'Delete'
