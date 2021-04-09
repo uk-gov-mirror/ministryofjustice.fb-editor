@@ -59,8 +59,14 @@ PagesController.edit = function(app) {
     case "page.singlequestion":
          console.log("page.singlequestion");
          break;
+
     case "page.content":
-         console.log("page.content");
+         let buttons = createAddContentButton($form);
+         let $target = $("#new_answers :submit");
+         if(buttons.length) {
+           $target.before(buttons[0].$node);
+         }
+
          break;
     case "page.confirmation":
          console.log("page.confirmation");
@@ -74,12 +80,6 @@ PagesController.edit = function(app) {
   $("[data-component=add-component]").each(function() {
     var $node = $(this);
     new AddComponent($node);
-  });
-
-  // Find and enhance the Add Content buttons.
-  $("[data-component=add-content]").each(function() {
-    var $node = $(this);
-    new AddContent($node, { $form: $form });
   });
 }
 
@@ -133,6 +133,7 @@ class AddContent {
   constructor($node, config) {
     var $button = $node.find("> a");
     this.$button = $button;
+    this.$node = $node;
 
     $button.on("click.AddContent", function() {
       updateHiddenInputOnForm(config.$form, "page[add_component]", "content");
@@ -141,6 +142,19 @@ class AddContent {
 
     $node.addClass("AddContent");
   }
+}
+
+
+/* Adds a button to allow editor control of new
+ * content components.
+ **/
+function createAddContentButton($form) {
+  var buttons = [];
+  $("[data-component=add-content]").each(function() {
+    var $node = $(this);
+    buttons.push(new AddContent($node, { $form: $form }));
+  });
+  return buttons;
 }
 
 
