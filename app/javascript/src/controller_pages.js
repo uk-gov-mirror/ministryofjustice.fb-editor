@@ -20,6 +20,7 @@ import { uniqueString, findFragmentIdentifier, updateHiddenInputOnForm } from '.
 import { ActivatedMenu } from './component_activated_menu';
 import { DefaultPage } from './page_default';
 import { editableComponent } from './editable_components';
+import { ServicesController } from './controller_services';
 
 
 class PagesController extends DefaultPage {
@@ -30,6 +31,9 @@ class PagesController extends DefaultPage {
       case "edit":
         PagesController.edit.call(this, app);
         break;
+      case "create":
+        PagesController.create.call(this, app);
+        break;
     }
   }
 }
@@ -37,10 +41,14 @@ class PagesController extends DefaultPage {
 
 /* Setup for the Edit action
  **/
-PagesController.edit = function() {
+PagesController.edit = function(app) {
   var $form = $("#editContentForm");
 
+  this.$form = $form;
+  this.editableContent = [];
+
   bindEditableContentHandlers.call(this, app);
+  focusOnEditableComponent.call(this);
 
   // Bind document event listeners.
   $(document).on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(this) );
@@ -57,7 +65,14 @@ PagesController.edit = function() {
     new AddContent($node, { $form: $form });
   });
 
-  this.$form = $form;
+}
+
+
+/* Setup for the Create action
+ **/
+PagesController.create = function(app) {
+  // Actually uses the Services controller due to view redirect on server.
+  ServicesController.edit.call(this, app);
 }
 
 
@@ -103,12 +118,34 @@ class AddContent {
     var $button = $node.find("> a");
     this.$button = $button;
 
-    $button.on("click", function() {
+    $button.on("click.AddContent", function() {
       updateHiddenInputOnForm(config.$form, "page[add_component]", "content");
       config.$form.submit();
     });
 
     $node.addClass("AddContent");
+  }
+}
+
+
+/* Set focus on first editable component or, if a new component has been
+ * added, the first element with that new component.
+ **/
+function focusOnEditableComponent() {
+  var target = location.hash;
+  if(target.match(/^[#\w\d_]+$/)) {
+    // Newly added component with fragment identifier so find first
+    // first editable item of last component.
+    let $newComponent = $(target);
+    if($newComponent.length) {
+      $newComponent.data("instance").focus();
+    }
+  }
+  else {
+    // Standard editable page so find first editable item.
+    if(this.editableContent.length > 0) {
+      this.editableContent[0].focus();
+    }
   }
 }
 
@@ -120,15 +157,14 @@ function bindEditableContentHandlers($area) {
   var PAGE = this;
   var $editContentForm = $("#editContentForm");
   var $saveButton = $editContentForm.find(":submit");
-  var editableContent = [];
   if($editContentForm.length) {
     $saveButton.attr("disabled", true); // disable until needed.
     $(".fb-editable").each(function(i, node) {
       var $node = $(node);
-      editableContent.push(editableComponent($node, {
+      PAGE.editableContent.push(editableComponent($node, {
         editClassname: "active",
         data: $node.data("fb-content-data"),
-        defaultTextAttribute: "fb-default-text",
+        attributeDefaultText: "fb-default-text",
         filters: {
           _id: function(index) {
             return this.replace(/^(.*)?[\d]+$/, "$1" + index);
@@ -142,8 +178,8 @@ function bindEditableContentHandlers($area) {
         selectorDisabled: "input:not(:hidden), textarea",
         selectorQuestion: "label",
         selectorHint: "span",
-        selectorGroupQuestion: ".govuk-heading-xl",
-        selectorCollectionQuestion: ".govuk-heading-xl",
+        selectorGroupQuestion: "legend > :first-child",
+        selectorCollectionQuestion: "legend > :first-child",
         selectorCollectionHint: "fieldset > .govuk-hint",
         selectorCollectionItem: ".govuk-radios__item, .govuk-checkboxes__item",
         text: {
@@ -209,15 +245,10 @@ function bindEditableContentHandlers($area) {
       });
     });
 
-    // Set focus on first editable component for design requirement.
-    if(editableContent.length > 0) {
-      editableContent[0].focus();
-    }
-
     // Add handler to activate save functionality from the independent 'save' button.
     $editContentForm.on("submit", (e) => {
-      for(var i=0; i<editableContent.length; ++i) {
-        editableContent[i].save();
+      for(var i=0; i<PAGE.editableContent.length; ++i) {
+        PAGE.editableContent[i].save();
       }
     });
   }

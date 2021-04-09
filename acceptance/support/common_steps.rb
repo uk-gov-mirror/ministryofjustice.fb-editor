@@ -4,13 +4,22 @@ module CommonSteps
     editor.sign_in_button.click
 
     if ENV['CI_MODE'].present?
-      editor.email_address_field.set(ENV['ACCEPTANCE_TESTS_USER'])
-      editor.password_field.set(ENV['ACCEPTANCE_TESTS_PASSWORD'])
-      editor.login_continue_button.click
+      # Executing javascript directly as the fields and button are hidden on the
+      # login page for the moment
+      editor.execute_script(
+        "document.getElementById('email').value = '#{ENV['ACCEPTANCE_TESTS_USER']}'"
+      )
+      editor.execute_script(
+        "document.getElementById('password').value = '#{ENV['ACCEPTANCE_TESTS_PASSWORD']}'"
+      )
+      editor.execute_script(
+        "document.getElementById('btn-login').click()"
+      )
     else
       editor.sign_in_email_field.set('form-builder-developers@digital.justice.gov.uk')
       editor.sign_in_submit.click
     end
+    sleep(1)
   end
 
   def given_I_have_a_service(service = service_name)
@@ -146,5 +155,11 @@ module CommonSteps
     given_I_add_a_single_question_page_with_radio
     and_I_add_a_page_url
     when_I_add_the_page
+  end
+
+  def and_I_preview_the_form
+    window_opened_by do
+      editor.preview_form_button.click
+    end
   end
 end

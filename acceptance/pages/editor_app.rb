@@ -5,10 +5,16 @@ class EditorApp < SitePrism::Page
     set_url ENV['ACCEPTANCE_TESTS_EDITOR_APP']
   end
 
+  # landing page
   element :sign_in_button, :button, 'Sign in'
+
+  # localhost
   element :sign_in_email_field, :field, 'Email:'
   element :sign_in_submit, :button, 'Sign In'
 
+  # Auth0
+  # currently not used as we are interacting with the fields using JS
+  # these will be used again in the future
   element :email_address_field, :field, 'Email'
   element :password_field, :field, 'Password'
   element :login_continue_button, :button, 'Log In'

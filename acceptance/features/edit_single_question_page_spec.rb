@@ -90,12 +90,6 @@ feature 'Edit single question page' do
     editor.question_heading.first.set(question)
   end
 
-  def and_I_preview_the_form
-    window_opened_by do
-      editor.preview_form_button.click
-    end
-  end
-
   def and_I_go_to_the_page_that_I_edit(preview_form)
     within_window(preview_form) do
       page.click_button 'Start now'
