@@ -37,7 +37,6 @@ var turndownService = new TurndownService();
 class EditableBase {
   constructor($node, config) {
     this._config = config || {};
-    this._content = $node.text();
     this.type = config.type;
     this.$node = $node;
     $node.data("instance", this);
@@ -48,7 +47,7 @@ class EditableBase {
   }
 
   get content() {
-    return this._content;
+    return $node.text();
   }
 
   save() {
@@ -75,7 +74,7 @@ class EditableBase {
 class EditableElement extends EditableBase {
   constructor($node, config) {
     super($node, config);
-    this.defaultText = $node.data(config.defaultTextAttribute) || $node.html();
+    var originalContent = $node.text().trim(); // Trim removes whitespace from template.
 
     $node.on("blur.editablecomponent", this.update.bind(this));
     $node.on("focus.editablecomponent", this.edit.bind(this) );
@@ -84,18 +83,21 @@ class EditableElement extends EditableBase {
 
     $node.attr("contentEditable", true);
     $node.addClass("EditableElement");
+
+    this._content = $node.text().trim();
+    this.originalContent = originalContent;
+    this.defaultContent = $node.data(config.attributeDefaultText);
   }
 
   get content() {
-    var content = this.$node.text();
-    return content == this.defaultText ? "" : content;
+    var content = this._content;
+    return content == this.defaultContent ? "" : content;
   }
 
   set content(content) {
-    if(this._content != content) {
-      this._content = content;
-      safelyActivateFunction(this._config.onSaveRequired);
-    }
+    this._content = content;
+    this.populate(content);
+    safelyActivateFunction(this._config.onSaveRequired);
   }
 
   edit() {
@@ -103,15 +105,14 @@ class EditableElement extends EditableBase {
   }
 
   update() {
-    this.content = this.content; // confusing ES6 syntax makes sense if you look closely
+    this.content = this.$node.text().trim();
     this.$node.removeClass(this._config.editClassname);
-    this.populate();
   }
 
-  populate() {
-    if(this.content.replace(/\s/mig, "") == "") {
-      this.$node.html(this.defaultText);
-    }
+  // Expects content or blank string to show content or default text in view.
+  populate(content) {
+    var defaultContent = this.defaultContent || this.originalContent;
+    this.$node.text(content == "" ? defaultContent : content);
   }
 
   focus() {
@@ -122,9 +123,10 @@ class EditableElement extends EditableBase {
 
 /* Editable Content:
  * Used for creating complex content control objects on HTML areas such as a <DIV>,
- * or <article>. The content will, when in edit mode, expect Markdown input which
- * will be translated into HTML, for view to user, when switched out of edit mode
- * (controlled by focus and blur events).
+ * or <article>. The content will, when in edit mode, convert to Markdown and expect
+ * user input in as Markdown. On exit of edit mode visible content will be translated
+ * back into HTML for non-edit view and to save.
+ * (Edit mode controlled by focus and blur events).
  *
  * @$node  (jQuery object) jQuery wrapped HTML node.
  * @config (Object) Configurable options.
@@ -132,35 +134,46 @@ class EditableElement extends EditableBase {
 class EditableContent extends EditableElement {
   constructor($node, config) {
     super($node, config);
-    this._markdown = this.markdown();
-    this._editing = false;
 
     // Adjust event for multiple line input.
     $node.off("keydown.editablecomponent");
-    $node.on("keydown.editablecomponent", e => multipleLineInputRestrictions(e) );
+    $node.on("keydown.editablecontent", e => multipleLineInputRestrictions(e) );
 
     // Correct the class:
     $node.removeClass("EditableElement");
     $node.addClass("EditableContent");
+
+    this._editing = false;
+    this._content = $node.html().trim(); // trim removes whitespace from template.
   }
 
+  // Get content must always return Markdown because that's what we save.
   get content() {
-    var content = this._markdown;
-    return content == this.defaultText ? "" : content;
+    var content = convertToMarkdown(this._content).trim();
+    var value = "";
+    if(this._config.data) {
+      this._config.data.content = content;
+      value = JSON.stringify(this._config.data);
+    }
+    else {
+      value = (content.replace(/\s/mig, "") == this.defaultContent ? "" : content);
+    }
+    return value;
   }
 
+  // Set content takes markdown (because it should be called after editing).
+  // It should convert the markdown to HTML and put back as DOM node content.
   set content(markdown) {
-    if(this._markdown != markdown) {
-      this._markdown = markdown;
-      safelyActivateFunction(this._config.onSaveRequired);
-    }
+    var markdown = sanitiseMarkdown(markdown);
+    var html = convertToHtml(markdown);
+    this._content = html;
+    this.populate(html);
+    safelyActivateFunction(this._config.onSaveRequired);
   }
 
   edit() {
     if(!this._editing) {
-      let markdown = this.markdown();
-      markdown = markdown.replace(/\n/mig, "<br>");
-      this.$node.html(markdown);
+      this.$node.html(this.markdown()); // Show as markdown in edit mode.
       this._editing = true;
       super.edit();
     }
@@ -168,18 +181,22 @@ class EditableContent extends EditableElement {
 
   update() {
     if(this._editing) {
-      let markdown = this.markdown();
-      this.content = sanitiseMarkdown(markdown);
-      this.$node.html(convertToHtml(markdown));
+      this.content = this.$node.html().trim(); // Converts markdown back to HTML.
       this.$node.removeClass(this._config.editClassname);
       this._editing = false;
     }
-    this.populate();
   }
 
+  // Returns $node.html() converted to markdown.
   markdown() {
-    let html = this.$node.html();
-    return (html != this.defaultText ? convertToMarkdown(html) : "");
+    var markdown = convertToMarkdown(this._html);
+    return markdown;
+  }
+
+  // Expects HTML or blank string to show HTML or default text in view.
+  populate(content) {
+    var defaultContent = this.defaultContent || this.originalContent;
+    this.$node.htmll(content == "" ? defaultContent : content);
   }
 }
 
@@ -711,7 +728,7 @@ function convertToHtml(markdown) {
  * format new lines, so we're fixing that with line-breaks and stripping excess.
  **/
 function sanitiseMarkdown(markdown) {
-  markdown = markdown.replace(/\*\s+/mig, "* ");
+  markdown = markdown.replace(/\*\s+/mig, "* "); // Make sure only one space after an asterisk
   markdown = markdown.replace(/<br>/mig, "\n");
   markdown = markdown.replace(/<\/div><div>/mig, "\n");
   markdown = markdown.replace(/<[\/]?div>/mig, "");
