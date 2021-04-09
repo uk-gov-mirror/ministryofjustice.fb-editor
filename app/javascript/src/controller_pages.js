@@ -198,7 +198,7 @@ function bindEditableContentHandlers($area) {
         form: $editContentForm,
         id: $node.data("fb-content-id"),
         selectorDisabled: "input:not(:hidden), textarea",
-        selectorQuestion: "label",
+        selectorQuestion: "label h1, label h2",
         selectorHint: "span",
         selectorGroupQuestion: "legend > :first-child",
         selectorCollectionQuestion: "legend > :first-child",
