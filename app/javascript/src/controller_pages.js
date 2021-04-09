@@ -52,12 +52,14 @@ PagesController.edit = function(app) {
   // Bind document event listeners.
   $(document).on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(this) );
 
+  // Handle page-specific view customisations here.
   switch(this.type) {
     case "page.multiplequestions":
-         console.log("page.multiplequestions");
+         editPageMultipleQuestionsViewCustomisations.call(this);
          break;
+
     case "page.singlequestion":
-         console.log("page.singlequestion");
+         // No customisations required for this view.
          break;
 
     case "page.content":
@@ -65,7 +67,7 @@ PagesController.edit = function(app) {
          break;
 
     case "page.confirmation":
-         // Nothing required (yet?).
+         // No customisations required for this view.
          break;
 
     case "page.checkanswers":
@@ -79,7 +81,7 @@ PagesController.edit = function(app) {
     new AddContent($node, { $form: $form });
   });
 
-  // Find and enhance the Add Component buttons.
+  // Enhance any Add Component buttons.
   $("[data-component=add-component]").each(function() {
     var $node = $(this);
     new AddComponent($node);
@@ -328,6 +330,11 @@ function editPageCheckAnswersViewCustomisations() {
 }
 
 
+function editPageMultipleQuestionsViewCustomisations() {
+  var $button1 = $("[data-component=add-component]");
+  var $target = $("#new_answers :submit");
+  $target.before($button1);
+}
 
 
 export { PagesController }
