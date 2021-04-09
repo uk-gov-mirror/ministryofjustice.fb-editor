@@ -74,7 +74,7 @@ class EditableBase {
 class EditableElement extends EditableBase {
   constructor($node, config) {
     super($node, config);
-    var originalContent = $node.html();
+    var originalContent = $node.text().trim(); // Trim removes whitespace from template.
 
     $node.on("blur.editablecomponent", this.update.bind(this));
     $node.on("focus.editablecomponent", this.edit.bind(this) );
@@ -84,16 +84,18 @@ class EditableElement extends EditableBase {
     $node.attr("contentEditable", true);
     $node.addClass("EditableElement");
 
+    this._content = $node.text().trim();
     this.originalContent = originalContent;
     this.defaultContent = $node.data(config.attributeDefaultText);
   }
 
   get content() {
-    var content = this.$node.html();
+    var content = this._content;
     return content == this.defaultContent ? "" : content;
   }
 
   set content(content) {
+    this._content = content;
     this.populate(content);
     safelyActivateFunction(this._config.onSaveRequired);
   }
@@ -103,14 +105,14 @@ class EditableElement extends EditableBase {
   }
 
   update() {
-    this.content = this.$node.text();
+    this.content = this.$node.text().trim();
     this.$node.removeClass(this._config.editClassname);
   }
 
-  // Expects HTML or blank string to show HTML or default text in view.
+  // Expects content or blank string to show content or default text in view.
   populate(content) {
     var defaultContent = this.defaultContent || this.originalContent;
-    this.$node.html(content.trim() == "" ? defaultContent : content);
+    this.$node.text(content == "" ? defaultContent : content);
   }
 
   focus() {
@@ -132,8 +134,6 @@ class EditableElement extends EditableBase {
 class EditableContent extends EditableElement {
   constructor($node, config) {
     super($node, config);
-    this._editing = false;
-    this._html = $node.html();
 
     // Adjust event for multiple line input.
     $node.off("keydown.editablecomponent");
@@ -142,11 +142,14 @@ class EditableContent extends EditableElement {
     // Correct the class:
     $node.removeClass("EditableElement");
     $node.addClass("EditableContent");
+
+    this._editing = false;
+    this._content = $node.html().trim(); // trim removes whitespace from template.
   }
 
   // Get content must always return Markdown because that's what we save.
   get content() {
-    var content = convertToMarkdown(this._html);
+    var content = convertToMarkdown(this._content).trim();
     var value = "";
     if(this._config.data) {
       this._config.data.content = content;
@@ -163,7 +166,7 @@ class EditableContent extends EditableElement {
   set content(markdown) {
     var markdown = sanitiseMarkdown(markdown);
     var html = convertToHtml(markdown);
-    this._html = html;
+    this._content = html;
     this.populate(html);
     safelyActivateFunction(this._config.onSaveRequired);
   }
@@ -178,7 +181,7 @@ class EditableContent extends EditableElement {
 
   update() {
     if(this._editing) {
-      this.content = this.$node.html(); // Converts markdown back to HTML.
+      this.content = this.$node.html().trim(); // Converts markdown back to HTML.
       this.$node.removeClass(this._config.editClassname);
       this._editing = false;
     }
@@ -188,6 +191,12 @@ class EditableContent extends EditableElement {
   markdown() {
     var markdown = convertToMarkdown(this._html);
     return markdown;
+  }
+
+  // Expects HTML or blank string to show HTML or default text in view.
+  populate(content) {
+    var defaultContent = this.defaultContent || this.originalContent;
+    this.$node.htmll(content == "" ? defaultContent : content);
   }
 }
 
