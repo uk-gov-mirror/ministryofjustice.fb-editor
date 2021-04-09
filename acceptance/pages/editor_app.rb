@@ -67,6 +67,9 @@ class EditorApp < SitePrism::Page
   elements :all_hints, '.govuk-hint'
   elements :editable_options, '.EditableComponentCollectionItem label'
   element :question_hint, '.govuk-hint'
+  element :page_heading, :xpath, '//*[@data-fb-content-id="page[heading]"]'
+  element :page_lede, :xpath, '//*[@data-fb-content-id="page[lede]"]'
+  element :page_body, :xpath, '//*[@data-fb-content-id="page[body]"]'
 
   elements :form_pages, '.form-step'
   elements :form_urls, '.form-step a.govuk-link'

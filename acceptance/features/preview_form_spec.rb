@@ -38,10 +38,6 @@ feature 'Preview form' do
     when_I_add_the_page
   end
 
-  def and_I_add_a_page_url(page_url)
-    editor.page_url_field.set(page_url)
-  end
-
   def when_I_update_the_question_name(question_name)
     editor.question_heading.first.set(question_name)
     when_I_save_my_changes
