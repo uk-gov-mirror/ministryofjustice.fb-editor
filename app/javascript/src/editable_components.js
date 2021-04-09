@@ -189,14 +189,14 @@ class EditableContent extends EditableElement {
 
   // Returns $node.html() converted to markdown.
   markdown() {
-    var markdown = convertToMarkdown(this._html);
+    var markdown = convertToMarkdown(this._content);
     return markdown;
   }
 
   // Expects HTML or blank string to show HTML or default text in view.
   populate(content) {
     var defaultContent = this.defaultContent || this.originalContent;
-    this.$node.htmll(content == "" ? defaultContent : content);
+    this.$node.html(content == "" ? defaultContent : content);
   }
 }
 
