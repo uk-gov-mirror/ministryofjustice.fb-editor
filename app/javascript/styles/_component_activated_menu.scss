@@ -49,10 +49,10 @@
     &.destructive:hover {
       background-color: $govuk-error-colour;
     }
-  }
 
-  a:focus-visible {
-    outline: none;
+    &:focus-visible {
+      outline: none;
+    }
   }
 
   span {

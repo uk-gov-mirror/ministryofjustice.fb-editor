@@ -43,7 +43,6 @@ class PagesController extends DefaultPage {
  **/
 PagesController.edit = function(app) {
   var $form = $("#editContentForm");
-
   this.$form = $form;
   this.editableContent = [];
 
@@ -53,18 +52,40 @@ PagesController.edit = function(app) {
   // Bind document event listeners.
   $(document).on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(this) );
 
-  // Find and enhance the Add Component buttons.
-  $("[data-component=add-component]").each(function() {
-    var $node = $(this);
-    new AddComponent($node);
-  });
+  // Handle page-specific view customisations here.
+  switch(this.type) {
+    case "page.multiplequestions":
+         editPageMultipleQuestionsViewCustomisations.call(this);
+         break;
 
-  // Find and enhance the Add Content buttons.
+    case "page.singlequestion":
+         // No customisations required for this view.
+         break;
+
+    case "page.content":
+         editPageContentViewCustomisations.call(this);
+         break;
+
+    case "page.confirmation":
+         // No customisations required for this view.
+         break;
+
+    case "page.checkanswers":
+         editPageCheckAnswersViewCustomisations.call(this);
+         break;
+  }
+
+  // Enhance any Add Content buttons
   $("[data-component=add-content]").each(function() {
     var $node = $(this);
     new AddContent($node, { $form: $form });
   });
 
+  // Enhance any Add Component buttons.
+  $("[data-component=add-component]").each(function() {
+    var $node = $(this);
+    new AddComponent($node);
+  });
 }
 
 
@@ -117,6 +138,7 @@ class AddContent {
   constructor($node, config) {
     var $button = $node.find("> a");
     this.$button = $button;
+    this.$node = $node;
 
     $button.on("click.AddContent", function() {
       updateHiddenInputOnForm(config.$form, "page[add_component]", "content");
@@ -176,7 +198,7 @@ function bindEditableContentHandlers($area) {
         form: $editContentForm,
         id: $node.data("fb-content-id"),
         selectorDisabled: "input:not(:hidden), textarea",
-        selectorQuestion: "label",
+        selectorQuestion: "label h1, label h2",
         selectorHint: "span",
         selectorGroupQuestion: "legend > :first-child",
         selectorCollectionQuestion: "legend > :first-child",
@@ -283,6 +305,35 @@ function collectionItemControlsInActivatedMenu($item, config) {
 
     $item.data("ActivatedMenu", menu);
   }
+}
+
+
+/**************************************************************/
+/* View customisations for PageController.edit actions follow */
+/**************************************************************/
+
+
+function editPageContentViewCustomisations() {
+  var $button1 = $("[data-component=add-content]");
+  var $target = $("#new_answers :submit");
+  $target.before($button1);
+}
+
+
+function editPageCheckAnswersViewCustomisations() {
+  var $button1 = $("[data-component=add-content]");
+  var $target1 = $(".fb-editable").last();
+  var $button2 = $button1.clone();
+  var $target2 = $("#answers-form dl").first();
+  $target1.after($button1);
+  $target2.before($button2);
+}
+
+
+function editPageMultipleQuestionsViewCustomisations() {
+  var $button1 = $("[data-component=add-component]");
+  var $target = $("#new_answers :submit");
+  $target.before($button1);
 }
 
 
