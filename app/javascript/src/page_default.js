@@ -23,6 +23,7 @@ import { post } from './utilities';
 
 class DefaultPage {
   constructor() {
+    this.type = $(".fb-main-grid-wrapper").data("fb-pagetype");
     this.dialog = createDialog.call(this);
     this.dialogConfirmation = createDialogConfirmation.call(this);
     this.dialogConfirmationDelete = createDialogConfirmationDelete.call(this);
