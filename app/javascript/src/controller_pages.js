@@ -43,7 +43,6 @@ class PagesController extends DefaultPage {
  **/
 PagesController.edit = function(app) {
   var $form = $("#editContentForm");
-
   this.$form = $form;
   this.editableContent = [];
 
@@ -52,6 +51,24 @@ PagesController.edit = function(app) {
 
   // Bind document event listeners.
   $(document).on("AddComponentMenuSelection", AddComponent.MenuSelection.bind(this) );
+
+  switch(this.type) {
+    case "page.multiplequestions":
+         console.log("page.multiplequestions");
+         break;
+    case "page.singlequestion":
+         console.log("page.singlequestion");
+         break;
+    case "page.content":
+         console.log("page.content");
+         break;
+    case "page.confirmation":
+         console.log("page.confirmation");
+         break;
+    case "page.checkanswers":
+         console.log("page.checkanswers");
+         break;
+  }
 
   // Find and enhance the Add Component buttons.
   $("[data-component=add-component]").each(function() {
@@ -64,7 +81,6 @@ PagesController.edit = function(app) {
     var $node = $(this);
     new AddContent($node, { $form: $form });
   });
-
 }
 
 
