@@ -196,7 +196,7 @@ class EditableContent extends EditableElement {
   // Expects HTML or blank string to show HTML or default text in view.
   populate(content) {
     var defaultContent = this.defaultContent || this.originalContent;
-    this.$node.htmll(content == "" ? defaultContent : content);
+    this.$node.html(content == "" ? defaultContent : content);
   }
 }
 
@@ -711,6 +711,7 @@ class EditableCollectionItemRemover {
  * Includes clean up of HTML by stripping attributes and unwanted trailing spaces.
  **/
 function convertToMarkdown(html) {
+  html = html || ""; // make sure it's a string and not undefined
   html = html.trim();
   html = html.replace(/(<\w[\w\d]+)\s*[\w\d\s=\"-]*?(>)/mig, "$1$2");
   html = html.replace(/(?:\n\s*)/mig, "\n");
