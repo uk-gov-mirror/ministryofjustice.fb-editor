@@ -14,21 +14,27 @@ class NewServiceGenerator
       metadata['configuration']['meta'] = DefaultMetadata['config.meta']
       metadata['pages'].push(DefaultMetadata['page.start'])
       metadata['pages'][0]['_uuid'] = SecureRandom.uuid
-      metadata['standalone_pages'] = footer_pages
       metadata['service_name'] = service_name
       metadata['created_by'] = current_user.id
     end
+
+    metadata['standalone_pages'] = footer_pages
+    metadata
   end
 
   private
 
   def footer_pages
-    I18n.t('footer').map do |key, attributes|
-      NewStandalonePageGenerator.new(
+    I18n.t('footer').map do |attributes|
+      metadata = NewPageGenerator.new(
         page_type: 'standalone',
-        page_url: attributes[:url],
-        latest_metadata: service_metadata,
+        page_url: attributes[:url]
       ).to_metadata
+
+      metadata.tap do
+        metadata['heading'] = attributes[:heading]
+        metadata['body'] = attributes[:body]
+      end
     end
   end
 end

@@ -27,4 +27,8 @@ module ApplicationHelper
       page.components[0].label || page.components[0].legend
     end
   end
+
+  def strip_url(url)
+    url.to_s.chomp('/').reverse.chomp('/').reverse
+  end
 end
