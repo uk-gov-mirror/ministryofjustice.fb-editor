@@ -76,6 +76,7 @@ class EditorApp < SitePrism::Page
   elements :preview_page_images, '.form-step img.body'
   element :three_dots_button, '.form-step_button'
   element :preview_page_link, :link, 'Preview page'
+  element :add_page_here_link, :link, 'Add page here'
   element :delete_page_link, :link, 'Delete page...'
   element :delete_page_modal_button, :button, 'Delete page'
 

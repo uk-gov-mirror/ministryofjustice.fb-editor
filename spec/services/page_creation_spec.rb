@@ -5,24 +5,9 @@ RSpec.describe PageCreation, type: :model do
   let(:attributes) { { latest_metadata: metadata_fixture(:version) } }
 
   describe '#page_uuid' do
-    context 'when version' do
-      let(:attributes) do
-        { version: double(metadata: service_metadata) }
-      end
-
-      it 'returns the last page uuid' do
-        expect(
-          page_creation.page_uuid
-        ).to eq('b238a22f-c180-48d0-a7d9-8aad2036f1f2')
-      end
-    end
-
-    context 'when version is blank' do
-      it 'returns nil' do
-        expect(
-          page_creation.page_uuid
-        ).to be_nil
-      end
+    it 'generates uuid' do
+      allow(SecureRandom).to receive(:uuid).and_return('my-uuid')
+      expect(page_creation.page_uuid).to eq('my-uuid')
     end
   end
 

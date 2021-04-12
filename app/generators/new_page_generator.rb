@@ -4,7 +4,8 @@ class NewPageGenerator
                 :page_url,
                 :component_type,
                 :latest_metadata,
-                :add_page_after
+                :add_page_after,
+                :page_uuid
 
   def to_metadata
     latest_metadata.tap do
@@ -18,7 +19,7 @@ class NewPageGenerator
 
     metadata.tap do
       metadata['_id'] = page_name
-      metadata['_uuid'] = SecureRandom.uuid
+      metadata['_uuid'] = page_uuid
       metadata['url'] = page_url
       if component_type.present?
         metadata['components'].push(component)

@@ -5,10 +5,12 @@ RSpec.describe NewPageGenerator do
       page_url: page_url,
       component_type: component_type,
       latest_metadata: latest_metadata,
-      add_page_after: add_page_after
+      add_page_after: add_page_after,
+      page_uuid: page_uuid
     )
   end
   let(:add_page_after) { nil }
+  let(:page_uuid) { SecureRandom.uuid }
 
   describe '#to_metadata' do
     let(:valid) { true }
