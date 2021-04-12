@@ -52,6 +52,7 @@ en:
     create: 'Add page'
     cancel: 'Cancel'
     actions: 'Actions'
+    footer: 'Form footer'
   components:
     actions:
       add_component: 'Add component'
