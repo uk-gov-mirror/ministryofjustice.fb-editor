@@ -11,7 +11,7 @@ class NewPageGenerator
   STANDALONE = 'standalone'.freeze
 
   def to_metadata
-    return page_metadata unless latest_metadata.present?
+    return page_metadata if latest_metadata.blank?
 
     standalone_page? ? add_standalone_page : add_flow_page
   end

@@ -250,8 +250,8 @@ RSpec.describe MetadataUpdater do
         {
           '_id' => 'page.privacy',
           '_type' => 'page.standalone',
-          "_uuid" => "d658f790-0ceb-4507-b8ac-ae30ece6bc8d",
-          'body' => "Some joke about the cookie monster",
+          '_uuid' => 'd658f790-0ceb-4507-b8ac-ae30ece6bc8d',
+          'body' => 'Some joke about the cookie monster',
           'heading' => 'Privacy notice',
           'url' => 'privacy',
           'components' => []
@@ -325,7 +325,7 @@ RSpec.describe MetadataUpdater do
       end
     end
 
-    #In future, we may not want to allow users to delete Privacy, Accessibility or Cookies standalone pages
+    # In future, we may not want to allow users to delete Privacy, Accessibility or Cookies standalone pages
     context 'when deleting standalone pages' do
       let(:updated_metadata) do
         metadata = service_metadata.deep_dup

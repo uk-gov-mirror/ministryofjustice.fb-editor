@@ -1,5 +1,6 @@
 class MetadataUpdater
   attr_reader :id, :latest_metadata, :service_id, :attributes
+
   PAGES = 'pages'.freeze
 
   def initialize(attributes)
