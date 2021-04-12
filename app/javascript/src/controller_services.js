@@ -74,6 +74,9 @@ ServicesController.edit = function(app) {
   pageAdditionMenu.menu.activator.$node.on("click.servicescontrolleredit", function() {
     updateHiddenInputOnForm(pageCreateDialog.$form, "page[add_page_after]", "");
   });
+
+  // Fix for the scrolling of form overview.
+  applyCustomOverviewWorkaround();
 }
 
 
@@ -204,6 +207,22 @@ function pageAdditionMenuSelection(event, data) {
     $("#new-page-create-dialog").dialog("open");
   }
 }
+
+
+/* Quickfix workaround to try and fix scrolling issues for the form overview
+ * when there are too many thumbnails to fix on the one page view.
+ **/
+function applyCustomOverviewWorkaround() {
+  var $overview = $("#form-overview");
+  var $container = $overview.find(" > .container");
+
+  $overview.height($container.height());
+  $container.css({
+    right: ~($overview.offset().left) + 30
+  }); // + 30 is arbitrary extra spacing
+
+}
+
 
 
 export { ServicesController }
