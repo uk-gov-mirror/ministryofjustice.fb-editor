@@ -161,6 +161,16 @@ RSpec.describe NewComponentGenerator do
           end
         end
       end
+
+      context 'when page_url has a / in it' do
+        let(:page_url) { '/some-page/' }
+        let(:component_type) { 'text' }
+        let(:components) { [] }
+
+        it 'removes the / when creating the component id' do
+          expect(generator.to_metadata['_id']).to eq('some-page_text_1')
+        end
+      end
     end
   end
 end

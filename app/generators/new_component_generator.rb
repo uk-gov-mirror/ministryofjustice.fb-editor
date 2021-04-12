@@ -1,4 +1,5 @@
 class NewComponentGenerator
+  include ApplicationHelper
   attr_reader :component_type, :page_url, :components
 
   def initialize(component_type:, page_url:, components: [])
@@ -25,7 +26,7 @@ class NewComponentGenerator
   private
 
   def component_id
-    @component_id ||= "#{page_url}_#{component_type}_#{increment}"
+    @component_id ||= "#{strip_url(page_url)}_#{component_type}_#{increment}"
   end
 
   def increment

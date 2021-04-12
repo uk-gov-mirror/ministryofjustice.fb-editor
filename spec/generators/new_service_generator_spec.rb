@@ -26,6 +26,24 @@ RSpec.describe NewServiceGenerator do
           'url' => '/'
         )
       end
+
+      it 'creates the default footer pages' do
+        expect(service_metadata['standalone_pages'].count).to eq(3)
+
+        urls = service_metadata['standalone_pages'].map { |page| page['url'] }
+        I18n.t('footer').each do |page|
+          expect(urls).to include(page[:url])
+        end
+      end
+
+      it 'creates valid pages' do
+        all_pages = service_metadata['pages'] + service_metadata['standalone_pages']
+        all_pages.each do |page|
+          expect(
+            MetadataPresenter::ValidateSchema.validate(page, page['_type'])
+          ).to be(valid)
+        end
+      end
     end
 
     context 'invalid metadata' do

@@ -1,5 +1,6 @@
 class NewPageGenerator
   include ActiveModel::Model
+  include ApplicationHelper
   attr_accessor :page_type,
                 :page_url,
                 :component_type,
@@ -7,11 +8,12 @@ class NewPageGenerator
                 :add_page_after,
                 :page_uuid
 
+  STANDALONE = 'standalone'.freeze
+
   def to_metadata
-    latest_metadata.tap do
-      latest_metadata['pages'].insert(insert_page_at, page_metadata)
-      latest_metadata['pages'][0]['steps'].insert(insert_page_at, page_name)
-    end
+    return page_metadata if latest_metadata.blank?
+
+    standalone_page? ? add_standalone_page : add_flow_page
   end
 
   def page_metadata
@@ -29,8 +31,25 @@ class NewPageGenerator
 
   private
 
+  def standalone_page?
+    page_type == STANDALONE
+  end
+
+  def add_flow_page
+    latest_metadata.tap do
+      latest_metadata['pages'].insert(insert_page_at, page_metadata)
+      latest_metadata['pages'][0]['steps'].insert(insert_page_at, page_name)
+    end
+  end
+
+  def add_standalone_page
+    latest_metadata.tap do
+      latest_metadata['standalone_pages'].push(page_metadata)
+    end
+  end
+
   def page_name
-    "page.#{page_url}"
+    @page_name ||= "page.#{strip_url(page_url)}"
   end
 
   def component

@@ -1,0 +1,15 @@
+<div class="govuk-form-group govuk-!-margin-top-8">
+  <details class="govuk-details" data-module="govuk-details">
+    <summary class="govuk-details__summary">
+      <span class="govuk-details__summary-text"><%= t('pages.footer') %></span>
+    </summary>
+    <ul class="govuk-navigation govuk-!-margin-top-8">
+      <% service.standalone_pages.each do |page| %>
+        <li class="standalone-pages govuk-!-padding-right-9 govuk-!-margin-top-5">
+          <%= flow_thumbnail(page, service.service_id) %>
+          <%= link_to page.url, edit_page_path(service.service_id, page.uuid) %>
+        </li>
+      <% end %>
+    </ul>
+  </details>
+</div>
