@@ -241,6 +241,50 @@ RSpec.describe MetadataUpdater do
         end
       end
     end
+
+    context 'when updating attributes for standalone pages' do
+      let(:fixture) { metadata_fixture(:version) }
+      let(:page_url) { '/privacy' }
+
+      let(:expected_updated_page) do
+        {
+          '_id' => 'page.privacy',
+          '_type' => 'page.standalone',
+          "_uuid" => "d658f790-0ceb-4507-b8ac-ae30ece6bc8d",
+          'body' => "Some joke about the cookie monster",
+          'heading' => 'Privacy notice',
+          'url' => 'privacy',
+          'components' => []
+        }
+      end
+
+      let(:updated_metadata) do
+        metadata = fixture.deep_dup
+        metadata['standalone_pages'][-1] = metadata['standalone_pages'][-1].merge(expected_updated_page)
+        metadata
+      end
+
+      let(:attributes) do
+        ActiveSupport::HashWithIndifferentAccess.new({
+          id: 'page.privacy',
+          service_id: service.service_id,
+          latest_metadata: fixture
+        }.merge(attributes_to_update))
+      end
+
+      let(:attributes_to_update) do
+        {
+          body: 'Some joke about the cookie monster'
+        }.stringify_keys
+      end
+
+      it 'updates the page metadata' do
+        updater.update
+        expect(
+          updater.update['standalone_pages'][-1]
+        ).to eq(expected_updated_page)
+      end
+    end
   end
 
   describe '#destroy' do
@@ -261,7 +305,7 @@ RSpec.describe MetadataUpdater do
       end
     end
 
-    context 'when deleting other pages' do
+    context 'when deleting other flow pages' do
       let(:updated_metadata) do
         metadata = service_metadata.deep_dup
         metadata['pages'].delete_at(1)
@@ -271,6 +315,26 @@ RSpec.describe MetadataUpdater do
       let(:attributes) do
         {
           id: 'page.name',
+          service_id: service.service_id,
+          latest_metadata: service_metadata
+        }
+      end
+
+      it 'creates new version with page deleted' do
+        expect(updater.destroy).to eq(updated_metadata)
+      end
+    end
+
+    #In future, we may not want to allow users to delete Privacy, Accessibility or Cookies standalone pages
+    context 'when deleting standalone pages' do
+      let(:updated_metadata) do
+        metadata = service_metadata.deep_dup
+        metadata['standalone_pages'].delete_at(1)
+        metadata
+      end
+      let(:attributes) do
+        {
+          id: 'page.accessibility',
           service_id: service.service_id,
           latest_metadata: service_metadata
         }

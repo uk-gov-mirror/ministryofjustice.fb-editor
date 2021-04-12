@@ -1,5 +1,6 @@
 class MetadataUpdater
   attr_reader :id, :latest_metadata, :service_id, :attributes
+  PAGES = 'pages'.freeze
 
   def initialize(attributes)
     @latest_metadata = attributes.delete(:latest_metadata).to_h.deep_dup
@@ -25,9 +26,9 @@ class MetadataUpdater
 
   def metadata(action)
     object = find_node_attribute_by_id
-    index = @latest_metadata['pages'].index(object)
+    collection, index = find_collection_and_index(object)
 
-    send("#{action}_node", object: object, index: index)
+    send("#{action}_node", object: object, index: index, collection: collection)
 
     @latest_metadata
   end
@@ -37,6 +38,13 @@ class MetadataUpdater
   end
 
   private
+
+  def find_collection_and_index(object)
+    %w[pages standalone_pages].each do |collection|
+      index = @latest_metadata[collection].index(object)
+      return collection, index if index.present?
+    end
+  end
 
   def find_node_attribute_by_id
     @latest_metadata.extend Hashie::Extensions::DeepLocate
@@ -50,7 +58,7 @@ class MetadataUpdater
     end
   end
 
-  def update_node(object:, index:)
+  def update_node(object:, index:, collection:)
     new_object = object.merge(attributes)
 
     if @actions && @actions[:add_component].present?
@@ -64,16 +72,17 @@ class MetadataUpdater
       @component_added = component
     end
 
-    @latest_metadata['pages'][index] = new_object
+    @latest_metadata[collection][index] = new_object
     @latest_metadata
   end
 
-  def destroy_node(object:, index:)
+  def destroy_node(object:, index:, collection:)
     # Don't delete start pages
     return @latest_metadata if object['_type'] == 'page.start'
 
-    @latest_metadata['pages'].delete_at(index)
-    @latest_metadata['pages'][0]['steps'].delete(@id)
+    @latest_metadata[collection].delete_at(index)
+    @latest_metadata['pages'][0]['steps'].delete(@id) if flow_page?(collection)
+    @latest_metadata
   end
 
   def new_version(action)
@@ -81,5 +90,9 @@ class MetadataUpdater
       service_id: service_id,
       payload: metadata(action)
     )
+  end
+
+  def flow_page?(collection)
+    collection == PAGES
   end
 end
