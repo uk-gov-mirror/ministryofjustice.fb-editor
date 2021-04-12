@@ -107,12 +107,12 @@ module CommonSteps
     editor.edit_service_link(service_name).click
   end
 
-  def and_I_return_to_flow_page
-    editor.pages_link.click
+  def and_I_edit_the_page(url:)
+    click_link url
   end
 
-  def and_I_add_a_page_url
-    editor.page_url_field.set(page_url)
+  def and_I_return_to_flow_page
+    editor.pages_link.click
   end
 
   def when_I_create_the_service
@@ -161,5 +161,15 @@ module CommonSteps
     window_opened_by do
       editor.preview_form_button.click
     end
+  end
+
+  def and_I_add_a_page_url(url = nil)
+    path = if url.present?
+      url
+    else
+      page_url # via let(:page_url) { }
+    end
+
+    editor.page_url_field.set(path)
   end
 end

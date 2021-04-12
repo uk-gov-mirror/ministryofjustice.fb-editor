@@ -7,7 +7,7 @@
       "check_name": "Render",
       "message": "Render path contains parameter value",
       "file": "app/views/pages/edit.html.erb",
-      "line": 11,
+      "line": 22,
       "link": "https://brakemanscanner.org/docs/warning_types/dynamic_render_path/",
       "code": "render(template => service.find_page_by_uuid(params[:page_uuid]).template, {})",
       "render_path": [
@@ -15,7 +15,7 @@
           "type": "controller",
           "class": "PagesController",
           "method": "update",
-          "line": 21,
+          "line": 26,
           "file": "app/controllers/pages_controller.rb",
           "rendered": {
             "name": "pages/edit",
@@ -30,8 +30,28 @@
       "user_input": "params[:page_uuid]",
       "confidence": "Weak",
       "note": ""
+    },
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 70,
+      "fingerprint": "ba68e127b85a916b749bd1f7fec20219b1cb3e27b40904106d2dce53193bb5dd",
+      "check_name": "MassAssignment",
+      "message": "Specify exact keys allowed for mass assignment instead of using `permit!` which allows any keys",
+      "file": "app/controllers/pages_controller.rb",
+      "line": 66,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:page).permit!",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "PagesController",
+        "method": "page_attributes"
+      },
+      "user_input": null,
+      "confidence": "Medium",
+      "note": ""
     }
   ],
-  "updated": "2021-02-15 09:49:44 -0300",
+  "updated": "2021-04-09 14:15:50 -0300",
   "brakeman_version": "5.0.0"
 }

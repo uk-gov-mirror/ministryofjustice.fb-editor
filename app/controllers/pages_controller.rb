@@ -63,9 +63,7 @@ class PagesController < FormController
   end
 
   def page_attributes
-    params.require(:page).permit(
-      @page.editable_attributes.keys.push({ components: {} })
-    )
+    params.require(:page).permit!
   end
 
   def common_params
