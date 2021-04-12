@@ -16,7 +16,7 @@ class PageCreation
   validates :page_url, metadata_url: { metadata_method: :latest_metadata }
 
   def page_uuid
-    version.metadata['pages'].last['_uuid'] if version
+    @page_uuid ||= SecureRandom.uuid
   end
 
   def create
@@ -41,7 +41,8 @@ class PageCreation
       page_url: page_url.strip,
       component_type: component_type,
       latest_metadata: latest_metadata,
-      add_page_after: add_page_after
+      add_page_after: add_page_after,
+      page_uuid: page_uuid
     ).to_metadata
   end
 end
