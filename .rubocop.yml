@@ -17,6 +17,7 @@ AllCops:
     - "tmp/**/*"
     - "node_modules/**/*"
     - "acceptance/**/*"
+    - 'lib/scripts/remove_services.rb'
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
