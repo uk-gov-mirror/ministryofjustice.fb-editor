@@ -31,4 +31,10 @@ module ApplicationHelper
   def strip_url(url)
     url.to_s.chomp('/').reverse.chomp('/').reverse
   end
+
+  # Remove once hotjar testing is complete
+  def live_platform?
+    ENV['PLATFORM_ENV'] == 'live'
+  end
+  # Remove once hotjar testing is complete
 end
