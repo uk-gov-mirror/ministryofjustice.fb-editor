@@ -11,6 +11,10 @@
 
 /* General rules
  * ------------- */
+body {
+  overflow: hidden;
+}
+
 html {
   min-height: 100%;
   position: relative;
@@ -226,9 +230,8 @@ html {
   @include button_type_link;
   @include addition_icon;
   opacity: 1;
-  position: absolute;
-  right: -118px;
-  top: calc(50% - 30px);
+  position: relative;
+  top: -10px;
 
   &:after {
     display: none;
@@ -240,6 +243,7 @@ html {
   padding-right: 100px;
   overflow: hidden;
   position: relative;
+  vertical-align: middle;
 
   &:after {
     border-top: govuk-colour("black") solid 2px;
@@ -275,6 +279,7 @@ html {
 
 .form-step_button {
   bottom: calc(25px + #{govuk-spacing(2)});
+  display: inline-block;
   left: 158px;
   opacity: 0;
   overflow: hidden;
@@ -328,8 +333,15 @@ html {
 }
 
 #form-overview {
-  display: inline-flex;
-  position: relative;
+  overflow: auto;
+
+  .container {
+    overflow: auto;
+    padding-bottom: 30px;
+    position: absolute;
+    left: 0;
+    white-space: nowrap;
+  }
 
   .govuk-button {
     display: none; // JS injected element, not required.
