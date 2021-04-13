@@ -15,6 +15,18 @@ feature 'Preview form' do
     then_I_can_navigate_until_the_end_of_the_form(preview_form)
   end
 
+  scenario 'preview the standalone pages' do
+    preview_form = when_I_preview_the_form
+    then_I_should_preview_the_cookies_page(preview_form)
+  end
+
+  def then_I_should_preview_the_cookies_page(preview_form)
+    within_window(preview_form) do
+      page.find_link('Cookies').click
+      expect(page.find('h1').text).to eq('Cookies')
+    end
+  end
+
   def given_I_add_all_pages_for_a_form
     given_I_add_a_single_question_page_with_text
     and_I_add_a_page_url('name')
