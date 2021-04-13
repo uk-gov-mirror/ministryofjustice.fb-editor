@@ -23,6 +23,9 @@ class EditorApp < SitePrism::Page
   element :name_field, :field, 'Give your form a name'
   element :create_service_button, :button, 'Create a new form'
 
+  element :footer_pages_links, 'summary'
+  element :cookies_link, :link, 'cookies'
+
   element :pages_link, :link, 'Pages'
   element :settings_link, :link, 'Settings'
   element :form_details_link, :link, 'Form details'

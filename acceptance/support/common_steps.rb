@@ -115,6 +115,10 @@ module CommonSteps
     editor.pages_link.click
   end
 
+  def and_I_change_the_page_heading(heading)
+    editor.page_heading.set(heading)
+  end
+
   def when_I_create_the_service
     editor.modal_create_service_button.click
   end

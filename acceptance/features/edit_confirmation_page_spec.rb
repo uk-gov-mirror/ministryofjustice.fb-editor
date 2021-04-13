@@ -32,10 +32,6 @@ feature 'Edit confirmation pages' do
     when_I_add_the_page
   end
 
-  def and_I_change_the_page_heading(heading)
-    editor.page_heading.set(heading)
-  end
-
   def and_I_change_the_page_lede(lede)
     editor.page_lede.set(lede)
   end
