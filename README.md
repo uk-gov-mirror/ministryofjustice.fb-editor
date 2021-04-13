@@ -92,3 +92,15 @@ There is a rake task that removes any sessions that have been inactive for more 
 This rake task is found in `lib/tasks/database.rake`.
 
 We could not use the [built in rails session trim task](https://github.com/rails/activerecord-session_store/blob/master/lib/tasks/database.rake) as this could only be modified in days.
+
+### Remove services script
+
+This is for removing all services and their configuration in a given namespace.
+
+`ruby ./lib/scripts/remove_services.rb <namespace> <target>`
+
+For example, if the pod name for a service is `awesome-form-78b47fc858-cxgfl` and you wanted to remove it from `formbuilder-services-test-dev`:
+
+`ruby ./lib/scripts/remove_services.rb formbuilder-services-test-dev awesome-form`
+
+If target is not provided it will attempt to remove all services within the supplied namespace. This is temporary for now until we have a proper mechanism for removing a service and its configuration. It will not work in production namespaces, developers will need to do those by hand if required.
