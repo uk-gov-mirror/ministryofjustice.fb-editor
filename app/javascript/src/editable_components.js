@@ -661,7 +661,8 @@ class EditableCollectionItemInjector {
     var text = mergeObjects({ addItem: 'add' }, config.text);
     var $node = $(createElement("button", text.addItem, conf.classes));
     editableCollectionFieldComponent.$node.append($node);
-    $node.addClass("EditableCollectionItemInjector")
+    $node.addClass("EditableCollectionItemInjector");
+    $node.attr("type", "button");
     $node.data("instance", this);
     $node.on("click", function(e) {
       e.preventDefault();
@@ -685,6 +686,7 @@ class EditableCollectionItemRemover {
 
     $node.data("instance", this);
     $node.addClass("EditableCollectionItemRemover");
+    $node.attr("type", "button");
     $node.on("click.EditableCollectionItemRemover", function(e) {
       e.preventDefault();
       editableCollectionItem.remove();
