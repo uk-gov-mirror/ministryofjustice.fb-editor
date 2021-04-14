@@ -37,3 +37,9 @@ setup-ci:
 .PHONY: acceptance-ci
 acceptance-ci: copy-env-vars-ci add-env-vars-ci setup-ci
 	docker-compose -f docker-compose.ci.yml run --rm editor_ci bundle exec rspec -f doc acceptance
+
+.PHONY: assets
+assets:
+	yarn install
+	bundle exec rails assets:precompile
+	./bin/webpack
