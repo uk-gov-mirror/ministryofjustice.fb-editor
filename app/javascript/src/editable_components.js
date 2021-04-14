@@ -23,7 +23,7 @@ var converter = new showdown.Converter({
                   disableForced4SpacesIndentedSublists: true
                 });
 
-
+showdown.setFlavor('github');
 
 /* Editable Base:
  * Shared code across the editable component types.
