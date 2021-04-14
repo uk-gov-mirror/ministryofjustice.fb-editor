@@ -6,8 +6,8 @@ New editor from the MoJ online.
 Ensure you are running on Node version 10.17.0:
 `nvm use 10.17.0`
 
-Install webpack assets:
-`yarn install`
+Compile the necessary assets and run webpack:
+`make assets`
 
 Copy the environment variables into your own .env file:
 `cp .env.development .env`
