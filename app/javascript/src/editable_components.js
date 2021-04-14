@@ -14,12 +14,14 @@
  **/
 
 
-import DOMPurify from 'dompurify';
-import marked from 'marked';
-import TurndownService from 'turndown';
 import { mergeObjects, createElement, safelyActivateFunction, updateHiddenInputOnForm } from './utilities';
+var showdown  = require('showdown');
+var converter = new showdown.Converter({
+                  noHeaderId: true,
+                  strikethrough: true,
+                  omitExtraWLInCodeBlocks: true
+                });
 
-var turndownService = new TurndownService();
 
 
 /* Editable Base:
@@ -149,7 +151,7 @@ class EditableContent extends EditableElement {
 
   // Get content must always return Markdown because that's what we save.
   get content() {
-    var content = convertToMarkdown(this._content).trim();
+    var content = convertToMarkdown(this._content);
     var value = "";
     if(this._config.data) {
       this._config.data.content = content;
@@ -164,16 +166,13 @@ class EditableContent extends EditableElement {
   // Set content takes markdown (because it should be called after editing).
   // It should convert the markdown to HTML and put back as DOM node content.
   set content(markdown) {
-    var markdown = sanitiseMarkdown(markdown);
-    var html = convertToHtml(markdown);
-    this._content = html;
-    this.populate(html);
+    this._content = convertToHtml(markdown);
     safelyActivateFunction(this._config.onSaveRequired);
   }
 
   edit() {
     if(!this._editing) {
-      this.$node.html(this.markdown()); // Show as markdown in edit mode.
+      EditableContent.displayMarkdownInBrowser.call(this);
       this._editing = true;
       super.edit();
     }
@@ -181,23 +180,40 @@ class EditableContent extends EditableElement {
 
   update() {
     if(this._editing) {
-      this.content = this.$node.html().trim(); // Converts markdown back to HTML.
+      // Get the content which should be markdown mixed with
+      // some HTML due to browser contentEditable handling.
+      this.content = this.$node.html();
+      EditableContent.displayHtmlInBrowser.call(this);
       this.$node.removeClass(this._config.editClassname);
       this._editing = false;
     }
   }
 
-  // Returns $node.html() converted to markdown.
   markdown() {
-    var markdown = convertToMarkdown(this._content);
-    return markdown;
+    return convertToMarkdown(this._content);
   }
+}
 
-  // Expects HTML or blank string to show HTML or default text in view.
-  populate(content) {
-    var defaultContent = this.defaultContent || this.originalContent;
-    this.$node.html(content == "" ? defaultContent : content);
-  }
+/* Function to display the content as markdown in browser.
+ * Had own function because we need to manipulate the content to
+ * make sure it displays correctly formatted (visually), and
+ * for clarity of where the display action happens.
+ **/
+EditableContent.displayMarkdownInBrowser = function() {
+  var markdown = this.markdown();
+  this.$node.html(markdown.replace(/\n/g,"<br>")); // Displays on one line without this.
+}
+
+
+/* Function to display the content as markdown in browser.
+ * Had own function because we need to manipulate the content to
+ * make sure it displays correctly formatted (visually), and
+ * for clarity of where the display action happens.
+ **/
+EditableContent.displayHtmlInBrowser = function() {
+  var defaultContent = this.defaultContent || this.originalContent;
+  var content = (this._content == "" ? defaultContent : this._content);
+  this.$node.html(content);
 }
 
 
@@ -713,34 +729,34 @@ class EditableCollectionItemRemover {
  * Includes clean up of HTML by stripping attributes and unwanted trailing spaces.
  **/
 function convertToMarkdown(html) {
-  html = html || ""; // make sure it's a string and not undefined
   html = html.trim();
+  html = html.replace(/<!-- -->/mig, "");
+  html = html.replace(/(<\/p>)/mig, "$1\n\n");
   html = html.replace(/(<\w[\w\d]+)\s*[\w\d\s=\"-]*?(>)/mig, "$1$2");
-  html = html.replace(/(?:\n\s*)/mig, "\n");
-  html = html.replace(/[ ]{2,}/mig, " ");
-  html = DOMPurify.sanitize(html, { USE_PROFILES: { html: true }});
-  return turndownService.turndown(html);
+  //html = html.replace(/(?:\n\s*)/mig, "\n");
+  //html = html.replace(/[ ]{2,}/mig, " ");
+  return converter.makeMarkdown(html).trim();
 }
 
 
-/* Convert Markdown to HTML by tapping into a third-party code.
+/* Convert Markdown to HTML by tapping into third-party code.
+ * Includes clean up of both Markdown and resulting HTML to fix noticed issues.
  **/
 function convertToHtml(markdown) {
-  return marked(sanitiseMarkdown(markdown));
-}
-
-/* Manual conversion of characters to keep values as required.
- * Stripping the <br> tags is because we put them in for visual formatting only.
- * Stripping out the extra spaces because the browser added them and we don't want.
- * Seems like the browser (contentEditable functionality) is adding <div> tags to
- * format new lines, so we're fixing that with line-breaks and stripping excess.
- **/
-function sanitiseMarkdown(markdown) {
-  markdown = markdown.replace(/\*\s+/mig, "* "); // Make sure only one space after an asterisk
-  markdown = markdown.replace(/<br>/mig, "\n");
+  // First clean up what we got as it will probably contain
+  // some nonsense due to browser contentEditabl handling. 
+  markdown = markdown.trim();
+  markdown = markdown.replace(/&nbsp;/mig, " "); // Entity spaces mess things up.
+  markdown = markdown.replace(/<br>/mig, "\n");  // Revert any we added for visual purpose.
   markdown = markdown.replace(/<\/div><div>/mig, "\n");
   markdown = markdown.replace(/<[\/]?div>/mig, "");
-  return markdown;
+
+  // Next do the conversion and correct some things to display properly.
+  let html = converter.makeHtml(markdown);
+  html = html.replace(/<li><p>(.*)?<\/p>/mig, "<li>$1");  // Don't want <p> tags in there.
+  html = html.replace(/<\/li><\/ul>/mig, "</li>\n</ul>"); // Require line-break;
+  html = html.replace(/(\W)<ul>/mig, "$1  \n<ul>");       // Require line-break;
+  return html;
 }
 
 
