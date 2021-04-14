@@ -19,7 +19,8 @@ var showdown  = require('showdown');
 var converter = new showdown.Converter({
                   noHeaderId: true,
                   strikethrough: true,
-                  omitExtraWLInCodeBlocks: true
+                  omitExtraWLInCodeBlocks: true,
+                  disableForced4SpacesIndentedSublists: true
                 });
 
 
@@ -754,8 +755,8 @@ function convertToHtml(markdown) {
   // Next do the conversion and correct some things to display properly.
   let html = converter.makeHtml(markdown);
   html = html.replace(/<li><p>(.*)?<\/p>/mig, "<li>$1");  // Don't want <p> tags in there.
-  html = html.replace(/<\/li><\/ul>/mig, "</li>\n</ul>"); // Require line-break;
-  html = html.replace(/(\W)<ul>/mig, "$1  \n<ul>");       // Require line-break;
+  //html = html.replace(/<\/li><\/ul>/mig, "</li>\n</ul>"); // Require line-break;
+  //html = html.replace(/(\W)<ul>/mig, "$1  \n<ul>");       // Require line-break;
   return html;
 }
 
