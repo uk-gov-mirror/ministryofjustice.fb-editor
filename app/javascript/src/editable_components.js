@@ -734,8 +734,6 @@ function convertToMarkdown(html) {
   html = html.replace(/<!-- -->/mig, "");
   html = html.replace(/(<\/p>)/mig, "$1\n\n");
   html = html.replace(/(<\w[\w\d]+)\s*[\w\d\s=\"-]*?(>)/mig, "$1$2");
-  //html = html.replace(/(?:\n\s*)/mig, "\n");
-  //html = html.replace(/[ ]{2,}/mig, " ");
   return converter.makeMarkdown(html).trim();
 }
 
@@ -751,12 +749,11 @@ function convertToHtml(markdown) {
   markdown = markdown.replace(/<br>/mig, "\n");  // Revert any we added for visual purpose.
   markdown = markdown.replace(/<\/div><div>/mig, "\n");
   markdown = markdown.replace(/<[\/]?div>/mig, "");
+  markdown = markdown.replace(/&gt;/mig, ">"); // Fix blockquotes.
 
   // Next do the conversion and correct some things to display properly.
   let html = converter.makeHtml(markdown);
   html = html.replace(/<li><p>(.*)?<\/p>/mig, "<li>$1");  // Don't want <p> tags in there.
-  //html = html.replace(/<\/li><\/ul>/mig, "</li>\n</ul>"); // Require line-break;
-  //html = html.replace(/(\W)<ul>/mig, "$1  \n<ul>");       // Require line-break;
   return html;
 }
 
