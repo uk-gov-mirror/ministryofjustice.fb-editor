@@ -189,10 +189,6 @@ class EditableContent extends EditableElement {
       this._editing = false;
     }
   }
-
-  markdown() {
-    return convertToMarkdown(this._content);
-  }
 }
 
 /* Function to display the content as markdown in browser.
@@ -201,7 +197,7 @@ class EditableContent extends EditableElement {
  * for clarity of where the display action happens.
  **/
 EditableContent.displayMarkdownInBrowser = function() {
-  var markdown = this.markdown();
+  var markdown = convertToMarkdown(this._content);
   this.$node.html(markdown.replace(/\n/g,"<br>")); // Displays on one line without this.
 }
 
