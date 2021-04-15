@@ -203,6 +203,7 @@ function bindEditableContentHandlers($area) {
         selectorHint: "span",
         selectorGroupQuestion: "legend > :first-child",
         selectorCollectionQuestion: "legend > :first-child",
+        selectorCollectionOption: "label",
         selectorCollectionHint: "fieldset > .govuk-hint",
         selectorCollectionItem: ".govuk-radios__item, .govuk-checkboxes__item",
         text: {

@@ -636,7 +636,9 @@ EditableCollectionFieldComponent.applyFilters = function(filters, unique, data) 
  **/
 class EditableComponentCollectionItem extends EditableComponentBase {
   constructor(editableCollectionFieldComponent, $node, config) {
-    super($node, config);
+    super($node, mergeObjects(config, {
+      label: new EditableElement($node.find(config.selectorCollectionOption), config)
+    }));
 
     if(!config.preserveItem) {
       new EditableCollectionItemRemover(this, editableCollectionFieldComponent, config);
