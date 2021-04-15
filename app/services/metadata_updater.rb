@@ -27,9 +27,14 @@ class MetadataUpdater
 
   def metadata(action)
     object = find_node_attribute_by_id
-    collection, index = find_collection_and_index(object)
+    page_collection, index = find_page_collection_and_index(object)
 
-    send("#{action}_node", object: object, index: index, collection: collection)
+    send(
+      "#{action}_node",
+      object: object,
+      index: index,
+      page_collection: page_collection
+    )
 
     @latest_metadata
   end
@@ -40,7 +45,7 @@ class MetadataUpdater
 
   private
 
-  def find_collection_and_index(object)
+  def find_page_collection_and_index(object)
     %w[pages standalone_pages].each do |collection|
       index = @latest_metadata[collection].index(object)
       return collection, index if index.present?
@@ -59,7 +64,7 @@ class MetadataUpdater
     end
   end
 
-  def update_node(object:, index:, collection:)
+  def update_node(object:, index:, page_collection:)
     new_object = object.merge(attributes)
 
     if @actions && @actions[:add_component].present?
@@ -74,16 +79,16 @@ class MetadataUpdater
       @component_added = component
     end
 
-    @latest_metadata[collection][index] = new_object
+    @latest_metadata[page_collection][index] = new_object
     @latest_metadata
   end
 
-  def destroy_node(object:, index:, collection:)
+  def destroy_node(object:, index:, page_collection:)
     # Don't delete start pages
     return @latest_metadata if object['_type'] == 'page.start'
 
-    @latest_metadata[collection].delete_at(index)
-    @latest_metadata['pages'][0]['steps'].delete(@id) if flow_page?(collection)
+    @latest_metadata[page_collection].delete_at(index)
+    @latest_metadata['pages'][0]['steps'].delete(@id) if flow_page?(page_collection)
     @latest_metadata
   end
 
@@ -94,7 +99,7 @@ class MetadataUpdater
     )
   end
 
-  def flow_page?(collection)
-    collection == PAGES
+  def flow_page?(page_collection)
+    page_collection == PAGES
   end
 end
