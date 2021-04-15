@@ -64,47 +64,49 @@ RSpec.describe MetadataUpdater do
 
     context 'when updating attributes and adding new components' do
       context 'when there are no components on the page' do
-        let(:fixture) { metadata_fixture(:no_component_page) }
-        let(:page_url) { '/confirmation' }
-        let(:expected_created_component) do
-          ActiveSupport::HashWithIndifferentAccess.new({
-            '_id': 'confirmation_content_1',
-            '_type': 'content',
-            'content': '[Optional content]',
-            'name': 'confirmation_content_1'
-          })
-        end
-        let(:expected_updated_page) do
-          {
-            '_id' => 'page._confirmation',
-            '_type' => 'page.confirmation',
-            'body' => "You'll receive a confirmation email",
-            'heading' => 'Complaint sent',
-            'lede' => 'Updated lede',
-            'url' => '/confirmation',
-            'components' => [expected_created_component]
-          }
-        end
-        let(:updated_metadata) do
-          metadata = fixture.deep_dup
-          metadata['pages'][-1] = metadata['pages'][-1].merge(expected_updated_page)
-          metadata
-        end
-        let(:attributes) do
-          ActiveSupport::HashWithIndifferentAccess.new({
-            id: 'page._confirmation',
-            service_id: service.service_id,
-            latest_metadata: fixture,
-            actions: { add_component: 'content' },
-            lede: 'Updated lede'
-          })
-        end
+        context 'add to components collection' do
+          let(:fixture) { metadata_fixture(:no_component_page) }
+          let(:page_url) { '/confirmation' }
+          let(:expected_created_component) do
+            ActiveSupport::HashWithIndifferentAccess.new({
+              '_id': 'confirmation_content_1',
+              '_type': 'content',
+              'content': '[Optional content]',
+              'name': 'confirmation_content_1'
+            })
+          end
+          let(:expected_updated_page) do
+            {
+              '_id' => 'page._confirmation',
+              '_type' => 'page.confirmation',
+              'body' => "You'll receive a confirmation email",
+              'heading' => 'Complaint sent',
+              'lede' => 'Updated lede',
+              'url' => '/confirmation',
+              'components' => [expected_created_component]
+            }
+          end
+          let(:updated_metadata) do
+            metadata = fixture.deep_dup
+            metadata['pages'][-1] = metadata['pages'][-1].merge(expected_updated_page)
+            metadata
+          end
+          let(:attributes) do
+            ActiveSupport::HashWithIndifferentAccess.new({
+              id: 'page._confirmation',
+              service_id: service.service_id,
+              latest_metadata: fixture,
+              actions: { add_component: 'content', component_collection: 'components' },
+              lede: 'Updated lede'
+            })
+          end
 
-        it 'updates the page metadata' do
-          updater.update['pages'][-1]
-          expect(
-            updater.component_added.to_h.stringify_keys
-          ).to eq(expected_created_component)
+          it 'updates the page metadata' do
+            updater.update['pages'][-1]
+            expect(
+              updater.component_added.to_h.stringify_keys
+            ).to eq(expected_created_component)
+          end
         end
       end
 
@@ -136,7 +138,7 @@ RSpec.describe MetadataUpdater do
               service_id: service.service_id,
               latest_metadata: service_metadata,
               id: 'page.star-wars-knowledge',
-              actions: { add_component: 'number' }
+              actions: { add_component: 'number', component_collection: 'components' }
             })
           end
 
@@ -174,7 +176,7 @@ RSpec.describe MetadataUpdater do
               service_id: service.service_id,
               latest_metadata: service_metadata,
               id: 'page.star-wars-knowledge',
-              actions: { add_component: 'text' }
+              actions: { add_component: 'text', component_collection: 'components' }
             })
           end
 
@@ -228,7 +230,7 @@ RSpec.describe MetadataUpdater do
               service_id: service.service_id,
               latest_metadata: service_metadata,
               id: 'page.star-wars-knowledge',
-              actions: { add_component: 'radios' }
+              actions: { add_component: 'radios', component_collection: 'components' }
             })
           end
 
@@ -237,6 +239,44 @@ RSpec.describe MetadataUpdater do
             expect(
               updater.component_added.to_h.stringify_keys
             ).to eq(new_component)
+          end
+        end
+
+        context 'add to extra components collection' do
+          let(:fixture) { metadata_fixture(:version) }
+          let(:page_url) { '/check-answers' }
+          let(:expected_created_component) do
+            ActiveSupport::HashWithIndifferentAccess.new({
+              '_id': 'check-answers_content_1',
+              '_type': 'content',
+              'content': '[Optional content]',
+              'name': 'check-answers_content_1'
+            })
+          end
+          let(:expected_updated_page) do
+            metadata = fixture.deep_dup
+            metadata['pages'][-2]['extra_components'].push(expected_created_component)
+            metadata['pages'][-2]
+          end
+          let(:updated_metadata) do
+            metadata = fixture.deep_dup
+            metadata['pages'][-2] = metadata['pages'][-2].merge(expected_updated_page)
+            metadata
+          end
+          let(:attributes) do
+            ActiveSupport::HashWithIndifferentAccess.new({
+              id: 'page._check-answers',
+              service_id: service.service_id,
+              latest_metadata: fixture,
+              actions: { add_component: 'content', component_collection: 'extra_components' }
+            })
+          end
+
+          it 'updates the page metadata' do
+            updater.update['pages'][-2]
+            expect(
+              updater.component_added.to_h.stringify_keys
+            ).to eq(expected_created_component)
           end
         end
       end

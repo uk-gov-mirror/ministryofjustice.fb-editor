@@ -2,6 +2,9 @@ class PagesController < FormController
   default_form_builder GOVUKDesignSystemFormBuilder::FormBuilder
   before_action :assign_required_objects, only: %i[edit update destroy]
 
+  COMPONENTS = 'components'.freeze
+  EXTRA_COMPONENTS = 'extra_components'.freeze
+
   def create
     @page_creation = PageCreation.new(page_creation_params)
 
@@ -47,9 +50,10 @@ class PagesController < FormController
       id: @page.id
     }.merge(common_params).merge(page_attributes))
 
-    if params[:page] && params[:page][:add_component]
+    if params[:page] && additional_component
       update_params[:actions] = {
-        add_component: params[:page][:add_component]
+        add_component: additional_component,
+        component_collection: component_collection
       }
     end
 
@@ -101,5 +105,21 @@ class PagesController < FormController
   def assign_required_objects
     @page = service.find_page_by_uuid(params[:page_uuid])
     @page_answers = MetadataPresenter::PageAnswers.new(@page, {})
+  end
+
+  def additional_component
+    @additional_component ||= add_component || add_extra_component
+  end
+
+  def add_component
+    @add_component ||= params[:page][:add_component]
+  end
+
+  def add_extra_component
+    @add_extra_component ||= params[:page][:add_extra_component]
+  end
+
+  def component_collection
+    add_extra_component ? EXTRA_COMPONENTS : COMPONENTS
   end
 end
