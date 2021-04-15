@@ -57,12 +57,17 @@ class PagesController < FormController
       }
     end
 
-    if update_params[:components]
-      update_params[:components] = update_params[:components].each.map do |_, value|
+    parse_components(update_params)
+  end
+
+  def parse_components(update_params)
+    %i[components extra_components].each do |collection|
+      next if update_params[collection].blank?
+
+      update_params[collection] = update_params[collection].each.map do |_, value|
         JSON.parse(value)
       end
     end
-
     update_params
   end
 
