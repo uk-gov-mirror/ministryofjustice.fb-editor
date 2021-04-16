@@ -69,11 +69,8 @@ class MetadataUpdater
 
     if @actions && @actions[:add_component].present?
       new_object[component_collection] ||= []
-      component = NewComponentGenerator.new(
-        component_type: @actions[:add_component],
-        page_url: new_object['url'].gsub(/^\//, ''),
-        components: new_object[component_collection]
-      ).to_metadata
+
+      component = new_component(new_object)
       new_object[component_collection].push(component)
       @component_added = component
     end
@@ -98,11 +95,23 @@ class MetadataUpdater
     )
   end
 
+  def new_component(new_object)
+    NewComponentGenerator.new(
+      component_type: @actions[:add_component],
+      page_url: new_object['url'].gsub(/^\//, ''),
+      components: all_components(new_object)
+    ).to_metadata
+  end
+
   def flow_page?(page_collection)
     page_collection == PAGES
   end
 
   def component_collection
     @component_collection ||= @actions[:component_collection]
+  end
+
+  def all_components(obj)
+    [obj['components'], obj['extra_components']].flatten.compact
   end
 end

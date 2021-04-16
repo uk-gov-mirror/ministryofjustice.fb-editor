@@ -9,6 +9,10 @@ RSpec.describe NewComponentGenerator do
   input_components = %w[text textarea number radios checkboxes]
   non_input_components = %w[content]
 
+  before do
+    allow(SecureRandom).to receive(:uuid).and_return('Get to the choppa')
+  end
+
   describe '#to_metadata' do
     context 'valid component metadata' do
       let(:valid) { true }
@@ -103,6 +107,7 @@ RSpec.describe NewComponentGenerator do
               {
                 '_id' => "#{page_url}_#{component}_1",
                 '_type' => component,
+                '_uuid' => 'Get to the choppa',
                 'errors' => {},
                 'hint' => '',
                 'items' => [

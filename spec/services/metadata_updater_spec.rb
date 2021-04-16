@@ -15,6 +15,10 @@ RSpec.describe MetadataUpdater do
       service_id: service_id,
       payload: updated_metadata
     ).and_return(version)
+
+    allow(SecureRandom).to receive(:uuid).and_return(
+      "Dead or alive you're coming with me"
+    )
   end
 
   describe '#update' do
@@ -71,6 +75,7 @@ RSpec.describe MetadataUpdater do
             ActiveSupport::HashWithIndifferentAccess.new({
               '_id': 'confirmation_content_1',
               '_type': 'content',
+              '_uuid': "Dead or alive you're coming with me",
               'content': '[Optional content]',
               'name': 'confirmation_content_1'
             })
@@ -79,6 +84,7 @@ RSpec.describe MetadataUpdater do
             {
               '_id' => 'page._confirmation',
               '_type' => 'page.confirmation',
+              "_uuid"=> 'b238a22f-c180-48d0-a7d9-8aad2036f1f2',
               'body' => "You'll receive a confirmation email",
               'heading' => 'Complaint sent',
               'lede' => 'Updated lede',
@@ -116,6 +122,7 @@ RSpec.describe MetadataUpdater do
             {
               '_id' => 'star-wars-knowledge_number_1',
               '_type' => 'number',
+              '_uuid' => "Dead or alive you're coming with me",
               'errors' => {},
               'hint' => '',
               'label' => 'Question',
@@ -155,6 +162,7 @@ RSpec.describe MetadataUpdater do
             {
               '_id' => 'star-wars-knowledge_text_2',
               '_type' => 'text',
+              '_uuid' => "Dead or alive you're coming with me",
               'errors' => {},
               'hint' => '',
               'label' => 'Question',
@@ -193,6 +201,7 @@ RSpec.describe MetadataUpdater do
             {
               '_id' => 'star-wars-knowledge_radios_2',
               '_type' => 'radios',
+              '_uuid' => "Dead or alive you're coming with me",
               'errors' => {},
               'hint' => '',
               'items' => [
@@ -247,10 +256,11 @@ RSpec.describe MetadataUpdater do
           let(:page_url) { '/check-answers' }
           let(:expected_created_component) do
             ActiveSupport::HashWithIndifferentAccess.new({
-              '_id': 'check-answers_content_1',
+              '_id': 'check-answers_content_3',
               '_type': 'content',
+              '_uuid' => "Dead or alive you're coming with me",
               'content': '[Optional content]',
-              'name': 'check-answers_content_1'
+              'name': 'check-answers_content_3'
             })
           end
           let(:expected_updated_page) do
