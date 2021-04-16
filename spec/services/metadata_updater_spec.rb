@@ -84,7 +84,7 @@ RSpec.describe MetadataUpdater do
             {
               '_id' => 'page._confirmation',
               '_type' => 'page.confirmation',
-              "_uuid"=> 'b238a22f-c180-48d0-a7d9-8aad2036f1f2',
+              '_uuid' => 'b238a22f-c180-48d0-a7d9-8aad2036f1f2',
               'body' => "You'll receive a confirmation email",
               'heading' => 'Complaint sent',
               'lede' => 'Updated lede',
