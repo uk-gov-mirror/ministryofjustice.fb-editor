@@ -239,8 +239,8 @@ class EditableComponentBase extends EditableBase {
     //        and any others...
     //      }
     this._elements = arguments.length > 2 && elements || {
-      label: new EditableElement($node.find(config.selectorQuestion), config),
-      hint: new EditableElement($node.find(config.selectorHint), config)
+      label: new EditableElement($node.find(config.selectorElementLabel), config),
+      hint: new EditableElement($node.find(config.selectorElementHint), config)
     };
 
     $node.find(config.selectorDisabled).attr("disabled", true); // Prevent input in editor mode.
@@ -310,7 +310,10 @@ class EditableTextFieldComponent extends EditableComponentBase {
     //       Maybe make this EditableAttribute instance when class is
     //       ready so we can edit attribute values, such as placeholder.
     //  {input: new EditableAttribute($node.find("input"), config)}
-    super($node, config);
+    super($node, mergeObjects({
+      selectorElementLabel: config.selectorTextFieldLabel,
+      selectorElementHint: config.selectorTextFieldHint
+    }, config));
     $node.addClass("EditableTextFieldComponent");
   }
 }
@@ -345,7 +348,10 @@ class EditableTextFieldComponent extends EditableComponentBase {
  **/
 class EditableTextareaFieldComponent extends EditableComponentBase {
   constructor($node, config) {
-    super($node, config);
+    super($node, mergeObjects({
+      selectorElementLabel: config.selectorTextareaFieldLabel,
+      selectorElementHint: config.selectorTextareaFieldHint
+    }, config));
     $node.addClass("EditableTextareaFieldComponent");
   }
 }
@@ -389,10 +395,10 @@ class EditableTextareaFieldComponent extends EditableComponentBase {
  **/
 class EditableGroupFieldComponent extends EditableComponentBase {
   constructor($node, config) {
-    super($node, config, {
-      label: new EditableElement($node.find(config.selectorGroupQuestion), config),
-      hint: new EditableElement($node.find(config.selectorHint), config)
-    });
+    super($node, mergeObjects({
+      selectorElementLabel: config.selectorGroupFieldLabel,
+      selectorElementHint: config.selectorGroupFieldHint
+    }, config));
     $node.addClass("EditableGroupFieldComponent");
   }
 
@@ -462,12 +468,10 @@ class EditableGroupFieldComponent extends EditableComponentBase {
  **/
 class EditableCollectionFieldComponent extends EditableComponentBase {
   constructor($node, config) {
-    super($node, config, {
-      // Be better for consistency if this was 'label' and not 'legend',
-      // but working with the JSON recognised by/sent from the  server.
-      label: new EditableElement($node.find(config.selectorCollectionQuestion), config),
-      hint: new EditableElement($node.find(config.selectorCollectionHint), config)
-    });
+    super($node, mergeObjects({
+      selectorElementLabel: config.selectorCollectionFieldLabel,
+      selectorElementHint: config.selectorCollectionFieldHint
+    }, config));
 
     var text = config.text || {}; // Make sure it exists to avoid errors later on.
 
@@ -636,9 +640,10 @@ EditableCollectionFieldComponent.applyFilters = function(filters, unique, data) 
  **/
 class EditableComponentCollectionItem extends EditableComponentBase {
   constructor(editableCollectionFieldComponent, $node, config) {
-    super($node, mergeObjects(config, {
-      label: new EditableElement($node.find(config.selectorCollectionOption), config)
-    }));
+    super($node, mergeObjects({
+      selectorElementLabel: config.selectorComponentCollectionItemLabel,
+      selectorElementHint: config.selectorComponentCollectionItemHint
+    }, config));
 
     if(!config.preserveItem) {
       new EditableCollectionItemRemover(this, editableCollectionFieldComponent, config);
