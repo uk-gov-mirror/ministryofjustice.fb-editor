@@ -176,4 +176,13 @@ module CommonSteps
 
     editor.page_url_field.set(path)
   end
+
+  def and_I_change_the_page_heading(heading)
+    editor.page_heading.set(heading)
+  end
+
+  def then_I_should_see_the_confirmation_heading(heading)
+    expect(editor.page_heading.text).to eq(heading)
+  end
+  alias_method :then_I_should_see_the_page_heading, :then_I_should_see_the_confirmation_heading
 end

@@ -40,10 +40,6 @@ feature 'Edit confirmation pages' do
     editor.page_body.set(body)
   end
 
-  def then_I_should_see_the_confirmation_heading(heading)
-    expect(editor.page_heading.text).to eq(heading)
-  end
-
   def then_I_should_see_the_confirmation_lede(lede)
     expect(editor.page_lede.text).to eq(lede)
   end

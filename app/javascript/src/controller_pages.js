@@ -84,7 +84,7 @@ PagesController.edit = function(app) {
   // Enhance any Add Component buttons.
   $("[data-component=add-component]").each(function() {
     var $node = $(this);
-    new AddComponent($node);
+    new AddComponent($node, { $form: $form });
   });
 }
 
@@ -137,11 +137,12 @@ AddComponent.MenuSelection = function(event, data) {
 class AddContent {
   constructor($node, config) {
     var $button = $node.find("> a");
+    var fieldname = $node.data("fb-field-name") || "page[add_component]";
     this.$button = $button;
     this.$node = $node;
 
     $button.on("click.AddContent", function() {
-      updateHiddenInputOnForm(config.$form, "page[add_component]", "content");
+      updateHiddenInputOnForm(config.$form, fieldname, "content");
       config.$form.submit();
     });
 
@@ -327,6 +328,7 @@ function editPageCheckAnswersViewCustomisations() {
   var $target2 = $("#answers-form dl").first();
   $target1.after($button1);
   $target2.before($button2);
+  $button2.attr("data-fb-field-name", "page[add_extra_component]");
 }
 
 

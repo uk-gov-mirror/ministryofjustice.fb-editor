@@ -8,9 +8,9 @@
 
 <%= form_for @page, as: :page, url: page_path(service.service_id, @page.uuid), html: { id: "editContentForm" }, method: :patch do |f| %>
   <% @page.editable_attributes.each do |key, value| %>
-    <% if key == :components %>
+    <% if key == :components || key == :extra_components %>
       <% value.each_with_index do |hash, index| %>
-        <%= f.hidden_field "components[#{index}]", value: hash.to_json %>
+        <%= f.hidden_field "#{key}[#{index}]", value: hash.to_json %>
       <% end %>
     <% else %>
       <%= f.hidden_field key, value: value %>
@@ -19,7 +19,7 @@
 
   <%= f.submit t('actions.save'), class: 'editor-button govuk-button fb-govuk-button' %>
 <% end %>
+
 <%= render template: @page.template %>
 <%= render partial: 'partials/add_component_button' %>
 <%= render partial: 'partials/add_content_button' %>
-

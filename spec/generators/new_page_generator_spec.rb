@@ -22,6 +22,7 @@ RSpec.describe NewPageGenerator do
         'url' => page_url,
         '_id' => 'page.home-one',
         '_type' => 'page.singlequestion',
+        '_uuid' => 'mandalorian-123',
         'heading' => 'Question',
         'lede' => '',
         'body' => 'Body section',
@@ -29,6 +30,7 @@ RSpec.describe NewPageGenerator do
           {
             '_id' => "#{page_url}_#{component_type}_1",
             '_type' => 'text',
+            '_uuid' => 'mandalorian-123',
             'errors' => {},
             'hint' => '',
             'label' => 'Question',

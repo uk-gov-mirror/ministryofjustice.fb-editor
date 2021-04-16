@@ -12,6 +12,7 @@ class NewComponentGenerator
     metadata = DefaultMetadata["component.#{component_type}"]
 
     metadata.tap do
+      metadata['_uuid'] = SecureRandom.uuid
       metadata['_id'] = component_id
       metadata['name'] = component_id
 

@@ -73,6 +73,12 @@ class EditorApp < SitePrism::Page
   element :page_heading, :xpath, '//*[@data-fb-content-id="page[heading]"]'
   element :page_lede, :xpath, '//*[@data-fb-content-id="page[lede]"]'
   element :page_body, :xpath, '//*[@data-fb-content-id="page[body]"]'
+  element :page_send_heading, :xpath, '//*[@data-fb-content-id="page[send_heading]"]'
+  element :page_send_body, :xpath, '//*[@data-fb-content-id="page[send_body]"]'
+
+  elements :add_content_area_buttons, :link, 'Add content area'
+  element :first_component, :xpath, '//*[@data-fb-content-id="page[components[0]]"]'
+  element :first_extra_component, :xpath, '//*[@data-fb-content-id="page[extra_components[0]]"]'
 
   elements :form_pages, '.form-step'
   elements :form_urls, '.form-step a.govuk-link'
