@@ -7,7 +7,7 @@
       <% service.standalone_pages.each do |page| %>
         <li class="standalone-pages govuk-!-padding-right-9 govuk-!-margin-top-5">
           <%= flow_thumbnail(page, service.service_id) %>
-          <%= link_to page.url, edit_page_path(service.service_id, page.uuid) %>
+          <%= link_to page.url, edit_page_path(service.service_id, page.uuid), class: 'govuk-link' %>
         </li>
       <% end %>
     </ul>
