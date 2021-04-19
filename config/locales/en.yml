@@ -54,6 +54,13 @@ en:
     actions: 'Actions'
     footer: 'Form footer'
   components:
+    list:
+      text: 'Text'
+      textarea: 'Textarea'
+      number: 'Number'
+      date: 'Date'
+      radios: 'Radio buttons'
+      checkboxes: 'Checkboxes'
     actions:
       add_component: 'Add component'
       add_content: 'Add content area'

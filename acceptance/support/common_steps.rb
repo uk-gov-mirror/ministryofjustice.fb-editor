@@ -185,4 +185,16 @@ module CommonSteps
     expect(editor.page_heading.text).to eq(heading)
   end
   alias_method :then_I_should_see_the_page_heading, :then_I_should_see_the_confirmation_heading
+
+  def given_I_have_a_check_your_answers_page
+    given_I_add_a_check_answers_page
+    and_I_add_a_page_url(url)
+    when_I_add_the_page
+  end
+  alias_method :and_I_have_a_check_your_answers_page, :given_I_have_a_check_your_answers_page
+
+  def when_I_preview_the_form
+    and_I_return_to_flow_page
+    and_I_preview_the_form
+  end
 end

@@ -55,11 +55,6 @@ feature 'Preview form' do
     when_I_save_my_changes
   end
 
-  def when_I_preview_the_form
-    and_I_return_to_flow_page
-    and_I_preview_the_form
-  end
-
   def then_I_can_navigate_until_the_end_of_the_form(preview_form)
     within_window(preview_form) do
       expect(page.text).to include('This is your start page')

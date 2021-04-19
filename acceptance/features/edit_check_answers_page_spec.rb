@@ -52,12 +52,6 @@ feature 'Edit check your answers page' do
     then_I_should_see_the_first_extra_component(content_extra_component)
   end
 
-  def given_I_have_a_check_your_answers_page
-    given_I_add_a_check_answers_page
-    and_I_add_a_page_url(url)
-    when_I_add_the_page
-  end
-
   def and_I_change_the_send_heading(send_heading)
     editor.page_send_heading.set(send_heading)
   end
