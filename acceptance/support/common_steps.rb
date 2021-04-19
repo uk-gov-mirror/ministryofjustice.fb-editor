@@ -50,32 +50,32 @@ module CommonSteps
 
   def given_I_add_a_single_question_page_with_text
     given_I_want_to_add_a_single_question_page
-    editor.add_single_question_text.click
+    editor.add_text.click
   end
 
   def given_I_add_a_single_question_page_with_text_area
     given_I_want_to_add_a_single_question_page
-    editor.add_single_question_text_area.click
+    editor.add_text_area.click
   end
 
   def given_I_add_a_single_question_page_with_number
     given_I_want_to_add_a_single_question_page
-    editor.add_single_question_number.click
+    editor.add_number.click
   end
 
   def given_I_add_a_single_question_page_with_date
     given_I_want_to_add_a_single_question_page
-    editor.add_single_question_date.click
+    editor.add_date.click
   end
 
   def given_I_add_a_single_question_page_with_radio
     given_I_want_to_add_a_single_question_page
-    editor.add_single_question_radio.click
+    editor.add_radio.click
   end
 
   def given_I_add_a_single_question_page_with_checkboxes
     given_I_want_to_add_a_single_question_page
-    editor.add_single_question_checkboxes.click
+    editor.add_checkboxes.click
   end
 
   def given_I_add_a_check_answers_page
