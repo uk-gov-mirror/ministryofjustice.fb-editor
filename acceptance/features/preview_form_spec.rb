@@ -62,7 +62,7 @@ feature 'Preview form' do
 
   def then_I_can_navigate_until_the_end_of_the_form(preview_form)
     within_window(preview_form) do
-      expect(page.text).to include('This is your start page')
+      expect(page.text).to include('Service name goes here')
       page.click_button 'Start now'
       expect(page.text).to include('Full name')
       page.fill_in 'Full name', with: 'Charmy Pappitson'
