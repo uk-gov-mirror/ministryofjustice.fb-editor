@@ -177,14 +177,18 @@ function focusOnEditableComponent() {
  * TODO: Add more description on how this works.
  **/
 function bindEditableContentHandlers($area) {
-  var PAGE = this;
+  const SELECTOR_LABEL_STANDARD = "label h1, label h2";
+  const SELECTOR_HINT_STANDARD = ".govuk-hint";
+
+  var page = this;
   var $editContentForm = $("#editContentForm");
   var $saveButton = $editContentForm.find(":submit");
   if($editContentForm.length) {
     $saveButton.attr("disabled", true); // disable until needed.
     $(".fb-editable").each(function(i, node) {
       var $node = $(node);
-      PAGE.editableContent.push(editableComponent($node, {
+
+      page.editableContent.push(editableComponent($node, {
         editClassname: "active",
         data: $node.data("fb-content-data"),
         attributeDefaultText: "fb-default-text",
@@ -198,13 +202,22 @@ function bindEditableContentHandlers($area) {
         },
         form: $editContentForm,
         id: $node.data("fb-content-id"),
+
+        // Selectors for editable component labels/legends/hints, etc.
+        selectorTextFieldLabel: SELECTOR_LABEL_STANDARD, // Also used by Number
+        selectorTextFieldHint: SELECTOR_HINT_STANDARD,   // Also used by Number
+        selectorTextareaFieldLabel: SELECTOR_LABEL_STANDARD,
+        selectorTextareaFieldHint: SELECTOR_HINT_STANDARD,
+        selectorGroupFieldLabel: "legend > :first-child", // Used by Date
+        selectorGroupFieldHint: SELECTOR_HINT_STANDARD,   // Used by Date
+        selectorCollectionFieldLabel: "legend > :first-child", // Used by Radios
+        selectorCollectionFieldHint: "fieldset > .govuk-hint", // Used by Radios
+        selectorComponentCollectionItemLabel: "label",               // Used by Radio options
+        selectorComponentCollectionItemHint: SELECTOR_HINT_STANDARD, // Used by Radio options
+
+        // Other selectors
         selectorDisabled: "input:not(:hidden), textarea",
-        selectorQuestion: "label h1, label h2",
-        selectorHint: "span",
-        selectorGroupQuestion: "legend > :first-child",
-        selectorCollectionQuestion: "legend > :first-child",
-        selectorCollectionHint: "fieldset > .govuk-hint",
-        selectorCollectionItem: ".govuk-radios__item, .govuk-checkboxes__item",
+
         text: {
           addItem: app.text.actions.option_add,
           removeItem: app.text.actions.option_remove
@@ -243,11 +256,11 @@ function bindEditableContentHandlers($area) {
           // Runs before onItemRemove when removing an editable Collection item.
           // Currently not used but added for future option and consistency
           // with onItemAdd (provides an opportunity for clean up).
-          PAGE.dialogConfirmationDelete.content = {
+          page.dialogConfirmationDelete.content = {
             heading: app.text.dialogs.heading_delete_option.replace(/%{option label}/, item._elements.label.$node.text()),
             ok: app.text.dialogs.button_delete_option
           };
-          PAGE.dialogConfirmationDelete.confirm({}, function() {
+          page.dialogConfirmationDelete.confirm({}, function() {
             item.component.remove(item);
           });
         },
@@ -270,8 +283,8 @@ function bindEditableContentHandlers($area) {
 
     // Add handler to activate save functionality from the independent 'save' button.
     $editContentForm.on("submit", (e) => {
-      for(var i=0; i<PAGE.editableContent.length; ++i) {
-        PAGE.editableContent[i].save();
+      for(var i=0; i<page.editableContent.length; ++i) {
+        page.editableContent[i].save();
       }
     });
   }
