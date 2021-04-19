@@ -78,6 +78,7 @@ class EditableElement extends EditableBase {
   constructor($node, config) {
     super($node, config);
     var originalContent = $node.text().trim(); // Trim removes whitespace from template.
+    var defaultContent = $node.data(config.attributeDefaultText);
 
     $node.on("blur.editablecomponent", this.update.bind(this));
     $node.on("focus.editablecomponent", this.edit.bind(this) );
@@ -88,17 +89,24 @@ class EditableElement extends EditableBase {
     $node.addClass("EditableElement");
 
     this._content = $node.text().trim();
-    this.originalContent = originalContent;
-    this.defaultContent = $node.data(config.attributeDefaultText);
+    this._originalContent = originalContent;
+    this._defaultContent = defaultContent;
   }
 
   get content() {
-    var content = this._content;
-    return content == this.defaultContent ? "" : content;
+    var required = this._defaultContent == undefined;
+    var content;
+    if(required) {
+      content = (this._content == "" ? this._originalContent : this._content);
+    }
+    else {
+      content = (this._content == this._defaultContent ? "" : this._content);
+    }
+    return content;
   }
 
   set content(content) {
-    this._content = content;
+    this._content = content.trim();
     this.populate(content);
     safelyActivateFunction(this._config.onSaveRequired);
   }
@@ -114,7 +122,7 @@ class EditableElement extends EditableBase {
 
   // Expects content or blank string to show content or default text in view.
   populate(content) {
-    var defaultContent = this.defaultContent || this.originalContent;
+    var defaultContent = this._defaultContent || this._originalContent;
     this.$node.text(content == "" ? defaultContent : content);
   }
 
@@ -159,7 +167,7 @@ class EditableContent extends EditableElement {
       value = JSON.stringify(this._config.data);
     }
     else {
-      value = (content.replace(/\s/mig, "") == this.defaultContent ? "" : content);
+      value = (content.replace(/\s/mig, "") == this._defaultContent ? "" : content);
     }
     return value;
   }
@@ -212,7 +220,7 @@ EditableContent.displayMarkdownInBrowser = function() {
  * for clarity of where the display action happens.
  **/
 EditableContent.displayHtmlInBrowser = function() {
-  var defaultContent = this.defaultContent || this.originalContent;
+  var defaultContent = this._defaultContent || this._originalContent;
   var content = (this._content == "" ? defaultContent : this._content);
   this.$node.html(content);
 }
