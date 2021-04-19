@@ -212,9 +212,9 @@ function bindEditableContentHandlers($area) {
         selectorGroupFieldHint: SELECTOR_HINT_STANDARD,   // Used by Date
         selectorCollectionFieldLabel: "legend > :first-child", // Used by Radios
         selectorCollectionFieldHint: "fieldset > .govuk-hint", // Used by Radios
-        selectorComponentCollectionItemLabel: "label",               // Used by Radio options
-        selectorComponentCollectionItemHint: SELECTOR_HINT_STANDARD, // Used by Radio options
-
+        selectorCollectionItem: ".govuk-radios__item, .govuk-checkboxes__item", // Used by Radio and Checkbox option parent
+        selectorComponentCollectionItemLabel: "label",               // Used by Radio and Checkbox options
+        selectorComponentCollectionItemHint: SELECTOR_HINT_STANDARD, // Used by Radio and Checkbox options
         // Other selectors
         selectorDisabled: "input:not(:hidden), textarea",
 
