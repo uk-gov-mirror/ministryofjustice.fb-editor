@@ -17,6 +17,14 @@ copy-env-vars-local:
 .PHONY: setup
 setup: build seed-public-key copy-env-vars-local
 
+.PHONY: restart
+restart:
+	$(DOCKER_COMPOSE) restart
+
+.PHONY: logs
+logs:
+	$(DOCKER_COMPOSE) logs editor-app
+
 .PHONY: acceptance-specs
 acceptance: setup
 	bundle exec rspec acceptance

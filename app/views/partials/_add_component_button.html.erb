@@ -6,7 +6,11 @@
           <span><%= t('components.menu.question') %></span>
           <ul class="govuk-navigation">
             <% @page.input_components.each do |component| %>
-              <li data-action="<%= component %>"><a href="#add_component"><%= component.capitalize %></a></li>
+              <li data-action="<%= component %>">
+                <a href="#add_component">
+                  <%= t("components.list.#{component.underscore}") %>
+                </a>
+              </li>
             <% end %>
           </ul>
         </li>

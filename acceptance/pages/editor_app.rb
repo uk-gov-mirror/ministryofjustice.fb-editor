@@ -53,12 +53,20 @@ class EditorApp < SitePrism::Page
           :xpath,
           "//a[@class='ui-menu-item-wrapper' and contains(.,'Confirmation page')]"
 
-  element :add_single_question_text, :link, 'Text', visible: false
-  element :add_single_question_text_area, :link, 'Textarea', visible: false
-  element :add_single_question_number, :link, 'Number', visible: false
-  element :add_single_question_date, :link, 'Date', visible: false
-  element :add_single_question_radio, :link, 'Radio buttons', visible: false
-  element :add_single_question_checkboxes, :link, 'Checkboxes', visible: false
+  element :add_a_component_button, :link, 'Add component'
+  element :question_component,
+          :xpath,
+          "//span[@class='ui-menu-item-wrapper' and contains(.,'Question')]"
+  element :content_component,
+          :xpath,
+          "//span[@class='ui-menu-item-wrapper' and contains(.,'Content area')]"
+
+  element :add_text, :link, 'Text', visible: false
+  element :add_text_area, :link, 'Textarea', visible: false
+  element :add_number, :link, 'Number', visible: false
+  element :add_date, :link, 'Date', visible: false
+  element :add_radio, :link, 'Radio buttons', visible: false
+  element :add_checkboxes, :link, 'Checkboxes', visible: false
 
   elements :add_page_submit_button, :button, 'Add page'
   element :save_page_button, :xpath, '//input[@value="Save"]'
