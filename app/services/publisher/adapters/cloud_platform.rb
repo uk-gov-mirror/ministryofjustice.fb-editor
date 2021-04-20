@@ -57,7 +57,7 @@ class Publisher
         .where(
           service_id: service_id,
           deployment_environment: deployment_environment
-        ).count.zero?
+        ).count == 1
       end
 
       def message
