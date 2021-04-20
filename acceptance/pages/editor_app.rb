@@ -56,6 +56,9 @@ class EditorApp < SitePrism::Page
   element :add_confirmation,
           :xpath,
           "//a[@class='ui-menu-item-wrapper' and contains(.,'Confirmation page')]"
+  element :add_content_page,
+          :xpath,
+          "//a[@class='ui-menu-item-wrapper' and contains(.,'Content page')]"
 
   element :add_a_component_button, :link, 'Add component'
   element :question_component,
@@ -63,7 +66,7 @@ class EditorApp < SitePrism::Page
           "//span[@class='ui-menu-item-wrapper' and contains(.,'Question')]"
   element :content_component,
           :xpath,
-          "//span[@class='ui-menu-item-wrapper' and contains(.,'Content area')]"
+          "//a[@class='ui-menu-item-wrapper' and contains(.,'Content area')]"
 
   element :add_text, :link, 'Text', visible: false
   element :add_text_area, :link, 'Textarea', visible: false
@@ -90,6 +93,7 @@ class EditorApp < SitePrism::Page
 
   elements :add_content_area_buttons, :link, 'Add content area'
   data_content_id :first_component, 'page[components[0]]'
+  data_content_id :second_component, 'page[components[1]]'
   data_content_id :first_extra_component, 'page[extra_components[0]]'
 
   elements :form_pages, '.form-step'
