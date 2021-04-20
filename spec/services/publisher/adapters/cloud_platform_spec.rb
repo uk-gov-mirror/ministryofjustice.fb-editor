@@ -120,6 +120,10 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
       let(:deployment_environment) { 'production' }
 
       context 'when first published' do
+        let!(:publish_service_production) do
+          create(:publish_service, :completed, :production, service_id: service_id)
+        end
+
         context 'when there is a published for development' do
           let!(:publish_service) do
             create(:publish_service, :completed, :dev, service_id: service_id)
@@ -141,6 +145,9 @@ RSpec.describe Publisher::Adapters::CloudPlatform do
 
       context 'when not on first publish' do
         let!(:publish_service) do
+          create(:publish_service, :completed, :production, service_id: service_id)
+        end
+        let!(:publish_service_two) do
           create(:publish_service, :completed, :production, service_id: service_id)
         end
 
