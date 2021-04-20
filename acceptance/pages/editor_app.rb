@@ -1,4 +1,8 @@
+require_relative '../support/data_content_id'
+
 class EditorApp < SitePrism::Page
+  extend DataContentId
+
   if ENV['ACCEPTANCE_TESTS_USER'] && ENV['ACCEPTANCE_TESTS_PASSWORD']
     set_url sprintf(ENV['ACCEPTANCE_TESTS_EDITOR_APP'], user: ENV['ACCEPTANCE_TESTS_USER'], password: ENV['ACCEPTANCE_TESTS_PASSWORD'])
   else
@@ -52,6 +56,9 @@ class EditorApp < SitePrism::Page
   element :add_confirmation,
           :xpath,
           "//a[@class='ui-menu-item-wrapper' and contains(.,'Confirmation page')]"
+  element :add_content_page,
+          :xpath,
+          "//a[@class='ui-menu-item-wrapper' and contains(.,'Content page')]"
 
   element :add_a_component_button, :link, 'Add component'
   element :question_component,
@@ -59,7 +66,7 @@ class EditorApp < SitePrism::Page
           "//span[@class='ui-menu-item-wrapper' and contains(.,'Question')]"
   element :content_component,
           :xpath,
-          "//span[@class='ui-menu-item-wrapper' and contains(.,'Content area')]"
+          "//a[@class='ui-menu-item-wrapper' and contains(.,'Content area')]"
 
   element :add_text, :link, 'Text', visible: false
   element :add_text_area, :link, 'Textarea', visible: false
@@ -78,15 +85,16 @@ class EditorApp < SitePrism::Page
   elements :all_hints, '.govuk-hint'
   elements :editable_options, '.EditableComponentCollectionItem label'
   element :question_hint, '.govuk-hint'
-  element :page_heading, :xpath, '//*[@data-fb-content-id="page[heading]"]'
-  element :page_lede, :xpath, '//*[@data-fb-content-id="page[lede]"]'
-  element :page_body, :xpath, '//*[@data-fb-content-id="page[body]"]'
-  element :page_send_heading, :xpath, '//*[@data-fb-content-id="page[send_heading]"]'
-  element :page_send_body, :xpath, '//*[@data-fb-content-id="page[send_body]"]'
+  data_content_id :page_heading, 'page[heading]'
+  data_content_id :page_lede, 'page[lede]'
+  data_content_id :page_body, 'page[body]'
+  data_content_id :page_send_heading, 'page[send_heading]'
+  data_content_id :page_send_body, 'page[send_body]'
 
   elements :add_content_area_buttons, :link, 'Add content area'
-  element :first_component, :xpath, '//*[@data-fb-content-id="page[components[0]]"]'
-  element :first_extra_component, :xpath, '//*[@data-fb-content-id="page[extra_components[0]]"]'
+  data_content_id :first_component, 'page[components[0]]'
+  data_content_id :second_component, 'page[components[1]]'
+  data_content_id :first_extra_component, 'page[extra_components[0]]'
 
   elements :form_pages, '.form-step'
   elements :form_urls, '.form-step a.govuk-link'

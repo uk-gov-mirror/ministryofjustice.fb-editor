@@ -83,6 +83,11 @@ module CommonSteps
     editor.add_check_answers.click
   end
 
+  def given_I_add_a_content_page
+    given_I_want_to_add_a_page
+    editor.add_content_page.click
+  end
+
   def given_I_add_a_multiple_question_page
     given_I_want_to_add_a_page
     editor.add_multiple_question.click

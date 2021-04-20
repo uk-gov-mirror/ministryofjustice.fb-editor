@@ -31,4 +31,6 @@ RSpec.configure do |config|
 
   config.include TestHelpers
   config.include CommonSteps
+  config.include DataContentId
+  config.include MultipleQuestionsPageHelper
 end
