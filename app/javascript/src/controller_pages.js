@@ -185,9 +185,9 @@ function bindEditableContentHandlers($area) {
   var $saveButton = $editContentForm.find(":submit");
   if($editContentForm.length) {
     $saveButton.attr("disabled", true); // disable until needed.
+
     $(".fb-editable").each(function(i, node) {
       var $node = $(node);
-
       page.editableContent.push(editableComponent($node, {
         editClassname: "active",
         data: $node.data("fb-content-data"),
@@ -220,8 +220,12 @@ function bindEditableContentHandlers($area) {
 
         text: {
           addItem: app.text.actions.option_add,
-          removeItem: app.text.actions.option_remove
+          removeItem: app.text.actions.option_remove,
+
+          default_element: app.text.default_element,
+          default_content: app.text.default_content
         },
+
         onCollectionItemClone: function($node) {
            // @node is the collection item (e.g. <div> wrapping <input type=radio> and <label> elements)
            // Runs after the collection item has been cloned, so further custom manipulation can be

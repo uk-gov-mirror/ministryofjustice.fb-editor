@@ -79,6 +79,7 @@ class EditableElement extends EditableBase {
     super($node, config);
     var originalContent = $node.text().trim(); // Trim removes whitespace from template.
     var defaultContent = $node.data(config.attributeDefaultText);
+    var required = defaultContent === undefined;
 
     $node.on("blur.editablecomponent", this.update.bind(this));
     $node.on("focus.editablecomponent", this.edit.bind(this) );
@@ -91,12 +92,12 @@ class EditableElement extends EditableBase {
     this._content = $node.text().trim();
     this._originalContent = originalContent;
     this._defaultContent = defaultContent;
+    this._required = required;
   }
 
   get content() {
-    var required = this._defaultContent == undefined;
     var content;
-    if(required) {
+    if(this._required) {
       content = (this._content == "" ? this._originalContent : this._content);
     }
     else {
@@ -146,6 +147,10 @@ class EditableContent extends EditableElement {
   constructor($node, config) {
     super($node, config);
 
+    if(config.text.default_content) {
+      this._defaultContent = config.text.default_content;
+    }
+
     // Adjust event for multiple line input.
     $node.off("keydown.editablecomponent");
     $node.on("keydown.editablecontent", e => multipleLineInputRestrictions(e) );
@@ -161,15 +166,19 @@ class EditableContent extends EditableElement {
   // Get content must always return Markdown because that's what we save.
   get content() {
     var content = convertToMarkdown(this._content);
-    var value = "";
+    var contentWithoutWhitespace = content.replace(/\s/mig, "");
+    var defaultWithoutWhitespace = this._defaultContent.replace(/\s/mig, "");
+
+    content = (contentWithoutWhitespace == defaultWithoutWhitespace ? "" : content);
+
+    // Bit hacky but we handle one type of content value as a string (see above),
+    // and the other (component) content as a JSON string for all the component data.
     if(this._config.data) {
       this._config.data.content = content;
-      value = JSON.stringify(this._config.data);
+      content = JSON.stringify(this._config.data);
     }
-    else {
-      value = (content.replace(/\s/mig, "") == this._defaultContent ? "" : content);
-    }
-    return value;
+
+    return content;
   }
 
   // Set content takes markdown (because it should be called after editing).

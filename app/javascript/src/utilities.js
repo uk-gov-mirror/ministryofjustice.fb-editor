@@ -178,5 +178,35 @@ function updateHiddenInputOnForm($form, name, content) {
 }
 
 
+/* Function return specified namespace (creates if doesn't exist).
+ * This means you can safely do something like this:
+ * namespace("my.name.space").something = "foo";
+ * without having the 'space' object previously exist, for example.
+ *
+ * Also, it means you can avoid undefined errors by doing this:
+ * if(namespace("my.name.space").something) {
+ *   // something exists so use it
+ * }
+ *
+ * If 'space' did not exist this code would fall over when trying
+ * to see if 'something' has value. Instead, although 'something'
+ * would still not exist (because 'space' did not) the check should
+ * work but without having to write an alternative such as:
+ * if(my && my.name && my.name.space && my.name.space.something) {
+ *   // something exists so use it
+ * }
+ **/
+function namespace(namespace) {
+  var split = namespace.split(".");
+  var context = this;
+  var i = 0;
+  while( i < split.length) {
+    context = namespace.call(context, split(i));
+    ++i;
+  }
+  return context;
+}
+
+
 // Make available for importing.
 export { mergeObjects, createElement, safelyActivateFunction, isFunction, uniqueString, findFragmentIdentifier, meta, post, updateHiddenInputOnForm };
