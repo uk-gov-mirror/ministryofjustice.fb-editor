@@ -206,6 +206,13 @@ html {
 
 /* Injected/dynamic components
  * --------------------------- */
+.ActivatedMenu_Activator {
+  &.active {
+    opacity: 1;
+  }
+}
+
+
 .EditableCollectionItemInjector {
   @include button_type_link;
   @include addition_icon;
@@ -285,10 +292,6 @@ html {
   opacity: 0;
   overflow: hidden;
   position: absolute;
-
-  &.active {
-    opacity: 1;
-  }
 }
 
 .form-step_thumbnail {
