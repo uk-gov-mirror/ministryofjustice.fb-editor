@@ -23,7 +23,7 @@ feature 'Add page in the middle flow' do
     editor.three_dots_button.click
     editor.add_page_here_link.click
     editor.add_single_question.hover
-    editor.add_single_question_radio.click
+    editor.add_radio.click
     editor.page_url_field.set(url)
     when_I_add_the_page
     # expect to be on the page created (radio component page)
