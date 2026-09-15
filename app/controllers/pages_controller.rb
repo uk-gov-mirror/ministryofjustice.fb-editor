@@ -62,18 +62,9 @@ class PagesController < FormController
       uuid: @page.uuid
     }.merge(common_params).merge(page_attributes))
 
-    if params[:page] && additional_component
-      update_params[:actions] = {
-        add_component: additional_component,
-        component_collection:
-      }
-    end
+    add_component_to_actions_params(update_params) if params[:page] && additional_component
 
-    if params['delete_components'].present?
-      update_params[:actions] = (update_params[:actions] || {}).merge(
-        delete_components: params['delete_components']
-      )
-    end
+    delete_components_from_actions_params(update_params) if params['delete_components'].present?
 
     parse_components(update_params)
   end
@@ -138,6 +129,19 @@ class PagesController < FormController
   helper_method :pages_presenters
 
   private
+
+  def add_component_to_actions_params(update_params)
+    update_params[:actions] = {
+      add_component: additional_component,
+      component_collection:
+    }
+  end
+
+  def delete_components_from_actions_params(update_params)
+    update_params[:actions] = (update_params[:actions] || {}).merge(
+      delete_components: params['delete_components']
+    )
+  end
 
   # The metadata presenter gem requires this objects to render a page
   #
