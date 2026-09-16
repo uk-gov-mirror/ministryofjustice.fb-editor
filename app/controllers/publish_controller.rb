@@ -78,10 +78,7 @@ class PublishController < FormController
   helper_method :can_publish_to_live
 
   def show_confirmation?
-    ServiceConfiguration.find_by(
-      service_id: service.service_id,
-      name: 'AWAITING_APPROVAL'
-    ).present?
+    awaiting_approval?
   end
   helper_method :show_confirmation?
 
