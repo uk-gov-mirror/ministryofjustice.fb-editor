@@ -98,14 +98,15 @@ class PublishController < FormController
   def prepare_ms_list_integration(env)
     ms_site_id_config = ms_site_id_configuration(env)
 
-    return true unless ms_list_integration_needed?(ms_site_id_config, env)
+    return true if skip_ms_list_integration?(ms_site_id_config, env)
 
     latest = latest_publish_for(env)
 
-    return true unless latest&.published? && latest.version_id != service.version_id
+    return true unless latest&.published?
+    return true if latest.version_id == service.version_id
 
     created = create_ms_list_and_drive(ms_site_id_config.decrypt_value, service, env)
-    notify_list_created(env) if created == true
+    notify_list_created(env) if created
     created
   end
 
@@ -338,15 +339,15 @@ class PublishController < FormController
     )
   end
 
-  def ms_list_integration_needed?(ms_site_id_config, env)
-    return false if ms_site_id_config.nil?
+  def skip_ms_list_integration?(ms_site_id_config, env)
+    return true if ms_site_id_config.nil?
 
     send_to_graph = SubmissionSetting.find_by(
       service_id: service.service_id,
       deployment_environment: env
     ).try(:send_to_graph_api?)
 
-    send_to_graph != false
+    send_to_graph == false
   end
 
   def previously_published_to_production?
