@@ -65,11 +65,11 @@ class PublishController < FormController
   end
 
   def can_publish_to_live
-    if revoked? 
+    if revoked?
       false
     elsif approved_to_go_live?
       true
-    elsif awaiting_approval? 
+    elsif awaiting_approval?
       false
     else
       previously_published_to_production?
