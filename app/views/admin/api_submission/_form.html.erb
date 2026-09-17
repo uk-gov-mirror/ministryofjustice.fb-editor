@@ -1,46 +1,40 @@
-<%= form_for object,
+<%= form_with model: object,
   url: admin_service_api_submission_index_path(service.service_id),
+  method: :post,
   html: {
-    id: "api-submission-#{deployment_environment}",
-    class: 'govuk-!-margin-top-8'
-  },
-  builder: GOVUKDesignSystemFormBuilder::FormBuilder do |f| %>
+    id: "api-submission-#{deployment_environment}"
+  } do |f| %>
 
   <%= f.hidden_field :deployment_environment, value: deployment_environment, id: "deployment_environment_#{deployment_environment}" %>
 
-  <div class="govuk-form-group">
-    <div class="govuk-form-group govuk-heading-m govuk-!-margin-top-5">
-      <%= 'Settings for ' %>
-      <%= deployment_environment %>
-      <%= ' environment for ' %>
-      <%=f.object.service.service_name %>
+  <div class="field-unit">
+    <h2>
+      Settings for <%= deployment_environment %> environment for <%= f.object.service.service_name %>
+    </h2>
+    <div class="field-unit__label">
+      <%= f.label :service_output_json_endpoint, 'Endpoint url',
+        for: settings_field_id(f, :service_output_json_endpoint, deployment_environment) %>
     </div>
-    <%= f.govuk_text_field :service_output_json_endpoint,
-    label: {
-      text: 'Endpoint url',
-      for: settings_field_id(f, :service_output_json_endpoint, deployment_environment)
-    },
-    width: 'two-thirds',
-    id: settings_field_id(f, :service_output_json_endpoint, deployment_environment),
-    hint: {
-      text: 'This is the JSON output endpoint URL'
-      } %>
+    <p class="field-unit__hint">This is the JSON output endpoint URL</p>
+    <div class="field-unit__field">
+      <%= f.text_field :service_output_json_endpoint,
+        id: settings_field_id(f, :service_output_json_endpoint, deployment_environment) %>
+    </div>
   </div>
 
-  </div>
-    <%= f.govuk_text_field :service_output_json_key,
-    label: {
-      text: 'Endpoint key',
-      for: settings_field_id(f, :service_output_json_key, deployment_environment)
-    },
-    width: 'two-thirds',
-    id: settings_field_id(f, :service_output_json_key, deployment_environment),
-    hint: {
-      text: 'This is the JSON output endpoint key'
-      } %>
+  <div class="field-unit">
+    <div class="field-unit__label">
+      <%= f.label :service_output_json_key, 'Endpoint key',
+        for: settings_field_id(f, :service_output_json_key, deployment_environment) %>
+    </div>
+    <p class="field-unit__hint">This is the JSON output endpoint key</p>
+    <div class="field-unit__field">
+      <%= f.text_field :service_output_json_key,
+        id: settings_field_id(f, :service_output_json_key, deployment_environment) %>
+    </div>
   </div>
 
-  <button type="submit" class="govuk-button fb-govuk-button" data-module="govuk-button">
+  <button type="submit" class="button">
     <%= "Save settings for #{deployment_environment}" %>
   </button>
 

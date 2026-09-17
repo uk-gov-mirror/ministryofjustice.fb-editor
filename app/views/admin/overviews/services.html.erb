@@ -9,16 +9,10 @@
 </header>
 
 <section class="main-content__body">
-  <dl class="govuk-summary-list">
+  <fieldset class="">
     <% @stats.each do |stat| %>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          <%= stat[:name] %>
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <%= stat[:value] %>
-        </dd>
-      </div>
+      <dt class="attribute-label" id="<%= stat[:name].to_s.parameterize %>"><%= stat[:name] %></dt>
+      <dd class="attribute-data attribute-data--string"><%= stat[:value] %></dd>
     <% end %>
-  </dl>
+  </fieldset>
 </section>

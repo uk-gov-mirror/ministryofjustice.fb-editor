@@ -41,31 +41,32 @@ It renders the `_table` partial to display details about the resources.
   ) %>
 </header>
 
-<section class="main-content__body main-content__body--flush">
-  <table class="govuk-table">
-    <thead class="govuk-table__head">
-      <tr class="govuk-table__row">
-        <th scope="col" class="govuk-table__header">Name</th>
-        <th scope="col" class="govuk-table__header">Service ID</th>
-        <th scope="col" class="govuk-table__header"></th>
+<section class="main-content__body main-content__body">
+  <table aria-labelledby="page-title">
+    <thead>
+      <tr>
+        <th class="cell-label" scope="col">Name</th>
+        <th class="cell-label" scope="col">Service ID</th>
+        <th class="cell-label" scope="col"></th>
       </tr>
     </thead>
-    <tbody class="govuk-table__body">
+    <tbody>
       <% @services.each do |service| %>
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell">
+        <tr class="js-table-row">
+          <td class="cell-data">
             <%= link_to service.name, admin_service_path(service.id) %>
           </td>
-          <td class="govuk-table__cell" id="service-id">
+          <td class="cell-data" id="service-id">
             <%= link_to service.id, admin_service_path(service.id) %>
           </td>
-          <td class="govuk-table__cell" id="service-id">
-            <%= link_to 'Edit', edit_admin_service_path(service.id) %>
+          <td class="cell-data">
+            <%= link_to 'Edit', edit_admin_service_path(service.id), class: "action-edit" %>
           </td>
           <% if Rails.env.development? %>
-          <td class="govuk-table__cell">
+          <td class="cell-data duplicate-alignment">
             <%= button_to 'Duplicate',
                 admin_services_path(service.id, service_id: service.id),
+                class: "button",
                 method: :post %>
           </td>
           <% end %>

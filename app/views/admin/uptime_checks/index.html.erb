@@ -9,37 +9,37 @@
 </header>
 
 <% if ENV['PLATFORM_ENV'] == 'live' || Rails.env.development? %>
-  <section class="main-content__body main-content__body--flush">
-    <h2 class="govuk-heading-m govuk-!-margin-left-5">
+  <section class="main-content__body main-content__body">
+    <h2>
       Without Checks
     </h2>
 
-    <table class="govuk-table">
-      <thead class="govuk-table__head">
-        <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Service Name</th>
-          <th scope="col" class="govuk-table__header">Service ID</th>
-          <th scope="col" class="govuk-table__header">Service Slug</th>
-          <th scope="col" class="govuk-table__header"></th>
+    <table aria-labelledby="page-title">
+      <thead>
+        <tr>
+          <th scope="col" class="cell-label">Service Name</th>
+          <th scope="col" class="cell-label">Service ID</th>
+          <th scope="col" class="cell-label">Service Slug</th>
+          <th scope="col" class="cell-label"></th>
         </tr>
       </thead>
-      <tbody class="govuk-table__body">
+      <tbody>
         <% @without_checks.each do |service| %>
-          <tr class="govuk-table__row">
-            <td class="govuk-table__cell"  id="service-name">
+          <tr>
+            <td class="cell-data"  id="service-name">
               <%= service.service_name %>
             </td>
-            <td class="govuk-table__cell"  id="service-id">
+            <td class="cell-data"  id="service-id">
               <%= service.service_id %>
             </td>
-            <td class="govuk-table__cell"  id="service-slug">
+            <td class="cell-data"  id="service-slug">
               <%= service_slug(service) %>
             </td>
-            <td class="govuk-table__cell">
+            <td class="cell-data">
               <%= form_with url: admin_uptime_checks_path,
                   method: :post do |form| %>
                   <%= form.hidden_field(:id, value: service.service_id) %>
-                  <%= form.submit('Create', class: 'govuk-button fb-govuk-button') %>
+                  <%= form.submit('Create', class: 'button') %>
               <% end %>
             </td>
           </tr>
@@ -47,39 +47,39 @@
       </tbody>
     </table>
 
-    <h2 class="govuk-heading-m govuk-!-margin-left-5">
+    <h2>
       With Checks
     </h2>
 
-    <table class="govuk-table">
-      <thead class="govuk-table__head">
-        <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Service Name</th>
-          <th scope="col" class="govuk-table__header">Hostname</th>
-          <th scope="col" class="govuk-table__header">Check ID</th>
-          <th scope="col" class="govuk-table__header">Status</th>
-          <th scope="col" class="govuk-table__header"></th>
+    <table aria-labelledby="page-title">
+      <thead>
+        <tr>
+          <th scope="col" class="cell-label">Service Name</th>
+          <th scope="col" class="cell-label">Hostname</th>
+          <th scope="col" class="cell-label">Check ID</th>
+          <th scope="col" class="cell-label">Status</th>
+          <th scope="col" class="cell-label"></th>
         </tr>
       </thead>
-      <tbody class="govuk-table__body">
+      <tbody>
         <% @with_uptime_checks.each do |check| %>
-          <tr class="govuk-table__row">
-            <td class="govuk-table__cell" id="service-name">
+          <tr>
+            <td class="cell-data" id="service-name">
               <%= check['name'].gsub('Form Builder - ', '') %>
             </td>
-            <td class="govuk-table__cell" id="hostname">
+            <td class="cell-data" id="hostname">
               <%= check['hostname'] %>
             </td>
-            <td class="govuk-table__cell" id="check-id">
+            <td class="cell-data" id="check-id">
               <%= check['id'] %>
             </td>
-            <td class="govuk-table__cell" id="check-status">
+            <td class="cell-data" id="check-status">
               <%= check['status'] %>
             </td>
-            <td class="govuk-table__cell">
+            <td class="cell-data">
               <%= form_with url: admin_uptime_check_path(check['id']),
                   method: :delete do |form| %>
-                  <%= form.submit('Delete', class: 'govuk-button govuk-button--warning') %>
+                  <%= form.submit('Delete', class: 'button button--danger') %>
               <% end %>
             </td>
           </tr>
@@ -87,35 +87,35 @@
       </tbody>
     </table>
 
-    <h2 class="govuk-heading-m govuk-!-margin-left-5">
+    <h2>
       Other MoJ Forms Uptime Checks
     </h2>
 
-    <table class="govuk-table">
-      <caption class="govuk-table__caption govuk-table__caption--m govuk-!-margin-left-5">
+    <table aria-labelledby="page-title">
+      <caption>
         These checks were created outside the editor admin dashboard
       </caption>
-      <thead class="govuk-table__head">
-        <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Service Name</th>
-          <th scope="col" class="govuk-table__header">Hostname</th>
-          <th scope="col" class="govuk-table__header">Check ID</th>
-          <th scope="col" class="govuk-table__header">Status</th>
+      <thead>
+        <tr>
+          <th scope="col" class="cell-label">Service Name</th>
+          <th scope="col" class="cell-label">Hostname</th>
+          <th scope="col" class="cell-label">Check ID</th>
+          <th scope="col" class="cell-label">Status</th>
         </tr>
       </thead>
-      <tbody class="govuk-table__body">
+      <tbody>
         <% @non_editor_checks.each do |check| %>
-          <tr class="govuk-table__row">
-            <td class="govuk-table__cell" id="service-name">
+          <tr>
+            <td class="cell-data" id="service-name">
               <%= check['name'].gsub('Form Builder - ', '') %>
             </td>
-            <td class="govuk-table__cell" id="hostname">
+            <td class="cell-data" id="hostname">
               <%= check['hostname'] %>
             </td>
-            <td class="govuk-table__cell" id="check-id">
+            <td class="cell-data" id="check-id">
               <%= check['id'] %>
             </td>
-            <td class="govuk-table__cell" id="check-status">
+            <td class="cell-data" id="check-status">
               <%= check['status'] %>
             </td>
           </tr>
@@ -124,7 +124,7 @@
     </table>
   </section>
 <% else %>
-  <h2 class="govuk-heading-m govuk-!-margin-left-5">
+  <h2>
     This is only available in the Live environment
   </h2>
 <% end %>

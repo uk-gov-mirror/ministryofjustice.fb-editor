@@ -1,0 +1,47 @@
+/*
+ * Custom styles for the Administrate admin section.
+ * Loaded via the admin layout after Administrate's own stylesheet, so these
+ * rules take precedence. Keep this file small — Administrate's bundled JS scans
+ * every stylesheet on the page.
+ * Docs: https://administrate-demo.herokuapp.com/customizing_page_views
+ */
+
+.summary-list dd {
+  width: fit-content;
+}
+
+.metadata-info {
+  white-space: pre-wrap;
+}
+
+.service-actions-btn {
+  margin-bottom:20px;
+}
+
+.model-info {
+  padding: 5px 0px 5px 1px;
+  width: fit-content;
+}
+
+fieldset .attribute-label {
+  text-align: left;
+}
+
+table .cell-data a {
+  color: #1976d2;
+}
+
+table caption {
+  text-align: left;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.main-content__body {
+  font-size: 1.05rem;
+}
+
+.duplicate-alignment {
+  width: 1%:
+}

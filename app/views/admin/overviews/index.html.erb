@@ -34,32 +34,26 @@ It renders the `_table` partial to display details about the resources.
 </header>
 
 <section class="main-content__body">
-  <dl class="govuk-summary-list">
+  <fieldset class="">
     <% @stats.each do |stat| %>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          <%= stat[:name] %>
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <%= stat[:value] %>
-        </dd>
-      </div>
+      <dt class="attribute-label" id="<%= stat[:name].to_s.parameterize %>"><%= stat[:name] %></dt>
+      <dd class="attribute-data attribute-data--string"><%= stat[:value] %></dd>
     <% end %>
-  </dl>
+  </fieldset>
 
-  <a href="<%= admin_export_services_path(format: :csv) %>" data-disable-with="Exporting..." class="govuk-button fb-govuk-button">
+  <a href="<%= admin_export_services_path(format: :csv) %>" data-disable-with="Exporting..." class="button">
     Export Services
   </a>
 
-  <a href="<%= admin_export_dev_summary_path(format: :csv) %>" data-disable-with="Exporting..." class="govuk-button fb-govuk-button">
+  <a href="<%= admin_export_dev_summary_path(format: :csv) %>" data-disable-with="Exporting..." class="button">
     Published in test Services Summary
   </a>
 
-  <a href="<%= admin_export_prod_summary_path(format: :csv) %>" data-disable-with="Exporting..." class="govuk-button fb-govuk-button">
+  <a href="<%= admin_export_prod_summary_path(format: :csv) %>" data-disable-with="Exporting..." class="button">
     Published in live Services Summary
   </a>
 
-  <a href="<%= admin_export_questionnaires_path(format: :csv) %>" data-disable-with="Exporting..." class="govuk-button fb-govuk-button">
+  <a href="<%= admin_export_questionnaires_path(format: :csv) %>" data-disable-with="Exporting..." class="button">
     Export Questionnaires
   </a>
 </section>

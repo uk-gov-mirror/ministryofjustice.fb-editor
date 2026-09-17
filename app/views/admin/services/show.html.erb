@@ -9,202 +9,146 @@
   <h2>Service ID: <%= @service.service_id %></h2>
 </header>
 
-<section class="main-content__body main-content__body--flush">
-  <div class="govuk-!-margin-left-5">
-    <a href="<%= edit_service_path(@service.service_id) %>" class="govuk-button fb-govuk-button">
+<section class="main-content__body">
+  <div>
+    <div class="service-actions-btn">
+    <a href="<%= edit_service_path(@service.service_id) %>" class="button">
       Visit service in app
     </a>
 
-    <%= link_to "Show API Endpoint Submission Settings", admin_service_api_submission_index_path( :service_id => @service.service_id ), class: "govuk-button fb-govuk-button" %>
+    <%= link_to "Show API Endpoint Submission Settings", admin_service_api_submission_index_path( :service_id => @service.service_id ), class: "button" %>
 
     <% if is_already_approved? %>
-      <a href="<%= admin_service_approve_path(:service_id => @service.service_id) %>" class="govuk-button fb-govuk-button" disabled>
+      <a href="<%= admin_service_approve_path(:service_id => @service.service_id) %>" class="button" disabled>
         Already approved to go live
       </a>
     <% else %>
       <%= link_to 'Approve to go live', admin_service_approve_path(:service_id => @service.service_id),
-          class: "govuk-button fb-govuk-button",
+          class: "button",
           data: { turbo_method: :get, turbo_confirm: 'Approving will unpublish any live forms, are you sure?' }  %>
     <% end %>
     <%= link_to 'Revoke approval to go live', admin_service_revoke_approval_path(:service_id => @service.service_id),
-      class: "govuk-button fb-govuk-button",
+      class: "button",
       data: { turbo_method: :get, turbo_confirm: 'Revoking approval will unpublish any live forms, are you sure?' }  %>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Service created by
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <%= @service_creator.name %>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Service created at
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <%= l(@versions.last.created_at.to_time) %>
-        </dd>
-      </div>
-    </dl>
+    </div>
+    <fieldset class="model-info">
+      <dt class="attribute-label" id="service-created-by">Service created by</dt>
+      <dd class="attribute-data attribute-data--string"><%= @service_creator.name %></dd>
 
-    <h2 class="govuk-heading-m govuk-!-margin-top-5">
-      Published to Live
-    </h2>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Published by
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <%= @published_to_live[:published_by] %>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Published at
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <% if @published_to_live.present? %>
-            <%= l(@published_to_live[:created_at].to_time) %>
-          <% end %>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Version ID
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <% if @published_to_live[:version_id].present? %>
-            <%= link_to @published_to_live[:version_id],
-                admin_service_version_path(@service.service_id, @published_to_live[:version_id] )
-            %>
-          <% end %>
-        </dd>
-      </div>
-    </dl>
+      <dt class="attribute-label" id="service-created-at">Service created at</dt>
+      <dd class="attribute-data attribute-data--date-time"><%= l(@versions.last.created_at.to_time) %></dd>
+    </fieldset>
+
+    <fieldset class="model-info">
+      <h2>Published to Live</h2>
+      <dt class="attribute-label" id="live-published-by">Published by</dt>
+      <dd class="attribute-data attribute-data--string"><%= @published_to_live[:published_by] %></dd>
+
+      <dt class="attribute-label" id="live-published-at">Published at</dt>
+      <dd class="attribute-data attribute-data--date-time">
+        <% if @published_to_live.present? %>
+          <%= l(@published_to_live[:created_at].to_time) %>
+        <% end %>
+      </dd>
+
+      <dt class="attribute-label" id="live-version-id">Version ID</dt>
+      <dd class="attribute-data attribute-data--string">
+        <% if @published_to_live[:version_id].present? %>
+          <%= link_to @published_to_live[:version_id],
+              admin_service_version_path(@service.service_id, @published_to_live[:version_id] )
+          %>
+        <% end %>
+      </dd>
+    </fieldset>
     <% if @published_to_live[:id].present? %>
     <%= button_to 'Unpublish Live', admin_service_unpublish_path(
         @service.service_id, @published_to_live[:id], 'production'),
         method: :post,
-        class: "govuk-button fb-govuk-button",
+        class: "button",
         data: { disable_with: 'Unpublishing. . .' }
     %>
     <%= button_to 'Re-publish Live', admin_service_republish_path(
       @service.service_id, @published_to_live[:id], 'production'),
       method: :post,
-      class: "govuk-button fb-govuk-button",
+      class: "button",
       data: { disable_with: 'Re-publishing. . .' }
     %>
     <% end %>
 
-    <h2 class="govuk-heading-m govuk-!-margin-top-5">
-      Published to Test
-    </h2>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Published by
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <%= @published_to_test[:published_by] %>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Published at
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <% if @published_to_test.present? %>
-            <%= l(@published_to_test[:created_at].to_time) %>
-          <% end %>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Version ID
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <% if @published_to_test[:version_id].present? %>
-            <%= link_to @published_to_test[:version_id],
-                admin_service_version_path(@service.service_id, @published_to_test[:version_id])
-            %>
-          <% end %>
-        </dd>
-      </div>
-    </dl>
+    <fieldset class="model-info">
+      <h2>Published to Test</h2>
+      <dt class="attribute-label" id="test-published-by">Published by</dt>
+      <dd class="attribute-data attribute-data--string"><%= @published_to_test[:published_by] %></dd>
+
+      <dt class="attribute-label" id="test-published-at">Published at</dt>
+      <dd class="attribute-data attribute-data--date-time">
+        <% if @published_to_test.present? %>
+          <%= l(@published_to_test[:created_at].to_time) %>
+        <% end %>
+      </dd>
+
+      <dt class="attribute-label" id="test-version-id">Version ID</dt>
+      <dd class="attribute-data attribute-data--string">
+        <% if @published_to_test[:version_id].present? %>
+          <%= link_to @published_to_test[:version_id],
+              admin_service_version_path(@service.service_id, @published_to_test[:version_id])
+          %>
+        <% end %>
+      </dd>
+    </fieldset>
     <% if @published_to_test[:id].present? %>
     <%= button_to 'Unpublish Test', admin_service_unpublish_path(
         @service.service_id, @published_to_test[:id], 'dev'),
         method: :post,
-        class: "govuk-button fb-govuk-button",
+        class: "button",
         data: { disable_with: 'Unpublishing. . .' }
     %>
     <%= button_to 'Re-publish Test', admin_service_republish_path(
       @service.service_id, @published_to_test[:id], 'dev'),
       method: :post,
-      class: "govuk-button fb-govuk-button",
+      class: "button",
       data: { disable_with: 'Re-publishing. . .' }
     %>
     <% end %>
 
-<div>
-  <%= button_to 'Delete Service', admin_service_path(@service.service_id, @service),
-              method: :delete, class: "govuk-button fb-govuk-button",
+    <%= button_to 'Delete Service', admin_service_path(@service.service_id, @service),
+              method: :delete, class: "button button--danger",
+              style: 'margin-bottom: 25px',
               data: { turbo_confirm: 'Is this the right form we are deleting?' }  %>
-</div>
 
-    <h2 class="govuk-heading-m govuk-!-margin-top-5">
-      Latest Metadata
-    </h2>
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Version created by
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <%= @version_creator.name %>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Version created at
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <%= l(@latest_metadata['created_at'].to_time) %>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Version ID
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <%= @latest_metadata['version_id'] %>
-        </dd>
-      </div>
-    </dl>
+    <fieldset class="model-info">
+      <h2>Latest Metadata</h2>
+      <dt class="attribute-label" id="version-created-by">Version created by</dt>
+      <dd class="attribute-data attribute-data--string"><%= @version_creator.name %></dd>
 
-    <a href="<%= edit_admin_service_version_path(@service.service_id, @latest_metadata['version_id']) %>" class="govuk-button fb-govuk-button">Edit</a>
+      <dt class="attribute-label" id="version-created-at">Version created at</dt>
+      <dd class="attribute-data attribute-data--date-time"><%= l(@latest_metadata['created_at'].to_time) %></dd>
 
-    <pre class="govuk-!-padding-right-5 white-space-pre-wrap">
+      <dt class="attribute-label" id="metadata-version-id">Version ID</dt>
+      <dd class="attribute-data attribute-data--string"><%= @latest_metadata['version_id'] %></dd>
+    </fieldset>
+
+    <a href="<%= edit_admin_service_version_path(@service.service_id, @latest_metadata['version_id']) %>" class="button">Edit</a>
+
+    <pre class="metadata-info">
       <%= JSON.pretty_generate(@latest_metadata) %>
     </pre>
 
-    <table class="govuk-table govuk-!-margin-top-5">
-      <caption class="govuk-table__caption govuk-table__caption--m">Versions</caption>
-      <thead class="govuk-table__head">
-        <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Version ID</th>
-          <th scope="col" class="govuk-table__header">Created at</th>
+    <table aria-labelledby="page-title">
+      <caption>Versions</caption>
+      <thead>
+        <tr>
+          <th class="cell-label" scope="col">Version ID</th>
+          <th class="cell-label" scope="col">Created at</th>
         </tr>
       </thead>
-      <tbody class="govuk-table__body">
+      <tbody>
         <% @versions.each do |version| %>
-          <tr class="govuk-table__row">
-            <td class="govuk-table__cell">
+          <tr class="js-table-row">
+            <td class="cell-data">
               <%= link_to version.version_id, admin_service_version_path(@service.service_id, version.version_id) %>
             </td>
-            <td class="govuk-table__cell">
+            <td class="cell-data">
               <%= link_to l(version.created_at.to_time), admin_service_version_path(@service.service_id, version.version_id) %>
             </td>
           </tr>

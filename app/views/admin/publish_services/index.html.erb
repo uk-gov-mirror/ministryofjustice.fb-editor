@@ -1,0 +1,65 @@
+<% content_for(:title) do %>
+  Published Services
+<% end %>
+
+<header class="main-content__header" role="banner">
+  <h1 class="main-content__page-title" id="page-title">
+    <%= content_for(:title) %>
+    - <%= @publish_services.total_count %>
+  </h1>
+  <nav class="publish-services__environment-toggle" aria-label="Deployment environment">
+    <%= link_to 'Live', admin_publish_services_path(deployment_environment: 'production'),
+          class: "button #{'button--active' if @environment == 'production'}",
+          'aria-current': (@environment == 'production' ? 'page' : nil) %>
+    <%= link_to 'Test', admin_publish_services_path(deployment_environment: 'dev'),
+          class: "button #{'button--active' if @environment == 'dev'}",
+          'aria-current': (@environment == 'dev' ? 'page' : nil) %>
+  </nav>
+
+</header>
+
+<section class="main-content__body main-content__body">
+  <table aria-labelledby="page-title">
+    <thead>
+      <tr>
+        <th class="cell-label" scope="col">Form Name</th>
+        <th class="cell-label" scope="col">Status</th>
+        <th class="cell-label" scope="col">Published by</th>
+        <th class="cell-label" scope="col">Environment</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @publish_services.each do |publish_service| %>
+        <% presenter = Admin::PublishedServicePresenter.new(publish_service) %>
+        <tr class="js-table-row">
+          <td class="cell-data">
+            <%= link_to presenter.service_name, admin_service_path(presenter.service_id) %>
+          </td>
+          <td class="cell-data">
+            <span class="publish-services__status publish-services__status--<%= presenter.status_modifier %>">
+              <%= presenter.status %>
+            </span>
+          </td>
+          <td class="cell-data">
+            <% if presenter.user %>
+              <%= link_to presenter.user.name, admin_user_path(presenter.user) %>
+            <% end %>
+          </td>
+          <td class="cell-data">
+            <%= presenter.environment_label %>
+          </td>
+        </tr>
+      <% end %>
+
+      <% if @publish_services.empty? %>
+        <tr>
+          <td class="cell-data" colspan="4">
+            No services published to <%= @environment == 'production' ? 'Live' : 'Test' %>.
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <%= paginate @publish_services, param_name: 'page' %>
+</section>

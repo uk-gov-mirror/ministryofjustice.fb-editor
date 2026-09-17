@@ -18,17 +18,26 @@ By default, it renders:
     <meta charset="utf-8">
     <meta name="ROBOTS" content="NOODP">
     <meta name="viewport" content="initial-scale=1">
+    <meta name="turbo-prefetch" content="false">
+    <%#
+      Administrate 1.0 bundles a css-anchor-positioning polyfill that runs
+      unconditionally on load, fetching and blob-rewriting every stylesheet on
+      the page. Modern browsers support anchor positioning natively, so the
+      polyfill is wasted work that snowballs into a blob-request storm on Turbo
+      navigations. Passing an empty `elements` array makes it scan nothing.
+    %>
+    <%= javascript_tag nonce: true do %>
+      window.ANCHOR_POSITIONING_POLYFILL_OPTIONS = { elements: [] };
+    <% end %>
     <title>
       <%= content_for(:title) %> - MoJ Forms Editor
     </title>
     <%= render "stylesheet" %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag if defined?(csp_meta_tag) %>
-    <%= stylesheet_pack_tag 'application', media: 'all' %>
-    <script src="https://unpkg.com/alpinejs" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js"></script>
+    <%= yield :head %>
   </head>
-  <body class="govuk-template__body">
+  <body>
     <%= render "icons" %>
 
     <div class="app-container">

@@ -10,52 +10,54 @@
   </h1>
 </header>
 
-<section class="main-content__body main-content__body--flush">
-  <table class="govuk-table">
-    <thead class="govuk-table__head">
-      <tr class="govuk-table__row">
-        <th scope="col" class="govuk-table__header">New form reason</th>
-        <th scope="col" class="govuk-table__header">GOVUK forms ruled out</th>
-        <th scope="col" class="govuk-table__header">Required MOJ forms features</th>
-        <th scope="col" class="govuk-table__header">GOVUK forms ruled out reason</th>
-        <th scope="col" class="govuk-table__header">Continue with MOJ forms</th>
-        <th scope="col" class="govuk-table__header">Estimated page count</th>
-        <th scope="col" class="govuk-table__header">Estimated first year submissions count</th>
-        <th scope="col" class="govuk-table__header">Submission delivery method</th>
-        <th scope="col" class="govuk-table__header">Created at</th>
-        <th scope="col" class="govuk-table__header">Service ID</th>
+<section class="main-content__body main-content__body">
+  <table aria-labelledby="page-title">
+    <thead>
+      <tr>
+        <th scope="col"  class="cell-label">New form reason</th>
+        <th scope="col"  class="cell-label">GOVUK forms ruled out</th>
+        <th scope="col"  class="cell-label">Required MOJ forms features</th>
+        <th scope="col"  class="cell-label">GOVUK forms ruled out reason</th>
+        <th scope="col"  class="cell-label">Continue with MOJ forms</th>
+        <th scope="col"  class="cell-label">Estimated page count</th>
+        <th scope="col"  class="cell-label">Estimated first year submissions count</th>
+        <th scope="col"  class="cell-label">Submission delivery method</th>
+        <th scope="col"  class="cell-label">Created at</th>
+        <th scope="col"  class="cell-label">Service</th>
       </tr>
     </thead>
-    <tbody class="govuk-table__body">
+    <tbody>
       <% @questionnaires.each do |questionnaire| %>
-        <tr class="govuk-table__row">
-          <td class="govuk-table__cell">
+        <tr>
+          <td class="cell-data">
             <%= I18n.t("activemodel.attributes.questionnaire/get_started_form/new_form_reason.#{questionnaire.new_form_reason}") %>
           </td>
-          <td class="govuk-table__cell">
+          <td class="cell-data">
             <%= I18n.t("activemodel.attributes.questionnaire/gov_forms/govuk_forms_ruled_out.#{questionnaire.govuk_forms_ruled_out}") unless questionnaire.govuk_forms_ruled_out.nil? %>
           </td>
-          <td class="govuk-table__cell">
+          <td class="cell-data">
             <% questionnaire.required_moj_forms_features.to_a.each do |f| %>
               <p><%=I18n.t("activemodel.attributes.questionnaire/form_features_form/required_moj_forms_features.#{f}") %></p>
             <% end %>
           </td>
-          <td class="govuk-table__cell">
+          <td class="cell-data">
             <%= questionnaire.govuk_forms_ruled_out_reason %>
           </td>
-          <td class="govuk-table__cell">
+          <td class="cell-data">
             <%= I18n.t("activemodel.attributes.questionnaire/continue_form/continue_with_moj_forms.#{questionnaire.continue_with_moj_forms}") unless questionnaire.continue_with_moj_forms.nil? %>
           </td>
           <% %w[estimated_page_count estimated_first_year_submissions_count submission_delivery_method].each do |s|%>
-          <td class="govuk-table__cell">
+          <td class="cell-data">
             <%= I18n.t("activemodel.attributes.questionnaire/new_form_form/#{s}.#{questionnaire.send(s)}") if questionnaire.send(s) %>
           </td>
           <% end %>
-          <td class="govuk-table__cell">
+          <td class="cell-data">
             <%= Time.parse questionnaire.created_at %>
           </td>
-          <td class="govuk-table__cell">
-            <%= link_to questionnaire.service_id[0..7], admin_service_path(questionnaire.service_id) %>
+          <td class="cell-data">
+            <%= link_to service_name_for(questionnaire.service_id), admin_service_path(questionnaire.service_id) %>
+            <br>
+            <span class="cell-data--muted"><%= questionnaire.service_id[0..7] %></span>
           </td>
         </tr>
       <% end %>

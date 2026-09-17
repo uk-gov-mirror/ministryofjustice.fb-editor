@@ -10,40 +10,29 @@
   <h2>Version ID: <%= @version.id %></h2>
 </header>
 
-<section class="main-content__body main-content__body--flush">
-  <div class="govuk-!-margin-left-5">
-    <a href="<%= admin_service_path(@service_id) %>" class="govuk-back-link">
-      Back to service
-    </a>
+<section class="main-content__body main-content__body">
+  <div>
+    <%= link_to 'Back to service', admin_service_path(@service_id), class: "button" %>
 
-    <dl class="govuk-summary-list">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Created by
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <%= @version_creator.name %>
-        </dd>
-      </div>
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">
-          Created at
-        </dt>
-        <dd class="govuk-summary-list__value">
-          <%= l(@version.metadata['created_at'].to_time) %>
-        </dd>
-      </div>
-    </dl>
+    <fieldset class="model-info">
+      <dt class="attribute-label" id="created-by">Created by</dt>
+      <dd class="attribute-data attribute-data--string"><%= @version_creator.name %></dd>
+
+      <dt class="attribute-label" id="created-at">Created at</dt>
+      <dd class="attribute-data attribute-data--date-time"><%= l(@version.metadata['created_at'].to_time) %></dd>
+    </fieldset>
 
     <%= form_with(
         url: admin_service_version_path(@service_id, @version.version_id),
         method: :put,
         local: true) do |f| %>
-      <%= f.submit 'Save', class: 'govuk-button fb-govuk-button', id: 'version-save' %>
-      <div class="govuk-form-group">
-        <textarea class="govuk-textarea" id="version" name="version" rows="100" aria-describedby="version-hint">
-          <%= JSON.pretty_generate(@version.metadata) %>
-        </textarea>
+      <%= f.submit 'Save', class: 'button', id: 'version-save' %>
+      <div class="field-unit">
+        <div class="field-unit__field">
+          <textarea id="version" name="version" rows="100" aria-describedby="version-hint">
+            <%= JSON.pretty_generate(@version.metadata) %>
+          </textarea>
+        </div>
       </div>
     <% end %>
   </div>

@@ -19,6 +19,11 @@ It displays a header, and renders the `_form` partial to do the heavy lifting.
   <%= display_resource_name('Service') %>
 <% end %>
 
+<% content_for(:head) do %>
+  <script src="https://unpkg.com/alpinejs" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked@2.1.3/marked.min.js"></script>
+<% end %>
+
 <header class="main-content__header" role="banner">
   <h1 class="main-content__page-title" id="page-title">
     <%= @service.service_name %>
@@ -28,39 +33,62 @@ It displays a header, and renders the `_form` partial to do the heavy lifting.
 
 <section class="main-content__body">
 
-  <%= form_for(@maintenance_mode_settings,
+  <%= form_with(model: @maintenance_mode_settings,
                url: admin_service_path(@service.service_id),
-               method: :put,
-               builder: GOVUKDesignSystemFormBuilder::FormBuilder) do |f| %>
+               method: :put) do |f| %>
 
-<div class="govuk-!-margin-bottom-5 flex align-items-center justify-content-between">
-    <a href="<%= admin_services_path %>" class="govuk-back-link govuk-!-margin-top-0 govuk-!-margin-bottom-0">
-      Back to services
-    </a>
-    <%= f.submit 'Save', class: 'govuk-button fb-govuk-button govuk-!-margin-bottom-0' %>
-  </div>
+    <div class="form-actions">
+      <%= link_to 'Back to services', admin_services_path, class: "button" %>
+      <%= f.submit 'Save', class: 'button' %>
+    </div>
 
-      <%= f.govuk_error_summary %>
-
-      <%= f.govuk_radio_buttons_fieldset(:maintenance_mode, legend: { size: 's', text: 'Maintenance mode' }) do %>
-        <%= f.govuk_radio_button :maintenance_mode, 1,
-          link_errors: true,
-          label: { text: 'Enabled' },
-          checked:  @maintenance_mode_settings.maintenance_mode == '1' %>
-        <%= f.govuk_radio_button :maintenance_mode, 0,
-          link_errors: true,
-          label: { text: 'Disabled' },
-          checked:  @maintenance_mode_settings.maintenance_mode != '1' %>
+    <% if @maintenance_mode_settings.errors.any? %>
+      <div class="flashes">
+        <div class="flash flash-error">
+          <ul>
+            <% @maintenance_mode_settings.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
     <% end %>
 
-    <%= f.govuk_text_field :maintenance_page_heading, label: { text: 'Maintenance page heading' } %>
+    <fieldset class="field-unit">
+      <legend>Maintenance mode</legend>
+      <div class="field-unit__field">
+        <label>
+          <%= f.radio_button :maintenance_mode, 1,
+            checked: @maintenance_mode_settings.maintenance_mode == '1' %>
+          Enabled
+        </label>
+        <label>
+          <%= f.radio_button :maintenance_mode, 0,
+            checked: @maintenance_mode_settings.maintenance_mode != '1' %>
+          Disabled
+        </label>
+      </div>
+    </fieldset>
 
-    <div class="govuk-form-group">
-      <%= f.label :maintenance_page_content, class: 'govuk-label' %>
-      <p class="govuk-hint">Content should be formatted as markdown. N.B. For a single line break, the line must end in a double space</p>
-        <div class="fb-admin-markdown-editor" >
-          <%= f.text_area :maintenance_page_content, class: 'govuk-textarea', rows: 15 %>
-        </div>
+    <div class="field-unit">
+      <div class="field-unit__label">
+        <%= f.label :maintenance_page_heading %>
+      </div>
+      <div class="field-unit__field">
+        <%= f.text_field :maintenance_page_heading %>
+      </div>
     </div>
-<% end %>
+
+    <div class="field-unit">
+      <div class="field-unit__label">
+        <%= f.label :maintenance_page_content %>
+      </div>
+      <div class="field-unit__field">
+        <p class="field-unit__hint">Content should be formatted as markdown. N.B. For a single line break, the line must end in a double space</p>
+        <div class="fb-admin-markdown-editor">
+          <%= f.text_area :maintenance_page_content, rows: 15 %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </section>
