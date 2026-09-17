@@ -68,29 +68,18 @@ module Admin
     end
 
     def export_dev_form_summary
-      respond_to do |format|
-        summary = service_summary('dev')
-
-        format.csv do
-          csv_data = CSV.generate do |csv|
-            csv << service_summary_headers
-            summary.each do |s|
-              row = to_csv_value(s)
-
-              next if row == []
-
-              csv << row
-            end
-          end
-
-          send_data csv_data, filename: summary_csv_filename('test'), type: 'text/csv'
-        end
-      end
+      export_form_summary('dev', 'test')
     end
 
     def export_live_form_summary
+      export_form_summary('production', 'live')
+    end
+
+    private
+
+    def export_form_summary(env, humanised_env)
       respond_to do |format|
-        summary = service_summary('production')
+        summary = service_summary(env)
 
         format.csv do
           csv_data = CSV.generate do |csv|
@@ -104,12 +93,10 @@ module Admin
             end
           end
 
-          send_data csv_data, filename: summary_csv_filename('live'), type: 'text/csv'
+          send_data csv_data, filename: summary_csv_filename(humanised_env), type: 'text/csv'
         end
       end
     end
-
-    private
 
     def to_csv_value(summary)
       result = []

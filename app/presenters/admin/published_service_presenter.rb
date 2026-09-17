@@ -17,10 +17,6 @@ module Admin
       ENVIRONMENT_LABELS.fetch(deployment_environment, deployment_environment)
     end
 
-    def service_name
-      @service_name ||= fetch_service_name
-    end
-
     def status
       if maintenance_mode?
         'Maintenance mode'
@@ -43,12 +39,6 @@ module Admin
         deployment_environment:,
         name: 'MAINTENANCE_MODE'
       )
-    end
-
-    def fetch_service_name
-      MetadataApiClient::Service.latest_version(service_id)['service_name'].presence || service_id
-    rescue StandardError
-      service_id
     end
   end
 end

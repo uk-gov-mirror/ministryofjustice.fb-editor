@@ -3,8 +3,10 @@ require Rails.root.join('app', 'services', 'uptime', 'adapters', 'pingdom')
 module Admin
   class UptimeChecksController < Admin::ApplicationController
     def index
+      return unless HostEnv.live?
+
       @without_checks = services_without_uptime_checks
-      @with_checks = with_uptime_checks
+      @with_uptime_checks = with_uptime_checks
       @non_editor_checks = non_editor_service_checks
     end
 

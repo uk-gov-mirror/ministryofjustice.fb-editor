@@ -104,3 +104,9 @@ table caption {
   text-decoration: underline;
   color: var(--govuk-link-colour, #1a65a6);
 }
+
+.navigation__link--disabled {
+  color: #6f777b;
+  cursor: not-allowed;
+  opacity: 0.6;
+}

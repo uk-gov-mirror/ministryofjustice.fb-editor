@@ -1,0 +1,28 @@
+<%#
+# Navigation
+
+Overrides Administrate's default navigation so the Uptime Checks link can be
+disabled when running locally, where the Pingdom API is unavailable.
+%>
+
+<nav class="navigation">
+  <%= link_to(t("administrate.navigation.back_to_app"), root_url, class: "button button--alt button--nav") if defined?(root_url) %>
+
+  <% Administrate::Namespace.new(namespace).resources_with_index_route.each do |resource| %>
+    <% next unless accessible_action?(model_from_resource(resource), :index) %>
+
+    <% if resource.to_s == "uptime_checks" && HostEnv.local? %>
+      <span class="navigation__link navigation__link--disabled"
+            aria-disabled="true"
+            title="Only available in the Live environment">
+        <%= display_resource_name(resource) %>
+      </span>
+    <% else %>
+      <%= link_to(
+        display_resource_name(resource),
+        resource_index_route(resource),
+        class: "navigation__link navigation__link--#{nav_link_state(resource)}"
+      ) %>
+    <% end %>
+  <% end %>
+</nav>

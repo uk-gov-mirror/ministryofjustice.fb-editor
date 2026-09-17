@@ -5,15 +5,7 @@ module Admin
 
     def index
       @environment = requested_environment
-      @publish_services = current_state_scope.page(params[:page]).per(PER_PAGE)
-    end
-
-    def default_sorting_attribute
-      :created_at
-    end
-
-    def default_sorting_direction
-      :desc
+      @publish_services = Kaminari.paginate_array(current_state).page(params[:page]).per(PER_PAGE)
     end
 
     private
@@ -22,14 +14,11 @@ module Admin
       ENVIRONMENTS.include?(params[:deployment_environment]) ? params[:deployment_environment] : 'production'
     end
 
-    def current_state_scope
-      latest_ids = PublishService
-        .where(deployment_environment: @environment)
-        .select('DISTINCT ON (service_id) id')
-        .order('service_id, created_at DESC')
-        .map(&:id)
-
-      PublishService.where(id: latest_ids).order(created_at: :desc)
+    def current_state
+      PublishService.where(deployment_environment: @environment)
+                    .order(created_at: :desc)
+                    .group_by(&:service_id)
+                    .map { |_service_id, publishes| publishes.first }
     end
   end
 end

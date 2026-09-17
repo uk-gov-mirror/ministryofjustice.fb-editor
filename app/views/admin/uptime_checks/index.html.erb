@@ -8,7 +8,7 @@
   </h1>
 </header>
 
-<% if ENV['PLATFORM_ENV'] == 'live' || Rails.env.development? %>
+<% if HostEnv.live? %>
   <section class="main-content__body main-content__body">
     <h2>
       Without Checks

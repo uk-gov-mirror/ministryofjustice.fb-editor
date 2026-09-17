@@ -33,7 +33,7 @@
         <% presenter = Admin::PublishedServicePresenter.new(publish_service) %>
         <tr class="js-table-row">
           <td class="cell-data">
-            <%= link_to presenter.service_name, admin_service_path(presenter.service_id) %>
+            <%= link_to service_name_for(presenter.service_id), admin_service_path(presenter.service_id) %>
           </td>
           <td class="cell-data">
             <span class="publish-services__status publish-services__status--<%= presenter.status_modifier %>">

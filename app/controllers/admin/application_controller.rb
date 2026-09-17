@@ -19,8 +19,14 @@ module Admin
     before_action :require_user!
     before_action :authenticate_admin
 
+    helper_method :service_name_for
+
     def authenticate_admin
       redirect_to unauthorised_path unless moj_forms_dev? || moj_forms_admin?
+    end
+
+    def service_name_for(service_id)
+      Admin::ServiceNameResolver.call(service_id)
     end
 
     def published(environment)
