@@ -45,3 +45,62 @@ table caption {
 .duplicate-alignment {
   width: 1%;
 }
+
+/*
+ * GOV.UK notification-banner styles for the announcement PREVIEW only.
+ *
+ * The admin layout no longer loads the editor's webpack pack (it caused the
+ * Administrate polyfill blob storm), so AnnouncementComponent's GOV.UK markup
+ * rendered unstyled. These rules are lifted verbatim from GOV.UK Frontend's
+ * compiled notification-banner component
+ * (node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.css) so the preview
+ * matches what users see in the editor/runner. They use var(--x, fallback), so
+ * they render correctly without GOV.UK's root custom properties. Only elements
+ * with .govuk-notification-banner* classes are affected — i.e. the preview.
+ */
+.govuk-notification-banner {
+  --_govuk-notification-banner-colour: var(--govuk-brand-colour, #1d70b8);
+  --_govuk-notification-banner-title-text-colour: var(--govuk-inverse-text-colour, #fff);
+  font-family: GDS Transport, arial, sans-serif;
+  font-weight: 400;
+  font-size: 1.1875rem;
+  line-height: 1.3157894737;
+  margin-bottom: 30px;
+  border: 5px solid;
+  border-color: var(--_govuk-notification-banner-colour);
+}
+
+.govuk-notification-banner__header {
+  padding: 2px 15px 5px;
+  color: var(--_govuk-notification-banner-title-text-colour);
+  background-color: var(--_govuk-notification-banner-colour);
+}
+
+.govuk-notification-banner__title {
+  font-size: 1.1875rem;
+  line-height: 1.3157894737;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+.govuk-notification-banner__content {
+  padding: 15px;
+  color: var(--govuk-text-colour, #0b0c0c);
+  background-color: var(--govuk-body-background-colour, #fff);
+}
+
+.govuk-notification-banner__content > :last-child {
+  margin-bottom: 0;
+}
+
+/* MoJ Forms announcement overrides (from app/javascript/styles/components/announcement.scss) */
+.mojf-announcement .govuk-notification-banner__content p {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.mojf-announcement .govuk-notification-banner__content a {
+  text-decoration: underline;
+  color: var(--govuk-link-colour, #1a65a6);
+}
