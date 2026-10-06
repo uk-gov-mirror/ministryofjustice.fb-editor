@@ -16,7 +16,7 @@ module Admin
     #
     def index
       authorize_resource(resource_class)
-      search_term = params[:search].to_s.strip
+      search_term = params[:search].to_s.strip.downcase
       # Because our data is encrypted in the db we can't search using where
       # LIKE - so we have to force Administrate to not search.
       resources = filter_resources(scoped_resource, search_term: '')

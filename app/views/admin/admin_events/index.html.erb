@@ -5,42 +5,41 @@
 <header class="main-content__header" role="banner">
   <h1 class="main-content__page-title" id="page-title">
     <%= content_for(:title) %>
+    - <%= @admin_events.count < @admin_events.limit_value ? @admin_events.count : @admin_events.limit_value %>
+    of <%= @admin_events.total_count %>
   </h1>
 </header>
 
-<section class="main-content__body">
+<section class="main-content__body main-content__body--flush">
   <% if @admin_events.empty? %>
-    <p class="govuk-body">No admin actions have been recorded yet.</p>
+    <p>No admin actions have been recorded yet.</p>
   <% else %>
-    <table class="govuk-table">
-      <caption class="govuk-table__caption govuk-table__caption--m">
-        <%= page_entries_info @admin_events, entry_name: 'admin action' %>
-      </caption>
-      <thead class="govuk-table__head">
-        <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">When</th>
-          <th scope="col" class="govuk-table__header">Who</th>
-          <th scope="col" class="govuk-table__header">Service</th>
-          <th scope="col" class="govuk-table__header">Action</th>
+    <table aria-labelledby="page-title">
+      <thead>
+        <tr>
+          <th scope="col" class="cell-label">When</th>
+          <th scope="col" class="cell-label">Who</th>
+          <th scope="col" class="cell-label">Service</th>
+          <th scope="col" class="cell-label">Action</th>
         </tr>
       </thead>
-      <tbody class="govuk-table__body">
+      <tbody>
         <% @admin_events.each do |admin_event| %>
-          <tr class="govuk-table__row">
-            <td class="govuk-table__cell">
+          <tr class="js-table-row">
+            <td class="cell-data">
               <%= admin_event.created_at&.strftime('%d %b %Y %H:%M') %>
             </td>
-            <td class="govuk-table__cell">
+            <td class="cell-data">
               <% if admin_event.user_id.nil? %>
                 Non-UI action (console or task)
               <% else %>
                 <%= admin_event.user&.email || 'Unknown user (account removed)' %>
               <% end %>
             </td>
-            <td class="govuk-table__cell">
+            <td class="cell-data">
               <%= @service_names[admin_event.service_id].presence || admin_event.service_id || '—' %>
             </td>
-            <td class="govuk-table__cell"><%= admin_event.action %></td>
+            <td class="cell-data"><%= admin_event.action %></td>
           </tr>
         <% end %>
       </tbody>

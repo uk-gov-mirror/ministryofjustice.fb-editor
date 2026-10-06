@@ -1,0 +1,50 @@
+<%#
+# Announcements index
+# Based on Administrate's default index, with the header inlined so the resource
+# count shows in the <h1> (matching the Services index).
+%>
+<% content_for(:title) do %>
+  <%= display_resource_name(page.resource_name) %>
+<% end %>
+
+<header class="main-content__header">
+  <h1 class="main-content__page-title" id="page-title">
+    <%= content_for(:title) %>
+    <% if resources.respond_to?(:total_count) %>
+      - <%= resources.count < resources.limit_value ? resources.count : resources.limit_value %>
+      of <%= resources.total_count %>
+    <% end %>
+  </h1>
+
+  <% if show_search_bar %>
+    <%= render(
+      "search",
+      search_term: search_term,
+      resource_name: display_resource_name(page.resource_name)
+    ) %>
+  <% end %>
+
+  <div>
+    <%= link_to(
+      t(
+        "administrate.actions.new_resource",
+        name: display_resource_name(page.resource_name, singular: true).downcase
+      ),
+      [:new, namespace, page.resource_path.to_sym],
+      class: "button",
+    ) if accessible_action?(new_resource, :new) %>
+  </div>
+</header>
+
+<section class="main-content__body main-content__body--flush">
+  <%= render(
+    "collection",
+    collection_presenter: page,
+    collection_field_name: resource_name,
+    page: page,
+    resources: resources,
+    table_title: "page-title"
+  ) %>
+
+  <%= render("pagination", resources: resources) %>
+</section>
