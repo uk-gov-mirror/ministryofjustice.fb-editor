@@ -434,7 +434,7 @@ workflows:
           filters:
             branches:
               only:
-                - CDPTKAN-1437-overhaul-admin-dashboard
+                - main
       - build_workers_image:
           context: *context
           requires:
@@ -446,7 +446,7 @@ workflows:
           filters:
             branches:
               only:
-                - CDPTKAN-1437-overhaul-admin-dashboard
+                - main
       - deploy_to_test_eks:
           context: *context
           requires:
@@ -456,22 +456,22 @@ workflows:
           context: *context
           requires:
             - deploy_to_test_eks
-#      - production_deploy_approval:
-#          type: approval
-#          requires:
-#            - acceptance_tests_eks
-#          filters:
-#            branches:
-#              only:
-#                - main
-#      - deploy_to_live_eks:
-#          context: *context
-#          requires:
-#            - production_deploy_approval
-#          filters:
-#            branches:
-#              only:
-#                - main
+      - production_deploy_approval:
+          type: approval
+          requires:
+            - acceptance_tests_eks
+          filters:
+            branches:
+              only:
+                - main
+      - deploy_to_live_eks:
+          context: *context
+          requires:
+            - production_deploy_approval
+          filters:
+            branches:
+              only:
+                - main
   deploy_testable_branch:
     jobs:
       - build:
