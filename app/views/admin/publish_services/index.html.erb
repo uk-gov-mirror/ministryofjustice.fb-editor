@@ -33,7 +33,7 @@
       <% @publish_services.each do |publish_service| %>
         <% presenter = Admin::PublishedServicePresenter.new(publish_service) %>
         <tr class="js-table-row">
-          <td class="cell-data">
+          <td class="cell-data" style="overflow-wrap: anywhere; word-break: break-word;">
             <%= link_to service_name_for(presenter.service_id), admin_service_path(presenter.service_id) %>
           </td>
           <td class="cell-data">

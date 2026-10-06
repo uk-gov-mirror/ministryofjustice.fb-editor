@@ -53,7 +53,7 @@ It renders the `_table` partial to display details about the resources.
     <tbody>
       <% @services.each do |service| %>
         <tr class="js-table-row">
-          <td class="cell-data">
+          <td class="cell-data" style="overflow-wrap: anywhere; word-break: break-word;">
             <%= link_to service.name, admin_service_path(service.id) %>
           </td>
           <td class="cell-data" id="service-id">
