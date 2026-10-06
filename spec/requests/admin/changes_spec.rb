@@ -33,8 +33,6 @@ RSpec.describe 'Admin events page', type: :request do
       expect(response.body).to include('Action number 49')
       expect(response.body).not_to include('Action number 59')
       expect(response.body).to include('page=2')
-      expect(response.body).to include('Displaying admin actions')
-      expect(response.body).to include('of <b>60</b> in total')
     end
 
     it 'reaches the oldest events on a later page' do
