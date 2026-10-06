@@ -62,18 +62,9 @@ class PagesController < FormController
       uuid: @page.uuid
     }.merge(common_params).merge(page_attributes))
 
-    if params[:page] && additional_component
-      update_params[:actions] = {
-        add_component: additional_component,
-        component_collection:
-      }
-    end
+    add_component_to_actions_params(update_params) if params[:page] && additional_component
 
-    if params['delete_components'].present?
-      update_params[:actions] = (update_params[:actions] || {}).merge(
-        delete_components: params['delete_components']
-      )
-    end
+    delete_components_from_actions_params(update_params) if params['delete_components'].present?
 
     parse_components(update_params)
   end
@@ -139,6 +130,19 @@ class PagesController < FormController
 
   private
 
+  def add_component_to_actions_params(update_params)
+    update_params[:actions] = {
+      add_component: additional_component,
+      component_collection:
+    }
+  end
+
+  def delete_components_from_actions_params(update_params)
+    update_params[:actions] = (update_params[:actions] || {}).merge(
+      delete_components: params['delete_components']
+    )
+  end
+
   # The metadata presenter gem requires this objects to render a page
   #
   def assign_required_objects
@@ -169,23 +173,55 @@ class PagesController < FormController
   def page_title
     if @page
       if @page.heading.present?
-        if @page['_type'] == 'page.standalone' && @page['_id'] == 'page.cookies'
-          "#{@page.heading} - MoJ Forms"
-        else
-          "Edit page - #{@page.heading} - MoJ Forms"
-        end
+        cookies_page? ? page_heading_title : edit_page_title
       elsif @page.components.present?
-        if @page.components.first['label'].present?
-          "Edit page - #{@page.components.first['label']} - MoJ Forms"
-        elsif @page.components.first['legend'].present?
-          "Edit page - #{@page.components.first['legend']} - MoJ Forms"
+        if component_label_present?
+          component_label_title
+        elsif component_legend_present?
+          component_legend_title
         end
       else
-        'Edit page - MoJ Forms'
+        default_edit_page_title
       end
     else
-      "Edit form - #{service.service_name} - MoJ Forms"
+      edit_form_title
     end
   end
   helper_method :page_title
+
+  def edit_form_title
+    "Edit form - #{service.service_name} - MoJ Forms"
+  end
+
+  def default_edit_page_title
+    'Edit page - MoJ Forms'
+  end
+
+  def page_heading_title
+    "#{@page.heading} - MoJ Forms"
+  end
+
+  def edit_page_title
+    "Edit page - #{@page.heading} - MoJ Forms"
+  end
+
+  def component_legend_title
+    "Edit page - #{@page.components.first['legend']} - MoJ Forms"
+  end
+
+  def component_label_title
+    "Edit page - #{@page.components.first['label']} - MoJ Forms"
+  end
+
+  def cookies_page?
+    @page['_type'] == 'page.standalone' && @page['_id'] == 'page.cookies'
+  end
+
+  def component_label_present?
+    @page.components.first['label'].present?
+  end
+
+  def component_legend_present?
+    @page.components.first['legend'].present?
+  end
 end
