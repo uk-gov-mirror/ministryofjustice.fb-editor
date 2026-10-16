@@ -1,33 +1,5 @@
 module BranchingSteps
   # Branching page set up
-  def given_I_add_all_pages_for_a_form_with_branching
-    given_I_add_a_single_question_page_with_radio
-    and_I_add_a_page_url('favourite-hobby')
-    when_I_add_the_page
-    when_I_update_the_question_name('What is your favourite hobby?')
-    and_I_edit_the_option_items('Hiking', 'Sewing')
-    and_I_return_to_flow_page
-
-    given_I_add_a_single_question_page_with_checkboxes
-    and_I_add_a_page_url('ice-cream')
-    when_I_add_the_page
-    when_I_update_the_question_name('Which flavours of ice cream have you eaten?')
-    and_I_edit_the_option_items('Hokey Pokey', 'Chocolate')
-    and_I_return_to_flow_page
-
-    given_I_add_a_single_question_page_with_text
-    and_I_add_a_page_url('hiking')
-    when_I_add_the_page
-    when_I_update_the_question_name('Favourite hiking destination')
-    and_I_return_to_flow_page
-
-    given_I_add_a_single_question_page_with_text
-    and_I_add_a_page_url('sewing')
-    when_I_add_the_page
-    when_I_update_the_question_name('Favourite sewing project')
-    and_I_return_to_flow_page
-  end
-
   def then_I_can_add_conditionals_and_expressions
     and_I_add_another_condition
     then_I_should_see_the_operator(I18n.t('branches.expression.and'))
@@ -185,14 +157,6 @@ module BranchingSteps
     expect(page).to have_content(I18n.t('branches.condition_add'))
   end
 
-  def then_I_should_not_see_the_delete_condition_button
-    page_without_css('button.condition-remove', I18n.t('branches.condition_remove'))
-  end
-
-  def then_I_should_see_the_delete_condition_button
-    page_with_css('button.expression__remover', I18n.t('branches.condition_remove'))
-  end
-
   def then_I_should_see_multiple_delete_condition_buttons
     expect(page).to have_css("button.expression__remover", :minimum => 2)
   end
@@ -207,85 +171,6 @@ module BranchingSteps
 
   def then_I_should_see_the_previous_page_title(page_title)
     expect(editor).to have_text(page_title)
-  end
-
-  def given_I_have_a_page(url)
-    given_I_add_a_single_question_page_with_checkboxes
-    and_I_add_a_page_url(url)
-    when_I_add_the_page
-    editor.question_heading.first.set(url.underscore.humanize)
-    and_I_edit_the_option_items('Thor', 'Hulk')
-    and_I_return_to_flow_page
-  end
-
-  def given_I_have_a_multiquestion_page(url)
-    given_I_add_a_multiple_question_page
-    and_I_add_a_page_url(url)
-    when_I_add_the_page
-    editor.question_heading.first.set(url.underscore.humanize)
-
-    and_I_add_the_component(I18n.t('components.list.radios'))
-    and_I_add_the_component(I18n.t('components.list.checkboxes'))
-
-    and_I_change_the_component(
-      'Question 1',
-      component: 0,
-      tag: 'legend',
-      options: ['Thanos']
-    )
-    and_I_change_the_component(
-      'Question 2',
-      component: 1,
-      tag: 'legend',
-      options: ['Thor','Hulk'],
-    )
-
-    when_I_save_my_changes
-    and_I_return_to_flow_page
-  end
-
-  def given_I_have_a_branching_point_one
-    editor.connection_menu('Page b').click
-    and_I_add_branching_to_the_page
-
-    # Go to page c if Page b is Thor
-    editor.destination_options.select('Page c')
-    editor.conditional_options.select('Page b')
-    editor.operator_options.select('contains')
-    editor.field_options.select('Thor')
-
-    # Go to Page e if Page b is Hulk
-    and_I_add_another_branch
-    editor.second_destination_options.select('Page e')
-    editor.second_conditional_options.select('Page b')
-    editor.second_operator_options.select('contains')
-    editor.second_field_options.select('Hulk')
-
-    # Otherise go to Page g
-    editor.otherwise_options.select('Page g')
-
-    editor.save_button.click
-    and_I_return_to_flow_page
-    expect(editor).to have_content('Branching point 1')
-  end
-
-  def given_I_have_a_branching_point_two
-    editor.connection_menu('Page g').click
-    and_I_add_branching_to_the_page
-
-    # Go to page h if Page g is Thor
-    editor.destination_options.select('Page h')
-    editor.conditional_options.select('Question 1')
-    editor.operator_options.select('is')
-    editor.conditional_options.select('Question 2')
-    editor.operator_options.select('contains')
-    editor.field_options.select('Thor')
-    #
-    # Otherise go to Page i
-    editor.otherwise_options.select('Page i')
-
-    editor.save_button.click
-    and_I_return_to_flow_page
   end
 
   # Error summary #

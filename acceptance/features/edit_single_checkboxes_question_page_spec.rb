@@ -85,12 +85,6 @@ feature 'Edit single radios question page' do
     end
   end
 
-  def given_I_have_a_single_question_page_with_checkboxes
-    given_I_add_a_single_question_page_with_checkboxes
-    and_I_add_a_page_url
-    when_I_add_the_page
-  end
-
   def when_I_update_the_optional_section_heading
     and_I_edit_the_optional_section_heading
     when_I_save_my_changes

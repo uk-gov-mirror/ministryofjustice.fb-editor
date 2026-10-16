@@ -6,9 +6,7 @@ feature 'Create page' do
   let(:page_url) { 'phasma' }
   let(:start_page_title) { 'Service name goes here' }
   let(:checkanswers_link_text) { I18n.t('actions.add_check_answers') }
-  let(:checkanswers_title) { 'Check your answers' }
   let(:confirmation_link_text) { I18n.t('actions.add_confirmation')  }
-  let(:confirmation_title) { 'Application complete' }
 
   background do
     given_I_am_logged_in
@@ -229,10 +227,6 @@ feature 'Create page' do
     expect(
       editor.checkboxes_options.map { |option| option[:value] }
     ).to match_array(%w[Option Option])
-  end
-
-  def and_I_should_see_upload_options_warning
-    expect(editor).to have_content(I18n.t('dialogs.autocomplete.component_warning'))
   end
 
   def and_I_should_see_default_address_created

@@ -411,12 +411,6 @@ end
     click_button(I18n.t("settings.submission.#{environment}.save_button"))
   end
 
-  def then_I_should_see_username_and_password_fields
-    # defaults to requiring a username and password
-    editor.find(:css, "input#username_#{environment}")
-    editor.find(:css, "input#password_#{environment}")
-  end
-
   def then_username_and_password_should_be_the_default(environment)
     # defaults to requiring a username and password so the radio is pre selected
 

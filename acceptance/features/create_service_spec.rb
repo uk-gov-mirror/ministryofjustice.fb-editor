@@ -118,12 +118,6 @@ feature 'Create a service' do
     )
   end
 
-  def given_I_have_an_exit_page
-    given_I_add_an_exit_page
-    and_I_add_a_page_url(exit_url)
-    when_I_add_the_page
-  end
-
   def then_some_pages_should_be_unconnected
     expect(editor.unconnected_flow).to eq(
       [

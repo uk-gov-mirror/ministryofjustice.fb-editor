@@ -64,12 +64,6 @@ feature 'Edit exit pages' do
     then_I_should_not_see_my_content(content_component)
   end
 
-  def given_I_have_an_exit_page
-    given_I_add_an_exit_page
-    and_I_add_a_page_url(exit_url)
-    when_I_add_the_page
-  end
-
   def then_I_should_see_the_component(content)
     expect(editor.first_component.find('[data-element="editable-content-output"]', visible: :all).text).to eq(content)
   end
@@ -94,10 +88,5 @@ feature 'Edit exit pages' do
       expect(page).to have_current_path(/\/preview\/exit/)
       expect(page).to have_no_selector('button')
     end
-  end
-
-  def and_I_click_on_the_exit_page_three_dots
-    editor.flow_thumbnail(exit_heading).hover
-    and_I_click_on_the_three_dots
   end
 end

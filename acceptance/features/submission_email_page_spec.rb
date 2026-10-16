@@ -4,11 +4,6 @@ feature 'Submission email' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
   let(:start_page) { 'Service name goes here' }
-  let(:message_body) {
-    "Please find attached a submission sent from #{service_name}. Your reference number is: {{reference_number}}."
-  }
-  let(:message_subject) { "Submission from #{service_name}, reference number: {{reference_number}}" }
-  let(:pdf_heading) { "Submission for #{service_name}, reference number: {{reference_number}}" }
 
   background do
     given_I_am_logged_in
@@ -60,19 +55,6 @@ feature 'Submission email' do
 
   def when_I_enable_submission_email(environment)
     page.find(:css, "input#email-settings-send-by-email-#{environment}-1-field", visible: false).set(true)
-  end
-
-  def then_I_should_see_submission_email_fields
-    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.service_email_output'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.service_email_output_hint'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.service_email_from'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.service_email_subject'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.service_email_body'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.service_email_pdf_heading'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.service_email_pdf_subheading'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.pdf_hint'))
-    expect(page).to have_content(I18n.t('activemodel.attributes.email_settings.csv_attachment'))
-    expect(page).to have_content(service_name)
   end
 
   def then_I_add_a_send_to_email(email)
