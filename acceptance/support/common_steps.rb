@@ -72,8 +72,8 @@ module CommonSteps
   end
 
   def user_sees_create_new_form_button
-    page.find('button.DialogActivator.govuk-button.fb-govuk-button', visible: true)
-    expect(page).to have_content(I18n.t('services.create'))
+    page.find('button.DialogActivator.govuk-button.govuk-button--secondary.fb-govuk-button--secondary', visible: true)
+    expect(page).to have_content(I18n.t('services.create_skip_questionnaire'))
   end
 
   def user_sees_create_new_form_link

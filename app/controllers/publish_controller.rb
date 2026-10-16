@@ -1,6 +1,8 @@
 class PublishController < FormController
   before_action :assign_form_objects
 
+  ACCEPTANCE_TESTS_EMAIL = 'fb-acceptance-tests@digital.justice.gov.uk'.freeze
+
   def index
     @published_dev = PublishServicePresenter.new(publishes_dev, service)
     @published_production = PublishServicePresenter.new(publishes_production, service)
@@ -8,33 +10,22 @@ class PublishController < FormController
   end
 
   def create
-    return unless can_publish_to_live || publish_service_params[:deployment_environment] == 'dev'
+    return unless authorised_to_publish?
 
     @publish_service_creation = PublishServiceCreation.new(publish_service_params)
 
-    unless prepare_ms_list_integration(publish_service_params[:deployment_environment])
-      @publish_service_creation.errors.add(:ms_list, message: 'We were unable to create a new Microsoft List. Your form changes have not been published. Contact us to resolve this issue.')
-      update_form_objects
-      render :index, status: :unprocessable_entity and return
-    end
+    return attach_ms_list_error unless prepare_ms_list_integration(publish_service_params[:deployment_environment])
 
     if @publish_service_creation.save
       if previous_service_slug.present?
-        UnpublishServiceJob.perform_later(
-          publish_service_id: published_service.id,
-          service_slug: previous_service_slug.decrypt_value
-        )
-
-        all_previous_service_slugs.destroy_all
+        unpublish_previous_version
       end
 
       PublishServiceJob.perform_later(
         publish_service_id: @publish_service_creation.publish_service_id
       )
 
-      if current_user.email != 'fb-acceptance-tests@digital.justice.gov.uk' && (publish_service_params[:deployment_environment] == 'production')
-        NotificationService.notify(publish_message, webhook: ENV['SLACK_NOTIFICATION_WEBHOOK'])
-      end
+      notify_of_publish
 
       redirect_to publish_index_path(service.service_id)
     else
@@ -54,92 +45,42 @@ class PublishController < FormController
       render :index, status: :unprocessable_entity and return
     end
 
-    unless prepare_ms_list_integration('production')
-      @publish_service_creation.errors.add(:ms_list, message: 'We were unable to create a new Microsoft List. Your form changes have not been published. Contact us to resolve this issue.')
-      update_form_objects
-      render :index, status: :unprocessable_entity and return
-    end
+    return attach_ms_list_error unless prepare_ms_list_integration('production')
 
     if @publish_service_creation.valid?
       if @publish_service_creation.save
         # not sure if it should ever be present
         if previous_service_slug.present?
-          UnpublishServiceJob.perform_later(
-            publish_service_id: published_service.id,
-            service_slug: previous_service_slug.decrypt_value
-          )
-
-          all_previous_service_slugs.destroy_all
+          unpublish_previous_version
         end
 
-        unless current_user.email == 'fb-acceptance-tests@digital.justice.gov.uk'
-          PublishServiceJob.perform_later(
-            publish_service_id: @publish_service_creation.publish_service_id
-          )
-          NotificationService.notify(review_message, webhook: ENV['SLACK_NOTIFICATION_WEBHOOK'])
-        end
+        queue_publish_and_notify_review unless current_user.email == ACCEPTANCE_TESTS_EMAIL
 
-        approval = ServiceConfiguration.find_or_initialize_by(
-          service_id: service.service_id,
-          deployment_environment: 'production',
-          name: 'AWAITING_APPROVAL'
-        )
-        if approval.new_record?
-          approval.value = '1'
-          approval.save
-        end
-
-        update_form_objects
-        redirect_to "#{publish_index_path(service.service_id)}#publish-to-live" and return
+        create_awaiting_approval_record
       end
+
       update_form_objects
       redirect_to "#{publish_index_path(service.service_id)}#publish-to-live" and return
     end
   end
 
   def can_publish_to_live
-    if ServiceConfiguration.find_by(
-      service_id: service.service_id,
-      name: 'REVOKED'
-    ).present?
+    if revoked?
       false
-    elsif ServiceConfiguration.find_by(
-      service_id: service.service_id,
-      name: 'APPROVED_TO_GO_LIVE'
-    ).present?
+    elsif approved_to_go_live?
       true
-    elsif ServiceConfiguration.find_by(
-      service_id: service.service_id,
-      name: 'AWAITING_APPROVAL'
-    ).present?
+    elsif awaiting_approval?
       false
     else
-      PublishService.find_by(
-        service_id: service.service_id,
-        deployment_environment: 'production'
-      ).present?
+      previously_published_to_production?
     end
   end
   helper_method :can_publish_to_live
 
   def show_confirmation?
-    ServiceConfiguration.find_by(
-      service_id: service.service_id,
-      name: 'AWAITING_APPROVAL'
-    ).present?
+    awaiting_approval?
   end
   helper_method :show_confirmation?
-
-  def declaration_errors
-    if @errors.present?
-      if @errors.any?
-        @errors
-      end
-    else
-      []
-    end
-  end
-  helper_method :declaration_errors
 
   def text_for_environment(env)
     env == 'dev' ? 'Test' : 'Live'
@@ -152,75 +93,35 @@ class PublishController < FormController
   helper_method :form_url
 
   def prepare_ms_list_integration(env)
-    ms_site_id_config = ServiceConfiguration.find_by(
-      service_id: service.service_id,
-      deployment_environment: env,
-      name: 'MS_SITE_ID'
-    )
-    send_to_graph = SubmissionSetting.find_by(
-      service_id: service.service_id,
-      deployment_environment: env
-    ).try(:send_to_graph_api?)
+    ms_site_id_config = ms_site_id_configuration(env)
 
-    if ms_site_id_config.nil? || send_to_graph == false
-      return true
-    end
+    return true if skip_ms_list_integration?(ms_site_id_config, env)
 
-    latest = if env == 'dev'
-               publishes_dev&.last
-             else
-               publishes_production&.last
-             end
+    latest = latest_publish_for(env)
 
-    if latest && latest.published?
-      if latest.version_id != service.version_id
-        created = create_ms_list_and_drive(ms_site_id_config.decrypt_value, service, env)
-        if created == true
-          NewListMailer.new_ms_list_created(
-            user: current_user,
-            form_name: service.service_name,
-            list_name: "#{service.service_name}-#{text_for_environment(env).downcase}-#{service.version_id}",
-            drive_name: "#{service.service_name}-#{text_for_environment(env).downcase}-#{service.version_id}-attachments"
-          ).deliver_later
-        end
-        created
-      else
-        true
-      end
-    else
-      true
-    end
+    return true unless latest&.published?
+    return true if latest.version_id == service.version_id
+
+    created = create_ms_list_and_drive(ms_site_id_config.decrypt_value, service, env)
+    notify_list_created(env) if created
+    created
   end
 
   def create_ms_list_and_drive(site_id, service, env)
     adapter = MicrosoftGraphAdapter.new(site_id:, service:, env:)
 
-    response = adapter.post_list_columns
+    list_response = adapter.post_list_columns
 
     list_created = false
     drive_created = false
 
-    if response.status == 201
-      list_id = JSON.parse(response.body)['id']
+    list_created = store_ms_resource_id(list_response, 'MS_LIST_ID', env) if list_response.status == 201
 
-      service_config = create_or_update_the_service_configuration('MS_LIST_ID', env)
-      service_config.value = list_id
-      list_created = service_config.save!
-    end
+    drive_response = adapter.create_drive(ms_drive_name(service, env))
 
-    drive_name = CGI.escape("#{service.service_name}-#{text_for_environment(env).downcase}-#{service.version_id}-attachments")
+    drive_created = store_ms_resource_id(drive_response, 'MS_DRIVE_ID', env) if drive_response.status == 201
 
-    response = adapter.create_drive(drive_name)
-
-    if response.status == 201
-      created_id = JSON.parse(response.body)['id']
-
-      service_config = create_or_update_the_service_configuration('MS_DRIVE_ID', env)
-      service_config.value = created_id
-      drive_created = service_config.save!
-    end
-
-    list_created && drive_created == true
+    list_created && drive_created
   end
 
   private
@@ -363,4 +264,120 @@ class PublishController < FormController
     "Publishing - #{service.service_name} - MoJ Forms"
   end
   helper_method :page_title
+
+  def attach_ms_list_error
+    @publish_service_creation.errors.add(:ms_list, message: 'We were unable to create a new Microsoft List. Your form changes have not been published. Contact us to resolve this issue.')
+    update_form_objects
+    render :index, status: :unprocessable_entity
+  end
+
+  def unpublish_previous_version
+    UnpublishServiceJob.perform_later(
+      publish_service_id: published_service.id,
+      service_slug: previous_service_slug.decrypt_value
+    )
+    all_previous_service_slugs.destroy_all
+  end
+
+  def authorised_to_publish?
+    can_publish_to_live || publish_service_params[:deployment_environment] == 'dev'
+  end
+
+  def queue_publish_and_notify_review
+    PublishServiceJob.perform_later(
+      publish_service_id: @publish_service_creation.publish_service_id
+    )
+    NotificationService.notify(review_message, webhook: ENV['SLACK_NOTIFICATION_WEBHOOK'])
+  end
+
+  def notify_of_publish
+    return if current_user.email == ACCEPTANCE_TESTS_EMAIL
+    return unless publish_service_params[:deployment_environment] == 'production'
+
+    NotificationService.notify(publish_message, webhook: ENV['SLACK_NOTIFICATION_WEBHOOK'])
+  end
+
+  def create_awaiting_approval_record
+    approval = ServiceConfiguration.find_or_initialize_by(
+      service_id: service.service_id,
+      deployment_environment: 'production',
+      name: 'AWAITING_APPROVAL'
+    )
+    if approval.new_record?
+      approval.value = '1'
+      approval.save
+    end
+  end
+
+  def service_configuration_exists?(name)
+    ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      name:
+    ).present?
+  end
+
+  def revoked?
+    service_configuration_exists?('REVOKED')
+  end
+
+  def approved_to_go_live?
+    service_configuration_exists?('APPROVED_TO_GO_LIVE')
+  end
+
+  def awaiting_approval?
+    service_configuration_exists?('AWAITING_APPROVAL')
+  end
+
+  def ms_site_id_configuration(env)
+    ServiceConfiguration.find_by(
+      service_id: service.service_id,
+      deployment_environment: env,
+      name: 'MS_SITE_ID'
+    )
+  end
+
+  def skip_ms_list_integration?(ms_site_id_config, env)
+    return true if ms_site_id_config.nil?
+
+    send_to_graph = SubmissionSetting.find_by(
+      service_id: service.service_id,
+      deployment_environment: env
+    ).try(:send_to_graph_api?)
+
+    send_to_graph == false
+  end
+
+  def previously_published_to_production?
+    PublishService.find_by(
+      service_id: service.service_id,
+      deployment_environment: 'production'
+    ).present?
+  end
+
+  def latest_publish_for(env)
+    if env == 'dev'
+      publishes_dev&.last
+    else
+      publishes_production&.last
+    end
+  end
+
+  def notify_list_created(env)
+    NewListMailer.new_ms_list_created(
+      user: current_user,
+      form_name: service.service_name,
+      list_name: "#{service.service_name}-#{text_for_environment(env).downcase}-#{service.version_id}",
+      drive_name: "#{service.service_name}-#{text_for_environment(env).downcase}-#{service.version_id}-attachments"
+    ).deliver_later
+  end
+
+  def store_ms_resource_id(response, config_name, env)
+    service_config = create_or_update_the_service_configuration(config_name, env)
+    service_config.value = JSON.parse(response.body)['id']
+    service_config.save!
+  end
+
+  def ms_drive_name(service, env)
+    CGI.escape("#{service.service_name}-#{text_for_environment(env).downcase}-#{service.version_id}-attachments")
+  end
 end

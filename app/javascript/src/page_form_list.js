@@ -40,7 +40,7 @@ class CreateFormDialog {
       activatorText: $node.data("activator-text"),
       closeText: view.text.dialogs.button_close,
       classes: {
-        activator: "govuk-button fb-govuk-button",
+        activator: "govuk-button govuk-button--secondary fb-govuk-button--secondary",
       },
       onClose: function () {
         $errors.parents().removeClass("error");

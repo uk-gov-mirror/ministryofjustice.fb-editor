@@ -23,17 +23,18 @@
         <% end %>
       </ul>
 
-      <% if moj_forms_admin? %>
-        <div class="component-dialog-form"
-             id="new-service-create-dialog"
-             data-activator-text="<%= t('services.create') %>"
-             data-cancel-text="<%= t('services.cancel') %>"
-             data-component="FormCreateDialog">
-          <%= render partial: 'new_form' %>
-        </div>
-      <% else %>
+      <div class="govuk-button-group">
         <%=link_to t('services.create'), questionnaire_path(:get_started), class: "govuk-button fb-govuk-button" %>
-      <% end %>
+        <% if moj_forms_admin? %>
+          <div class="component-dialog-form"
+               id="new-service-create-dialog"
+               data-activator-text="<%= t('services.create_skip_questionnaire') %>"
+               data-cancel-text="<%= t('services.cancel') %>"
+               data-component="FormCreateDialog">
+            <%= render partial: 'new_form' %>
+          </div>
+        <% end %>
+      </div>
 
       <% if params[:owner].present? %>
           <%= render 'confirmation_transfer_ownership' %>

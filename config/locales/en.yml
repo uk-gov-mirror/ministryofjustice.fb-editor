@@ -672,6 +672,7 @@ en:
     form_name_change_hint: "You will be able to change this later in your form's settings"
     preview: 'Preview'
     create: 'Create a new form'
+    create_skip_questionnaire: 'Create a new form - skip questionnaire'
     cancel: 'Cancel'
     branch: 'Add branching'
   questionnaire:

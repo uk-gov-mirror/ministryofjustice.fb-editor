@@ -163,6 +163,11 @@ a[disabled] {
   @include fb-govuk-button;
 }
 
+.fb-govuk-button--secondary {
+  // govuk-button style is green but we want blue light grey on fb-editor.
+  @include fb-govuk-button--secondary;
+}
+
 .fb-govuk-button--inline {
   width: auto;
 }

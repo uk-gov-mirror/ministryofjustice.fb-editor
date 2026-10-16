@@ -79,6 +79,11 @@
   }
 }
 
+@mixin fb-govuk-button--secondary {
+  @include govuk-font($size: 19);
+  @extend .govuk-button--secondary;
+}
+
 @mixin addition_icon {
   &:before {
     content: "+";
