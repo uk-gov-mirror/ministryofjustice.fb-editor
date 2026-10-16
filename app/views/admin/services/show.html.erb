@@ -111,10 +111,12 @@
     %>
     <% end %>
 
-    <%= button_to 'Delete Service', admin_service_path(@service.service_id, @service),
-              method: :delete, class: "button button--danger",
-              style: 'margin-bottom: 25px',
-              data: { turbo_confirm: 'Is this the right form we are deleting?' }  %>
+    <%= button_to 'Delete Service', admin_service_path(
+      @service.service_id, @service),
+      method: :delete,
+      class: "button button--danger",
+      data: { turbo_confirm: 'Is this the right form we are deleting?' }
+    %>
 
     <fieldset class="model-info">
       <h2>Latest Metadata</h2>
