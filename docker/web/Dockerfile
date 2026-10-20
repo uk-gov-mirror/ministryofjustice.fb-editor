@@ -1,9 +1,8 @@
 FROM ruby:3.4.9-alpine
 
-# Fixes the Node version issue by copying Node 16 directly from the official image
-COPY --from=node:22.18.0-alpine /usr/local/bin/node /usr/local/bin/
-COPY --from=node:22.18.0-alpine /usr/local/lib/node_modules /usr/local/lib/node_modules
-COPY --from=node:22.18.0-alpine /opt/yarn-v1.22.22 /opt/yarn
+COPY --from=node:22.22.2-alpine /usr/local/bin/node /usr/local/bin/
+COPY --from=node:22.22.2-alpine /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY --from=node:22.22.2-alpine /opt/yarn-v1.22.22 /opt/yarn
 RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-merge-driver /usr/local/bin/npm-merge-driver || true
 
 ARG UID=1001
