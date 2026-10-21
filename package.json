@@ -38,7 +38,7 @@
     "postcss-preset-env": "9",
     "resolve-url-loader": "^5.0.0",
     "rspack-manifest-plugin": "^5.2.2",
-    "sanitize-html": "^2.17.7",
+    "sanitize-html": "^2.18.0",
     "sass": "^1.50.0",
     "sass-loader": "^17.0.0",
     "shakapacker": "10.3.1",
