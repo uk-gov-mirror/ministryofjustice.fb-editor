@@ -6,7 +6,9 @@ feature 'Create page' do
   let(:page_url) { 'phasma' }
   let(:start_page_title) { 'Service name goes here' }
   let(:checkanswers_link_text) { I18n.t('actions.add_check_answers') }
+  let(:checkanswers_title) { 'Check your answers' }
   let(:confirmation_link_text) { I18n.t('actions.add_confirmation')  }
+  let(:confirmation_title) { 'Application complete' }
 
   background do
     given_I_am_logged_in
