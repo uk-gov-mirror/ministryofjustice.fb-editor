@@ -43,7 +43,7 @@
     "sass-loader": "^17.0.0",
     "shakapacker": "10.3.1",
     "showdown": "^2.1.0",
-    "sinon": "^15.0.3",
+    "sinon": "^22.1.0",
     "style-loader": "^4.0.0",
     "swc-loader": "^0.2.0",
     "tabbable": "^6.5.0",
@@ -64,6 +64,7 @@
     "jsdom": "^30.1.2",
     "jsdom-global": "^3.0.2",
     "mocha": "^10.2.0",
+    "nise": "^5.1.9",
     "shakapacker-rspack": "^10.3.1",
     "sinon-chai": "^3.7.0",
     "webpack-dev-server": "^6.0.0"
