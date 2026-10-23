@@ -15,7 +15,7 @@
     </div>
   <% end %>
 
-  <%= link_to 'Back to the service administration page', admin_service_path(params[:service_id]), class: "button" %>
+  <%= link_to 'Back to the service administration page', admin_service_path(params[:service_id]), class: "govuk-back-link" %>
 
   <% content_for :forms do %>
     <%= render 'form', object: @api_submission_settings_dev, deployment_environment: 'dev' %>
