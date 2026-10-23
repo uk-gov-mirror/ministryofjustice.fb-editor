@@ -8,8 +8,8 @@
 
 /* ---------- Base ---------- */
 
-.main-content__header,
-.main-content__body {
+.main-content__header.api-submission-settings,
+.main-content__body.api-submission-settings {
   padding-left: 0;
 }
 
