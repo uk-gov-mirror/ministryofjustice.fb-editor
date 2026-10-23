@@ -6,6 +6,68 @@
  * Docs: https://administrate-demo.herokuapp.com/customizing_page_views
  */
 
+/* ---------- Base ---------- */
+
+html {
+  font-size: 112.5%;
+}
+
+body {
+  font-size: 1.125rem;
+}
+
+h2 {
+  font-size: 1.3rem;
+}
+
+/* ---------- Show pages: label and value rows ---------- */
+
+.model-info {
+  display: grid;
+  grid-template-columns: 18rem 1fr;
+  align-items: stretch;
+  width: 100%;
+  padding: 5px 0 5px 1px;
+  margin-bottom: 30px;
+}
+
+.model-info--latest-metadata {
+  margin-top: 20px;
+}
+
+.model-info > h2,
+.model-info > legend {
+  grid-column: 1 / -1;
+}
+
+fieldset h2 {
+  margin-top: 25px;
+  margin-bottom: 20px;
+}
+
+fieldset .attribute-label,
+fieldset .attribute-data {
+  float: none;
+  width: auto;
+  margin: 0;
+  padding: 12px 2rem 12px 0;
+  border-bottom: 1px solid #b1b4b6;
+}
+
+fieldset .attribute-label {
+  text-align: left;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #0b0c0c;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.attribute-data,
+.field-unit__hint {
+  margin-left: 0;
+}
+
 .summary-list dd {
   width: fit-content;
 }
@@ -15,34 +77,77 @@
 }
 
 .service-actions-btn {
-  margin-bottom:20px;
+  margin-bottom: 20px;
 }
 
-.model-info {
-  padding: 5px 0px 5px 1px;
-  width: fit-content;
+/* ---------- Edit forms ---------- */
+
+.form-actions {
+  margin-left: 0;
+  margin-bottom: 20px;
 }
 
-fieldset .attribute-label {
+.field-unit {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.field-unit__legend {
+  width: 100%;
+  padding: 0;
+}
+
+.field-unit__legend h2 {
+  margin: 0;
+}
+
+.field-unit__label,
+.field-unit__field {
+  width: 100%;
+  margin: 0;
   text-align: left;
+}
+
+.field-unit input[type="text"],
+.field-unit textarea {
+  border: 2px solid #0b0c0c;
+}
+
+.field-unit__radios {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  font-size: 1.1rem;
+  font-weight: normal;
+}
+
+.field-unit__radios input {
+  width: 2.2rem;
+  height: 2.2rem;
+}
+
+/* ---------- Tables ---------- */
+
+table caption {
+  text-align: left;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
 }
 
 table .cell-data a {
   color: #1976d2;
 }
 
-table caption {
-  text-align: left;
-  font-weight: bold;
-  font-size: 20px;
-  margin-bottom: 10px;
+/* ---------- Navigation ---------- */
+
+.navigation__link--disabled {
+  color: #6f777b;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
-.duplicate-alignment {
-  width: 1%;
-}
-
-/* GOV.UK notification-banner styles for the announcement PREVIEW only. */
+/* ---------- GOV.UK notification banner (announcement PREVIEW only) ---------- */
 
 .govuk-notification-banner {
   --_govuk-notification-banner-colour: var(--govuk-brand-colour, #1d70b8);
@@ -52,8 +157,7 @@ table caption {
   font-size: 1.1875rem;
   line-height: 1.3157894737;
   margin-bottom: 30px;
-  border: 5px solid;
-  border-color: var(--_govuk-notification-banner-colour);
+  border: 5px solid var(--_govuk-notification-banner-colour);
 }
 
 .govuk-notification-banner__header {
@@ -89,15 +193,4 @@ table caption {
 .mojf-announcement .govuk-notification-banner__content a {
   text-decoration: underline;
   color: var(--govuk-link-colour, #1a65a6);
-}
-
-.navigation__link--disabled {
-  color: #6f777b;
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.form-actions {
-  margin-left: 0;
-  margin-bottom: 20px;
 }

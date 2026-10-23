@@ -14,7 +14,7 @@
   <div>
     <%= link_to 'Back to service', admin_service_path(@version.metadata['service_id']), class: "button" %>
 
-    <fieldset class="">
+    <fieldset class="model-info">
       <dt class="attribute-label" id="created-by">Created by</dt>
       <dd class="attribute-data attribute-data--string"><%= @version_creator.name %></dd>
 

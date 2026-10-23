@@ -9,7 +9,7 @@
 </header>
 
 <section class="main-content__body">
-  <fieldset class="">
+  <fieldset class="model-info">
     <% @stats.each do |stat| %>
       <dt class="attribute-label" id="<%= stat[:name].to_s.parameterize %>"><%= stat[:name] %></dt>
       <dd class="attribute-data attribute-data--string"><%= stat[:value] %></dd>

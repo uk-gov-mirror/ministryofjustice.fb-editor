@@ -63,7 +63,7 @@ It renders the `_table` partial to display details about the resources.
             <%= link_to 'Maintenance settings', edit_admin_service_path(service.id), class: "action-edit" %>
           </td>
           <% if Rails.env.development? %>
-          <td class="cell-data duplicate-alignment">
+          <td class="cell-data">
             <%= button_to 'Duplicate',
                 admin_services_path(service.id, service_id: service.id),
                 class: "button",
