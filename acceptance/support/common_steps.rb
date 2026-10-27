@@ -273,6 +273,25 @@ module CommonSteps
     # click outside of fields that will make save button re-enable
     editor.service_name.click
     editor.save_page_button.click
+    then_the_save_should_have_finished
+  end
+
+  def then_the_save_should_have_finished
+    # The Save button says 'Saving...' until the page has reloaded
+    expect(page).to have_no_button(I18n.t('actions.saving'))
+  end
+
+  def then_the_flow_should_be(expected_titles)
+    # The flow page reloads after a move or undo. Check the order once a
+    # second for up to 15 seconds, instead of reading it only once.
+    15.times do
+      break if editor.main_flow_titles == expected_titles
+      sleep 1
+    rescue Selenium::WebDriver::Error::StaleElementReferenceError
+      # the page reloaded while we were reading it, so try again
+      sleep 1
+    end
+    expect(editor.main_flow_titles).to eq(expected_titles)
   end
 
   def then_the_save_button_should_be_disabled

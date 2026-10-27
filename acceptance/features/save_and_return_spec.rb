@@ -16,6 +16,7 @@ feature 'Save and Return page' do
   scenario 'when I enable save and return' do
     with_setting(save_and_return_checkbox, true)
     click_button(I18n.t('actions.save'))
+    then_the_save_should_have_finished
     then_checkbox_should_remain_checked(save_and_return_checkbox, true)
 
     # when editing a page
@@ -32,10 +33,12 @@ feature 'Save and Return page' do
   scenario 'when I disable save and return' do
     with_setting(save_and_return_checkbox, true)
     click_button(I18n.t('actions.save'))
+    then_the_save_should_have_finished
     then_checkbox_should_remain_checked(save_and_return_checkbox, true)
 
     with_setting(save_and_return_checkbox, false)
     click_button(I18n.t('actions.save'))
+    then_the_save_should_have_finished
     then_checkbox_should_remain_checked(save_and_return_checkbox, false)
 
     # when editing a page

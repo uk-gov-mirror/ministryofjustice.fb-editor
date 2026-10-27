@@ -95,12 +95,12 @@ feature 'Edit single question page' do
 
   def then_I_should_see_the_default_section_heading
     editor.service_name.click
-    expect(editor.section_heading_hint.text).to eq(default_section_heading)
+    expect(editor.section_heading_hint).to have_text(default_section_heading, exact: true)
   end
 
   def then_I_should_see_the_default_hint_text
     editor.service_name.click
-    expect(editor.question_hint.text).to eq(default_hint)
+    expect(editor.question_hint).to have_text(default_hint, exact: true)
   end
 
   def then_I_should_see_my_updated_hint_text
@@ -116,9 +116,9 @@ feature 'Edit single question page' do
   def when_I_save_my_changes
     # click outside of fields that will make save button re-enable
     editor.service_name.click
-    expect(editor.save_page_button['aria-disabled']).to eq('false')
+    then_the_save_button_should_be_enabled
     editor.save_page_button.click
-    expect(editor.save_page_button['aria-disabled']).to eq('true')
+    then_the_save_button_should_be_disabled
   end
 
   def when_I_update_the_question_name

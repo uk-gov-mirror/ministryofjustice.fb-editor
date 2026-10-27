@@ -143,16 +143,16 @@ feature 'Move a page' do
   end
 
   def then_page_H_should_be_after_page_B
-    expect(editor.main_flow_titles).to eq(page_h_after_page_b_flow)
+    then_the_flow_should_be(page_h_after_page_b_flow)
   end
 
   def then_page_H_should_be_the_branching_point_2_branch_1_destination
-    expect(editor.main_flow_titles).to eq(page_h_after_branching_point_2_branch_1_flow)
+    then_the_flow_should_be(page_h_after_branching_point_2_branch_1_flow)
   end
 
   def then_page_C_should_be_part_of_the_main_flow
-    expect(editor.main_flow_titles).to eq(page_c_in_main_flow)
-    expect(editor.unconnected_flow).to be_empty
+    then_the_flow_should_be(page_c_in_main_flow)
+    expect(page).to have_no_css('.flow-detached-group .flow-item')
   end
 
   def then_I_should_see_the_no_default_next_warning
@@ -166,7 +166,7 @@ feature 'Move a page' do
   end
 
   def then_no_pages_should_have_moved
-    expect(editor.main_flow_titles).to eq(original_flow_titles)
+    then_the_flow_should_be(original_flow_titles)
   end
 
   def and_I_click_understood

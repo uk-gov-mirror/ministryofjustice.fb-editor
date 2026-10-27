@@ -8,7 +8,10 @@ module MultipleQuestionsPageHelper
   def and_I_add_the_component(component)
     and_I_add_a_component
     and_I_add_a_question
+    questions_before = all('.Question').count
     find(:link, component).click
+    # adding a component reloads the page, so wait for the new question
+    expect(page).to have_css('.Question', count: questions_before + 1)
   end
 
   def and_I_add_a_multiple_page_content_component

@@ -45,7 +45,6 @@ feature 'Edit single question autocomplete page' do
     then_I_should_see_upload_options_modal
     then_I_should_see_overwrite_options_warning
     when_I_upload_a_csv_file(valid_csv)
-    sleep(1)
     then_I_should_see_confirmation_message
     and_I_return_to_flow_page
     then_I_should_see_my_changes_on_preview(autocomplete_option)
@@ -111,7 +110,7 @@ feature 'Edit single question autocomplete page' do
 
   def then_I_should_see_the_default_section_heading
     editor.service_name.click
-    expect(editor.section_heading_hint.text).to eq(default_section_heading)
+    expect(editor.section_heading_hint).to have_text(default_section_heading, exact: true)
   end
 
   def and_I_edit_the_question
@@ -127,6 +126,9 @@ feature 'Edit single question autocomplete page' do
   end
 
   def then_I_should_see_confirmation_message
+    # The upload box closes once the upload has finished. Checking the message
+    # alone is not enough: the first upload's message is still on the page.
+    expect(page).to have_no_css('.ui-dialog')
     expect(page).to have_content(upload_success)
   end
 
