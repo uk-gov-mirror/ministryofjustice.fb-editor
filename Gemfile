@@ -11,7 +11,11 @@ ruby '3.4.9'
 # gem 'metadata_presenter', path: '../fb-metadata-presenter'
 gem 'metadata_presenter', '3.4.27'
 
-gem 'activerecord-session_store', '~> 2.3.0'
+# Stay on 2.2.0. In 2.3.0 the gem only saves the session when it thinks the
+# data changed, but it doesn't notice edits made inside nested hashes, so
+# answers get lost between pages.
+# See https://github.com/rails/activerecord-session_store/pull/166
+gem 'activerecord-session_store', '~> 2.2.0'
 gem 'administrate', '~> 1.0'
 gem 'aws-sdk-s3', '~> 1.233.2'
 gem 'bootsnap', '>= 1.4.2', require: false
