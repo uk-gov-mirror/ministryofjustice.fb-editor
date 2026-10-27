@@ -41,26 +41,11 @@ feature 'Visiting admin pages' do
     expect(page).to have_content(I18n.t('home.show.sign_in'))
   end
 
-  def then_I_should_be_redirected_to_the_unauthorised_page
-    expect(page.current_path).to eq('/unauthorised')
-    expect(page).to have_content(I18n.t('auth.unauthorised.heading'))
-    expect(page).to have_content(I18n.t('auth.unauthorised.body'))
-  end
-
   def then_I_should_be_redirected_to_the_page(path)
     expect(page.current_path).to eq("/#{path}")
   end
 
-  def then_I_should_not_see_the_admin_link
-    expect(page).to have_no_content(I18n.t('partials.header.admin'))
-  end
-
   def then_I_should_see_the_admin_link
     expect(page).to have_content(I18n.t('partials.header.admin'))
-  end
-
-  def then_I_should_be_redirected_to_the_services_page
-    expect(page.current_path).to eq('/services')
-    expect(editor.question_heading.first.text).to eq(I18n.t('services.heading'))
   end
 end

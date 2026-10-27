@@ -231,10 +231,6 @@ feature 'Create page' do
     ).to match_array(%w[Option Option])
   end
 
-  def and_I_should_see_upload_options_warning
-    expect(editor).to have_content(I18n.t('dialogs.autocomplete.component_warning'))
-  end
-
   def and_I_should_see_default_address_created
     expect(editor.all('input[type="text"]').size).to be(6)
     expect(editor.all('input[type="text"]').last.value).to eq('United Kingdom')

@@ -68,10 +68,6 @@ feature 'Preview page' do
     click_link 'Change'
   end
 
-  def and_I_click_add_another
-    click_button 'Add another file'
-  end
-
   def and_I_go_to_next_page
     click_button 'Continue'
   end

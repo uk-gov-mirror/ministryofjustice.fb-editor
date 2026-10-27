@@ -120,12 +120,6 @@ feature 'Form name URL settings page' do
     editor.save_button.click
   end
 
-  def when_I_try_to_change_service_slug_adding_an_existing_service_slug
-    form_url_field.set('')
-    form_url_field.set(new_service_slug)
-    editor.save_button.click
-  end
-
   def then_I_should_see_the_current_service_name_in_the_input
     expect(form_name_field.value).to eq(service_name)
   end

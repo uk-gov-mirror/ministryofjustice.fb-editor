@@ -156,11 +156,6 @@ feature 'Edit single question page' do
     editor.editable_options.last.set(editable_options.last)
   end
 
-  def and_I_update_the_options
-    and_I_edit_the_options
-    when_I_save_my_changes
-  end
-
   def then_I_should_see_my_changes_on_preview
     preview_form = and_I_preview_the_form
 
@@ -174,14 +169,6 @@ feature 'Edit single question page' do
   def then_I_should_see_my_changes_in_the_form(preview_form)
     within_window(preview_form) do
       expect(page).to have_content(question)
-    end
-  end
-
-  def and_I_should_see_the_options_that_I_added(preview_form)
-    within_window(preview_form) do
-      editable_options.each do |option|
-        expect(page).to have_content(option)
-      end
     end
   end
 

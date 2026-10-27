@@ -3,9 +3,6 @@ require_relative '../spec_helper'
 feature 'Preview form' do
   let(:editor) { EditorApp.new }
   let(:service_name) { generate_service_name }
-  let(:multiple_page_heading) do
-    'Multiple Page'
-  end
   let(:optional_content) do
     I18n.t('default_text.content')
   end
@@ -175,13 +172,6 @@ feature 'Preview form' do
     editor.service_name.click
     editor.editable_options.last.set('Oranges')
     editor.service_name.click
-    when_I_save_my_changes
-  end
-
-  def and_I_make_the_question_optional
-    when_I_want_to_select_question_properties
-    and_I_want_to_set_a_question_optional
-    and_I_update_the_question_to_be_optional
     when_I_save_my_changes
   end
 
