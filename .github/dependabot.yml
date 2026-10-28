@@ -1,6 +1,9 @@
 # Follows the MoJ Developer Portal "Dependabot guidelines":
-#   - all minor upgrades share one PR and all patch upgrades share one PR, to cut PR volume
-#   - major upgrades are NOT grouped; they get their own PRs
+#   - minor and patch upgrades are each grouped into a single PR per ecosystem
+#   - major upgrades are NOT grouped; they continue to get their own individual PRs
+#   - minor and patch security fixes are grouped into a single PR per ecosystem
+#     (security fixes ignore cooldown, so they still arrive straight away 
+#     https://github.com/dependabot/dependabot-core/discussions/15582)
 #
 # Not covered by Dependabot (CircleCI): orbs and images in .circleci/config.yml.
 # See the team note on how those are kept up to date.
@@ -25,21 +28,27 @@ updates:
       exclude:
         - "metadata_presenter"
         - "fb-jwt-auth"
+    # Shakapacker must be the exact same version in the Gemfile and package.json,
+    # Upgrade both together manually https://shakapacker.com/docs/common-upgrades/.
+    ignore:
+      - dependency-name: "shakapacker"
     labels:
       - "dependencies"
       - "ruby"
     groups:
-      # All minor upgrades go in a single PR
+      # All minor upgrades in one PR
       minor-updates:
-        patterns:
-          - "*"
         update-types:
           - "minor"
-      # All patch upgrades go in a single PR
+      # All patch upgrades in one PR
       patch-updates:
-        patterns:
-          - "*"
         update-types:
+          - "patch"
+      # All minor and patch security fixes in one PR
+      security-updates:
+        applies-to: security-updates
+        update-types:
+          - "minor"
           - "patch"
 
   # ---------------------------------------------------------------------------
@@ -55,19 +64,26 @@ updates:
       semver-major-days: 14
       semver-minor-days: 7
       semver-patch-days: 7
+    # Shakapacker must be the exact same version in the Gemfile and package.json,
+    # Upgrade both together manually https://shakapacker.com/docs/common-upgrades/.
+    ignore:
+      - dependency-name: "shakapacker"
+      - dependency-name: "shakapacker-rspack"
     labels:
       - "dependencies"
       - "javascript"
     groups:
-      # All minor upgrades go in a single PR
+      # All minor upgrades in one PR
       minor-updates:
-        patterns:
-          - "*"
         update-types:
           - "minor"
-      # All patch upgrades go in a single PR
+      # All patch upgrades in one PR
       patch-updates:
-        patterns:
-          - "*"
         update-types:
+          - "patch"
+      # All minor and patch security fixes in one PR
+      security-updates:
+        applies-to: security-updates
+        update-types:
+          - "minor"
           - "patch"
