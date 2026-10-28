@@ -48,10 +48,8 @@ feature 'Undo redo page' do
     and_I_click_the_move_button
     then_page_1_should_be_after_page_2
     and_I_click_button('undo_move')
-    sleep(3)
     then_page_2_should_be_after_page_1
     and_I_click_button('redo_move')
-    sleep(3)
     then_page_1_should_be_after_page_2
   end
 
@@ -60,23 +58,21 @@ feature 'Undo redo page' do
     when_I_change_destination_to_page('page 1')
     then_next_to_page_2_is_page_1
     and_I_click_button('undo_change_next_page')
-    sleep(3)
     then_page_2_should_be_after_page_1
     and_I_click_button('redo_change_next_page')
-    sleep(3)
     then_next_to_page_2_is_page_1
   end
 
   def then_page_1_should_be_after_page_2
-    expect(editor.main_flow_titles).to eq(move_flow)
+    then_the_flow_should_be(move_flow)
   end
 
   def then_page_2_should_be_after_page_1
-    expect(editor.main_flow_titles).to eq(original_flow_titles)
+    then_the_flow_should_be(original_flow_titles)
   end
 
   def then_next_to_page_2_is_page_1
-    expect(editor.main_flow_titles).to eq(next_page_flow)
+    then_the_flow_should_be(next_page_flow)
   end
 
   def and_I_click_button(name)
