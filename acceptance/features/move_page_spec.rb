@@ -90,21 +90,23 @@ feature 'Move a page' do
   end
 
   scenario 'moving pages' do
-    and_I_click_on_the_page_menu(page_h)
+    and_I_open_the_page_menu(page_h)
     editor.move_page_link.click
     then_I_should_see_the_move_target_list(page_h)
     and_I_select_a_target(page_b)
     and_I_click_the_move_button
     then_page_H_should_be_after_page_B
 
-    and_I_click_on_the_page_menu(page_h)
+    and_I_open_the_page_menu(page_h)
     editor.move_page_link.click
+    then_I_should_see_the_move_target_list(page_h)
     and_I_select_a_target(branching_point_2_branching_1)
     and_I_click_the_move_button
     then_page_H_should_be_the_branching_point_2_branch_1_destination
 
-    and_I_click_on_an_unconnected_page_menu(page_c)
+    and_I_open_the_page_menu(page_c)
     editor.move_page_link.click
+    then_I_should_see_the_move_target_list(page_c)
     and_I_select_a_target(page_f)
     and_I_click_the_move_button
     then_page_C_should_be_part_of_the_main_flow
@@ -126,20 +128,14 @@ feature 'Move a page' do
     then_no_pages_should_have_moved
   end
 
-  def and_I_click_on_an_unconnected_page_menu(flow_title)
-    # Ensure main content is present before interacting
+  def and_I_open_the_page_menu(flow_title)
     find('#main-content', visible: true)
 
-    # Use a waiting finder scoped to the detached group, matching the title text
-    flow_item = find(
-      '.flow-detached-group .flow-item .flow-thumbnail',
-      text: flow_title,
-      match: :prefer_exact
-    )
-
-    flow_item.hover
-    # Reuse the helper that waits for the menu activator to be visible
-    and_I_click_on_the_three_dots
+    # Hover over the page, then click the menu button that belongs to it.
+    # Each button has aria-label 'Actions for page <title>'.
+    find('.flow-thumbnail', text: flow_title).hover
+    menu_label = I18n.t('pages.flow_page_menu_label', title: flow_title)
+    find("button[aria-label='#{menu_label}']").click
   end
 
   def then_page_H_should_be_after_page_B
