@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
+    external-dns.alpha.kubernetes.io/set-identifier: apply-financial-deputy-upfront-ingress-formbuilder-services-live-production-green
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      server_tokens off;
+      location /metrics {
+        deny all;
+        return 401;
+      }
+    nginx.ingress.kubernetes.io/custom-http-errors: 400, 401, 403, 404, 500, 503
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/permanent-redirect: "https://apply-for-a-property-and-affairs-deputyship-order.form.service.justice.gov.uk"
+  name: apply-financial-deputy-upfront-ingress
+  namespace: formbuilder-services-live-production
+spec:
+  ingressClassName: default
+  rules:
+  - host: apply-financial-deputy-upfront.form.service.justice.gov.uk
+    http:
+      paths:
+      - backend:
+          service:
+            name: apply-financial-deputy-upfront
+            port:
+              number: 3000
+        path: /
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - apply-financial-deputy-upfront.form.service.justice.gov.uk
+    secretName: tls-certificate

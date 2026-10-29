@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    external-dns.alpha.kubernetes.io/aws-weight: "100"
+    external-dns.alpha.kubernetes.io/set-identifier: user-feedback-ingress-formbuilder-services-live-production-green
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      server_tokens off;
+      location /metrics {
+        deny all;
+        return 401;
+      }
+    nginx.ingress.kubernetes.io/custom-http-errors: 400, 401, 403, 404, 500, 503
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/permanent-redirect: "https://hmcts-saythankyou-form-eng.form.service.justice.gov.uk"
+  name: user-feedback-ingress
+  namespace: formbuilder-services-live-production
+spec:
+  ingressClassName: default
+  rules:
+  - host: user-feedback.form.service.justice.gov.uk
+    http:
+      paths:
+      - backend:
+          service:
+            name: user-feedback
+            port:
+              number: 3000
+        path: /
+        pathType: ImplementationSpecific
+  tls:
+  - hosts:
+    - user-feedback.form.service.justice.gov.uk
+    secretName: tls-certificate
